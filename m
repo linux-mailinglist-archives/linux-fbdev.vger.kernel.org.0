@@ -1,64 +1,64 @@
-Return-Path: <linux-fbdev+bounces-1120-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1122-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90ECF857D1A
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Feb 2024 14:01:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2FA8583D4
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Feb 2024 18:15:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75902881A8
-	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Feb 2024 13:01:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92731281457
+	for <lists+linux-fbdev@lfdr.de>; Fri, 16 Feb 2024 17:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8F91292E0;
-	Fri, 16 Feb 2024 13:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AAE1369A6;
+	Fri, 16 Feb 2024 17:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dX8+fWiy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ceYp5PZ6"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF1D1292DA;
-	Fri, 16 Feb 2024 13:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EAB134CDC;
+	Fri, 16 Feb 2024 17:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708088507; cv=none; b=G3boO8OISO5ZbZP7MChBAuX7UyccA/VCI7MO2ijy47kUjdoq54UDMvWZXdw4h1qD50SYVEeyOleBxrCfpYx4E0SNDo6wkTosNB8B+qnj1WrhApLCawUq9msue05uA9GmXg/5kjtbhMQTNtosNUjVZ/ooMNxnRZPtoghQ7tpS/14=
+	t=1708103556; cv=none; b=oW9Brj6nqSbpNSosDr3kopTbcWaqOdimPVGqF6rDC0T0ZG0lNljbV8pCAgjlL4lyps8AwTT1StIwW4eDinsUn/vy0KfDzgPrELKdiPdtPWPlxnhUQKmssYC/8GI9Hv0PvZP4fKTdWFMosCxlzxBCcsb83KIm3QTLIdYeewzKmrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708088507; c=relaxed/simple;
-	bh=3oDy60zjdhTLSBPxSAfy1GIJx1bPsmJfTGaygN2Eg4w=;
+	s=arc-20240116; t=1708103556; c=relaxed/simple;
+	bh=K6UtEVBR6uRkR+4SVn/AX4Wfv7U6gUrkLF6U4slDXBs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b8h6qkXE+c40XVPs8XfzaJq5uDNxlwtzvRmVih2Co99rDa5zqWoSV7EeqVijbPmH3+t4XRw1qKmjemol/wVpsZT9QleKZyscs2z1ag9aMERBws0bvXTTXG3DbbZGEMDoc4ukcI/k6TJ8Xgv/AH5BK3ZMCuES9hPxUUHKmSjjg68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dX8+fWiy; arc=none smtp.client-ip=198.175.65.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=DVF46r45o5tz26l1W1edyqbvT4sGh8uxsSMuZ/hUM5tevXbd5tvQwRGWn2G/aE0xuXfRBvJ7218D3CqQGC7dzp65qZVThtc8AU7St+Pkq5uYakAfrSh38l25Xaky65HuvjeRYLTJuPI4SH4BHM/z+6wGqkCxldFmlFTUkWm+qvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ceYp5PZ6; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708088505; x=1739624505;
+  t=1708103555; x=1739639555;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=3oDy60zjdhTLSBPxSAfy1GIJx1bPsmJfTGaygN2Eg4w=;
-  b=dX8+fWiyZ1jcxkou8mZfgpOouqxZWRTu/G1ASp3uGvO2xP8DoRzoWIoi
-   aj57FtsS3NV4wVn6IuFEOrA3dOnZHTvhRLbkTVGBLOQ6P2AlD+S7NPGMQ
-   sXP7ei4hB0Y5ytYt6bAgnLYfWGyulQ2ZWTnbxM0SDZtbAIv2SnunmwXmy
-   ZdA6bTYl0jEkdroZG92yvx08B8m+X1tTToSUJdJLYJy4Aib+C/ToSVlYB
-   ABVhc5G4xVaRfwk/GUEHXVIk+LECr8g4o1VhcZmqAmqCClO7+oqjrHiMC
-   Gc8GwlqEvENWYbL0ahcdTUWuef5EGJ+1kEbaC63gwB4wY/ahTEko+Rh+V
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2348182"
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="2348182"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 05:01:44 -0800
+  bh=K6UtEVBR6uRkR+4SVn/AX4Wfv7U6gUrkLF6U4slDXBs=;
+  b=ceYp5PZ6isEufS0m9uMRRoq7B+AMFlaAdQvrBmJk5EoP5jWsfu0BjK0Z
+   Rml4X9Z6Njc9GrVS1RhUuSskovju0uNGUMOEflP85j4rSCXDxgSYT+I3l
+   38HDysT/7wSynC5EhRvnJMEUoabvLFNTO5ZUBAVet9NEAco2ZrSR8OXZ+
+   bIUqxd8G/h2qB+O4shAPNnAgV+A0WsxsLF9VcbGfITYFf1UNiObTWLNJh
+   t+LMtBrXZb715a+UA5WwTgCprZ75sjHKcFIx2hYDgwotRMVyeZTep902w
+   CERDGITUsawfD/3Q3C7ij4mIDN/RzhqotfWB+4zEDs+8OwqO/6VLPh3Pr
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="12782911"
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="12782911"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 09:12:05 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="3859933"
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="8486686"
 Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 16 Feb 2024 05:01:39 -0800
+  by fmviesa005.fm.intel.com with ESMTP; 16 Feb 2024 09:11:59 -0800
 Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1raxqR-0001Hi-2T;
-	Fri, 16 Feb 2024 13:01:35 +0000
-Date: Fri, 16 Feb 2024 21:01:31 +0800
+	id 1rb1kV-0001UC-29;
+	Fri, 16 Feb 2024 17:11:48 +0000
+Date: Sat, 17 Feb 2024 01:11:05 +0800
 From: kernel test robot <lkp@intel.com>
 To: Mario Limonciello <mario.limonciello@amd.com>,
 	Daniel Vetter <daniel@ffwll.ch>,
@@ -80,7 +80,7 @@ Cc: Paul Gazzillo <paul@pgazz.com>,
 	Mark Pearson <mpearson-lenovo@squebb.ca>,
 	Mario Limonciello <mario.limonciello@amd.com>
 Subject: Re: [PATCH v6 1/5] drm: Stop using `select ACPI_VIDEO` in all drivers
-Message-ID: <202402162046.Jr7HgB8P-lkp@intel.com>
+Message-ID: <202402170047.miJMtqIc-lkp@intel.com>
 References: <20240214215756.6530-2-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -106,116 +106,116 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/drm-Sto
 base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
 patch link:    https://lore.kernel.org/r/20240214215756.6530-2-mario.limonciello%40amd.com
 patch subject: [PATCH v6 1/5] drm: Stop using `select ACPI_VIDEO` in all drivers
-config: alpha-kismet-CONFIG_FB_BACKLIGHT-CONFIG_FB_RADEON-0-0 (https://download.01.org/0day-ci/archive/20240216/202402162046.Jr7HgB8P-lkp@intel.com/config)
-reproduce: (https://download.01.org/0day-ci/archive/20240216/202402162046.Jr7HgB8P-lkp@intel.com/reproduce)
+config: alpha-kismet-CONFIG_FB_BACKLIGHT-CONFIG_FB_RIVA-0-0 (https://download.01.org/0day-ci/archive/20240217/202402170047.miJMtqIc-lkp@intel.com/config)
+reproduce: (https://download.01.org/0day-ci/archive/20240217/202402170047.miJMtqIc-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402162046.Jr7HgB8P-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402170047.miJMtqIc-lkp@intel.com/
 
 kismet warnings: (new ones prefixed by >>)
->> kismet: WARNING: unmet direct dependencies detected for FB_BACKLIGHT when selected by FB_RADEON
-   .config:171:warning: symbol value 'n' invalid for PANEL_LCD_PIN_E
-   .config:253:warning: symbol value 'n' invalid for SATA_MOBILE_LPM_POLICY
-   .config:358:warning: symbol value 'n' invalid for PSTORE_BLK_MAX_REASON
-   .config:438:warning: symbol value 'n' invalid for KFENCE_SAMPLE_INTERVAL
-   .config:623:warning: symbol value 'n' invalid for DRM_XE_JOB_TIMEOUT_MIN
-   .config:662:warning: symbol value 'n' invalid for CRYPTO_DEV_QCE_SW_MAX_LEN
-   .config:677:warning: symbol value 'n' invalid for AIC79XX_DEBUG_MASK
-   .config:773:warning: symbol value 'n' invalid for PANEL_LCD_CHARSET
-   .config:804:warning: symbol value 'n' invalid for SND_AC97_POWER_SAVE_DEFAULT
-   .config:870:warning: symbol value 'n' invalid for MAGIC_SYSRQ_DEFAULT_ENABLE
-   .config:891:warning: symbol value 'n' invalid for DRM_I915_MAX_REQUEST_BUSYWAIT
-   .config:918:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MIN
-   .config:928:warning: symbol value 'n' invalid for NET_EMATCH_STACK
-   .config:930:warning: symbol value 'n' invalid for VMCP_CMA_SIZE
-   .config:935:warning: symbol value 'n' invalid for SND_AT73C213_TARGET_BITRATE
-   .config:1064:warning: symbol value 'n' invalid for AIC79XX_CMDS_PER_DEVICE
-   .config:1162:warning: symbol value 'n' invalid for RCU_CPU_STALL_TIMEOUT
-   .config:1182:warning: symbol value 'n' invalid for PANEL_LCD_PIN_SDA
-   .config:1190:warning: symbol value 'n' invalid for MTDRAM_ERASE_SIZE
-   .config:1220:warning: symbol value 'n' invalid for AIC79XX_RESET_DELAY_MS
-   .config:1312:warning: symbol value 'n' invalid for SERIAL_UARTLITE_NR_UARTS
-   .config:1493:warning: symbol value 'n' invalid for LEGACY_PTY_COUNT
-   .config:1636:warning: symbol value 'n' invalid for AIC7XXX_RESET_DELAY_MS
-   .config:1637:warning: symbol value 'n' invalid for WATCHDOG_OPEN_TIMEOUT
-   .config:1782:warning: symbol value 'n' invalid for IBM_EMAC_POLL_WEIGHT
-   .config:1788:warning: symbol value 'n' invalid for MTD_REDBOOT_DIRECTORY_BLOCK
-   .config:1939:warning: symbol value 'n' invalid for DRM_I915_STOP_TIMEOUT
-   .config:2157:warning: symbol value 'n' invalid for SND_HDA_PREALLOC_SIZE
-   .config:2205:warning: symbol value 'n' invalid for RCU_FANOUT_LEAF
-   .config:2353:warning: symbol value 'n' invalid for PANEL_LCD_BWIDTH
-   .config:2384:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MAX
-   .config:2400:warning: symbol value 'n' invalid for SERIAL_AR933X_NR_UARTS
-   .config:2594:warning: symbol value 'n' invalid for PANEL_PARPORT
-   .config:2634:warning: symbol value 'n' invalid for KCOV_IRQ_AREA_SIZE
-   .config:2681:warning: symbol value 'n' invalid for NOUVEAU_DEBUG_DEFAULT
-   .config:2872:warning: symbol value 'n' invalid for KCSAN_REPORT_ONCE_IN_MS
-   .config:2971:warning: symbol value 'n' invalid for KCSAN_UDELAY_INTERRUPT
-   .config:2994:warning: symbol value 'n' invalid for PANEL_LCD_PIN_BL
-   .config:3020:warning: symbol value 'n' invalid for INITRAMFS_ROOT_GID
-   .config:3048:warning: symbol value 'n' invalid for FTRACE_RECORD_RECURSION_SIZE
-   .config:3128:warning: symbol value 'n' invalid for ATM_FORE200E_TX_RETRY
-   .config:3165:warning: symbol value 'n' invalid for FB_OMAP2_DSS_MIN_FCK_PER_PCK
-   .config:3203:warning: symbol value 'n' invalid for SND_SOC_SOF_DEBUG_IPC_FLOOD_TEST_NUM
-   .config:3465:warning: symbol value 'n' invalid for PSTORE_BLK_CONSOLE_SIZE
-   .config:3493:warning: symbol value 'n' invalid for KCSAN_UDELAY_TASK
-   .config:3514:warning: symbol value 'n' invalid for MMC_BLOCK_MINORS
-   .config:3518:warning: symbol value 'n' invalid for INET_TABLE_PERTURB_ORDER
-   .config:3561:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_SYNC
-   .config:3619:warning: symbol value 'n' invalid for BOOKE_WDT_DEFAULT_TIMEOUT
-   .config:3682:warning: symbol value 'n' invalid for UCLAMP_BUCKETS_COUNT
-   .config:3810:warning: symbol value 'n' invalid for IP_VS_MH_TAB_INDEX
-   .config:3844:warning: symbol value 'n' invalid for SERIAL_MCF_BAUDRATE
-   .config:3914:warning: symbol value 'n' invalid for DE2104X_DSL
-   .config:3931:warning: symbol value 'n' invalid for BLK_DEV_RAM_COUNT
-   .config:4194:warning: symbol value 'n' invalid for IP_VS_SH_TAB_BITS
-   .config:4224:warning: symbol value 'n' invalid for STACK_MAX_DEFAULT_SIZE_MB
-   .config:4276:warning: symbol value 'n' invalid for INPUT_MOUSEDEV_SCREEN_X
-   .config:4306:warning: symbol value 'n' invalid for PANEL_LCD_PIN_RW
-   .config:4349:warning: symbol value 'n' invalid for USBIP_VHCI_HC_PORTS
-   .config:4393:warning: symbol value 'n' invalid for RIONET_RX_SIZE
-   .config:4668:warning: symbol value 'n' invalid for RADIO_TYPHOON_PORT
-   .config:4705:warning: symbol value 'n' invalid for IBM_EMAC_TXB
-   .config:4799:warning: symbol value 'n' invalid for SERIAL_TXX9_NR_UARTS
-   .config:4937:warning: symbol value 'n' invalid for SND_MAX_CARDS
-   .config:5092:warning: symbol value 'n' invalid for ARCH_MMAP_RND_BITS
-   .config:5174:warning: symbol value 'n' invalid for DRM_I915_FENCE_TIMEOUT
-   .config:5180:warning: symbol value 'n' invalid for RCU_BOOST_DELAY
-   .config:5196:warning: symbol value 'n' invalid for TTY_PRINTK_LEVEL
-   .config:5355:warning: symbol value 'n' invalid for MIPS_EJTAG_FDC_KGDB_CHAN
-   .config:5368:warning: symbol value 'n' invalid for XEN_MEMORY_HOTPLUG_LIMIT
-   .config:5453:warning: symbol value 'n' invalid for KDB_DEFAULT_ENABLE
-   .config:5471:warning: symbol value 'n' invalid for SERIAL_ALTERA_UART_MAXPORTS
-   .config:5680:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MAX
-   .config:5681:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_EHV_BC_HANDLE
-   .config:5733:warning: symbol value 'n' invalid for PANEL_LCD_HWIDTH
-   .config:5766:warning: symbol value 'n' invalid for LOCKDEP_CHAINS_BITS
-   .config:5861:warning: symbol value 'n' invalid for DRM_I915_HEARTBEAT_INTERVAL
-   .config:5867:warning: symbol value 'n' invalid for KCSAN_SKIP_WATCH
-   .config:5891:warning: symbol value 'n' invalid for PSTORE_BLK_KMSG_SIZE
-   .config:6093:warning: symbol value 'n' invalid for SERIAL_8250_RUNTIME_UARTS
-   .config:6189:warning: symbol value 'n' invalid for ARCH_MMAP_RND_COMPAT_BITS
-   .config:6272:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_MAX_TAGS
-   .config:6289:warning: symbol value 'n' invalid for CRYPTO_DEV_FSL_CAAM_INTC_TIME_THLD
-   .config:6359:warning: symbol value 'n' invalid for RADIO_TRUST_PORT
-   .config:6399:warning: symbol value 'n' invalid for MTD_UBI_WL_THRESHOLD
-   .config:6420:warning: symbol value 'n' invalid for RIONET_TX_SIZE
-   .config:6526:warning: symbol value 'n' invalid for SERIAL_SH_SCI_NR_UARTS
-   .config:6547:warning: symbol value 'n' invalid for VIDEO_VIVID_MAX_DEVS
-   .config:6739:warning: symbol value 'n' invalid for CMA_SIZE_PERCENTAGE
-   .config:6801:warning: symbol value 'n' invalid for OMAP2_DSS_MIN_FCK_PER_PCK
-   .config:6887:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MIN
-   .config:7085:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_MAX_TAGS
-   .config:7089:warning: symbol value 'n' invalid for DVB_MAX_ADAPTERS
-   .config:7106:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
-   .config:7367:warning: symbol value 'n' invalid for SERIAL_ARC_NR_PORTS
-   .config:7411:warning: symbol value 'n' invalid for KDB_CONTINUE_CATASTROPHIC
-   .config:7483:warning: symbol value 'n' invalid for IBM_EMAC_RXB
-   .config:7545:warning: symbol value 'n' invalid for SCSI_MPT3SAS_MAX_SGE
-   .config:7675:warning: symbol value 'n' invalid for PSTORE_DEFAULT_KMSG_BYTES
-   .config:7720:warning: symbol value 'n' invalid for RCU_FANOUT
+>> kismet: WARNING: unmet direct dependencies detected for FB_BACKLIGHT when selected by FB_RIVA
+   .config:69:warning: symbol value 'n' invalid for FAT_DEFAULT_CODEPAGE
+   .config:240:warning: symbol value 'n' invalid for SATA_MOBILE_LPM_POLICY
+   .config:307:warning: symbol value 'n' invalid for XEN_MEMORY_HOTPLUG_LIMIT
+   .config:328:warning: symbol value 'n' invalid for PSTORE_BLK_MAX_REASON
+   .config:359:warning: symbol value 'n' invalid for AIC79XX_DEBUG_MASK
+   .config:429:warning: symbol value 'n' invalid for KFENCE_SAMPLE_INTERVAL
+   .config:612:warning: symbol value 'n' invalid for CRYPTO_DEV_QCE_SW_MAX_LEN
+   .config:613:warning: symbol value 'n' invalid for DRM_XE_JOB_TIMEOUT_MIN
+   .config:702:warning: symbol value 'n' invalid for VGA_ARB_MAX_GPUS
+   .config:715:warning: symbol value 'n' invalid for PANEL_LCD_CHARSET
+   .config:789:warning: symbol value 'n' invalid for SND_AC97_POWER_SAVE_DEFAULT
+   .config:793:warning: symbol value 'n' invalid for INPUT_MOUSEDEV_SCREEN_Y
+   .config:811:warning: symbol value 'n' invalid for AIC79XX_CMDS_PER_DEVICE
+   .config:830:warning: symbol value 'n' invalid for DRM_I915_MAX_REQUEST_BUSYWAIT
+   .config:855:warning: symbol value 'n' invalid for SND_AT73C213_TARGET_BITRATE
+   .config:877:warning: symbol value 'n' invalid for PANEL_LCD_PIN_SDA
+   .config:893:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MIN
+   .config:901:warning: symbol value 'n' invalid for NET_EMATCH_STACK
+   .config:903:warning: symbol value 'n' invalid for VMCP_CMA_SIZE
+   .config:1095:warning: symbol value 'n' invalid for USB_GADGET_STORAGE_NUM_BUFFERS
+   .config:1130:warning: symbol value 'n' invalid for RCU_CPU_STALL_TIMEOUT
+   .config:1159:warning: symbol value 'n' invalid for MTDRAM_ERASE_SIZE
+   .config:1238:warning: symbol value 'n' invalid for SERIAL_UARTLITE_NR_UARTS
+   .config:1397:warning: symbol value 'n' invalid for LEGACY_PTY_COUNT
+   .config:1524:warning: symbol value 'n' invalid for PANEL_LCD_PIN_E
+   .config:1528:warning: symbol value 'n' invalid for AIC7XXX_RESET_DELAY_MS
+   .config:1726:warning: symbol value 'n' invalid for IBM_EMAC_POLL_WEIGHT
+   .config:1763:warning: symbol value 'n' invalid for SCSI_MESH_RESET_DELAY_MS
+   .config:1817:warning: symbol value 'n' invalid for DRM_I915_STOP_TIMEOUT
+   .config:2048:warning: symbol value 'n' invalid for KCOV_IRQ_AREA_SIZE
+   .config:2143:warning: symbol value 'n' invalid for RCU_FANOUT_LEAF
+   .config:2237:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MAX
+   .config:2290:warning: symbol value 'n' invalid for PANEL_LCD_BWIDTH
+   .config:2523:warning: symbol value 'n' invalid for PANEL_PARPORT
+   .config:2568:warning: symbol value 'n' invalid for SND_SOC_SOF_DEBUG_IPC_FLOOD_TEST_NUM
+   .config:2606:warning: symbol value 'n' invalid for NOUVEAU_DEBUG_DEFAULT
+   .config:2707:warning: symbol value 'n' invalid for AIC79XX_RESET_DELAY_MS
+   .config:2779:warning: symbol value 'n' invalid for SERIAL_ALTERA_UART_BAUDRATE
+   .config:2791:warning: symbol value 'n' invalid for KCSAN_REPORT_ONCE_IN_MS
+   .config:2888:warning: symbol value 'n' invalid for KCSAN_UDELAY_INTERRUPT
+   .config:2910:warning: symbol value 'n' invalid for PANEL_LCD_PIN_BL
+   .config:2934:warning: symbol value 'n' invalid for INITRAMFS_ROOT_GID
+   .config:2968:warning: symbol value 'n' invalid for DUMMY_CONSOLE_ROWS
+   .config:3008:warning: symbol value 'n' invalid for PSTORE_BLK_CONSOLE_SIZE
+   .config:3038:warning: symbol value 'n' invalid for ATM_FORE200E_TX_RETRY
+   .config:3078:warning: symbol value 'n' invalid for FB_OMAP2_DSS_MIN_FCK_PER_PCK
+   .config:3203:warning: symbol value 'n' invalid for BOOKE_WDT_DEFAULT_TIMEOUT
+   .config:3248:warning: symbol value 'n' invalid for MTD_REDBOOT_DIRECTORY_BLOCK
+   .config:3294:warning: symbol value 'n' invalid for KCSAN_UDELAY_TASK
+   .config:3407:warning: symbol value 'n' invalid for MMC_BLOCK_MINORS
+   .config:3455:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_SYNC
+   .config:3570:warning: symbol value 'n' invalid for UCLAMP_BUCKETS_COUNT
+   .config:3636:warning: symbol value 'n' invalid for SERIAL_MCF_BAUDRATE
+   .config:3708:warning: symbol value 'n' invalid for DE2104X_DSL
+   .config:3721:warning: symbol value 'n' invalid for BLK_DEV_RAM_COUNT
+   .config:3787:warning: symbol value 'n' invalid for STACK_MAX_DEFAULT_SIZE_MB
+   .config:3964:warning: symbol value 'n' invalid for IP_VS_SH_TAB_BITS
+   .config:4094:warning: symbol value 'n' invalid for CMA_AREAS
+   .config:4105:warning: symbol value 'n' invalid for USBIP_VHCI_HC_PORTS
+   .config:4149:warning: symbol value 'n' invalid for INPUT_MOUSEDEV_SCREEN_X
+   .config:4235:warning: symbol value 'n' invalid for FTRACE_RECORD_RECURSION_SIZE
+   .config:4264:warning: symbol value 'n' invalid for RIONET_RX_SIZE
+   .config:4416:warning: symbol value 'n' invalid for RADIO_TYPHOON_PORT
+   .config:4524:warning: symbol value 'n' invalid for SERIAL_TXX9_NR_UARTS
+   .config:4565:warning: symbol value 'n' invalid for IBM_EMAC_TXB
+   .config:4948:warning: symbol value 'n' invalid for ARCH_MMAP_RND_BITS
+   .config:4975:warning: symbol value 'n' invalid for IP_VS_MH_TAB_INDEX
+   .config:5029:warning: symbol value 'n' invalid for DRM_I915_FENCE_TIMEOUT
+   .config:5051:warning: symbol value 'n' invalid for TTY_PRINTK_LEVEL
+   .config:5209:warning: symbol value 'n' invalid for MIPS_EJTAG_FDC_KGDB_CHAN
+   .config:5298:warning: symbol value 'n' invalid for KDB_DEFAULT_ENABLE
+   .config:5316:warning: symbol value 'n' invalid for SERIAL_ALTERA_UART_MAXPORTS
+   .config:5323:warning: symbol value 'n' invalid for PANEL_PROFILE
+   .config:5384:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_EHV_BC_HANDLE
+   .config:5424:warning: symbol value 'n' invalid for PANEL_LCD_PIN_RW
+   .config:5570:warning: symbol value 'n' invalid for CRYPTO_DEV_FSL_CAAM_INTC_TIME_THLD
+   .config:5574:warning: symbol value 'n' invalid for PANEL_LCD_HWIDTH
+   .config:5605:warning: symbol value 'n' invalid for LOCKDEP_CHAINS_BITS
+   .config:5694:warning: symbol value 'n' invalid for DRM_I915_HEARTBEAT_INTERVAL
+   .config:5702:warning: symbol value 'n' invalid for KCSAN_SKIP_WATCH
+   .config:5724:warning: symbol value 'n' invalid for PSTORE_BLK_KMSG_SIZE
+   .config:5929:warning: symbol value 'n' invalid for SERIAL_8250_RUNTIME_UARTS
+   .config:6021:warning: symbol value 'n' invalid for ARCH_MMAP_RND_COMPAT_BITS
+   .config:6127:warning: symbol value 'n' invalid for RCU_BOOST_DELAY
+   .config:6186:warning: symbol value 'n' invalid for RADIO_TRUST_PORT
+   .config:6198:warning: symbol value 'n' invalid for SERIAL_SH_SCI_NR_UARTS
+   .config:6321:warning: symbol value 'n' invalid for VERBOSE_MCHECK_ON
+   .config:6560:warning: symbol value 'n' invalid for CMA_SIZE_PERCENTAGE
+   .config:6580:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MAX
+   .config:6708:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MIN
+   .config:6757:warning: symbol value 'n' invalid for DVB_MAX_ADAPTERS
+   .config:6760:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_MAX_TAGS
+   .config:6777:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
+   .config:7048:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_MAX_TAGS
+   .config:7062:warning: symbol value 'n' invalid for ZSMALLOC_CHAIN_SIZE
+   .config:7140:warning: symbol value 'n' invalid for IBM_EMAC_RXB
+   .config:7148:warning: symbol value 'n' invalid for MTD_UBI_WL_THRESHOLD
+   .config:7167:warning: symbol value 'n' invalid for RIONET_TX_SIZE
+   .config:7172:warning: symbol value 'n' invalid for SERIAL_ARC_NR_PORTS
+   .config:7266:warning: symbol value 'n' invalid for LOCKDEP_BITS
 
 -- 
 0-DAY CI Kernel Test Service
