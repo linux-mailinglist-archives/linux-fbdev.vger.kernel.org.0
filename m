@@ -1,129 +1,127 @@
-Return-Path: <linux-fbdev+bounces-1185-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1188-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A7385C032
-	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Feb 2024 16:41:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0BA85C1D4
+	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Feb 2024 17:54:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7C81C21B9F
-	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Feb 2024 15:41:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CCA31C23E5D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Feb 2024 16:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A883F76058;
-	Tue, 20 Feb 2024 15:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BFD76C85;
+	Tue, 20 Feb 2024 16:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="u8AruOfv"
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="FUQQWI2G"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6A876033
-	for <linux-fbdev@vger.kernel.org>; Tue, 20 Feb 2024 15:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C513876419;
+	Tue, 20 Feb 2024 16:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708443711; cv=none; b=i+fEMp6Mgco63kZpY/ZSeCsRQ+uo0tfu/oDB+2p75vPNgrrX6uyw5ufoys70ZEEpipBrYsyHKfKUr95xL2R2/iAxbx+MeQH8OFoOxwi93CFGP0Ug5SG76lZwiOa7Bn5iSfA8toHwfKXns1wzkBSBzDQocQ7TbDiVj2niYicClfQ=
+	t=1708448028; cv=none; b=fLQ/HUcB/j3XqthXNnX71KD+Hg5EAvA1VIW8iNqH5P68dJuh+/7obwiUhZJLpTT3fw01F2Xjt3M3KS5wcpP/vxC9Uvtdectvp8PgGtO0z/In9KzgUBpD2Wq9TgZWlvQ1HrlJxtbpXfGBw0NWKlSBQ4GzFAC/adCJodK2Ben8hzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708443711; c=relaxed/simple;
-	bh=T78uSbL/6vBHmFMUx533JSz7i0LSC2jc2pTuwaqbKDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ncL39iQJHIp8Y+/w3LJZwPs5vHuKYe6A7NajQAThhJztV403kDN9kRvj3h1Hd9m/8IFXrufKiLS+9a8xHxdde/6vuc6hnwGq869gMnaPahoyWS64dpx1mYL5nZB2dB/PdynEDkwHWXK7qR5Cdrvsr/pW0Bo30DaAOpy7x4sK1R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=u8AruOfv; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-41272d31489so749055e9.1
-        for <linux-fbdev@vger.kernel.org>; Tue, 20 Feb 2024 07:41:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708443708; x=1709048508; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+cFEpv5w2TPD8QTkYd4ABg1XTB4+ZdG1BlQCAicZJSg=;
-        b=u8AruOfvTwBPWA7XghfXJbpi2X46ibm7crtvQrHa4h8DFP4DXhsFAxfWzjxEdukdhd
-         56u8LAD24ALHAIdlo0lDhxLnLc2P6dF8uZbs5ZJfC6uoVBeTmjf226sAjJsCwrv2A+14
-         5w8DG0SUA455m6WWlTElUuJMVprKkb5CbuV5Fo4byZZSorI/De+kNWXvuNSjKxhmjgeB
-         7Sjr5HB1rVlavn/GxgFklk4qSnns8NJ0w2irmN4W6IqShxtAmgAnPDMaKkTHfYIAwCu/
-         vGa70WLJFVo9beWRtBXvmdJ0knZlOtH84JB9LnnmhOxMgZexT+UhLI6VHFvcva0F/YC/
-         rlzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708443708; x=1709048508;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+cFEpv5w2TPD8QTkYd4ABg1XTB4+ZdG1BlQCAicZJSg=;
-        b=GSIrDg7uEg+RMppJcDW63h10CoJIgd0JY+5FOHKSvdNg/HwrHuoNi/PbmlpGTDGnv9
-         fvQ/83MYozP1w4Rh3o1zi1SJqJkv3CSp7DeOrt4K6jjoBDL12xddxDQv8OswKv3zDJNn
-         j7bEZ/Hv2YuOcbW//eSeh7QM1PypXVUBcWdJ5VYQl2oiB04+fqAEjPHEyFYCWnfmLyls
-         W8T4xxVbhOG+o/tY66eiSRLBnTS/vLO/F3aTIWu16peBHPOXLWwjgbLMrdP948XfUKsU
-         /G/Qh5xkMRK7pxWYSqNWb9haK7elq34KiAxJ4RU8SJSPGz5+WlxEYtiMlHJCnneZEC54
-         20ig==
-X-Forwarded-Encrypted: i=1; AJvYcCVbg/4nsTHytOKVMGjpSwJW9VqaV26uqk/epV0crSudJqjTVBqnAXcyHW1ToZfowPQScW/xPj0Kz+89CGwHGlOLpLuovJpxq0jVzjI=
-X-Gm-Message-State: AOJu0YyESVqy7WkRUCdTGkngZVgw/v+Snjs9GOW2kzBFknE/W9p5RzPt
-	ktqvGqokUATSplMcQxi4zgAOOwuVO/IyBvp4dYMUyT3LtxHD4Xwl02ktwbpjfK4=
-X-Google-Smtp-Source: AGHT+IFI6EilanMRwVS5/UaPI4MAn95lhdZbLUWfuY0Pbto/1QNDPs2PRzsV8tlz9b+wn0au2Xix+A==
-X-Received: by 2002:adf:f2c3:0:b0:33c:deed:6745 with SMTP id d3-20020adff2c3000000b0033cdeed6745mr11302397wrp.13.1708443708405;
-        Tue, 20 Feb 2024 07:41:48 -0800 (PST)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id jl22-20020a05600c6a9600b0041069adbd87sm14775650wmb.21.2024.02.20.07.41.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 07:41:48 -0800 (PST)
-Date: Tue, 20 Feb 2024 15:41:46 +0000
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org, Lee Jones <lee@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"G.Shark Jeong" <gshark.jeong@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maximilian Weigand <mweigand@mweigand.net>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/4] backlight: lm3630a: Initialize backlight_properties
- on init
-Message-ID: <20240220154146.GH6716@aspen.lan>
-References: <20240220-lm3630a-fixups-v1-0-9ca62f7e4a33@z3ntu.xyz>
- <20240220-lm3630a-fixups-v1-1-9ca62f7e4a33@z3ntu.xyz>
- <738dcf0e-57fe-4123-af83-be91d8166420@linaro.org>
+	s=arc-20240116; t=1708448028; c=relaxed/simple;
+	bh=z4JWuWnGXxtj1e13X8/078DUzc51WgJgv/eBSFm2h68=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nLT26YcJ2MWBOODrFZAd6gTcJJVo93sNJMloIy4lBASzUDaO0t1v29SRo1/haWktIw5h57OkA6vTe+aVQn8c35vmy5Pxb2XGH4o6mIV5qYHJVNng1TlSzH11jVTBxFU+Fw0Ir8VBDeDiU6gEnDHWHaiP/qNwxoxGoG/0RiUkx7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=FUQQWI2G; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1708447414; bh=z4JWuWnGXxtj1e13X8/078DUzc51WgJgv/eBSFm2h68=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FUQQWI2GUEfDPYh40q++n2IQFf5euFWbZYd/sMkhbd4YMtnzo+/j3Tv2v8HPdgYeB
+	 pOvSFLFvC6DOlZhTl26ZZi+xGX1fMErCGsPfrzxU1U50TvZi96MmlDWOlUyoVL+JfC
+	 uRCRDnSxr6Mzj9O/IFyIi2arF2v2wX92NXY3+6jU=
+From: Luca Weiss <luca@z3ntu.xyz>
+To: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+ Helge Deller <deller@gmx.de>, Andrew Morton <akpm@linux-foundation.org>,
+ "G.Shark Jeong" <gshark.jeong@gmail.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Maximilian Weigand <mweigand@mweigand.net>, dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+Subject:
+ Re: [PATCH 3/4] backlight: lm3630a: Use backlight_get_brightness helper in
+ update_status
+Date: Tue, 20 Feb 2024 17:43:32 +0100
+Message-ID: <5027630.31r3eYUQgx@g550jk>
+In-Reply-To: <20240220141107.GF6716@aspen.lan>
+References:
+ <20240220-lm3630a-fixups-v1-0-9ca62f7e4a33@z3ntu.xyz>
+ <20240220-lm3630a-fixups-v1-3-9ca62f7e4a33@z3ntu.xyz>
+ <20240220141107.GF6716@aspen.lan>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <738dcf0e-57fe-4123-af83-be91d8166420@linaro.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Feb 20, 2024 at 03:07:54PM +0100, Konrad Dybcio wrote:
-> On 20.02.2024 00:11, Luca Weiss wrote:
-> > The backlight_properties struct should be initialized to zero before
-> > using, otherwise there will be some random values in the struct.
+On Dienstag, 20. Februar 2024 15:11:07 CET Daniel Thompson wrote:
+> On Tue, Feb 20, 2024 at 12:11:21AM +0100, Luca Weiss wrote:
+> > As per documentation "drivers are expected to use this function in their
+> > update_status() operation to get the brightness value.".
 > >
-> > Fixes: 0c2a665a648e ("backlight: add Backlight driver for lm3630 chip")
+> > With this we can also drop the manual backlight_is_blank() handling
+> > since backlight_get_brightness() is already handling this correctly.
+> >
 > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> 
+> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+> 
+> However...
+> 
 > > ---
-> >  drivers/video/backlight/lm3630a_bl.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
-> > index a3412c936ca2..8e275275b808 100644
-> > --- a/drivers/video/backlight/lm3630a_bl.c
-> > +++ b/drivers/video/backlight/lm3630a_bl.c
-> > @@ -343,6 +343,7 @@ static int lm3630a_backlight_register(struct lm3630a_chip *pchip)
-> >  	struct backlight_properties props;
-> >  	const char *label;
-> >
-> > +	memset(&props, 0, sizeof(struct backlight_properties));
->
-> You can zero-initialize it instead
+> >  	/* disable sleep */
+> > @@ -201,9 +202,9 @@ static int lm3630a_bank_a_update_status(struct backlight_device *bl)
+> >  		goto out_i2c_err;
+> >  	usleep_range(1000, 2000);
+> >  	/* minimum brightness is 0x04 */
+> > -	ret = lm3630a_write(pchip, REG_BRT_A, bl->props.brightness);
+> > +	ret = lm3630a_write(pchip, REG_BRT_A, brightness);
+> 
+> ... then handling of the minimum brightness looks weird in this driver.
+> 
+> The range of the backlight is 0..max_brightness. Sadly the drivers
+> are inconsistant regarding whether zero means off or just minimum,
+> however three certainly isn't supposed to mean off! In other words the
+> offsetting should be handled by driver rather than hoping userspace has
+> some magic LM3630A mode.
 
-I don't object to either approach but memset() dominates backlight
-implementations currently.
+I could also try and fix that..
+
+1. Treat 1..4 as 4, so have backlight on at that minimum level? Probably
+wouldn't be noticable that brightness 1=2=3=4. And the backlight will be
+on compared to off as it is now.
+
+2. Decrease max_brightness by 4 values, so probably 0..251 and shift the
+values up in the driver so we get 4..255?
+
+Or would you have some other idea here?
+
+Regards
+Luca
+
+> 
+> You didn't introduce this so this patch still has my R-b ...
+> 
+> 
+> Daniel.
+> 
 
 
-Daniel.
+
+
 
