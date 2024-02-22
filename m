@@ -1,122 +1,129 @@
-Return-Path: <linux-fbdev+bounces-1214-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1216-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9873A85F681
-	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Feb 2024 12:08:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B368285FE03
+	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Feb 2024 17:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 211B2B228BE
-	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Feb 2024 11:08:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E55F61C21886
+	for <lists+linux-fbdev@lfdr.de>; Thu, 22 Feb 2024 16:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC44E3FB1F;
-	Thu, 22 Feb 2024 11:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FDA152DE9;
+	Thu, 22 Feb 2024 16:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVhjiO9/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="imrqg2cr"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FD7182D2;
-	Thu, 22 Feb 2024 11:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCC1130E32;
+	Thu, 22 Feb 2024 16:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708600094; cv=none; b=EKKbQkyYha2EmFvKUd/LsbTq5Re8y/2T0XLGMyvebHO65p7IPGEKp9xBx6bpva6EXT8fko4jGHmd+2+LIjN7AcjY665epzWN2qAwdet89CDb2R2mlAbK4ng7h2aamsejtP6EYh8M13kZyXSKBbF85zYy4M7vX2h1Qsc4bQU5q88=
+	t=1708619197; cv=none; b=og5/H4hsutgl1ZoJ2ShV4reqhScAeKrxuBzZSNQpfbcuI17lsqGFfClr/wwGE1qacPoUz/2mxM469TvJyl1AmbG0X1l43H8MsCwwmme6Ex/JaowaxpIhbLjbMRikyCSX68qGux5ca4TT2JgIIl/UEPB6D6oz+ODjs1zaB2RR1Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708600094; c=relaxed/simple;
-	bh=3o+yjEOmzEAHMWmAs/2aQHBmCyuuFhKadyiGa73qocM=;
+	s=arc-20240116; t=1708619197; c=relaxed/simple;
+	bh=rVeMAZ7c6DaGuMXw0XF4xBKuLLV2gnSN2mixhtkvwIM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lWR+bF8DB3JusLxNv7bMYpRdK2DbttHFjpOiaJctdQQBGZb+17Z2ovb5a3KMYGb1JQ5A/CH50YDYhm8xnIYNJBGaSwYSGLcL6IHRSomhPttnAjh4/YLFWuupS5ApHS1c5SLvg1riOCe21Z4E+uLn5havDBOXDMKQd+ygDuDGud4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVhjiO9/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DFEC433C7;
-	Thu, 22 Feb 2024 11:08:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708600094;
-	bh=3o+yjEOmzEAHMWmAs/2aQHBmCyuuFhKadyiGa73qocM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iVhjiO9/ryG0HtP5+vJ2YWmbhCXPcsGGNk7emS65u1Cv4J0/9Q2lHzIoUGx2F6l2n
-	 lHYnhMONnVOjH4wWbbvfkKqWvI7P4g+PVJo1FkaagQP2gWr3n5PdUvOAYHng85FLno
-	 IHz2X9htzZGEBTIQo9QF0WImEF1Dzt7AZ7Bx+sVExZ9pjwobF6m8H4lvHa3gGtRCDj
-	 AmQIAttPkrzst/fFIC93ZnH2flF/7F3a63jaYqBlb7+l1qeteVLDQdeRlU1siKLlaS
-	 KRlVInkxvJ/u8bJ/1Ty9IhPZ7Pbypd+ov9tAGUoOWoK4bHdHFNxy42DMPQT0nL6bC1
-	 HtgZdqP/vcd0A==
-Date: Thu, 22 Feb 2024 12:08:11 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Daniel van Vugt <daniel.van.vugt@canonical.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>, Daniel Vetter <daniel@ffwll.ch>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Jani Nikula <jani.nikula@intel.com>, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] fbcon: Defer console takeover for splash screens
- to first switch
-Message-ID: <rwifwv74dhd5dipnoi2txnecsydvfnrbog2ntk76hplf3tpdzt@5d4goejupypn>
-References: <bb8d631d-9f6c-48e8-a504-8931ee21014d@amd.com>
- <20240219090239.22568-1-daniel.van.vugt@canonical.com>
- <20240219090239.22568-2-daniel.van.vugt@canonical.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BsGCwjoeRKsjERL6VYs2Et2YQfV43Bo4l1DWIpDpy2saP9ybvA9GzKzeQHA4ggRb7lz3dphIiMhfIBnijo+bzm5cuV6gyU38ciWRne+GaWbJKWdE1W+ogufd19QRtbc8HXk1PfpzYhmo2wz/f84c19hFrwy3VHqSk5re846MJ70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=imrqg2cr; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708619195; x=1740155195;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rVeMAZ7c6DaGuMXw0XF4xBKuLLV2gnSN2mixhtkvwIM=;
+  b=imrqg2cr7zi1GDxoNCQGmq045BG4DaKlNTxxfphIyNdFWkWgrtal8iJ3
+   74hQ+VlJ1IbsU7CKMqTakqviqZemLYXralX5n+AO2FG+2aPkTVE1kv2cs
+   ug2FLjmbme9O3TZowASm+rjiJwOgktz0surovfH4AO3EOx8S9SC6LQhFf
+   CPfUrWozKJrHTOa51g/DiXsXHEr+N3A8cO/T5Hy3+7AoFGCi7z+sBgYQT
+   5TdFpofPjl5/ZM+TFbA27e828ubWIEW3jtWFqhMxMKzqGqKcB+rhC1oQi
+   JKJtb4rpHN23dT/SMRkV6ACMXe7420+gEMVe503cGCCdvHFs6K/wpuSRV
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="20406864"
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="20406864"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 08:26:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
+   d="scan'208";a="5857653"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 22 Feb 2024 08:26:22 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rdBtn-0006U6-33;
+	Thu, 22 Feb 2024 16:26:16 +0000
+Date: Fri, 23 Feb 2024 00:25:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, arnd@arndb.de,
+	javierm@redhat.com, deller@gmx.de, suijingfeng@loongson.cn
+Cc: oe-kbuild-all@lists.linux.dev, linux-arch@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-sh@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>
+Subject: Re: [PATCH 3/3] arch: Rename fbdev header and source files
+Message-ID: <202402230023.xa2jjwui-lkp@intel.com>
+References: <20240221161431.8245-4-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pvd2vhdd32pzrrsm"
-Content-Disposition: inline
-In-Reply-To: <20240219090239.22568-2-daniel.van.vugt@canonical.com>
-
-
---pvd2vhdd32pzrrsm
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240221161431.8245-4-tzimmermann@suse.de>
 
-Hi Daniel,
+Hi Thomas,
 
-On Mon, Feb 19, 2024 at 05:02:34PM +0800, Daniel van Vugt wrote:
-> Until now, deferred console takeover only meant defer until there is
-> output. But that risks stepping on the toes of userspace splash screens
-> as console messages may appear before the splash screen.
->=20
-> This becomes more likely the later the splash screen starts, but even
-> systems whose splash exists in initrd may not be not immune because they
-> still rely on racing against all possible kernel messages that might
-> trigger the fbcon takeover. And those kernel messages are hardware
-> dependent so what boots silently on one machine may not be so quiet on
-> the next. We also want to shield users from seeing warnings about their
-> hardware/firmware that they don't always have the power to fix themselves,
-> and may not be deemed worthy of fixing by the vendor.
->=20
-> So now we check the command line for the expectation of userspace splash
-> (CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER_CONDITION) and if present
-> then defer fbcon's takeover until the first console switch. In the case
-> of Plymouth, its value would typically be "splash". This keeps the boot
-> experience clean and silent so long as the command line requests so.
->=20
-> Closes: https://bugs.launchpad.net/bugs/1970069
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> Signed-off-by: Daniel van Vugt <daniel.van.vugt@canonical.com>
+kernel test robot noticed the following build errors:
 
-It's not clear to me why we should want to make it an option? If one
-strategy is better than the other, and I guess the new one is if you
-consider it fixes a bug and bothered to submit it upstream, why not just
-get rid of the old one entirely?
+[auto build test ERROR on tip/x86/core]
+[also build test ERROR on deller-parisc/for-next arnd-asm-generic/master linus/master v6.8-rc5 next-20240221]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I guess my question is: why do we want the choice, and what are the
-tradeoff each strategy brings?
+url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Zimmermann/arch-Select-fbdev-helpers-with-CONFIG_VIDEO/20240222-001622
+base:   tip/x86/core
+patch link:    https://lore.kernel.org/r/20240221161431.8245-4-tzimmermann%40suse.de
+patch subject: [PATCH 3/3] arch: Rename fbdev header and source files
+config: um-randconfig-r052-20240222 (https://download.01.org/0day-ci/archive/20240223/202402230023.xa2jjwui-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240223/202402230023.xa2jjwui-lkp@intel.com/reproduce)
 
-Maxime
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402230023.xa2jjwui-lkp@intel.com/
 
---pvd2vhdd32pzrrsm
-Content-Type: application/pgp-signature; name="signature.asc"
+All errors (new ones prefixed by >>):
 
------BEGIN PGP SIGNATURE-----
+   /usr/bin/ld: drivers/video/fbdev/core/fb_io_fops.o: in function `fb_io_mmap':
+>> fb_io_fops.c:(.text+0x591): undefined reference to `pgprot_framebuffer'
+   collect2: error: ld returned 1 exit status
 
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZdcrGgAKCRDj7w1vZxhR
-xaWTAQCGNckiumaOI6zifOp2sbK3AemQ51LpaqAihgsRhuAKzgD8CyvObKZWGIBl
-E7dbvsR5McDa3GsUg5v5r9ThU+B/QA8=
-=1pEj
------END PGP SIGNATURE-----
-
---pvd2vhdd32pzrrsm--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
