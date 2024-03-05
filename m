@@ -1,99 +1,116 @@
-Return-Path: <linux-fbdev+bounces-1336-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1341-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AEF8718F9
-	for <lists+linux-fbdev@lfdr.de>; Tue,  5 Mar 2024 10:06:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D525871942
+	for <lists+linux-fbdev@lfdr.de>; Tue,  5 Mar 2024 10:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09C1A1F240E1
-	for <lists+linux-fbdev@lfdr.de>; Tue,  5 Mar 2024 09:06:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E8D11C21197
+	for <lists+linux-fbdev@lfdr.de>; Tue,  5 Mar 2024 09:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A685D548EA;
-	Tue,  5 Mar 2024 09:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BDC50263;
+	Tue,  5 Mar 2024 09:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D2bBAjaP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gt0Ahmyo"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4F6548E8
-	for <linux-fbdev@vger.kernel.org>; Tue,  5 Mar 2024 09:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61BD4DA1F;
+	Tue,  5 Mar 2024 09:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709629539; cv=none; b=o7trazrwqvMnVYcpRKf7Eyvuu0fMrR5FFxrwGyOfOY3MU6wZneVo/vJ8vkksUZr24rSXXMxIyZ2asa4/qEDRkPhCTxogYrgOguVjEavBDz7gxxnDpjf0fFwN+uIDGlzw7tcbtfzC8j84AQLIS6+iKRgXYzXZAdyG/hCHCBlhDRY=
+	t=1709630013; cv=none; b=aFEDS3gfhenmmC12tEnOsq6BLYNYWUNc4UjkV8ufxAJushPRq/r7fvfm6DNLoRzNoOctrri8uRS/9JyK1Vl6EHXi4NhJopC9pSZMDBPscoxH848DMG2XgjDeusiJA7YyPaWE7LxzWMlgytj4Ol6ASWb41dhKWNnK0CRCCi0NYf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709629539; c=relaxed/simple;
-	bh=Hy//Hzvgbunb5xsN63aD2HSruKb+IayJoR8TyJL4Oto=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CJGuQyL13JHYyIhYGa15FRiOHPU7HO8msV6vWnXZf7dABkvJN3NDjs/eNviiCpiFhoFeFc4im0KIWNzvPdwTu/x54Sbzq4OXInHeDnZM2llCujoKK3H/pE46Bqr30U5Q6F/qw9dfKLaB9FYi7gPeXPKKOuRHMeb014F2LpU8d2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D2bBAjaP; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-412e96284b9so3437895e9.3
-        for <linux-fbdev@vger.kernel.org>; Tue, 05 Mar 2024 01:05:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709629536; x=1710234336; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iVyff6pSUeH7eXbrIj/i6abg3oo4j85mjc8PEacBjjE=;
-        b=D2bBAjaPpwq7O0TT18Q8eNV6IB2CMZIv1+EPS+loG+bcNp+AFP+/XOzN7n4RTAM37z
-         lDH6LVyCvyw1V1zyfHwbz+1yHzyunjboQicGLK6hxAoXjUUJ6usER1IRNgqWUKe6K3Cj
-         DiKN6IeKlayNEOpBlDlkKEEqAZcmXwkDFclVZZmgATBioSYDtqdcyOXrXgf4l9NUrruY
-         hnu9iVH0/8YNrxntot0G//qlmzZTfM5WUDwEeR8kHMWJXY6lVPCzo0Nu2I3V4tbNxKs9
-         P/QhqJHqKDmI5fhMoG3+J4rBUyhNb37NNNoTEZ/gwIE2hu8OcKFr9vAhTanVPCSes3T9
-         vo6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709629536; x=1710234336;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iVyff6pSUeH7eXbrIj/i6abg3oo4j85mjc8PEacBjjE=;
-        b=OF5JWK40GVMC+YPrUKEzqW9/iNt6JRrhzUi70WxvIeFJYJMioBYgXdeZAVoHsVlDER
-         JWEBFANv7QpWxxWz6SOL0Z6+m82t2Xf7T737yLAcaNXTA0miZ4IFqqcgIo6ETC6aR3W8
-         1raY1k3ng1dDpG2V4HZICTL6WxLkOZvGaKUJOLrt1NRJV+4UpkRXJcs3XwOu0dXkw8u1
-         DpTC+Pt4RoEAcjjTKQxl+wtihECbS2Yuu5AFSiRnBB5mYdaGxROpH0y1DFXsBlUbAXBZ
-         Aemey724xizGlt/xpmX+pFTgvGmUfYkyqK/yDv70KE66KAtIf2ptscntQbWN6/RmXb3c
-         nmhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWb52y07aom+zY/pQ3IvZzUfg/8Fcd08b5akNqjUdzodK8LTuxyw5O+9fSiBaR5eZtaTtIwqF1UCjTLSSqe8l8zUUrgq8ARRfnJgBY=
-X-Gm-Message-State: AOJu0YxSoIoWsjOQ5Bt9H2fGzjdUnF4JFLc+1a13iwe8X2vpWMM72ngj
-	Ynbigoak6vfW032xHWlSJj6pW2wkuIXfIwHCE+rFJyW1TopF0ldDTutifnDH9N8=
-X-Google-Smtp-Source: AGHT+IE3V7x03ggowAKVgcziDcq2QmZUnrNLZGdToxQ4bVq1RxNhNEasbMMg5KQP4v70Va8u3fFnoQ==
-X-Received: by 2002:a05:600c:474c:b0:412:c9e5:b2d7 with SMTP id w12-20020a05600c474c00b00412c9e5b2d7mr7368975wmo.19.1709629536061;
-        Tue, 05 Mar 2024 01:05:36 -0800 (PST)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id ay37-20020a05600c1e2500b00412e7dde7d9sm3637450wmb.15.2024.03.05.01.05.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Mar 2024 01:05:35 -0800 (PST)
-Date: Tue, 5 Mar 2024 09:05:36 +0000
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>, dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] backlight: gpio: Simplify with dev_err_probe()
-Message-ID: <20240305090536.GJ102563@aspen.lan>
-References: <20240305-backlight-probe-v2-0-609b0cf24bde@linaro.org>
- <20240305-backlight-probe-v2-1-609b0cf24bde@linaro.org>
+	s=arc-20240116; t=1709630013; c=relaxed/simple;
+	bh=3mXN8KKW4waYOcWzjRN9oSLaIcwuzNcqm3YSkZxcpzY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qXc/ir3KYRwdSBhcvzp2fRoHyObTbrYIw7yjzC+UCn3OR4KPFPhNnjlDn3PY8qOeoxnWgNC/HqaFU7TT56b0VVGuszpnCMX9ZzcOZleX0Z5I8TsR3h41b7vHu/h2TtsEPnBVFHv9z/Qv3TTcpZ35k3qz0bX5bAMkmkDC0JCbIUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gt0Ahmyo; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709630012; x=1741166012;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=3mXN8KKW4waYOcWzjRN9oSLaIcwuzNcqm3YSkZxcpzY=;
+  b=Gt0Ahmyous3C15cJfbUaMnCp+ZskDMj2eu/chCdW81oul/E1pvRT8YcA
+   JGEN8XdOtFSSZ10smz/RARTlKHjrBh0I5BesAnFHKFrH7kmv1xq8PCywB
+   dAcj0HI04GugZhckXjK6nPygEzx14q3nSVrp7gTdSSDs0TabTmU5SNJUO
+   XjbQYIOG9KTU1ACh+L1arpx65DOVziq/NINxjQJXuYlCihcyGDxAOW25d
+   oCe2/ivPDIIZnZEKPQZiplyLqRs7OeaMJ1qyfp++oNunCys05aHkluCdi
+   m6futw8sPtVppHM7PVbiGiUoJ4tmHh6xtCkUwBsvcB7NunPIrT99IAzB8
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="4031546"
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="4031546"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 01:13:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,205,1705392000"; 
+   d="scan'208";a="46836038"
+Received: from omakhlou-mobl4.amr.corp.intel.com (HELO localhost) ([10.252.51.143])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 01:13:24 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, mpe@ellerman.id.au,
+ naresh.kamboju@linaro.org, deller@gmx.de, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org,
+ naveen.n.rao@linux.ibm.com
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ lkft-triage@lists.linaro.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH v2 2/3] macintosh/via-pmu-backlight: Include
+ <linux/backlight.h>
+In-Reply-To: <20240305090910.26742-3-tzimmermann@suse.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240305090910.26742-1-tzimmermann@suse.de>
+ <20240305090910.26742-3-tzimmermann@suse.de>
+Date: Tue, 05 Mar 2024 11:13:20 +0200
+Message-ID: <87plw92g9b.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240305-backlight-probe-v2-1-609b0cf24bde@linaro.org>
+Content-Type: text/plain
 
-On Tue, Mar 05, 2024 at 09:11:56AM +0100, Krzysztof Kozlowski wrote:
-> Common pattern of handling deferred probe can be simplified with
-> dev_err_probe().  Less code and also it prints the error value.
+On Tue, 05 Mar 2024, Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> Fix builds with CONFIG_PMAC_BACKLIGHT=y. The include statement for the
+> backlight header has recently been removed from <linux/fb.h>. Add it to
+> via-pmu-backlight.c to get the necessary symbols.
 >
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Closes: https://lore.kernel.org/dri-devel/CA+G9fYsAk5TbqqxFC2W4oHLGA0CbTHMxbeq8QayFXTU75YiueA@mail.gmail.com/
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 11b4eedfc87d ("fbdev: Do not include <linux/backlight.h> in header")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: dri-devel@lists.freedesktop.org
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
+> ---
+>  drivers/macintosh/via-pmu-backlight.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/macintosh/via-pmu-backlight.c b/drivers/macintosh/via-pmu-backlight.c
+> index c2d87e7fa85be..89450645c2305 100644
+> --- a/drivers/macintosh/via-pmu-backlight.c
+> +++ b/drivers/macintosh/via-pmu-backlight.c
+> @@ -10,6 +10,7 @@
+>  
+>  #include <asm/ptrace.h>
+>  #include <linux/adb.h>
+> +#include <linux/backlight.h>
+>  #include <linux/pmu.h>
+>  #include <asm/backlight.h>
 
-Daniel.
+-- 
+Jani Nikula, Intel
 
