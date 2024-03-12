@@ -1,49 +1,90 @@
-Return-Path: <linux-fbdev+bounces-1437-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1446-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D2487980A
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 16:48:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F4787981A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 16:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00B471C216D1
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 15:48:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFC30B2238F
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 15:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AA57D3E9;
-	Tue, 12 Mar 2024 15:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8B57D08C;
+	Tue, 12 Mar 2024 15:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="d7BkL/Cu";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ErLfoTp1";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="d7BkL/Cu";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ErLfoTp1"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1908779DCA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6A37D082
 	for <linux-fbdev@vger.kernel.org>; Tue, 12 Mar 2024 15:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710258525; cv=none; b=jmJ3SyHQGruFzN15f2SrjqxkhhVaXxbslk4ag9AJCYD+MXlE/LhmjuYxMoMuzM9T052d7B/lUIQI2akGEFRDSMZcFnyKwPi6svQsKDiggvvfUOa+EoYt3QmzS7r+ipplRGUn6ou9K9uxSsEABPHQ4ofh5sXQDHNMaDQUGyXLzSo=
+	t=1710258528; cv=none; b=D0XvHjG2LQ9D/5Sal3cq9reN08/bw+NQTGtfIx7Sx1Tedj5386dPErlbhv/w6bBg/efCC9Hxt1Im7ASjHVzo228SeElaLZfuyCCN2XULDt5yOxzctY6LIAYYgGsjsjBK+hj3goT/2ANakycXczLeE/Mh9TyGCzeHD6ISeYU0wBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710258525; c=relaxed/simple;
-	bh=ooP4tJTrUqeijc2wokWAx2wimKCr95Z5+hyjr9KccCk=;
+	s=arc-20240116; t=1710258528; c=relaxed/simple;
+	bh=grfiF49c8/ZgjpztMMDXnj3IXzIjXvVfon19oYLeQYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIKsiTmULfwn8ydf3RCwGLvQJvYhUDYc47UIcGTyS6cUxLCdN+DiblLFkpwmBvnkJ2d8wMcZEgc5FFk5fryT0cSxoy3BEf8NET2RGO9wQZgJoJnSGF6P6m01afhcC41uFdrWtKw6TcJ3C7rCNjl8vSlo89S1G2A+f8zk36ofQyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version:Content-Type; b=b0o6vGRxXH7T4UtazMxTbs29ntYErJ68pQrzaEvGz89Q2lZZCrErYRCy35uQaTPcrtz5/jvAMk1j6Fnq/OP1T4MKxivqRwpT8VnJy7AzOulGNZOfbqoBnjVE1tr5n77PUHVBeMVkRioIKnbnGLFPJoBLU5/PW2BPvpEYcQ8uO0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=d7BkL/Cu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ErLfoTp1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=d7BkL/Cu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ErLfoTp1; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A5F1F5D6CF;
-	Tue, 12 Mar 2024 15:48:42 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 091C537880;
+	Tue, 12 Mar 2024 15:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710258523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jM6OJtpI0VSHF+e3kYIJB8BPtK7t3FGNyyJBVLYyDnM=;
+	b=d7BkL/CuLg4b6bUOGcpn+LobSC8JqfK7BsE3p5U+GqTsp/I9tZeVIu4fBrBLzCXEFUEn9v
+	avK2wFTBgrWOC3B03gqkCNO/GXL+U7Sz+s6Pk+PVqlB+QkBdkEXVXnFqNwM4N/Tdb6BepD
+	UhTb8BJeVp5vAdsdu7SLrMmjpLgaAJ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710258523;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jM6OJtpI0VSHF+e3kYIJB8BPtK7t3FGNyyJBVLYyDnM=;
+	b=ErLfoTp1n7l8qT1YbvSOjCvYl08TYj8sXEDmVxgnVJC2nCIqSt2I7FNjarJwNcZpfV13qh
+	cU8VGOrDQeD+tPDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710258523; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jM6OJtpI0VSHF+e3kYIJB8BPtK7t3FGNyyJBVLYyDnM=;
+	b=d7BkL/CuLg4b6bUOGcpn+LobSC8JqfK7BsE3p5U+GqTsp/I9tZeVIu4fBrBLzCXEFUEn9v
+	avK2wFTBgrWOC3B03gqkCNO/GXL+U7Sz+s6Pk+PVqlB+QkBdkEXVXnFqNwM4N/Tdb6BepD
+	UhTb8BJeVp5vAdsdu7SLrMmjpLgaAJ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710258523;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jM6OJtpI0VSHF+e3kYIJB8BPtK7t3FGNyyJBVLYyDnM=;
+	b=ErLfoTp1n7l8qT1YbvSOjCvYl08TYj8sXEDmVxgnVJC2nCIqSt2I7FNjarJwNcZpfV13qh
+	cU8VGOrDQeD+tPDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5096313976;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC8CA1364F;
 	Tue, 12 Mar 2024 15:48:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8JUwElp58GUhPwAAD6G6ig
+	id mPGnKFp58GUhPwAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Tue, 12 Mar 2024 15:48:42 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: daniel@ffwll.ch,
@@ -53,13 +94,13 @@ To: daniel@ffwll.ch,
 Cc: linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Gurchetan Singh <gurchetansingh@chromium.org>,
-	Chia-I Wu <olvaffe@gmail.com>
-Subject: [PATCH 19/43] drm/virtio: Use fbdev-shmem
-Date: Tue, 12 Mar 2024 16:45:14 +0100
-Message-ID: <20240312154834.26178-20-tzimmermann@suse.de>
+	Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
+	Melissa Wen <melissa.srw@gmail.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
+	Haneen Mohammed <hamohammed.sa@gmail.com>
+Subject: [PATCH 20/43] drm/vkms: Use fbdev-shmem
+Date: Tue, 12 Mar 2024 16:45:15 +0100
+Message-ID: <20240312154834.26178-21-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240312154834.26178-1-tzimmermann@suse.de>
 References: <20240312154834.26178-1-tzimmermann@suse.de>
@@ -69,51 +110,74 @@ List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: A5F1F5D6CF
+X-Spam-Level: 
+X-Spam-Score: -4.18
+X-Spamd-Result: default: False [-4.18 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 BAYES_HAM(-1.38)[90.76%];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 TAGGED_RCPT(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 REPLY(-4.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 R_RATELIMIT(0.00)[to_ip_from(RLw9gjjhh8cousxs3wi4trssza)];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCPT_COUNT_SEVEN(0.00)[11];
+	 MID_CONTAINS_FROM(1.00)[];
+	 FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,gmx.de,redhat.com];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,suse.de,gmail.com,riseup.net];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
 X-Spam-Flag: NO
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
 Implement fbdev emulation with fbdev-shmem. Avoids the overhead of
 fbdev-generic's additional shadow buffering. No functional changes.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Gurchetan Singh <gurchetansingh@chromium.org>
-Cc: Chia-I Wu <olvaffe@gmail.com>
+Cc: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Cc: Melissa Wen <melissa.srw@gmail.com>
+Cc: "Maíra Canal" <mairacanal@riseup.net>
+Cc: Haneen Mohammed <hamohammed.sa@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
 ---
- drivers/gpu/drm/virtio/virtgpu_drv.c | 4 ++--
+ drivers/gpu/drm/vkms/vkms_drv.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
-index 9539aa28937fa..3d626bbaab9e4 100644
---- a/drivers/gpu/drm/virtio/virtgpu_drv.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
-@@ -35,7 +35,7 @@
- #include <drm/drm_aperture.h>
+diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+index dd0af086e7fa9..8dc9dc13896e9 100644
+--- a/drivers/gpu/drm/vkms/vkms_drv.c
++++ b/drivers/gpu/drm/vkms/vkms_drv.c
+@@ -17,7 +17,7 @@
+ #include <drm/drm_atomic.h>
  #include <drm/drm_atomic_helper.h>
  #include <drm/drm_drv.h>
 -#include <drm/drm_fbdev_generic.h>
 +#include <drm/drm_fbdev_shmem.h>
  #include <drm/drm_file.h>
- 
- #include "virtgpu_drv.h"
-@@ -103,7 +103,7 @@ static int virtio_gpu_probe(struct virtio_device *vdev)
+ #include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_ioctl.h>
+@@ -223,7 +223,7 @@ static int vkms_create(struct vkms_config *config)
  	if (ret)
- 		goto err_deinit;
+ 		goto out_devres;
  
--	drm_fbdev_generic_setup(vdev->priv, 32);
-+	drm_fbdev_shmem_setup(vdev->priv, 32);
+-	drm_fbdev_generic_setup(&vkms_device->drm, 0);
++	drm_fbdev_shmem_setup(&vkms_device->drm, 0);
+ 
  	return 0;
  
- err_deinit:
 -- 
 2.44.0
 
