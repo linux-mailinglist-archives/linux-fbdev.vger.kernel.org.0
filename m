@@ -1,49 +1,90 @@
-Return-Path: <linux-fbdev+bounces-1429-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1426-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0658797FF
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 16:48:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7418B8797FA
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 16:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41A881F22EFE
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 15:48:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A46291C216CC
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 15:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7F07CF00;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179917CF0D;
 	Tue, 12 Mar 2024 15:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n3lEUqo+";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="U80IhNzN";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n3lEUqo+";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="U80IhNzN"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E207E7CF04
-	for <linux-fbdev@vger.kernel.org>; Tue, 12 Mar 2024 15:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685E27C6F0
+	for <linux-fbdev@vger.kernel.org>; Tue, 12 Mar 2024 15:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710258522; cv=none; b=HtHKp0ANL8o44kd7n54Poc2DnBWEbOJ8OqX1tOtioVSs535irZwY7nFebGYXiI1tFvLU6R8gLLnrvnaLL46dM9XtRsCjJnovy+O6IVmT7j12XYrce3m8WcA0f84E3gx0S4kKPBq3MJBuSEvyGMZzfwEaLU8/ouXMcB0mpEGaUVU=
+	t=1710258522; cv=none; b=uYi53We6BOX7lvl9aVy5AzMXzDhRx5Feno41yAwiqMsvHQ8WD7+8kJrYCmD9MdaD9U9UkfOYiZqLrZeHjx3ySGsjF6aJt/JqwPK/ivPSIwOPKgHgmLqZ2lfHRh4A7BIxxAZhRSTTsdySmtg+rxbLV9q4/dMpKLV1RA+gjbuwuKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1710258522; c=relaxed/simple;
-	bh=pSeSEM5EenKYDM7GUT5f3npuboMWf0rW+YUgTZXIyi8=;
+	bh=YwhQpNixaMuZZkqm6e25evyLDZJhsyCyeTtxDpFsy2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6ZYyzLEKSguhTh0Lc2QfOykx9B0v5LHfSkjEtEUNM8+r9ULwtNCMj4Pyy3b6MmjBdwlR1tIa0qmcnrEq+pOFfzSoyobcqkVjFoxMwxgmobcugf8u62fvm66RMdFxIEWqgDQCZC7mF+Dhl1m51sFc6GWJoIbCPKZ1RP4PdoM/ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=OhxeWcPaO6ZY1HDHGUdN+IfwCf6tlz1kn7EcJz+L1Kbs1gKNEJoPIRJ75yvsE4GwpmCX0zs8muxj67/aFnUHptXNkq1EQ9BFu2Vc1qv6NAVdX+Fzhf5HfpcIwFOM8+mzH1VyDgsOLnYjo2nCuyqrmE+XgZB3VsE5Sauj+2QeLr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n3lEUqo+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=U80IhNzN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n3lEUqo+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=U80IhNzN; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 479085D6C8;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 88F9337876;
 	Tue, 12 Mar 2024 15:48:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710258518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1QnMdUxfi0xN/eOzVELWrTkxojcelKMPil/HGmRkpxM=;
+	b=n3lEUqo+JZtGTNygIAYo7JDerQ+r6zINgsfLPhI3XfNlqd4neO1FjS2s0tlxdm6xa2hVSX
+	kZvBic92Q4H7gdJc7tw8I/T316ff/UpmGo7U5IdDi44K4MIVKLWENFUF46HU6sXU5ls4Y+
+	/Jje2vEDSflJDALdewSafsMWInmqrTg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710258518;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1QnMdUxfi0xN/eOzVELWrTkxojcelKMPil/HGmRkpxM=;
+	b=U80IhNzNBIMWc9MH4HQMF/b2JP/yBppzvRXKnIWXIoEt+shO8z9oM+zvhrQvvWwR8byg3x
+	OQleEOwt83F/koAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710258518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1QnMdUxfi0xN/eOzVELWrTkxojcelKMPil/HGmRkpxM=;
+	b=n3lEUqo+JZtGTNygIAYo7JDerQ+r6zINgsfLPhI3XfNlqd4neO1FjS2s0tlxdm6xa2hVSX
+	kZvBic92Q4H7gdJc7tw8I/T316ff/UpmGo7U5IdDi44K4MIVKLWENFUF46HU6sXU5ls4Y+
+	/Jje2vEDSflJDALdewSafsMWInmqrTg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710258518;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1QnMdUxfi0xN/eOzVELWrTkxojcelKMPil/HGmRkpxM=;
+	b=U80IhNzNBIMWc9MH4HQMF/b2JP/yBppzvRXKnIWXIoEt+shO8z9oM+zvhrQvvWwR8byg3x
+	OQleEOwt83F/koAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C6CD1364F;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4ED331364F;
 	Tue, 12 Mar 2024 15:48:38 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uOulAVZ58GUhPwAAD6G6ig
+	id aKXCEVZ58GUhPwAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Tue, 12 Mar 2024 15:48:38 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: daniel@ffwll.ch,
@@ -53,9 +94,9 @@ To: daniel@ffwll.ch,
 Cc: linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 04/43] fbdev/deferred-io: Test screen_buffer for vmalloc'ed memory
-Date: Tue, 12 Mar 2024 16:44:59 +0100
-Message-ID: <20240312154834.26178-5-tzimmermann@suse.de>
+Subject: [PATCH 05/43] fbdev/deferred-io: Test smem_start for I/O memory
+Date: Tue, 12 Mar 2024 16:45:00 +0100
+Message-ID: <20240312154834.26178-6-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240312154834.26178-1-tzimmermann@suse.de>
 References: <20240312154834.26178-1-tzimmermann@suse.de>
@@ -66,43 +107,61 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: 479085D6C8
+X-Spam-Level: 
+X-Spam-Score: -0.38
+X-Spamd-Result: default: False [-0.38 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 R_MISSING_CHARSET(2.50)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 MIME_GOOD(-0.10)[text/plain];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 REPLY(-4.00)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 MID_CONTAINS_FROM(1.00)[];
+	 FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,gmx.de,redhat.com];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-0.08)[63.17%]
 X-Spam-Flag: NO
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-Framebuffers in virtual memory are available via screen_buffer. Use
-it instead of screen_base and avoid the type casting.
+Test smem_start before looking up pages from its value. Return
+NULL if it is unset. This will result in a SIGBUS signal.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/video/fbdev/core/fb_defio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/core/fb_defio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
-index f23b1cbe67192..b38f775cd39dd 100644
+index b38f775cd39dd..fe84218ded457 100644
 --- a/drivers/video/fbdev/core/fb_defio.c
 +++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -25,11 +25,11 @@
- 
+@@ -26,11 +26,11 @@
  static struct page *fb_deferred_io_page(struct fb_info *info, unsigned long offs)
  {
--	void *screen_base = (void __force *) info->screen_base;
-+	const void *screen_buffer = info->screen_buffer;
- 	struct page *page;
+ 	const void *screen_buffer = info->screen_buffer;
+-	struct page *page;
++	struct page *page = NULL;
  
--	if (is_vmalloc_addr(screen_base + offs))
--		page = vmalloc_to_page(screen_base + offs);
-+	if (is_vmalloc_addr(screen_buffer + offs))
-+		page = vmalloc_to_page(screen_buffer + offs);
- 	else
+ 	if (is_vmalloc_addr(screen_buffer + offs))
+ 		page = vmalloc_to_page(screen_buffer + offs);
+-	else
++	else if (info->fix.smem_start)
  		page = pfn_to_page((info->fix.smem_start + offs) >> PAGE_SHIFT);
  
+ 	return page;
 -- 
 2.44.0
 
