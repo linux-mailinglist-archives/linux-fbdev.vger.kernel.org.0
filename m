@@ -1,207 +1,126 @@
-Return-Path: <linux-fbdev+bounces-1464-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1466-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9334887982C
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 16:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6113587988C
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 17:08:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A45B2871B2
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 15:49:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BCEE281697
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 Mar 2024 16:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438AD7D079;
-	Tue, 12 Mar 2024 15:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DB07E0F6;
+	Tue, 12 Mar 2024 16:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NY9ArJxr"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807757CF35
-	for <linux-fbdev@vger.kernel.org>; Tue, 12 Mar 2024 15:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4527D406
+	for <linux-fbdev@vger.kernel.org>; Tue, 12 Mar 2024 16:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710258533; cv=none; b=AKeAiOVkObNk/4p190+Cm4ql62Y8MRqbgfbF67lAQ/PqlBN0WPs/OkEndB7da0hx2d5rtTeUE5RoBbfrH9b8pGJV2V+AHzBEtDQUuQn/hn2TMd6hTo0+xClj5eCSkPUIsBTgZQ2K/d3f4kv5Wr03tEqRaVKr70b1tLkTreRrljU=
+	t=1710259700; cv=none; b=I+f3D/EdmOwE5RTlvwc4nV35IlxQNgPCayAiEWe5Mt7uy1+luo6x/NSP6Qzsw+T6Rc6GCA9A/Yb+TNwRwzpqppxTHTvwKXGyc4ymuFpxL2hDHcble3SvI8ojKF5NjThXDy0xCGfQa+YI/rBotBw5e4ES8xHAfqSwLqyUmSpHOPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710258533; c=relaxed/simple;
-	bh=YiYtW10jzl2U1edSkfKWrE1+qz2qy6AA1x2PYUD1xzo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnvGUxb2bov8UBF5boe4QQgwF/ayVQC2cncXFmlbQFtIanKZoOs+DsRNVNLOQW3Gb+cKz8toVsTAXp7VWah2CMt5axccslzrSy/92I9/kV2+TROOYpLgLOQFVx8CE0siS7soDcWRnVeP8DBg1dusDF+DZAoHtymFdqjmrEKpeU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 077595D6DF;
-	Tue, 12 Mar 2024 15:48:50 +0000 (UTC)
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BC0651364F;
-	Tue, 12 Mar 2024 15:48:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QDx/LGF58GUhPwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 12 Mar 2024 15:48:49 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: daniel@ffwll.ch,
-	airlied@gmail.com,
-	deller@gmx.de,
-	javierm@redhat.com
-Cc: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 43/43] drm/fbdev: Clean up fbdev documentation
-Date: Tue, 12 Mar 2024 16:45:38 +0100
-Message-ID: <20240312154834.26178-44-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240312154834.26178-1-tzimmermann@suse.de>
-References: <20240312154834.26178-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1710259700; c=relaxed/simple;
+	bh=Az4ylA0pPHPMXNAXpe4V+gZrQIfIie5XU9giy6iYiPU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mdgmn+3b5n+pNc4bu0rIIug/dbteo/J8EePnP8JA/ECYIOeia8eLxRk4BiqrIMuaBTcX1pYteG2So0DpjXVrbkyacBBKXOA8kakAueMdDq0w4/CMu9hPpg9F8pkqW3ziW+KyAToo7c4BtmCs97mpK8kKBXA4Q5gB7e3lvABSp0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NY9ArJxr; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d3b93e992aso53436041fa.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 12 Mar 2024 09:08:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710259697; x=1710864497; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0X3bh6regalLfza/VqXtw3dY8qNGGSgfK0NBO0mq7Yo=;
+        b=NY9ArJxrAg2qpZCMQBggtN6TTqSlxCGxUxdZkPz1Yf7xS01SHbxHbqgfRWFTtmbjOX
+         uD1EnTSa+SsYdlknnc9N02t7NhAvXV9s05UfB6Shp/GKNpHkw14cV0sMNvdp7q3RmcCz
+         VDwEaGwTD3lhM7Ug49LZR9NmAzXAt1sJLBNluDj+b373h2phPv05ch0mHoo1jSLiUQqN
+         Ea3SQ0rGGHL/fUQ1YkwdcrkgoeUSjQhJKb5uX4Z99uxfW0fULGlsPp6hCrKeLWQhgb4H
+         kzVx7IUa7U4L1dq7nEwgBNiWoGzndDXuwNrZh9DVaZ5VxaYtfuaRIYe3K5HDPt4eX4jf
+         pjcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710259697; x=1710864497;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0X3bh6regalLfza/VqXtw3dY8qNGGSgfK0NBO0mq7Yo=;
+        b=uIveKMxLgarh/0KBaYiZJ4fK/KlomTW8r2O8RQHFBUtiF+y3DD3ZpjLUrlyG2L75vU
+         13Bro2Z7ukk1bBTv9uGEUJrgHZec2W+S5sO/MCdkEtHzyOOkO2MSnzs+zEt7Dh9aLcWz
+         NbBhrF7J0NilPrIgedFgXJpiVvePUtTa8hX+/v0M3xdjHAVBz3llpov1WA++QnoP7+Sh
+         pMDUV4Z2LPt2sD98ysbwgsdidaobD5BUEjh7Ip52FnZsY9+P1/wTpRfIE+grMe21pMA6
+         cY+XwBTyDVWqDuczfg/vs+By+Xs5MzBFtUpacPxnoKZkaNvhytsakoiUmphVQuFKo3h9
+         GxEg==
+X-Forwarded-Encrypted: i=1; AJvYcCUUjc+28O5CJ57J5Ku6fLDy7PmJ8m8JBUSf7av2lFnnXcVBVDZ6J+YnW5+BThlQ1vnk425Y+L1plsEvtiXaJURi6x7PMGz2vrig43A=
+X-Gm-Message-State: AOJu0Yxz8HBj7kNSE1jZchVReodwRBzva373PyBKDmrCRQptio3qQNSp
+	btZq0B3k9Y4VNRymZtbg6YwSq6BjeePKBAFu8ekILXC6vifz+odapxTgoMb1YnwvY6j/tqwZ//4
+	sfh+aLhi3/b5KO3ReXhMiPD+Ozzc=
+X-Google-Smtp-Source: AGHT+IGYIvZqarMg5Vm2nKOnutiSU8XvApjVKUHqujlgz1UN8eZq3ic9oExfiZabCfDqH/yPYDlMcbT3eWthw0T2HO8=
+X-Received: by 2002:a05:651c:2207:b0:2d4:4777:e2d8 with SMTP id
+ y7-20020a05651c220700b002d44777e2d8mr3555811ljq.13.1710259697156; Tue, 12 Mar
+ 2024 09:08:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: 077595D6DF
-X-Spam-Flag: NO
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+References: <20240312154834.26178-1-tzimmermann@suse.de> <20240312154834.26178-12-tzimmermann@suse.de>
+In-Reply-To: <20240312154834.26178-12-tzimmermann@suse.de>
+From: Deepak Rawat <drawat.floss@gmail.com>
+Date: Tue, 12 Mar 2024 09:08:06 -0700
+Message-ID: <CAHFnvW2-QYRCXdYe47txBvpj4N=NNLsPqS0pkRAiJBJMsE+Ksg@mail.gmail.com>
+Subject: Re: [PATCH 11/43] drm/hyperv: Use fbdev-shmem
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: daniel@ffwll.ch, airlied@gmail.com, deller@gmx.de, javierm@redhat.com, 
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Rewrite some docs that are not up-to-date any longer. Remove the TODO
-item for fbdev-generic conversion, as the helper has been replaced. Make
-documentation for DMA, SHMEM and TTM emulation available.
+Reviewed-by: Deepak Rawat <drawat.floss@gmail.com>
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jonathan Corbet <corbet@lwn.net>
----
- Documentation/gpu/drm-kms-helpers.rst | 12 +++++++++---
- Documentation/gpu/todo.rst            | 13 -------------
- drivers/gpu/drm/drm_drv.c             |  2 +-
- drivers/gpu/drm/drm_fb_helper.c       | 11 ++---------
- include/drm/drm_mode_config.h         |  4 ++--
- 5 files changed, 14 insertions(+), 28 deletions(-)
-
-diff --git a/Documentation/gpu/drm-kms-helpers.rst b/Documentation/gpu/drm-kms-helpers.rst
-index e46ab9b670acd..8435e8621cc08 100644
---- a/Documentation/gpu/drm-kms-helpers.rst
-+++ b/Documentation/gpu/drm-kms-helpers.rst
-@@ -110,15 +110,21 @@ fbdev Helper Functions Reference
- .. kernel-doc:: drivers/gpu/drm/drm_fb_helper.c
-    :doc: fbdev helpers
- 
--.. kernel-doc:: include/drm/drm_fb_helper.h
--   :internal:
-+.. kernel-doc:: drivers/gpu/drm/drm_fbdev_dma.c
-+   :export:
- 
--.. kernel-doc:: drivers/gpu/drm/drm_fb_helper.c
-+.. kernel-doc:: drivers/gpu/drm/drm_fbdev_shmem.c
-    :export:
- 
- .. kernel-doc:: drivers/gpu/drm/drm_fbdev_ttm.c
-    :export:
- 
-+.. kernel-doc:: include/drm/drm_fb_helper.h
-+   :internal:
-+
-+.. kernel-doc:: drivers/gpu/drm/drm_fb_helper.c
-+   :export:
-+
- format Helper Functions Reference
- =================================
- 
-diff --git a/Documentation/gpu/todo.rst b/Documentation/gpu/todo.rst
-index fb9ad120b1414..e2a0585915b32 100644
---- a/Documentation/gpu/todo.rst
-+++ b/Documentation/gpu/todo.rst
-@@ -243,19 +243,6 @@ Contact: Maintainer of the driver you plan to convert
- 
- Level: Intermediate
- 
--Convert drivers to use drm_fbdev_generic_setup()
--------------------------------------------------
--
--Most drivers can use drm_fbdev_generic_setup(). Driver have to implement
--atomic modesetting and GEM vmap support. Historically, generic fbdev emulation
--expected the framebuffer in system memory or system-like memory. By employing
--struct iosys_map, drivers with frambuffers in I/O memory can be supported
--as well.
--
--Contact: Maintainer of the driver you plan to convert
--
--Level: Intermediate
--
- Reimplement functions in drm_fbdev_fb_ops without fbdev
- -------------------------------------------------------
- 
-diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
-index 243cacb3575c0..cfcd45480d326 100644
---- a/drivers/gpu/drm/drm_drv.c
-+++ b/drivers/gpu/drm/drm_drv.c
-@@ -345,7 +345,7 @@ void drm_minor_release(struct drm_minor *minor)
-  *		if (ret)
-  *			return ret;
-  *
-- *		drm_fbdev_generic_setup(drm, 32);
-+ *		drm_fbdev_{...}_setup(drm, 32);
-  *
-  *		return 0;
-  *	}
-diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-index d612133e2cf7e..e2e19f49342e1 100644
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -85,12 +85,8 @@ static DEFINE_MUTEX(kernel_fb_helper_lock);
-  * The fb helper functions are useful to provide an fbdev on top of a drm kernel
-  * mode setting driver. They can be used mostly independently from the crtc
-  * helper functions used by many drivers to implement the kernel mode setting
-- * interfaces.
-- *
-- * Drivers that support a dumb buffer with a virtual address and mmap support,
-- * should try out the generic fbdev emulation using drm_fbdev_generic_setup().
-- * It will automatically set up deferred I/O if the driver requires a shadow
-- * buffer.
-+ * interfaces. Drivers that use one of the shared memory managers, TTM, SHMEM,
-+ * DMA, should instead use the corresponding fbdev emulation.
-  *
-  * Existing fbdev implementations should restore the fbdev console by using
-  * drm_fb_helper_lastclose() as their &drm_driver.lastclose callback.
-@@ -126,9 +122,6 @@ static DEFINE_MUTEX(kernel_fb_helper_lock);
-  * atomic context. If drm_fb_helper_deferred_io() is used as the deferred_io
-  * callback it will also schedule dirty_work with the damage collected from the
-  * mmap page writes.
-- *
-- * Deferred I/O is not compatible with SHMEM. Such drivers should request an
-- * fbdev shadow buffer and call drm_fbdev_generic_setup() instead.
-  */
- 
- static void drm_fb_helper_restore_lut_atomic(struct drm_crtc *crtc)
-diff --git a/include/drm/drm_mode_config.h b/include/drm/drm_mode_config.h
-index 973119a9176b2..1e4b8d01212e6 100644
---- a/include/drm/drm_mode_config.h
-+++ b/include/drm/drm_mode_config.h
-@@ -106,8 +106,8 @@ struct drm_mode_config_funcs {
- 	 * Drivers implementing fbdev emulation use drm_kms_helper_hotplug_event()
- 	 * to call this hook to inform the fbdev helper of output changes.
- 	 *
--	 * This hook is deprecated, drivers should instead use
--	 * drm_fbdev_generic_setup() which takes care of any necessary
-+	 * This hook is deprecated, drivers should instead implement fbdev
-+	 * support with struct drm_client, which takes care of any necessary
- 	 * hotplug event forwarding already without further involvement by
- 	 * the driver.
- 	 */
--- 
-2.44.0
-
+On Tue, Mar 12, 2024 at 8:48=E2=80=AFAM Thomas Zimmermann <tzimmermann@suse=
+.de> wrote:
+>
+> Implement fbdev emulation with fbdev-shmem. Avoids the overhead of
+> fbdev-generic's additional shadow buffering. No functional changes.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Deepak Rawat <drawat.floss@gmail.com>
+> ---
+>  drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hy=
+perv/hyperv_drm_drv.c
+> index cff85086f2d66..ff93e08d5036d 100644
+> --- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+> +++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
+> @@ -11,7 +11,7 @@
+>  #include <drm/drm_aperture.h>
+>  #include <drm/drm_atomic_helper.h>
+>  #include <drm/drm_drv.h>
+> -#include <drm/drm_fbdev_generic.h>
+> +#include <drm/drm_fbdev_shmem.h>
+>  #include <drm/drm_gem_shmem_helper.h>
+>  #include <drm/drm_simple_kms_helper.h>
+>
+> @@ -149,7 +149,7 @@ static int hyperv_vmbus_probe(struct hv_device *hdev,
+>                 goto err_free_mmio;
+>         }
+>
+> -       drm_fbdev_generic_setup(dev, 0);
+> +       drm_fbdev_shmem_setup(dev, 0);
+>
+>         return 0;
+>
+> --
+> 2.44.0
+>
 
