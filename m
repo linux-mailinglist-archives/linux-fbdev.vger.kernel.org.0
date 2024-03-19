@@ -1,50 +1,91 @@
-Return-Path: <linux-fbdev+bounces-1576-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-1572-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CB687FAF3
-	for <lists+linux-fbdev@lfdr.de>; Tue, 19 Mar 2024 10:39:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7085C87FAEE
+	for <lists+linux-fbdev@lfdr.de>; Tue, 19 Mar 2024 10:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A5ED1C21B5F
-	for <lists+linux-fbdev@lfdr.de>; Tue, 19 Mar 2024 09:39:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDC1F1F213E9
+	for <lists+linux-fbdev@lfdr.de>; Tue, 19 Mar 2024 09:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AF97D09C;
-	Tue, 19 Mar 2024 09:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C547CF3A;
+	Tue, 19 Mar 2024 09:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KiM60/Gz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6XvTzvIh";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KiM60/Gz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6XvTzvIh"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF677D084
-	for <linux-fbdev@vger.kernel.org>; Tue, 19 Mar 2024 09:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3727D071
+	for <linux-fbdev@vger.kernel.org>; Tue, 19 Mar 2024 09:39:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710841167; cv=none; b=D+Fa/oKpNh9W1eKiax1LHqm7UeF1HgOKVbdOtUKvVUVNRv9nXHD8XKXLyBLq1TbV4bNHyGs8rvz8e9Mf2DYpU4vaKxIjQUCtqJY/uojKtPlWhxdX2b1BuHK5cD6EpEcORdgawpgr/MT0DrGWTQGZijRFHpYIwN24/ESOCiy9VIE=
+	t=1710841161; cv=none; b=PBzBJCL2fFu09gXq8usJCwc3glwv71svB8cW831qvV4yxEKErHEAwFMRHBejJv5rx7D6reXsIrQbO0EAJ1kLY5F9Htxc76WP+opMxsGowuWKpdrAefS8AmFt3qGcCVM6Ik1MU7DWkSSdXBQ/iYA5dwBZmzRODd2eNtibHH5r2LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710841167; c=relaxed/simple;
-	bh=tx7ym4I8MHggnsZUJdJCIJccs/0EBm9r7yAvEhJGsH4=;
+	s=arc-20240116; t=1710841161; c=relaxed/simple;
+	bh=bNXHHmZJWa7N3lqWlNBEM+S6RX9zWS6DnfyavrrndS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lByQEc9tbHrp3ap0YrJ815RDI3i7iisEKc9Lwfd1cXfze9rkqLLXOt9uX0SreYt707c3GRK3Mb7dYbjh+sF8EwuNSEXjN72Ug57c3IXvl3GvY0J1J8t0Dk5t3Q7vIPNOe268tW2O54ye9qWEwZvhiQv86uQHPDqv1yrmsdDKH3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=QwoVP439MncMLn3GupqCkrjDc6c/ERCPLKLPINcvDgQjt43DSv6FCylWNBEarjS0RyDkxf61sg7WquBLZnUiaNiJqBasv6QvBKe3bQuSjqwe69WF9Ue5P7ew2femEsvL47fXbbP6p+SpBU/qZr37JLWXyf09P+kfTV/fMXmxYVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KiM60/Gz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6XvTzvIh; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KiM60/Gz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6XvTzvIh; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 45AB55D410;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8A2AF37613;
 	Tue, 19 Mar 2024 09:39:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710841158; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0dty1vPLuigpCpTtELGxHmUHZvuK7IRWWV7zcr3R7Y=;
+	b=KiM60/GzY88C4jxMVD6cjR3zTJ0UK7EFNSDSN2njmz08CDWnvslEAJ4Hj/ij0L6pYLSM34
+	YHKzOtIl7DY4LtJ1JEWHJ54wpZIr9Yv2WDWKDgK6cl7PNpwJVAYVuXj+1GdnW0rCl00VZU
+	tpSAM2ZJ9WtNGAtnSSFajK8LctqCMgI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710841158;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0dty1vPLuigpCpTtELGxHmUHZvuK7IRWWV7zcr3R7Y=;
+	b=6XvTzvIhZj0BJZbs4mE5DPeKIDRXKJm9J78AmDuA7nANHIPZr9ngvA786C9WtzlrT7lZoG
+	EWdIyj6mFkRD8JBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1710841158; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0dty1vPLuigpCpTtELGxHmUHZvuK7IRWWV7zcr3R7Y=;
+	b=KiM60/GzY88C4jxMVD6cjR3zTJ0UK7EFNSDSN2njmz08CDWnvslEAJ4Hj/ij0L6pYLSM34
+	YHKzOtIl7DY4LtJ1JEWHJ54wpZIr9Yv2WDWKDgK6cl7PNpwJVAYVuXj+1GdnW0rCl00VZU
+	tpSAM2ZJ9WtNGAtnSSFajK8LctqCMgI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1710841158;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0dty1vPLuigpCpTtELGxHmUHZvuK7IRWWV7zcr3R7Y=;
+	b=6XvTzvIhZj0BJZbs4mE5DPeKIDRXKJm9J78AmDuA7nANHIPZr9ngvA786C9WtzlrT7lZoG
+	EWdIyj6mFkRD8JBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D9D3A13700;
-	Tue, 19 Mar 2024 09:39:17 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3F671136A5;
+	Tue, 19 Mar 2024 09:39:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kM0ENEVd+WU6GAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 19 Mar 2024 09:39:17 +0000
+	id SOIrDkZd+WU6GAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 19 Mar 2024 09:39:18 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: lee@kernel.org,
 	daniel.thompson@linaro.org,
@@ -57,12 +98,10 @@ To: lee@kernel.org,
 Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	linux-staging@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Robin van der Gracht <robin@protonic.nl>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH v2 1/6] auxdisplay: ht16k33: Replace use of fb_blank with backlight helper
-Date: Tue, 19 Mar 2024 10:37:20 +0100
-Message-ID: <20240319093915.31778-2-tzimmermann@suse.de>
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 2/6] backlight: omap1: Remove unused struct omap_backlight_config.set_power
+Date: Tue, 19 Mar 2024 10:37:21 +0100
+Message-ID: <20240319093915.31778-3-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240319093915.31778-1-tzimmermann@suse.de>
 References: <20240319093915.31778-1-tzimmermann@suse.de>
@@ -73,62 +112,79 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -0.35
+X-Spamd-Result: default: False [-0.35 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 R_MISSING_CHARSET(2.50)[];
+	 REPLY(-4.00)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FREEMAIL_TO(0.00)[kernel.org,linaro.org,gmail.com,gmx.de,linux-m68k.org,ravnborg.org];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-0.05)[60.05%];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 RCPT_COUNT_TWELVE(0.00)[12];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linaro.org:email,ravnborg.org:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[]
 X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: 45AB55D410
 X-Spam-Flag: NO
 
-Replace the use of struct backlight_properties.fb_blank with a call
-to backlight_get_brightness(). The helper implements similar logic
-as the driver's function. It also accounts for BL_CORE_SUSPENDED for
-drivers that set BL_CORE_SUSPENDRESUME. Ht16k33 doesn't use this, so
-there's no change in behaviour here.
+The callback set_power in struct omap_backlight_config is not
+implemented anywhere. Remove it from the structure and driver.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Robin van der Gracht <robin@protonic.nl>
-Cc: Miguel Ojeda <ojeda@kernel.org>
 Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Robin van der Gracht <robin@protonic.nl>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
 
 ---
 
 v2:
 - update commit-message style according to subsystem (Lee)
-- declare local var as const (Miguel)
-- clarify BL_CORE_SUSPENDED (Miguel)
-- fix grammar in commit message (Dan)
 ---
- drivers/auxdisplay/ht16k33.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/video/backlight/omap1_bl.c     | 3 ---
+ include/linux/platform_data/omap1_bl.h | 1 -
+ 2 files changed, 4 deletions(-)
 
-diff --git a/drivers/auxdisplay/ht16k33.c b/drivers/auxdisplay/ht16k33.c
-index a90430b7d07ba..9081a5797c552 100644
---- a/drivers/auxdisplay/ht16k33.c
-+++ b/drivers/auxdisplay/ht16k33.c
-@@ -314,14 +314,9 @@ static int ht16k33_initialize(struct ht16k33_priv *priv)
+diff --git a/drivers/video/backlight/omap1_bl.c b/drivers/video/backlight/omap1_bl.c
+index 69a49384b3de4..84d148f385951 100644
+--- a/drivers/video/backlight/omap1_bl.c
++++ b/drivers/video/backlight/omap1_bl.c
+@@ -39,9 +39,6 @@ static inline void omapbl_send_enable(int enable)
  
- static int ht16k33_bl_update_status(struct backlight_device *bl)
+ static void omapbl_blank(struct omap_backlight *bl, int mode)
  {
--	int brightness = bl->props.brightness;
-+	const int brightness = backlight_get_brightness(bl);
- 	struct ht16k33_priv *priv = bl_get_data(bl);
- 
--	if (bl->props.power != FB_BLANK_UNBLANK ||
--	    bl->props.fb_blank != FB_BLANK_UNBLANK ||
--	    bl->props.state & BL_CORE_FBBLANK)
--		brightness = 0;
+-	if (bl->pdata->set_power)
+-		bl->pdata->set_power(bl->dev, mode);
 -
- 	return ht16k33_brightness_set(priv, brightness);
- }
+ 	switch (mode) {
+ 	case FB_BLANK_NORMAL:
+ 	case FB_BLANK_VSYNC_SUSPEND:
+diff --git a/include/linux/platform_data/omap1_bl.h b/include/linux/platform_data/omap1_bl.h
+index 5e8b17d77a5fe..3d0bab31a0a94 100644
+--- a/include/linux/platform_data/omap1_bl.h
++++ b/include/linux/platform_data/omap1_bl.h
+@@ -6,7 +6,6 @@
  
+ struct omap_backlight_config {
+ 	int default_intensity;
+-	int (*set_power)(struct device *dev, int state);
+ };
+ 
+ #endif
 -- 
 2.44.0
 
