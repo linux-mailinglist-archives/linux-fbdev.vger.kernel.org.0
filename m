@@ -1,31 +1,31 @@
-Return-Path: <linux-fbdev+bounces-2088-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2079-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAEC68AAA6E
-	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Apr 2024 10:34:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F388AAA62
+	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Apr 2024 10:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5DEE286977
-	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Apr 2024 08:34:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7999D1F22928
+	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Apr 2024 08:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F1074402;
-	Fri, 19 Apr 2024 08:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A004960263;
+	Fri, 19 Apr 2024 08:33:45 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9105F87E
-	for <linux-fbdev@vger.kernel.org>; Fri, 19 Apr 2024 08:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED21657CE
+	for <linux-fbdev@vger.kernel.org>; Fri, 19 Apr 2024 08:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713515627; cv=none; b=ca5bYkM/KYQe5a+rMxLGv7UAQxXuwdHY3jZRcRm9Pzdi/LikUG6U0hSoV+DBd05/6r5kxTAgLCWN8gj2BekU8b3JtBO2W/e4zaEHl20NhYVtANCj8KZo4U1SonaQHhfXcV4E5DjI2AwyBWPmn38/pZ2H+i/n6F62YucXnfR90wE=
+	t=1713515625; cv=none; b=TsiqabqSi4J6u8kPT5bePm3eJbw7nHi4nkEKcoJ+H56WmQLFA6sbKjlV/Al6eg21XIT8Z7CbLp9k9JRLe/+CR5m432LoPyZ67AchYZ0+aZGzDPGpEvz2nBMb24vcXYAEHh9FrDVR/v93yiYR6j0+kqeLzoowO/aIEuQQeNkq8+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713515627; c=relaxed/simple;
-	bh=hMb4vX3TvTjpG58iGNgA+Uab8W/KOTZ27IlQDi5jvzw=;
+	s=arc-20240116; t=1713515625; c=relaxed/simple;
+	bh=eoH6m6ZcWpFewZ0lipecVKhS1DNNt5yza+iCDXmNCqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjXY9yahgSvd1mhzDkp7dXxVChni7qmk4X372XsgNYwTZfwlqXuMomfGxvDwdxjTr+LS4GP06LvlV83fGQp5oCYxoIJU/dRGGtTFbZIi2U8LzlI8rTRVQphQmE9bTsEK48zAy47PgqkI+tu/ED0id3/IYkXIQ3ebAQrewU/Hp4M=
+	 MIME-Version; b=AYUEosZC/L3QgpbETCVuVumc2eA2fG9KbvNHRA6+zG+5j4qcXL33iaFu7xjaYVYShAOCyFdsyv852O1BEo6NEzMAt61j6a7XK/+IHUchu+IkwurY9EEEuP4bkc0Gg3RLhtheOmUp2CSNCW16W6jhcBJ0lc5kXd8U2D9OmHybwqs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
@@ -33,7 +33,7 @@ Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4CDB437587;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 85FEA3758A;
 	Fri, 19 Apr 2024 08:33:42 +0000 (UTC)
 Authentication-Results: smtp-out1.suse.de;
 	none
@@ -41,11 +41,11 @@ Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 070B81395B;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 52D7113687;
 	Fri, 19 Apr 2024 08:33:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aHeJAGYsImb9agAAD6G6ig
+	id +LgdE2YsImb9agAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Fri, 19 Apr 2024 08:33:42 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com,
@@ -55,14 +55,10 @@ To: javierm@redhat.com,
 Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>
-Subject: [PATCH v3 24/43] drm/imx/lcdc: Use fbdev-dma
-Date: Fri, 19 Apr 2024 10:29:17 +0200
-Message-ID: <20240419083331.7761-25-tzimmermann@suse.de>
+	Paul Cercueil <paul@crapouillou.net>
+Subject: [PATCH v3 25/43] drm/ingenic: Use fbdev-dma
+Date: Fri, 19 Apr 2024 10:29:18 +0200
+Message-ID: <20240419083331.7761-26-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240419083331.7761-1-tzimmermann@suse.de>
 References: <20240419083331.7761-1-tzimmermann@suse.de>
@@ -76,55 +72,51 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spam-Level: 
 X-Spamd-Result: default: False [-4.00 / 50.00];
 	REPLY(-4.00)[]
 X-Spam-Flag: NO
 X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: 4CDB437587
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 85FEA3758A
 
 Implement fbdev emulation with fbdev-dma. Fbdev-dma now supports
-damage handling, which is required by lcdc. Avoids the overhead of
+damage handling, which is required by ingenic. Avoids the overhead of
 fbdev-generic's additional shadow buffering. No functional changes.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: NXP Linux Team <linux-imx@nxp.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Paul Cercueil <paul@crapouillou.net>
 ---
- drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 4 ++--
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-index 43ddf3a9810b6..36668455aee8c 100644
---- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-+++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-@@ -5,7 +5,7 @@
- #include <drm/drm_bridge_connector.h>
- #include <drm/drm_damage_helper.h>
- #include <drm/drm_drv.h>
+diff --git a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c b/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
+index 0751235007a7e..39fa291f43dd1 100644
+--- a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
++++ b/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
+@@ -31,7 +31,7 @@
+ #include <drm/drm_encoder.h>
+ #include <drm/drm_gem_dma_helper.h>
+ #include <drm/drm_fb_dma_helper.h>
 -#include <drm/drm_fbdev_generic.h>
 +#include <drm/drm_fbdev_dma.h>
- #include <drm/drm_fb_dma_helper.h>
  #include <drm/drm_fourcc.h>
  #include <drm/drm_framebuffer.h>
-@@ -501,7 +501,7 @@ static int imx_lcdc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Cannot register device\n");
+ #include <drm/drm_gem_atomic_helper.h>
+@@ -1399,7 +1399,7 @@ static int ingenic_drm_bind(struct device *dev, bool has_components)
+ 		goto err_clk_notifier_unregister;
+ 	}
  
--	drm_fbdev_generic_setup(drm, 0);
-+	drm_fbdev_dma_setup(drm, 0);
+-	drm_fbdev_generic_setup(drm, 32);
++	drm_fbdev_dma_setup(drm, 32);
  
  	return 0;
- }
+ 
 -- 
 2.44.0
 
