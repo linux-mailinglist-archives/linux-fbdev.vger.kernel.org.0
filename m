@@ -1,31 +1,31 @@
-Return-Path: <linux-fbdev+bounces-2076-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2080-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7568AAA5C
-	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Apr 2024 10:34:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BE68AAA6C
+	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Apr 2024 10:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE4E1F22405
-	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Apr 2024 08:34:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06604B2387C
+	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Apr 2024 08:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FA66FE14;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC42B6F07B;
 	Fri, 19 Apr 2024 08:33:45 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1516A8DB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE58C6FB0
 	for <linux-fbdev@vger.kernel.org>; Fri, 19 Apr 2024 08:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713515625; cv=none; b=eYZfk5/NHBFGNaOKgKq/MRAs8d9AJ6D/VWmYiGN6T71QRSE5IvV0E++RcaLIjWUr4vsiewimZb52bs+PUA7RcSkyhNRVojMo++5lDblRAZqSeMEeEtEti8zl07PUn2ps4Eq+j+hV1o3B2zmIdCtBJrP8hu7Ko9ynjKzwFCyy54w=
+	t=1713515625; cv=none; b=ZPcbwI45jac3wznqqf3bFcKC7Mdlrsf7IQl5rE0654oUsCF/fQhXLOwgulmMYYx0E6kNczUmx5uhVraXpJg6h8tcRUZEC15RWUN+LopLLGQoLQZWe8pBHkGQbfaYfpCUuKddMA8SU47qnnVqTTjVx0Yk6iTdgbsQQVvDANVNWNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713515625; c=relaxed/simple;
-	bh=0smXXhIy3NJcqU3v5EnthaYWLqWMaxntvVZ9px27LJU=;
+	bh=OZUkYm693su7loOL746TDJahLUdfALgMdnyATwXu0uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kD6KCd2IiXp/vfM1kh8BeWTFNknfc9HhqE+mofu7PkJ2wWg1AD4XzU77rVTJlDjBQFVBX0Us6HYLm+iAIlDCVfm2CNBAdqCAzqLK4rIfQdbVeC3rZ3f8Nw3mejTRRAiuT3axsyU3U4lDmEUpVvHjQ5Qsc9ta93WNMrgwGLdcdPQ=
+	 MIME-Version; b=jb4yUA0cPMe1cOAGtP/PJcYgU/mzJr6kaazx8rmnkmsn5c3v+4x9Xs+R7mgYggOmKge7Em3cYaEScK0diAb0HH5rWf/ooEyB02Zi/y0rJCDhmHHD+EQYGzoDlTObD2bBpCj+X15X1W1QSd9zk8BnpTml4HOv4EtV78Dm5P3rGjw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
@@ -33,19 +33,19 @@ Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A37BB3757F;
-	Fri, 19 Apr 2024 08:33:41 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0053E37586;
+	Fri, 19 Apr 2024 08:33:42 +0000 (UTC)
 Authentication-Results: smtp-out1.suse.de;
 	none
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6E1091395B;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A999913687;
 	Fri, 19 Apr 2024 08:33:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WC7JGWUsImb9agAAD6G6ig
+	id UPtUKGUsImb9agAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Fri, 19 Apr 2024 08:33:41 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com,
@@ -55,10 +55,15 @@ To: javierm@redhat.com,
 Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>,
-	Liviu Dudau <liviu.dudau@arm.com>
-Subject: [PATCH v3 22/43] drm/arm/komeda: Use fbdev-dma
-Date: Fri, 19 Apr 2024 10:29:15 +0200
-Message-ID: <20240419083331.7761-23-tzimmermann@suse.de>
+	Xinliang Liu <xinliang.liu@linaro.org>,
+	Tian Tao <tiantao6@hisilicon.com>,
+	Xinwei Kong <kong.kongxinwei@hisilicon.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Yongqin Liu <yongqin.liu@linaro.org>,
+	John Stultz <jstultz@google.com>
+Subject: [PATCH v3 23/43] drm/hisilicon/kirin: Use fbdev-dma
+Date: Fri, 19 Apr 2024 10:29:16 +0200
+Message-ID: <20240419083331.7761-24-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240419083331.7761-1-tzimmermann@suse.de>
 References: <20240419083331.7761-1-tzimmermann@suse.de>
@@ -72,48 +77,53 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 X-Spam-Level: 
 X-Spamd-Result: default: False [-4.00 / 50.00];
 	REPLY(-4.00)[]
 X-Spam-Flag: NO
 X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: A37BB3757F
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 0053E37586
 
 Implement fbdev emulation with fbdev-dma. Fbdev-dma now supports
-damage handling, which is required by komeda. Avoids the overhead of
+damage handling, which is required by kirin. Avoids the overhead of
 fbdev-generic's additional shadow buffering. No functional changes.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Liviu Dudau <liviu.dudau@arm.com>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Xinliang Liu <xinliang.liu@linaro.org>
+Cc: Tian Tao <tiantao6@hisilicon.com>
+Cc: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: Yongqin Liu <yongqin.liu@linaro.org>
+Cc: John Stultz <jstultz@google.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
- drivers/gpu/drm/arm/display/komeda/komeda_drv.c | 4 ++--
+ drivers/gpu/drm/hisilicon/kirin/kirin_drm_drv.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_drv.c b/drivers/gpu/drm/arm/display/komeda/komeda_drv.c
-index cc57ea4e13ae6..ffdeec3b3f2ea 100644
---- a/drivers/gpu/drm/arm/display/komeda/komeda_drv.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_drv.c
-@@ -9,7 +9,7 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
+diff --git a/drivers/gpu/drm/hisilicon/kirin/kirin_drm_drv.c b/drivers/gpu/drm/hisilicon/kirin/kirin_drm_drv.c
+index 75292a2f46445..12666985686b9 100644
+--- a/drivers/gpu/drm/hisilicon/kirin/kirin_drm_drv.c
++++ b/drivers/gpu/drm/hisilicon/kirin/kirin_drm_drv.c
+@@ -19,7 +19,7 @@
+ 
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_drv.h>
 -#include <drm/drm_fbdev_generic.h>
 +#include <drm/drm_fbdev_dma.h>
+ #include <drm/drm_gem_dma_helper.h>
+ #include <drm/drm_gem_framebuffer_helper.h>
  #include <drm/drm_module.h>
- #include <drm/drm_of.h>
- #include "komeda_dev.h"
-@@ -80,7 +80,7 @@ static int komeda_platform_probe(struct platform_device *pdev)
- 	}
+@@ -237,7 +237,7 @@ static int kirin_drm_bind(struct device *dev)
+ 	if (ret)
+ 		goto err_kms_cleanup;
  
- 	dev_set_drvdata(dev, mdrv);
--	drm_fbdev_generic_setup(&mdrv->kms->base, 32);
-+	drm_fbdev_dma_setup(&mdrv->kms->base, 32);
+-	drm_fbdev_generic_setup(drm_dev, 32);
++	drm_fbdev_dma_setup(drm_dev, 32);
  
  	return 0;
  
