@@ -1,88 +1,126 @@
-Return-Path: <linux-fbdev+bounces-2394-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2397-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDF28D6424
-	for <lists+linux-fbdev@lfdr.de>; Fri, 31 May 2024 16:13:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 865288D67BA
+	for <lists+linux-fbdev@lfdr.de>; Fri, 31 May 2024 19:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508751C2708A
-	for <lists+linux-fbdev@lfdr.de>; Fri, 31 May 2024 14:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BEE11F25D3F
+	for <lists+linux-fbdev@lfdr.de>; Fri, 31 May 2024 17:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEB21761B8;
-	Fri, 31 May 2024 14:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774FC17C7CE;
+	Fri, 31 May 2024 17:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNHR+J8B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ct+rfWXx"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40020176193;
-	Fri, 31 May 2024 14:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E007817C233;
+	Fri, 31 May 2024 17:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717164745; cv=none; b=lyRWQJFMzJ82QlC+ebj8Y22j2ziDBaWqY25xDx023MXDFnBNlMl6eAEiNRA7h9fVBeVBwKs7nGJVV4jqm+nZ7b6ZO6pJpfRPpMz5F1oVql0+B9JJHRnT7+3EYoWZT47ad2IhCmve9tLCxSxLZErZaOljfOZj2B+isgAD3pwVw2g=
+	t=1717175336; cv=none; b=MqwJZVJWvtGbmpHs++KAqWMFpmkKMqC71dhnKV5yMSFnQ8xfOlJue2tgIjOddIRp38gH3rg5yf72CwYPUiulHV9qEik2k+he1Sqb9FXePYy+ju/XK2ruehu1nIsehYmaC3S+sI2xwyep+zUfTxI3EyBP7uQGjwaqjW7Q9zeT+n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717164745; c=relaxed/simple;
-	bh=nE28feJXr8MPuJwuEZRSEsHxpTmzh4iG2yFFSYfyIBA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZTrnSBkg1ytHLlZUZ98B9rptZSaLPZhAhGktyJMAssK3FGkaHDGkg6F46HDbEAhnNLY4Tem7KntWkKb/W1Vqz1kmJHIEZM9AU2+6yXvTA8IccSAtexLShu10VB2XCvnq4qrU4F631HNV/A/n2BDSPlwmRVkjfEVOBOyvD8KAjfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNHR+J8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2049EC4AF08;
-	Fri, 31 May 2024 14:12:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717164744;
-	bh=nE28feJXr8MPuJwuEZRSEsHxpTmzh4iG2yFFSYfyIBA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=DNHR+J8BC5mW9id4WWWHd7JyQ+k4VIq8JWrWB1y4icmwRs26+ZlCFFDBI9SUREwac
-	 RUNKB7A6lF5higO8ga1VVxKf4p3OLjycx28XoEINCg/0Fp5ysq2QBj1TSQ/yedIT8z
-	 xuShXtCgyrYgelRbnb+4Q2tdfZKEwUS058HByGfRvvHrP1B4yBdmPzmoU8RHfOnTZC
-	 g5pGpKiuX7Z6aWYyjOyfWKfQVI4bGIxmlRrUAaUEpIMmDHic5v13kiIHWhNHr5YXDR
-	 4PFagZxclHfaMeHC1BzS1vDQXyBzzml8MeSJd2kbcNJRCFBNp/CG0nOcVRFNEJS85d
-	 UPJI01ya2jm6Q==
-From: Lee Jones <lee@kernel.org>
-To: dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fbdev@vger.kernel.org, Patrick Gansterer <paroga@paroga.com>
-Cc: Lee Jones <lee@kernel.org>, 
- Daniel Thompson <daniel.thompson@linaro.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
- Sam Ravnborg <sam@ravnborg.org>
-In-Reply-To: <20240526105136.721529-1-paroga@paroga.com>
-References: <20240526105136.721529-1-paroga@paroga.com>
-Subject: Re: [PATCH v6 0/2] backlight: Add new lm3509 backlight driver
-Message-Id: <171716474187.1122706.14204003162391534648.b4-ty@kernel.org>
-Date: Fri, 31 May 2024 15:12:21 +0100
+	s=arc-20240116; t=1717175336; c=relaxed/simple;
+	bh=9mMdk1jEo+cYqxnq/VHuXt+Kvb7Vs6u4w3HGCp0rzwE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=izd+gPhrO7ZlgENTwgrIvmb8puzMqsEBgvvqCkFzmqht8a/DsumKzYtF48i4BGRjYqFucai6NZe262K6cR22X1dwc/jYZuCne8cl4zL6pVuVboPaRk1PS05kCK852Tri909z4MUBiHe0vquCfsBngli1eXDKt0qM3Q4qqVDztL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ct+rfWXx; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717175335; x=1748711335;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9mMdk1jEo+cYqxnq/VHuXt+Kvb7Vs6u4w3HGCp0rzwE=;
+  b=ct+rfWXxEkk/BqcaeW21XXZQCaRBvlsSf5KkAeoNT1rzfKunJfhwMjKN
+   IHkCVZv0ccEpzqW3JIKbKkWqSR1lpzGz02k4PHztL5Ymwxh6Fo66kPysE
+   CxUJZS8t1l+NZrFvtpma7/M5zDSfVqeNRTmzWooOEKVnZipQmiMjEvYRT
+   8IYao+pdfA2C7WE+nCbuNDlrJPZa2sc4kxbuY0O2PKZoLeECpWso1XVTF
+   36PmQ9o5kK9uLcgkuL8F6Q0zQ9Aoi7i+YfjEIjSSMjCJGYUXPlg6fjjOM
+   58Nvs54WdE7FBsYrWjwGGpkfdIpg8TQaW/OuwCSxJvhW6loJvSYUyFSBP
+   Q==;
+X-CSE-ConnectionGUID: IuBeEx8ESgCFghNjri9z+A==
+X-CSE-MsgGUID: HFWJwV4ZRbG6FVy4SqBCfQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11089"; a="25131930"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
+   d="scan'208";a="25131930"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2024 10:08:52 -0700
+X-CSE-ConnectionGUID: k3q6XVXASyyTwoSwZ8TqMQ==
+X-CSE-MsgGUID: Jpe2YRQZT92NRTtY+XEJTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; 
+   d="scan'208";a="36147847"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa007.fm.intel.com with ESMTP; 31 May 2024 10:08:47 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 6E01B228; Fri, 31 May 2024 20:08:46 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Lee Jones <lee@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-leds@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Pavel Machek <pavel@ucw.cz>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Johan Hovold <jhovold@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH v1 0/4] lm3533: Remove the outdated drivers
+Date: Fri, 31 May 2024 19:56:12 +0300
+Message-ID: <20240531170844.1595468-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.4
 
-On Sun, 26 May 2024 12:51:28 +0200, Patrick Gansterer wrote:
-> This is a general driver for LM3509 backlight chip of TI.
-> LM3509 is High Efficiency Boost for White LEDs and/or OLED Displays with
-> Dual Current Sinks. This driver supports OLED/White LED select, brightness
-> control and sub/main control.
-> The datasheet can be found at http://www.ti.com/product/lm3509.
-> 
+Driver is quite outdated from the Linux kernel internal APIs
+perspective. In particular GPIO code is using legacy calls,
+that started being replaced by a new API ca. 2014, i.e. ten
+years ago.
 
-Applied, thanks!
+Suggested-by: Linus Walleij <linus.walleij@linaro.org>
 
-[1/2] dt-bindings: backlight: Add Texas Instruments LM3509
-      commit: 0aaee23d49a614b573ca51ab7758e77fcc3d7d14
-[2/2] backlight: Add new lm3509 backlight driver
-      commit: b72755f5b577357cac661cbf9048cad704eb4ad8
+Andy Shevchenko (4):
+  backlight: lm3533_bl: Remove the driver
+  iio: light: lm3533-als: Remove the driver
+  leds: lm3533: Remove the driver
+  mfd: lm3533: Remove the driver
 
---
-Lee Jones [李琼斯]
+ drivers/iio/light/Kconfig           |  17 -
+ drivers/iio/light/Makefile          |   1 -
+ drivers/iio/light/lm3533-als.c      | 922 ----------------------------
+ drivers/leds/Kconfig                |  13 -
+ drivers/leds/Makefile               |   1 -
+ drivers/leds/leds-lm3533.c          | 755 -----------------------
+ drivers/mfd/lm3533-core.c           | 645 -------------------
+ drivers/video/backlight/Kconfig     |  11 -
+ drivers/video/backlight/Makefile    |   1 -
+ drivers/video/backlight/lm3533_bl.c | 399 ------------
+ include/linux/mfd/lm3533.h          | 100 ---
+ 11 files changed, 2865 deletions(-)
+ delete mode 100644 drivers/iio/light/lm3533-als.c
+ delete mode 100644 drivers/leds/leds-lm3533.c
+ delete mode 100644 drivers/mfd/lm3533-core.c
+ delete mode 100644 drivers/video/backlight/lm3533_bl.c
+ delete mode 100644 include/linux/mfd/lm3533.h
+
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
 
