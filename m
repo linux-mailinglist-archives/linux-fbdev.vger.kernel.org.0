@@ -1,118 +1,123 @@
-Return-Path: <linux-fbdev+bounces-2440-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2442-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256A38FE737
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2024 15:10:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDED8FEC7C
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2024 16:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF2491F23933
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2024 13:10:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 875B41C250E9
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Jun 2024 14:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C54195F14;
-	Thu,  6 Jun 2024 13:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F8D1B1418;
+	Thu,  6 Jun 2024 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fDx1Lh6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ba41CdBk"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEB113A86B
-	for <linux-fbdev@vger.kernel.org>; Thu,  6 Jun 2024 13:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F347419B3CA;
+	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717679431; cv=none; b=l6jHe/H2IQg22yfbp6zS14pFGsA9T/eD4QaBGZve3MKDxQqwZvlsT/gJotOCMYMsySs4+RR6BNQnvpHdbNuCDU2T6dFU8jsl9P2ULWN1Lz+URSMLyIhh7mWzas3ieNsYk+uNv5QIkosSDdJLFg8oXcJgpVqRB+O+gPMT9HjBgG8=
+	t=1717683373; cv=none; b=bqizww2uKNkI+HGLIfR26eISNA8V3xPrV+FSB+vqvgK16jLEAjg3vcfL2v0lMNbgGL3Tw4NAM1i/DyXbaz/QNzW3oGgcurjnq6jSVdUPZOIhYgmhY06tyXepB23UBcNAujW1OuffcBKnq7zCF+YQssnMpEIqUIbCZGK1wGMSYUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717679431; c=relaxed/simple;
-	bh=zT88eZfNNd+RiyI4o59iAJCPJIAf8oivhPTjWxX35MQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=jOs3U3gPItnU0CMfoK8gAtAOw9F3pTxeCuFw4yRGDmAtL+QqOmhX/jVK8ckkZ6Ok5c01ULabvrwFAuUDSEl41IofCg5prZiSwARA88FnUPAh6OPgffINWLGoL5FhoWejda2G3YGT4OXAzfm08Fu2PfSWIrpv//LYNgXizbhv4hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fDx1Lh6r; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a68ca4d6545so173154366b.0
-        for <linux-fbdev@vger.kernel.org>; Thu, 06 Jun 2024 06:10:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717679428; x=1718284228; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LLTo6IN//CUfT633Q+EgtwxBk4Zhgr8yvAaTHaRrJKc=;
-        b=fDx1Lh6rX1LDP8w/JsHdvLHz6V6cyvu0Vc8B/sXq4YtcwW1DmqkH+afCojavFduOcZ
-         W/iz5jps5OsEzdRzyqWum3X1ZH2mcBRUS8rhCi2WXEb3qhKOvY2hcu3JIXz0pEEJ8Wpa
-         IFT3ASthAA3NgddTEw5N+hLmRycL/jwcPCoKTzD2JjR9HdXMEmBywKEV2WC2kNrMeMUJ
-         kqCUS3sxhg0mG+dkjghTfr51mJdZuN8a5YmSxnqkyZnTSYfIy7Ybs6XQWmSmTQ3be1Dl
-         Iz/l2+dm/W2xjGTI/gWFY9djaSSlciEJ2JGHp0rCK5mDJfJwAeqSoOPGOPePQKsx7330
-         yAKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717679428; x=1718284228;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LLTo6IN//CUfT633Q+EgtwxBk4Zhgr8yvAaTHaRrJKc=;
-        b=tdrZ2/WB5brEekYpyzORfl4lavmXSc1Fd/xIzNh5yf62Z7peGln+j16Wb8RJ9QwQO9
-         Ts3lqHpLZ1/AajSduaI7YCwTtWRCOniGjc5VLr0wCW1EdD62gb21HejmwAIHpmwmBQVV
-         ovtVIv8Q24w83HXjdWBj1tCFKTXrNoF8Tt57DxTpDPxudxaCcMTDqYAhHFE947LPQX5i
-         Kors9SlPK41rST4LLXplQQl1vIy+j0GAyo2Nw1Y/nSa3FeK6EzY380UPskT0xXLish3v
-         b/tpH/Cm9L6wkb/AAP+9FFbcVUFwT1Oaw+kK64sVLhlgIvKfE20kKGqT7yPy5MLydIEo
-         JLfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvZv0M0lW7mtFNJcLKSTEZsnJpLZMLhzTPrC4u64KCirmrVeU+qk5Q2tMEbmkFVbK+6HlkwfEfWNU1K5p3UegkwMIGTgl6kckK3nU=
-X-Gm-Message-State: AOJu0YwtY/7c8lcBtI0/q7F/am0FTqyeIQNWU0jv8KvTGN4Ryb2DtMIj
-	DsInQeeczHozabVq23/qW7T4E6Pd9mlXS3mzOvn4/+ERbGvtz1XvZszRcWxNzEw=
-X-Google-Smtp-Source: AGHT+IE/O3Z7xTXrhanwtiiAy00RvXG9RUOoWD1wIob6c3DU4S0+HjI1sOf6DL7JHERx+RQuhoT5dg==
-X-Received: by 2002:a17:906:e218:b0:a68:a476:6957 with SMTP id a640c23a62f3a-a6c7650a2ffmr216652566b.24.1717679428406;
-        Thu, 06 Jun 2024 06:10:28 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c8070e82esm94963466b.161.2024.06.06.06.10.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 06:10:27 -0700 (PDT)
-Date: Thu, 6 Jun 2024 16:10:23 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Patrick Gansterer <paroga@paroga.com>
-Cc: Lee Jones <lee@kernel.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] backlight: lm3509_bl: Fix NULL vs IS_ERR() check in
- register() function
-Message-ID: <187b5bc5-a010-46c2-8ead-980df9efae79@moroto.mountain>
+	s=arc-20240116; t=1717683373; c=relaxed/simple;
+	bh=MGlEZu/wIakOyF6mxJEhpX6yOkzYEL2Xuh9RPo2dYBA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j67ZZd7nEaRN79pzyVXrqK31rdqv6nBig0xDtXdAkHdn+Loan8F2gj4v0W4W387wGRVoObcVua8+wwG1GC1GlZqfGxYIm6tx49C/K7Qi8fcpVanCYMCPIOlH//EUAKkVzm8+E9TfNu2/1e90DY3PaTems0vRgeqLuSR5pufiHqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ba41CdBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4C5C32781;
+	Thu,  6 Jun 2024 14:16:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1717683372;
+	bh=MGlEZu/wIakOyF6mxJEhpX6yOkzYEL2Xuh9RPo2dYBA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ba41CdBkutPMxnExgLnRLwz7M5lm8kqsjcHDycHszIqqKLLIBA1ptzodnsDPYyPUS
+	 rPs6kSVQAIiDMLK4aC5V4AaCfdQDqCUtiFU/E7Fe4hnLbfVuMOYR6Xkbvs4Rklgreb
+	 6BUfc4+g257rBCsX4C/gwkGgqX2dLEWXMN670MfA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 314/744] fbdev: sh7760fb: allow modular build
+Date: Thu,  6 Jun 2024 15:59:46 +0200
+Message-ID: <20240606131742.496574844@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Transfer-Encoding: 8bit
 
-The devm_backlight_device_register() doesn't return NULL, it returns
-error pointers.  Update the error checking to match.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Fixes: b72755f5b577 ("backlight: Add new lm3509 backlight driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+------------------
+
+From: Randy Dunlap <rdunlap@infradead.org>
+
+[ Upstream commit 51084f89d687e14d96278241e5200cde4b0985c7 ]
+
+There is no reason to prohibit sh7760fb from being built as a
+loadable module as suggested by Geert, so change the config symbol
+from bool to tristate to allow that and change the FB dependency as
+needed.
+
+Fixes: f75f71b2c418 ("fbdev/sh7760fb: Depend on FB=y")
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/lm3509_bl.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/backlight/lm3509_bl.c b/drivers/video/backlight/lm3509_bl.c
-index ab57f79ffe23..c93cdedff5ad 100644
---- a/drivers/video/backlight/lm3509_bl.c
-+++ b/drivers/video/backlight/lm3509_bl.c
-@@ -114,9 +114,10 @@ lm3509_backlight_register(struct device *dev, const char *name_suffix,
- 	}
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index c29754b65c0ec..325298573e120 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -1761,8 +1761,8 @@ config FB_COBALT
+ 	depends on FB && MIPS_COBALT
  
- 	bd = devm_backlight_device_register(dev, label, dev, data, ops, &props);
--	if (bd)
--		backlight_update_status(bd);
-+	if (IS_ERR(bd))
-+		return bd;
- 
-+	backlight_update_status(bd);
- 	return bd;
- }
- 
+ config FB_SH7760
+-	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
+-	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
++	tristate "SH7760/SH7763/SH7720/SH7721 LCDC support"
++	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
+ 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
+ 	select FB_IOMEM_HELPERS
+ 	help
 -- 
 2.43.0
+
+
 
 
