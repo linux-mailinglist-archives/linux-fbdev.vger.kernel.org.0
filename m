@@ -1,219 +1,197 @@
-Return-Path: <linux-fbdev+bounces-2444-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2445-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0972901C70
-	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Jun 2024 10:08:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA9F903C44
+	for <lists+linux-fbdev@lfdr.de>; Tue, 11 Jun 2024 14:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69D9A2823B1
-	for <lists+linux-fbdev@lfdr.de>; Mon, 10 Jun 2024 08:08:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C75C1F23AF8
+	for <lists+linux-fbdev@lfdr.de>; Tue, 11 Jun 2024 12:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BC36F304;
-	Mon, 10 Jun 2024 08:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A784F17C22E;
+	Tue, 11 Jun 2024 12:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tItSprwb"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YEWOKj7Q";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="o5IKrxjf";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="mhf+MmSw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KukXRqvS"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735356BFA5
-	for <linux-fbdev@vger.kernel.org>; Mon, 10 Jun 2024 08:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D943D17C216;
+	Tue, 11 Jun 2024 12:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718006898; cv=none; b=TYlKRSuaOOjMF1B364fqU4Qorr5kDyHFpWP2i0ZW1meMEriwXnkMWo/wrHxfw5nKexXXYGNpVm/vwqyKx6kOEoqLK4mZiNFTLw/1KckpT+GaNiBASvwVNECBU71tPrPlx91vqRs7TjrOQfWoon0R3chlr/Vi5lFzL/rI0f01pVk=
+	t=1718110407; cv=none; b=BmD8pRYg61EmoTqa5UzaFLzPCyz8w/OjdbVAs9syp1fjmXPEHdy2q205xuhmGCS1fOH0ZQWUozC+seOWdDS1O3VzhiYIX/6i17A/2yRPElvweuiGbWyoNFKmuvwasW14648if/BRaA8R4FH0OqM9nBgTWmjm3K6F5s5JyYjFZqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718006898; c=relaxed/simple;
-	bh=/L5y1Dv6ivY3eszYnYmdXRYc401x9YYY2yBAmmyUG/k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LyTuFz3CBiGsrT5NwYdALRUXHBFE96lWetesquNsV+JGZQVPKQykjab45FFPrW8S6EJZoV2DDiaGyeaA8f3LZGoxjeUDKXxWaRBiKDfs519PouZl2ddTNO/5NLKTdgORe4V476Mvsutf5WG9MJVD2iDEx9D7+WmOX8rviJC3yAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tItSprwb; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52c8342af5eso1190582e87.3
-        for <linux-fbdev@vger.kernel.org>; Mon, 10 Jun 2024 01:08:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718006893; x=1718611693; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/L5y1Dv6ivY3eszYnYmdXRYc401x9YYY2yBAmmyUG/k=;
-        b=tItSprwba3K4QyMLecq53N5fdeYk0yqdU6iiRAwdK2qV2NXSDXX/Kxh1EMKpIw12u8
-         lrb+KG7NKZPbrzHEUwJAfb3wOFidWhEPBS/OArUeODLYrgXaMHc9O/Q9Gt5nJ+j5H/fH
-         meO07QkDV5R8IJfB0zAQ1VcpifJbJ/0xSMW5UccYF2QWajtKK6p3/7I6SxT0+nZMHqv2
-         88SGyooYkLjsUrf5LHxmPCTs0lzRZA2c6/TqQ4TZi68CZxMQ1m6VhPjc9Tsojgia7amY
-         X17snbL0LKgx/pvlsV+2x5HXbcKtKVengcwIrG7akGM/nydwyZyv126Lh8HkDBVCU/7F
-         a19g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718006893; x=1718611693;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/L5y1Dv6ivY3eszYnYmdXRYc401x9YYY2yBAmmyUG/k=;
-        b=JNYbnecuGKLnpm6QYJ3C65Uhxl7KYJW4jZPQoNFtfWFWWfWZSIzSQWQB48YuOwqBRN
-         3wdC7XuVJvDsW3D7Z3ijLCJjM6eRe88q7qMqTSo9JlWkLALcHS51l5mIJJadnx6Hk3EN
-         ykibIx+3aoEZcF4z6Bw4RXGZufRY/z/bHfioKKWilNZNROqRPCSt2eiRwtN8t9PNZroa
-         xy8UMYX88Y+RbUA0dPJx8oNKMp1dOCXiSPyO0GipSJzm/x1mOxy/ut7W6x7VZoEUdPCq
-         TxwlGfl4oKvyg5zH8muRxaVhQZ8WmeVDlszkW3lncNLqGG6CijESa0OpEb9bY7Cks8Ah
-         +U8A==
-X-Forwarded-Encrypted: i=1; AJvYcCW6tukNoqkQGtGdlzFrYsOCUDM/5tTQMRv9NOK7xCfS1nDzuwsufySdNcd8P/ugUXtL2iTrDFdbpIj+89jVMyPrgQkFBgDbNYwj3sg=
-X-Gm-Message-State: AOJu0Yz2WDrZ99D87Fq5t/dXy3SUk53F9zQ2sP86eAspzUAI3Vl6MBYR
-	raynapy9GE8IkRmXLs3Tcz1YY6ac+bnikYc56FmEDd/3kFtfWrj146r4SvjaxWsULw3poHnWpzX
-	lfeES7biguhKRTxqx0282lkNDmViXCNBw1h97dA==
-X-Google-Smtp-Source: AGHT+IEoIIaopVbMhKiBzu+ZFeFG117iZrYhuaSy1PLsnicMvCE0nAaF1iUL9hhnUeVtUHqe9i20V059/u6XmSWe6yI=
-X-Received: by 2002:a05:6512:234d:b0:52b:be9b:cafe with SMTP id
- 2adb3069b0e04-52bbe9bcbadmr5940256e87.21.1718006892189; Mon, 10 Jun 2024
- 01:08:12 -0700 (PDT)
+	s=arc-20240116; t=1718110407; c=relaxed/simple;
+	bh=7/ZPqCg2oypznzAk4bB3/au5AjkxMVCIcYfits/UUyY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k0sSW/xoEO0Zgajs7dqtuDIJGOPCeAgt1k5sgoZVzO5qwXnA4tz2cH4XutdWCtgYgBWY8TuLdgI7eo02LtsdH3tOi/Pw1kLYyzmORGYJtGDqGbbrzEGQmFSJdJ/hpASQSf79lluin/PU7Qoyop1DREkeuJk2cEsceU3tDidDiJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YEWOKj7Q; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=o5IKrxjf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=mhf+MmSw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KukXRqvS; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 08293219AB;
+	Tue, 11 Jun 2024 12:53:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718110403; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0OJ/GmOeQSU/IZhTKn9PtsP3VM7GWYfDZ3snD6F8rcQ=;
+	b=YEWOKj7QCAypbX9KgVarmr2rpiLMjKK9er9utpS8/9eOLsGftVG2YdPVgrfWQSGu1j0Y+k
+	vGEO1AuUeUUHLtZ3cqv3vEK8tZ2dUVNe67hc2dZ4aPdFDmTTyiDNAvnOn4M8rPuVXNqasf
+	8K35Iii3OP8KRPdxAj+bTxQDEp3L5tM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718110403;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0OJ/GmOeQSU/IZhTKn9PtsP3VM7GWYfDZ3snD6F8rcQ=;
+	b=o5IKrxjfuZdL+t1Dgn8NeALCupja+o83kq7O58+6RQv0Vm2DYliZpWQdQciRkqHzLVOhn6
+	eb9vqdecn72s6QCA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718110404; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0OJ/GmOeQSU/IZhTKn9PtsP3VM7GWYfDZ3snD6F8rcQ=;
+	b=mhf+MmSwbvA1MjLAIWluuMlGTTih/VVI+Lww3XDbPNHtl+JmSiTAIAMqQlbJirGF3cpQ6F
+	kCGXS4+XU4kdH4SQ9JINppdxc7C3EGJSbZXE3zpUteGoibjs4sSIlJLSEQVLTdeXI/mbTI
+	YCMmob+a8O0s0GFXKT9WUnTAg+t2pXQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718110404;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0OJ/GmOeQSU/IZhTKn9PtsP3VM7GWYfDZ3snD6F8rcQ=;
+	b=KukXRqvSRpzmi0UyQDdoML0HhDD4HgwDFjUCON1axpIt+ABVob80UVm1LydF91tDQ+WkVk
+	12X1KgiZCU58wQDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B4317137DF;
+	Tue, 11 Jun 2024 12:53:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id r0q6KsNIaGbxMgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 11 Jun 2024 12:53:23 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: lee@kernel.org,
+	daniel.thompson@linaro.org,
+	jingoohan1@gmail.com,
+	deller@gmx.de,
+	linus.walleij@linaro.org,
+	f.suligoi@asem.it,
+	ukleinek@kernel.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 00/17] backlight: Introduce power-state constants
+Date: Tue, 11 Jun 2024 14:41:55 +0200
+Message-ID: <20240611125321.6927-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240603211538.289765-1-andriy.shevchenko@linux.intel.com> <87tti9cfry.fsf@intel.com>
-In-Reply-To: <87tti9cfry.fsf@intel.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 10 Jun 2024 10:08:00 +0200
-Message-ID: <CACRpkdZFPG_YLici-BmYfk9HZ36f4WavCN3JNotkk8cPgCODCg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] treewide: Align match_string() with sysfs_match_string()
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Corey Minyard <minyard@acm.org>, 
-	Allen Pais <apais@linux.microsoft.com>, 
-	Sebastian Reichel <sebastian.reichel@collabora.com>, Perry Yuan <perry.yuan@amd.com>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Nuno Sa <nuno.sa@analog.com>, Guenter Roeck <linux@roeck-us.net>, 
-	Randy Dunlap <rdunlap@infradead.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Lee Jones <lee@kernel.org>, 
-	Samuel Holland <samuel@sholland.org>, Elad Nachman <enachman@marvell.com>, 
-	Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Johannes Berg <johannes.berg@intel.com>, 
-	Gregory Greenman <gregory.greenman@intel.com>, Benjamin Berg <benjamin.berg@intel.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Robert Richter <rrichter@amd.com>, Vinod Koul <vkoul@kernel.org>, 
-	Chunfeng Yun <chunfeng.yun@mediatek.com>, Hans de Goede <hdegoede@redhat.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Nikita Kravets <teackot@gmail.com>, Jiri Slaby <jirislaby@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Stanley Chang <stanley_chang@realtek.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Abdel Alkuor <abdelalkuor@geotab.com>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, Eric Biggers <ebiggers@google.com>, 
-	Kees Cook <keescook@chromium.org>, Ingo Molnar <mingo@kernel.org>, 
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>, Daniel Bristot de Oliveira <bristot@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
-	Abel Wu <wuyun.abel@bytedance.com>, John Johansen <john.johansen@canonical.com>, 
-	Mimi Zohar <zohar@linux.ibm.com>, Stefan Berger <stefanb@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Eric Snowberg <eric.snowberg@oracle.com>, 
-	Takashi Iwai <tiwai@suse.de>, Takashi Sakamoto <o-takashi@sakamocchi.jp>, 
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, Mark Brown <broonie@kernel.org>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-ide@vger.kernel.org, openipmi-developer@lists.sourceforge.net, 
-	linux-clk@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org, qat-linux@intel.com, 
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-leds@vger.kernel.org, linux-sunxi@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-phy@lists.infradead.org, 
-	linux-gpio@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, linux-bcachefs@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, cgroups@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, alsa-devel@alsa-project.org, 
-	linux-sound@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, David Howells <dhowells@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Sergey Shtylyov <s.shtylyov@omp.ru>, Damien Le Moal <dlemoal@kernel.org>, 
-	Niklas Cassel <cassel@kernel.org>, Daniel Scally <djrscally@gmail.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Peter De Schrijver <pdeschrijver@nvidia.com>, Prashant Gaikwad <pgaikwad@nvidia.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Huang Rui <ray.huang@amd.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, 
-	Danilo Krummrich <dakr@redhat.com>, Jean Delvare <jdelvare@suse.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Pavel Machek <pavel@ucw.cz>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Adrian Hunter <adrian.hunter@intel.com>, Hu Ziji <huziji@marvell.com>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Potnuri Bharat Teja <bharat@chelsio.com>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>, Kalle Valo <kvalo@kernel.org>, 
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, "Oliver O'Halloran" <oohall@gmail.com>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, JC Kuo <jckuo@nvidia.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sebastian Reichel <sre@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
-	Helge Deller <deller@gmx.de>, Brian Foster <bfoster@redhat.com>, 
-	Zhihao Cheng <chengzhihao1@huawei.com>, Tejun Heo <tj@kernel.org>, 
-	Zefan Li <lizefan.x@bytedance.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Daniel Bristot de Oliveira <bristot@redhat.com>, Valentin Schneider <vschneid@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jason Baron <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Clemens Ladisch <clemens@ladisch.de>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_TO(0.00)[kernel.org,linaro.org,gmail.com,gmx.de,asem.it];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
 
-On Tue, Jun 4, 2024 at 9:46=E2=80=AFAM Jani Nikula <jani.nikula@linux.intel=
-.com> wrote:
+The backlight code currently uses fbdev's FB_BLANK_ constants to
+represent power states UNBLANK and POWERDOWN. Introduce dedicated
+backlight constants to remove this dependency on fbdev.
 
-[Maybe slightly off-topic, ranty]
+Patch 1 introduces BL_CORE_UNBLANK and BL_CORE_POWERDOWN, which
+replace similarly named constants from fbdev. There's also
+BL_CORE_NORMAL, which is required by a few drivers that appear
+to use incorrect or uncommon blanking semantics.
 
-> Why do we think it's a good idea to increase and normalize the use of
-> double-underscore function names across the kernel, like
-> __match_string() in this case? It should mean "reserved for the
-> implementation, not to be called directly".
->
-> If it's to be used directly, it should be named accordingly, right?
+The rest of the patchset converts backlight drivers. The new
+constants' values are identical to the old ones, so the driver
+conversion can be done one-by-one.
 
-It's a huge mess. "__" prefix is just so ambiguous I think it just
-shouldn't be used or prolifierated, and it usually breaks Rusty Russells
-API rules times over.
+There are many more backlight drivers in other subsystems. These
+can later be converted when the new constants have been merged.
+Once merged, several include statements for <linux/fb.h> can be
+removed (specifically under drivers/platform/x86/).
 
-Consider __set_bit() from <linux/bitops.h>, used all over the place,
-in contrast with set_bit() for example, what does "__" represent in
-this context that makes __set_bit() different from set_bit()?
+This patchset is part of a larger effort to implement the backlight
+code without depending on fbdev and ultimatively remove fbdev
+dependencies from the kernel.
 
-It means "non-atomic"...
+Thomas Zimmermann (17):
+  backlight: Add BL_CORE_ constants for power states
+  backlight: aat2870-backlight: Use blacklight power constants
+  backlight: ams369fb06: Use backlight power constants
+  backlight: corgi-lcd: Use backlight power constants
+  backlight: gpio-backlight: Use backlight power constants
+  backlight: ipaq-micro-backlight: Use backlight power constants
+  backlight: journada_bl: Use backlight power constants
+  backlight: kb3886-bl: Use backlight power constants
+  backlight: ktd253-backlight: Use backlight power constants
+  backlight: led-backlight: Use backlight power constants
+  backlight: lm3533-backlight: Use backlight power constants
+  backlight: mp3309c: Use backlight power constants
+  backlight: pandora-backlight: Use backlight power constants
+  backlight: pcf50633-backlight: Use backlight power constants
+  backlight: pwm-backlight: Use backlight power constants
+  backlight: rave-sp-backlight: Use backlight power constants
+  backlight: sky81452-backlight: Use backlight power constants
 
-How does a random contributor know this?
+ .../ABI/stable/sysfs-class-backlight          |  7 +++---
+ drivers/video/backlight/aat2870_bl.c          |  4 ++--
+ drivers/video/backlight/ams369fg06.c          | 23 +++++++++----------
+ drivers/video/backlight/corgi_lcd.c           |  4 ++--
+ drivers/video/backlight/gpio_backlight.c      |  9 ++++----
+ drivers/video/backlight/ipaq_micro_bl.c       |  3 +--
+ drivers/video/backlight/jornada720_bl.c       |  3 +--
+ drivers/video/backlight/kb3886_bl.c           |  4 ++--
+ drivers/video/backlight/ktd253-backlight.c    |  5 ++--
+ drivers/video/backlight/led_bl.c              |  4 ++--
+ drivers/video/backlight/lm3533_bl.c           |  3 +--
+ drivers/video/backlight/mp3309c.c             |  4 ++--
+ drivers/video/backlight/pandora_bl.c          |  3 +--
+ drivers/video/backlight/pcf50633-backlight.c  |  5 ++--
+ drivers/video/backlight/pwm_bl.c              |  4 ++--
+ drivers/video/backlight/rave-sp-backlight.c   |  2 +-
+ drivers/video/backlight/sky81452-backlight.c  |  2 +-
+ include/linux/backlight.h                     | 16 ++++++++-----
+ 18 files changed, 51 insertions(+), 54 deletions(-)
 
-Yeah, you guess it. By the token of "everybody knows that".
-(Grep, google, repeat for the number of contributors to the kernel.)
 
-I was considering to send a script to Torvalds to just change all
-this to set_bit_nonatomic() (etc) but was hesitating because that
-makes the name unambiguous but long. I think I stayed off it
-because changing stuff like that all over the place creates churn
-and churn is bad.
+base-commit: 2bea08bd31298d60d416b2a6ed346bb53dd28037
+-- 
+2.45.2
 
-Yours,
-Linus Walleij
 
