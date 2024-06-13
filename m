@@ -1,43 +1,43 @@
-Return-Path: <linux-fbdev+bounces-2493-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2492-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FEB907124
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 14:34:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBE6906F94
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 14:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43C93B23C7B
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 12:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F10191F216FB
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 12:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E384A07;
-	Thu, 13 Jun 2024 12:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592CF14431F;
+	Thu, 13 Jun 2024 12:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luy6DRap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYYahBn6"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7C7441D;
-	Thu, 13 Jun 2024 12:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEA513D512;
+	Thu, 13 Jun 2024 12:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718282033; cv=none; b=Zwq9a6lQqZVTPt1+B7nmNJ63iU/tkxerbK+MitGwduf8y9afPb/T16hK6i4C+MYfmOMWeJHtBJ6i5RTTxdx8Uy3FF0RymeJHBh8Yc/ZDvnZWxmGpDJlOf88WSH72R/puf3BCuuwzJphcsuNtug3V7b3P6f+vhbqXgFNCd51zWgo=
+	t=1718281075; cv=none; b=YgZnWTpGcyqLToC7l2fJJE7zV/m5i01wn0buduQWCuKMqSLHT4CzqCpMyCXbNtdGiA6Uc6pMvJGRoPxTS4HJ147DZA37IuW483EZr39rMM4bAUQzk7pNauf12csiHwsXL3C9RIgoopsMJYuvmQRx71DNpdkmkQAmmMGooP1Pb9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718282033; c=relaxed/simple;
-	bh=KQybIGgc8eKb8M04mpkTLK3C2ps3hMNvhnzEFnbE6Gs=;
+	s=arc-20240116; t=1718281075; c=relaxed/simple;
+	bh=j6C9JnbLPgI5LE/EGdGC6XwNXZ/60R3WyPPH7+0SCs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+aKPp0J2ofjbOSt0dRBMNWRVtC6C5J542Hi/uutbIZXurve5QI8rWIDUimQ/01Kr3kl5q1pCVCxs2DkUiBgX2dn4ehb/MuJRPtaeVTOEGJe6Vg3ghjjmCLXiOkavdOzj6Wpkj0TdE+2/rZi8XUCBYtNab00Ht64iF5tBZ21IPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luy6DRap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47091C32786;
-	Thu, 13 Jun 2024 12:33:52 +0000 (UTC)
+	 MIME-Version; b=Ci694SJpgobiXURm3FJbf87aTrhJ4lUKQa5fKQmP49oxYnKSMog4sfY7iAHoUuLv/NrR5TQzSSuU6JS9qf5oK2iL24Wf3Wt6CoQFm/CMzEI6C1Ildx18iSBoVj6YPuTfpkrebt3JmhwZuZf0SspDrTFZKwkjTv+kqRc66q5evvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYYahBn6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4780FC2BBFC;
+	Thu, 13 Jun 2024 12:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718282032;
-	bh=KQybIGgc8eKb8M04mpkTLK3C2ps3hMNvhnzEFnbE6Gs=;
+	s=korg; t=1718281074;
+	bh=j6C9JnbLPgI5LE/EGdGC6XwNXZ/60R3WyPPH7+0SCs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=luy6DRapSNglAs1WMUrf3Gw80SCADqbfXR/tUlRSPexpAIYBDPHYLPx6a0mYbDYud
-	 mnFQuA2BD9jgKv9CJdu1BY+hdwp+rDCBbXX9VWSNgap+kziJH6gxQO/0C8io4VKVEe
-	 NYRtCgO2F7BR6l5F+MhkuIpee8OMPCee1/RBL278=
+	b=XYYahBn6nKF2I2+tHugaRXrvysY3gzSWDJgqz/VgGUlYSPEwXC++7raIy+zKFZR4k
+	 8VVmmZQnSE7J/SqAUHAYIsTHvw5EvAzwkN2pbUZtYHZb+GbRF7RMbqLhRSqI4L/mLu
+	 Y61vcJSfXfPgjsc43+0u8HUQrkW51UJV8GaxQUwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -52,12 +52,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/402] fbdev: sh7760fb: allow modular build
-Date: Thu, 13 Jun 2024 13:31:36 +0200
-Message-ID: <20240613113307.558810728@linuxfoundation.org>
+Subject: [PATCH 5.10 102/317] fbdev: sh7760fb: allow modular build
+Date: Thu, 13 Jun 2024 13:32:00 +0200
+Message-ID: <20240613113251.495573736@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240613113302.116811394@linuxfoundation.org>
-References: <20240613113302.116811394@linuxfoundation.org>
+In-Reply-To: <20240613113247.525431100@linuxfoundation.org>
+References: <20240613113247.525431100@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 662524574cc33..26dfc4e5b10ce 100644
+index dd59584630979..9ad3e51578691 100644
 --- a/drivers/video/fbdev/Kconfig
 +++ b/drivers/video/fbdev/Kconfig
-@@ -2016,8 +2016,8 @@ config FB_COBALT
+@@ -2013,8 +2013,8 @@ config FB_COBALT
  	depends on FB && MIPS_COBALT
  
  config FB_SH7760
