@@ -1,48 +1,45 @@
-Return-Path: <linux-fbdev+bounces-2506-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2504-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC0D907C7C
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 21:22:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0271907C7A
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 21:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA373B22895
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 19:22:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77CB1B262F8
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 19:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8700154455;
-	Thu, 13 Jun 2024 19:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6E0158D79;
+	Thu, 13 Jun 2024 19:18:19 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from riemann.telenet-ops.be (riemann.telenet-ops.be [195.130.137.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [195.130.132.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C55A14C59A
-	for <linux-fbdev@vger.kernel.org>; Thu, 13 Jun 2024 19:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA19130AC8
+	for <linux-fbdev@vger.kernel.org>; Thu, 13 Jun 2024 19:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718306304; cv=none; b=PayFaTQHc9eH1OKcQPZYdoNawmQ2kI8/4ca97jpmFdD+R1YT7YEHOBxxzysWSlTZVphtzVMRzRMPTbTugl29c5IhaVXiV9tY2jsDANcTQOQGQPqy4vwY8T1bXkaT6US45+yhF8hPKJ8jbGyT/i2eWL+pIBWTbw0tIRPFhBPOeaw=
+	t=1718306299; cv=none; b=Ng1r4ts/cUVAhGKpgyeNXrOtSm9tYCptVbVVxcbHNv3JAbYbfLW1tReJx6icBKl6+NA1PktHqekkXl9XBT7uqlSLAsi+VmY/4naiwIW1O6Ak7H80t5vIuQFgczpAYCPGSaI1YrF3Bo+YACBOBbAkJQX9LApqEXBbAdLyg3oX4J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718306304; c=relaxed/simple;
-	bh=FnN05GM8vDYZMAvxvHkfN+j13yu2M7/BW/pNimOsW8w=;
+	s=arc-20240116; t=1718306299; c=relaxed/simple;
+	bh=wTfhc+5qe9USjIEvskfQ4A/ZHi14nOoEz6awhHKpCrE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BbebGDHkeaDHXjKIGgslcrERjKuzWW2xO9UM+4fDc/N0P83DRLocnqN7JsxxwRLhsPJRlSDO7KGV8FAeJtMeXUcX6yFEurPC6QlhEdEL6LViYgau5yBhr+Y11Olo09C67NEkbqHIXeHrLE7npgpA8Y/gGyF+7XF1O40Pku5INFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.80
+	 MIME-Version; b=kh0M+Rmiwymtiz7KL54zKvEPTBb7lb8ZReYF8qwoM8yhyyk6TLdy/WzICe7MIzUUNgS1BTLzsBQpXUGCIGH+dRDZTNW3RzIQHNrnuQTBwBy7Cqro/2dI+89eMqZW46lVF4bZDefavwgY+P7XQhPMJT7JzKtjdaFOJUC9WVCxUpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-	by riemann.telenet-ops.be (Postfix) with ESMTPS id 4W0XHq5qNCz4x2LQ
-	for <linux-fbdev@vger.kernel.org>; Thu, 13 Jun 2024 21:18:15 +0200 (CEST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:be2a:f066:50f0:dff7])
-	by michel.telenet-ops.be with bizsmtp
-	id b7J62C00A3w30qz067J6ad; Thu, 13 Jun 2024 21:18:08 +0200
+	by baptiste.telenet-ops.be with bizsmtp
+	id b7J62C00T3w30qz017J6ok; Thu, 13 Jun 2024 21:18:09 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1sHpwS-00Ax6x-Fm;
+	id 1sHpwS-00Ax71-Gm;
 	Thu, 13 Jun 2024 21:18:06 +0200
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1sHpxW-00FL8f-GF;
+	id 1sHpxW-00FL8j-H0;
 	Thu, 13 Jun 2024 21:18:06 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Jocelyn Falempe <jfalempe@redhat.com>,
@@ -56,9 +53,9 @@ Cc: Helge Deller <deller@gmx.de>,
 	linux-fbdev@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 4/7] drm/panic: Spelling s/formater/formatter/
-Date: Thu, 13 Jun 2024 21:18:02 +0200
-Message-Id: <5a11f8caf8759aaa22d421034d3047368e9d5f33.1718305355.git.geert+renesas@glider.be>
+Subject: [PATCH v2 5/7] drm/panic: Convert to drm_fb_clip_offset()
+Date: Thu, 13 Jun 2024 21:18:03 +0200
+Message-Id: <3121082eb4beb461773ebb6f656ed9b4286967ee.1718305355.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1718305355.git.geert+renesas@glider.be>
 References: <cover.1718305355.git.geert+renesas@glider.be>
@@ -70,30 +67,41 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix a misspelling of "formatter".
+Use the drm_fb_clip_offset() helper instead of open-coding the same
+operation.
 
-Fixes: 54034bebb22fd4be ("drm/panic: Add a kmsg panic screen")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
+DRM_PANIC already selects DRM_KMS_HELPER.
+
 v2:
   - New.
 ---
- drivers/gpu/drm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index a9972ce05d7e6fe4..e3c51009d9b476b3 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -138,7 +138,7 @@ config DRM_PANIC_DEBUG
- 	  If in doubt, say "N".
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index 814ef5c20c08ee42..5b0acf8c86e402a8 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -285,7 +285,7 @@ static void drm_panic_blit(struct drm_scanout_buffer *sb, struct drm_rect *clip,
+ 		return drm_panic_blit_pixel(sb, clip, sbuf8, spitch, fg_color);
  
- config DRM_PANIC_SCREEN
--	string "Panic screen formater"
-+	string "Panic screen formatter"
- 	default "user"
- 	depends on DRM_PANIC
- 	help
+ 	map = sb->map[0];
+-	iosys_map_incr(&map, clip->y1 * sb->pitch[0] + clip->x1 * sb->format->cpp[0]);
++	iosys_map_incr(&map, drm_fb_clip_offset(sb->pitch[0], sb->format, clip));
+ 
+ 	switch (sb->format->cpp[0]) {
+ 	case 2:
+@@ -373,7 +373,7 @@ static void drm_panic_fill(struct drm_scanout_buffer *sb, struct drm_rect *clip,
+ 		return drm_panic_fill_pixel(sb, clip, color);
+ 
+ 	map = sb->map[0];
+-	iosys_map_incr(&map, clip->y1 * sb->pitch[0] + clip->x1 * sb->format->cpp[0]);
++	iosys_map_incr(&map, drm_fb_clip_offset(sb->pitch[0], sb->format, clip));
+ 
+ 	switch (sb->format->cpp[0]) {
+ 	case 2:
 -- 
 2.34.1
 
