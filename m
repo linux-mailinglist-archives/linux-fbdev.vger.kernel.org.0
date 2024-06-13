@@ -1,84 +1,115 @@
-Return-Path: <linux-fbdev+bounces-2498-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2500-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865FE9079A4
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 19:20:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C140C907C70
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 21:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49382879B7
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 17:20:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A29CB261A5
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Jun 2024 19:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F7814A4EC;
-	Thu, 13 Jun 2024 17:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXFfAgqG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9CD158D6B;
+	Thu, 13 Jun 2024 19:18:18 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FA714A4D2;
-	Thu, 13 Jun 2024 17:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D6314C5BA
+	for <linux-fbdev@vger.kernel.org>; Thu, 13 Jun 2024 19:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718299213; cv=none; b=gxmUJFIinl5Iq9J2HDhdmpmKvTufg9IGeelcGsYe5Y7jiZmlJbnw8rJeyO04Lm3vPkEsx/hi7aHEWvc2QQS50tzRZoFtKMgDxi02jjjENUXSUhinjzsOIoDnIJjcoXO4tpxImJ5PvImSnSgoPUDRzZTHY7JWMQvgctiRBoUxaMQ=
+	t=1718306297; cv=none; b=X2WkXEz0rEF7Q5tIe7mxOjvVqGD+zvfvNQg9VuK+IYQgtv3PAL9Ju3E9j/EwBh/v2YeeK1ysoWbqkhPthZgDgW/Szm19VFWHnmSXQN75eIo9T2Ge81rnTlLSBcYv3O68ozYnP4997MHJ09Z1bq9kvUZJW0sif4dQwj/bWkr2jxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718299213; c=relaxed/simple;
-	bh=Apy/YJfzCXG5qBffjVb5Em/7Y/ajo8ZRh+LCsukDKns=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ifx9IjiCMm46I1p1wTvzGACANJBojIW3v8ckfBxhZvcRFSKHthJp9Co45mAuit4PeIM4jbW5/2+iQf1Sm85XkmRtjno3btbPmP4e23PD8xDFvmJGICWusS6pXPeB1ADvzlZQvpcDZSNANHNWwXBIZqst5a6k+PJdXFF6lFdMn6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXFfAgqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66789C2BBFC;
-	Thu, 13 Jun 2024 17:20:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718299212;
-	bh=Apy/YJfzCXG5qBffjVb5Em/7Y/ajo8ZRh+LCsukDKns=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=kXFfAgqGGfRDajw1ZdSl8ujZ8VNXRrUmaB5qtDjpeh2Z+N7taNOmSuloB3JcuLlxY
-	 cQn7auRp4fQYw9q4qszuzglsJCU4SucZjkUAaahDbFKjsIUGkRvXpP28EcpM0Agd9K
-	 n8d6bfEiH0f0BmM9k7yQCnIqphMMFwSJc9DQSOvYG5VyhINGHmMerx0TozM2JWMXJX
-	 jp0xnrq5xZme5OE7Lfk6dn0LQxUWD094vSQxaCEtvXPP0ZS3q3C5r0ygn1by4LYoFv
-	 98QoRL7uyWnk0lrdx5nK4cw8ssU22dTHjOyn6y7qQGitRvmteIrGdvFrr/zCW+s5Bf
-	 yMtoAR8UHUmOQ==
-From: Lee Jones <lee@kernel.org>
-To: Daniel Thompson <daniel.thompson@linaro.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
- Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20240612-md-drivers-video-backlight-v1-1-f4ca1beb36cc@quicinc.com>
-References: <20240612-md-drivers-video-backlight-v1-1-f4ca1beb36cc@quicinc.com>
-Subject: Re: (subset) [PATCH] backlight: add missing MODULE_DESCRIPTION()
- macros
-Message-Id: <171829921116.2731555.2620177411029795057.b4-ty@kernel.org>
-Date: Thu, 13 Jun 2024 18:20:11 +0100
+	s=arc-20240116; t=1718306297; c=relaxed/simple;
+	bh=SteWlDtqVG4RLnqZvL1arCk2m03QFmc7dLGN3aHEwK0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SHqQa/XbSe+jR6tKUN4DtOEvvumSUH2O6mEra+kBHA8m4Beu1E8+ga3kYbXvpaAvatNoSpWiQ/L3tR+VjeiaqgSib3tY9N9huEj/a1KzX2NeU5Pf4h0ObRbAwBBEaPtOHaKK09uCrYW+9UoOT7amIi8eMgwwsUIqGrXjTHpWFiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:be2a:f066:50f0:dff7])
+	by laurent.telenet-ops.be with bizsmtp
+	id b7J62C0083w30qz017J6YX; Thu, 13 Jun 2024 21:18:08 +0200
+Received: from rox.of.borg ([192.168.97.57])
+	by ramsan.of.borg with esmtp (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1sHpwS-00Ax6i-C0;
+	Thu, 13 Jun 2024 21:18:06 +0200
+Received: from geert by rox.of.borg with local (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1sHpxW-00FL8Q-AI;
+	Thu, 13 Jun 2024 21:18:06 +0200
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Jocelyn Falempe <jfalempe@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>
+Cc: Helge Deller <deller@gmx.de>,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2 0/7] drm/panic: Fixes and graphical logo
+Date: Thu, 13 Jun 2024 21:17:58 +0200
+Message-Id: <cover.1718305355.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
 
-On Wed, 12 Jun 2024 07:12:31 -0700, Jeff Johnson wrote:
-> With ARCH=x86, make allmodconfig && make W=1 C=1 reports:
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/backlight/platform_lcd.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/backlight/rt4831-backlight.o
-> 
-> Add the missing invocations of the MODULE_DESCRIPTION() macro.
-> 
-> 
-> [...]
+	Hi all,
 
-Applied, thanks!
+If drm/panic is enabled, a user-friendly message is shown on screen when
+a kernel panic occurs, together with an ASCII art penguin logo.
+Of course we can do better ;-)
+Hence this patch series extends drm/panic to draw the monochrome
+graphical boot logo, when available, preceded by the customary fixes.
 
-[1/1] backlight: add missing MODULE_DESCRIPTION() macros
-      commit: 7857f5c38d04a38e7a20060a6d370caf0424aa4e
+Changes compared to v1:
+  - Rebase against today's drm-misc-next, where drm_panic is broken on
+    all current drivers due to an uninitialized pointer dereference.
+    Presumably this was only tested with an out-of-tree driver change?
+  - New fixes [1/7], [3/7], and [4/7],
+  - New cleanup [5/7],
+  - Inline trivial draw_logo_mono().
+
+This has been tested with rcar-du.
+
+Thanks for your comments!
+
+Geert Uytterhoeven (7):
+  drm/panic: Fix uninitialized drm_scanout_buffer.set_pixel() crash
+  drm/panic: Fix off-by-one logo size checks
+  lib/fonts: Fix visiblity of SUN12x22 and TER16x32 if DRM_PANIC
+  drm/panic: Spelling s/formater/formatter/
+  drm/panic: Convert to drm_fb_clip_offset()
+  drm/panic: Rename logo to logo_ascii
+  drm/panic: Add support for drawing a monochrome graphical logo
+
+ drivers/gpu/drm/Kconfig     |  2 +-
+ drivers/gpu/drm/drm_panic.c | 74 +++++++++++++++++++++++++++++++------
+ drivers/video/logo/Kconfig  |  2 +
+ lib/fonts/Kconfig           |  6 ++-
+ 4 files changed, 70 insertions(+), 14 deletions(-)
+
+-- 
+2.34.1
+
+Gr{oetje,eeting}s,
+
+						Geert
 
 --
-Lee Jones [李琼斯]
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
 
