@@ -1,188 +1,200 @@
-Return-Path: <linux-fbdev+bounces-2600-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2617-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E3F915168
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jun 2024 17:08:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0132915253
+	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jun 2024 17:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A338B22373
-	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jun 2024 15:08:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D975285EE5
+	for <lists+linux-fbdev@lfdr.de>; Mon, 24 Jun 2024 15:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA6C19B586;
-	Mon, 24 Jun 2024 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BFE19B5B6;
+	Mon, 24 Jun 2024 15:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vk8yt2ea"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ew/D9iZb";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MNhhN1JB";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ew/D9iZb";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MNhhN1JB"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD4619ADB3
-	for <linux-fbdev@vger.kernel.org>; Mon, 24 Jun 2024 15:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152D31DFEA;
+	Mon, 24 Jun 2024 15:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719241700; cv=none; b=Z1G2JroeKRmZOtowGKjiD+xq5UeB53cps4aTD7/yuxSFiOWx9H3y9PyBowoGv7s700v90slX17Qyo1aPqCDLqLs4rM7gEGmuxhsIB6ta/XWeXdq3e/WuVT/iAG8QfgBe75ZQbeq6gmp7fHKKTK6j+K9u1O53zLN7mSJIq/n8Ztk=
+	t=1719242909; cv=none; b=D2m8uP09dz0zdzD8jauKZkoRnrL0RYr9ZdJyq1ZhVF71TMQE9h2Xvlkf/U8Og7Hf32zPekzFx+fT99jNy4CHgR0CH0bvSr59oYJwcrJKoIDUf70unofNI+zCfW2kezxqOlnEuro84iLLklTLqOCM1KfeEWTc81KZKRQOdjL1lgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719241700; c=relaxed/simple;
-	bh=ft4tT0UQ22Hu2W+Pyk0ebx25WCKyu/3L2mVuUHGIFQ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rna8XfWkIC4OgITtraZXTMIbsyuqf3KBoIn7mQVzR3w9MRyq7ayhWHuSbPoWypC02PYKGdnY+y77N43pcQCAwxxskg7Xv2VijQsF7+FVILbYIk6nT3SJFfKGYYVAZqXTECAN8BsOermDEgOxDYPhmXBpk2+FMcGy5KNgO/UenFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vk8yt2ea; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4217c7eb6b4so36840835e9.2
-        for <linux-fbdev@vger.kernel.org>; Mon, 24 Jun 2024 08:08:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719241696; x=1719846496; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wafc/q0nXR3Ye8LsHgCDkHwmKjVfo3c4oHVHMDrj/Aw=;
-        b=vk8yt2eaYwhW7f72SDOl5261xikcP+xruoLxe5Waa65T4fHod2eYL07PLwJkHZtFbj
-         iEmxo391Ym00xAFQ0Hny9vlN0ugeZbWxselJdlxPAYAfbLXKnoUSZ53i5d5OJfytpFOW
-         +A78H60YWZlKw5fwmLjOW16OawSag/ECkZ7QJuiOVSDfSMb9j4G75fiHeIPezy0MvuVQ
-         CJxw8DfieKdKqTqyZnm9mYsrg+XNxd8iGgHLXjD6VNkS5n1SGvM1WLT0BbjXUN0uIfPv
-         CxeZ3QX4usQi4M/KMqU+YkL0f2cyFKyVMSir5EkSDUCjrr7+JsVM9Z8/eGeQDSgl3zjV
-         LsGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719241696; x=1719846496;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wafc/q0nXR3Ye8LsHgCDkHwmKjVfo3c4oHVHMDrj/Aw=;
-        b=GLJ9VUxoohybj3nGhQcolrLkZ/MIbgDHEOJWjcAKqkBlm87EuYYsHTiQKE4V123Ugl
-         2RrJ1SfTS2uX44Yz7HjaLG8cHbdgat+Ra7i1punN8e3C2Sb4Eu2x6DPq8BXKnUjdPMmK
-         Nt/xBZi1FCoR7et6svrWS5s8XXSrCRsnSWHA0FCyamxEho4QufOgD+hCjs1QPTt8AALH
-         s2zbCaTMVvyzZHu6A8Qj4vFSafUDxEtrb/2esBcUrBe95IWUjqAo8s0vdRQ7+yLQrk8i
-         0VlUWojbyq/YPTsNmJGniXb/+ERbimUYKPqYWE7UvAZaeSbhy7Ii+HKzhpzp9NZ/YCvI
-         nFTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQE7tmgkDPMJLAinAXNS/zafDRPaWjgBvLXvyOiCdvTh5woGv1Jba8zstT+ajo6Vy9ige+dn/0oW39ZwJFd9wMm/QK0NwL3v/u8E4=
-X-Gm-Message-State: AOJu0YyI/z1bpIGwZf2dWoeSZXO0R7BLOQxDBqFvYm6INJiZ+eQ/HBn2
-	O1HOT/AbCGDaBg//Sl3tXCDBTeA6nXkFDQtssbIXLH369MvMeVnnjivm4XEQYO8=
-X-Google-Smtp-Source: AGHT+IE5Azx1tp6IG+TkRkPA4t2eMISvGoO8x7MCXtH6yPnmaWLIdsqd5JLP1NfTp42KWcMq7VY1ag==
-X-Received: by 2002:a05:600c:68c:b0:421:de31:81 with SMTP id 5b1f17b1804b1-4248cc35d9cmr32718155e9.24.1719241695473;
-        Mon, 24 Jun 2024 08:08:15 -0700 (PDT)
-Received: from [10.2.5.170] (amontpellier-556-1-151-252.w109-210.abo.wanadoo.fr. [109.210.7.252])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4248191116fsm142780645e9.37.2024.06.24.08.08.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jun 2024 08:08:15 -0700 (PDT)
-Message-ID: <62dadd31-5fd1-45b4-99e8-44ffb367bad5@baylibre.com>
-Date: Mon, 24 Jun 2024 17:08:14 +0200
+	s=arc-20240116; t=1719242909; c=relaxed/simple;
+	bh=vr+RiDJl7SgVHky0afzslQhrgrRyTKEsA9ZGOlXDfiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E2gnf0FfPPPI5OVxFdFSn2vnIjIxKBnskUbR5OmYlPjKer1IuUavX5ktwNiiq6ZKTzPN6+3WzDor8W7Mdk4yJ7iT4XG4doMbGICy21sj5YSqvYvU3XjtE+hbEEYlyAUeXRaR0NGfJ2wML0JaQBGJAnETygMRIOHunUWOov9OCUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ew/D9iZb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MNhhN1JB; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ew/D9iZb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MNhhN1JB; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 87F9921A9A;
+	Mon, 24 Jun 2024 15:20:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1719242437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=Pvh9Iuhb+qDZ3VUZ19jQr0U88LS2BndpQO41VU2M4Js=;
+	b=ew/D9iZbaWaiWdPTIJuJHdSdr3ctDMYFLxEeAH30qZIXgTobA17bB6V+Y9tD0834e3tdZu
+	1cPxoTqbRpuQYkcOwsK14STVUUJiq4iaDoClkX7HbelBg55cXoE4GAq5Q2CHn9SkkEqv54
+	XQg9ZCpn5+2sts08fKmCy5WO+PytGUc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1719242437;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=Pvh9Iuhb+qDZ3VUZ19jQr0U88LS2BndpQO41VU2M4Js=;
+	b=MNhhN1JBhiH3BpPcm0HNX5JaWgFnWhBVQjfGLqGFnZxf9XQ6ETzEa0rdGxw/86GcOlGJ8l
+	iFeGIHyYA7A5M8Dw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1719242437; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=Pvh9Iuhb+qDZ3VUZ19jQr0U88LS2BndpQO41VU2M4Js=;
+	b=ew/D9iZbaWaiWdPTIJuJHdSdr3ctDMYFLxEeAH30qZIXgTobA17bB6V+Y9tD0834e3tdZu
+	1cPxoTqbRpuQYkcOwsK14STVUUJiq4iaDoClkX7HbelBg55cXoE4GAq5Q2CHn9SkkEqv54
+	XQg9ZCpn5+2sts08fKmCy5WO+PytGUc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1719242437;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=Pvh9Iuhb+qDZ3VUZ19jQr0U88LS2BndpQO41VU2M4Js=;
+	b=MNhhN1JBhiH3BpPcm0HNX5JaWgFnWhBVQjfGLqGFnZxf9XQ6ETzEa0rdGxw/86GcOlGJ8l
+	iFeGIHyYA7A5M8Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3695613AA4;
+	Mon, 24 Jun 2024 15:20:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hT/9C8WOeWbqGgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 24 Jun 2024 15:20:37 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: lee@kernel.org,
+	daniel.thompson@linaro.org,
+	sam@ravnborg.org,
+	jingoohan1@gmail.com,
+	deller@gmx.de,
+	linus.walleij@linaro.org,
+	f.suligoi@asem.it,
+	ukleinek@kernel.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 00/17] backlight: Introduce power-state constants
+Date: Mon, 24 Jun 2024 17:19:55 +0200
+Message-ID: <20240624152033.25016-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/9] iio: adc: ad7606: fix oversampling gpio array
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Beniamin Bia <beniamin.bia@analog.com>,
- Stefan Popa <stefan.popa@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
- devicetree@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- jstephan@baylibre.com, dlechner@baylibre.com
-References: <20240618-cleanup-ad7606-v1-0-f1854d5c779d@baylibre.com>
- <20240618-cleanup-ad7606-v1-8-f1854d5c779d@baylibre.com>
- <20240623164542.53a9f2b1@jic23-huawei>
-Content-Language: en-US
-From: Guillaume Stols <gstols@baylibre.com>
-In-Reply-To: <20240623164542.53a9f2b1@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+	FREEMAIL_TO(0.00)[kernel.org,linaro.org,ravnborg.org,gmail.com,gmx.de,asem.it];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
 
-Resend, previous mail was erroneously sent in HTML. I apologize for the 
-spamming.
+The backlight code currently uses fbdev's FB_BLANK_ constants to
+represent power states UNBLANK and POWERDOWN. Introduce dedicated
+backlight constants to remove this dependency on fbdev.
 
-On 6/23/24 17:45, Jonathan Cameron wrote:
+Patch 1 introduces BACKLIGHT_POWER_ON and BACKLIGHT_POWER_OFF, which
+replace constants from fbdev. There's also BACKLIGHT_POWER_REDUCED,
+which is required by a few drivers that appear to use incorrect or
+uncommon blanking semantics.
 
- > On Tue, 18 Jun 2024 14:02:40 +0000
- > Guillaume Stols <gstols@baylibre.com> wrote:
- >> gpiod_set_array_value was misused here: the implementation relied on the
- >> assumption that an unsigned long was required for each gpio, while the
- >> function expects a bit array stored in "as much unsigned long as needed
- >> for storing one bit per GPIO", i.e it is using a bit field.
- >>
- >> Fixes: d2a415c86c6b ("iio: adc: ad7606: Add support for AD7606B ADC")
- >> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
- > Always drag fixes to the start of a series.  Probably doesn't matter
- > in this case but we want it to be obvious there are no necessary 
-precursors
- > in this series for anyone backporting.
+The rest of the patchset converts backlight drivers. The new
+constants' values are identical to the old ones, so the driver
+conversion can be done one-by-one.
 
-OK will do this change in the next version.
+There are many more backlight drivers in other subsystems. These
+can later be converted when the new constants have been merged.
+Once merged, several include statements for <linux/fb.h> can be
+removed (specifically under drivers/platform/x86/).
 
- >
- > What is the user visible outcome of this bug?  Superficially the numbers
- > all end up the same I think even though the code is clearly working
- > mostly by luck.  So might not warrant a fixes tag?
+This patchset is part of a larger effort to implement the backlight
+code without depending on fbdev and ultimatively remove fbdev
+dependencies from the kernel.
 
-This is leading into some issues I should maybe have better documented 
-in the commit message.
+v2:
+- rename BL_CORE_ power constants to BACKLIGHT_POWER_ (Sam)
+- fix documentation
 
-See below
+Thomas Zimmermann (17):
+  backlight: Add BACKLIGHT_POWER_ constants for power states
+  backlight: aat2870-backlight: Use blacklight power constants
+  backlight: ams369fb06: Use backlight power constants
+  backlight: corgi-lcd: Use backlight power constants
+  backlight: gpio-backlight: Use backlight power constants
+  backlight: ipaq-micro-backlight: Use backlight power constants
+  backlight: journada_bl: Use backlight power constants
+  backlight: kb3886-bl: Use backlight power constants
+  backlight: ktd253-backlight: Use backlight power constants
+  backlight: led-backlight: Use backlight power constants
+  backlight: lm3533-backlight: Use backlight power constants
+  backlight: mp3309c: Use backlight power constants
+  backlight: pandora-backlight: Use backlight power constants
+  backlight: pcf50633-backlight: Use backlight power constants
+  backlight: pwm-backlight: Use backlight power constants
+  backlight: rave-sp-backlight: Use backlight power constants
+  backlight: sky81452-backlight: Use backlight power constants
 
- >
- >> ---
- >>   drivers/iio/adc/ad7606.c     | 4 ++--
- >>   drivers/iio/adc/ad7606_spi.c | 5 +++--
- >>   2 files changed, 5 insertions(+), 4 deletions(-)
- >>
- >> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
- >> index e3426287edf6..502344e019e0 100644
- >> --- a/drivers/iio/adc/ad7606.c
- >> +++ b/drivers/iio/adc/ad7606.c
- >> @@ -235,9 +235,9 @@ static int ad7606_write_os_hw(struct iio_dev 
-*indio_dev, int val)
- >>       struct ad7606_state *st = iio_priv(indio_dev);
- >>       DECLARE_BITMAP(values, 3);
- >>   -    values[0] = val;
- >> +    values[0] = val & GENMASK(2, 0);
- >>   -    gpiod_set_array_value(ARRAY_SIZE(values), st->gpio_os->desc,
- >> +    gpiod_set_array_value(st->gpio_os->ndescs, st->gpio_os->desc,
- >>                     st->gpio_os->info, values);
+ .../ABI/stable/sysfs-class-backlight          |  7 +++---
+ drivers/video/backlight/aat2870_bl.c          |  4 ++--
+ drivers/video/backlight/ams369fg06.c          | 23 +++++++++----------
+ drivers/video/backlight/corgi_lcd.c           |  4 ++--
+ drivers/video/backlight/gpio_backlight.c      |  9 ++++----
+ drivers/video/backlight/ipaq_micro_bl.c       |  3 +--
+ drivers/video/backlight/jornada720_bl.c       |  3 +--
+ drivers/video/backlight/kb3886_bl.c           |  4 ++--
+ drivers/video/backlight/ktd253-backlight.c    |  5 ++--
+ drivers/video/backlight/led_bl.c              |  4 ++--
+ drivers/video/backlight/lm3533_bl.c           |  3 +--
+ drivers/video/backlight/mp3309c.c             |  4 ++--
+ drivers/video/backlight/pandora_bl.c          |  3 +--
+ drivers/video/backlight/pcf50633-backlight.c  |  5 ++--
+ drivers/video/backlight/pwm_bl.c              |  4 ++--
+ drivers/video/backlight/rave-sp-backlight.c   |  2 +-
+ drivers/video/backlight/sky81452-backlight.c  |  2 +-
+ include/linux/backlight.h                     | 20 +++++++++-------
+ 18 files changed, 53 insertions(+), 56 deletions(-)
 
-ARRAY_SIZE(values) is 1 because DECLARE_BITMAP will declare a dimension 
-1 unsigned long array (more than enough for 3 bits !).
-We want to set 3 bits in gpiod_set_array_value, thus the first parameter 
-should be 3, not 1.
+-- 
+2.45.2
 
- >>         /* AD7616 requires a reset to update value */
- >> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
- >> index 263a778bcf25..287a0591533b 100644
- >> --- a/drivers/iio/adc/ad7606_spi.c
- >> +++ b/drivers/iio/adc/ad7606_spi.c
- >> @@ -249,8 +249,9 @@ static int ad7616_sw_mode_config(struct iio_dev 
-*indio_dev)
- >>   static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
- >>   {
- >>       struct ad7606_state *st = iio_priv(indio_dev);
- >> -    unsigned long os[3] = {1};
- >> +    DECLARE_BITMAP(os, 3);
- >>   +    bitmap_fill(os, 3);
-
-Here we need 3 bits set HIGH in one unsigned long (i.e 0x07) and we get 
-3 times 0x01 instead.
-
-Thus, it will not switch to software mode if OS pins are not hardwired 
-(which is I must admit, rather unlikely).
-
- >>       /*
- >>        * Software mode is enabled when all three oversampling
- >>        * pins are set to high. If oversampling gpios are defined
- >> @@ -258,7 +259,7 @@ static int ad7606B_sw_mode_config(struct iio_dev 
-*indio_dev)
- >>        * otherwise, they must be hardwired to VDD
- >>        */
- >>       if (st->gpio_os) {
- >> -        gpiod_set_array_value(ARRAY_SIZE(os),
- >> +        gpiod_set_array_value(st->gpio_os->ndescs,
- >>                         st->gpio_os->desc, st->gpio_os->info, os);
- >>       }
- >>       /* OS of 128 and 256 are available only in software mode */
- >>
 
