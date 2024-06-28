@@ -1,147 +1,146 @@
-Return-Path: <linux-fbdev+bounces-2628-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2631-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB1191B802
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2024 09:17:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8566891C17B
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2024 16:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88A1BB21B26
-	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2024 07:17:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B35391C20C03
+	for <lists+linux-fbdev@lfdr.de>; Fri, 28 Jun 2024 14:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B07C487B1;
-	Fri, 28 Jun 2024 07:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F661C0DDE;
+	Fri, 28 Jun 2024 14:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="A78BQxXc"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Lo/xOOIm"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C308310A14;
-	Fri, 28 Jun 2024 07:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE731DDE9
+	for <linux-fbdev@vger.kernel.org>; Fri, 28 Jun 2024 14:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719559027; cv=none; b=ACvg4HiY7GlChqU0MRxwN+NbpLRqOgWJJXPC5GtNsyCzl5+vHPY/8Mezs5/lnrnsvCVdmiB4BMckR9ZDjJ9O3F1zrC1zO4N7YV1rQKjoIo4wY8Eyb42/HrT5CKFOBgAcRvMCLrK9ht6w4pMzZTBM3SmSUpKGY3NtulrrYXZmzrU=
+	t=1719586122; cv=none; b=Gz4W711KVAdPF7GgHrFWBsaM2hFG6raJFtVi8J0PxwTZMIN0rnj10affouXWhtE7/J1aJhMJFGRq1S7qrfiE0u+FzN8NuSiZmyB8QcBmkvWaq4/F+CVqSpDyVFT7kXulUOndqqwsZeSGsKmyBcaUo9gSgRxD10uHC1W0MgK5RsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719559027; c=relaxed/simple;
-	bh=DmlFcDAuhQL5dAxseaJPHDWyJzFoqXVVTL5/VSU9j+A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hC8sLrkI/jVqL3hF0L0LPme4moT7Pb//8GZoSWHVuOKMymzUCb+whwQ8iYwi/GKWX8ayRWllp/NENJ/jqO0Hg1sXD+1ZTTw/uez/oBahWgbok8F9SG9vm7YiZp5M1hkWzFcFuj1u6ZnOrzT7nXWcWMW0M9KwOl3V9cv1ysZuZ14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=A78BQxXc; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1719559007; x=1720163807; i=deller@gmx.de;
-	bh=BVCvxso8LWcDBYVgY2qR9LImDTuBOXdQaYFxMSV7Poc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=A78BQxXc9VkBkMEX/sLHLzPceiNsRLnEajv/nSvoQDQKk6nwv8WvFqmENu6Z7iVJ
-	 3J6Z6IQUYYeTpiWDfIkkzsb9OmNGkDPyrjMNpEan/GpW3rCUKm0gV78xdtbat73Gx
-	 48uQsEvZTGbCXbfc2vSjdLxFmdbJW7xFLImM1fWcCspO58SmVMZwp4gtfYmG5K7MG
-	 MaDrgXw/+y/umPnUByR92FGHZcHNG1OdAN6VsjdEqq0KU0QDzQPi0DfoIiDdrNWnR
-	 DR9LGXC+hO+9c5hr7vyhfboTScIge+2qjK71tJHGAANS2RS3oB3RM57d9fgxNgFlI
-	 0/JFw1wQzXBOogB4DA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.78]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M59C8-1sLzv03e68-004JhY; Fri, 28
- Jun 2024 09:16:46 +0200
-Message-ID: <72418d4e-76ac-44ae-9f4a-f314d925f928@gmx.de>
-Date: Fri, 28 Jun 2024 09:16:45 +0200
+	s=arc-20240116; t=1719586122; c=relaxed/simple;
+	bh=xQKsa9t92njbc/chm5592/HjD087mzDws4h6aDIF+3Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sHlO9qEvgKR3A14Ns0nthG82qXdJlbLk2MKcR9z5PcnCuxGv/MjRhKLFoCTaWP5rvgeZ7SKO6so5hoL+PvsNMWYNLIrNOlN09NOXh0Q3ih74nq0zoClLLGzI6IwQjyHrLqRGtV35edW4z/btFXE7ARF1IpCIde32jz9bLB23oqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Lo/xOOIm; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ebec2f11b7so7484041fa.2
+        for <linux-fbdev@vger.kernel.org>; Fri, 28 Jun 2024 07:48:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719586118; x=1720190918; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d4WuBSs6L6RPbG4uwMfQbCjEpmJOYbZ1BJPiiArdN6M=;
+        b=Lo/xOOIme48WV+zhjOTVtAgsPbIKHIL5zwD7hM9LYikXTB57yNDZDh1P0WhOus1AeG
+         /Uy8XbT0d4Euk7YZ702WpoCq88+HKtZT9EmXPhAKdZW8TC1wo/KUkjD4YEXGin5550eN
+         0e0+3ybZHzL8wjNqh4XmD0lvSbBuNlBtVAvCSeJCon/nIobshiBovdWkaPVJqs0wY8+q
+         LTr6UQgiBvE4Rj+Z1JRc5BZnqDdS01w2QYzxY8r1tSshhf7XR3eKiCAPMFhhg541Wad0
+         TnXwXlOf3ERyiYSCs6ulNzpocyFl7k+ldD/63Ig72YslEKm6Wx0ILcWZistb7o+IDpYF
+         CPWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719586118; x=1720190918;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d4WuBSs6L6RPbG4uwMfQbCjEpmJOYbZ1BJPiiArdN6M=;
+        b=r6HwH2nWL+ZAGNSkb+DghQZOsPw0SseGBhfvyJKbYhpvdpUsrFKdD/ySNVqNyryQNz
+         hSJGG3oZ1we2DZCYJQcjj5Tvp1qgQCKxaRQg8Ry8YjCRZVfgBAmbVfep/aEbWTchZ9cx
+         1SZwk29zby1Nwq1ZPHZhlfZLpU5/sXgwCJF7Nt0fOMzxiJ6RGcQnaTbkkbarkcWF3gOY
+         b4QTY6xN8rJ+Xmcvk6nqcRoSgoxDppXdcgvGa5s0aZDrCyODg2mBjveaU16SxWHNVmlz
+         qpeAm9B8zfv9HfLc678DZ1WCOP26aNvHvcXY2z8zt4JN5zuupYvAgkkfmuV793weuj6z
+         ED7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVOvrW3AsgKnz8R76YHZOIvir5LFhS8xFvFYgdgfuqnGD8F0Qc2OnDCgrTfB2OSJjvZrrQPJWxxBTnBpI4lcjULe9b0c4xLi4h6fcY=
+X-Gm-Message-State: AOJu0YzvmjM19iqptuO+i+DzYKpMojE0TRXhCgqxTfCYvEdESw+/m5Wa
+	Mr0AGosINb+YosJGwc4wRxG43de5sd5QIzdMqrH0/gVtnbAanO76s09uZcDsW1s=
+X-Google-Smtp-Source: AGHT+IHGkAthhS0PQojYyViGRK3B3neRWRYcvZOsj1Kpf8gTHXSMNXCGtItzD+9u7B97uPwYqUznUQ==
+X-Received: by 2002:a2e:720b:0:b0:2ec:4096:4bc6 with SMTP id 38308e7fff4ca-2ec5b318000mr98393981fa.7.1719586117563;
+        Fri, 28 Jun 2024 07:48:37 -0700 (PDT)
+Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256af55c0asm37972575e9.15.2024.06.28.07.48.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jun 2024 07:48:37 -0700 (PDT)
+From: Guillaume Stols <gstols@baylibre.com>
+Subject: [PATCH v2 00/10] iio: adc: ad7606: Improvements
+Date: Fri, 28 Jun 2024 14:48:18 +0000
+Message-Id: <20240628-cleanup-ad7606-v2-0-96e02f90256d@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: omap2: Return clk_prepare_enable to transfer the
- error
-To: Chen Ni <nichen@iscas.ac.cn>, laurent.pinchart@ideasonboard.com,
- kuninori.morimoto.gx@renesas.com
-Cc: linux-omap@vger.kernel.org, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20240628032812.280895-1-nichen@iscas.ac.cn>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
- HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
- r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
- CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
- 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
- dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
- Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
- GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
- aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
- 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
- ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
- FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
- uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
- uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
- REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
- qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
- iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
- gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
- Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
- qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
- 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
- dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
- rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
- UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
- eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
- ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
- dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
- lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
- 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
- xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
- wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
- fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
- Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
- l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
- RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
- BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
- Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
- XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
- MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
- FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
- 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
- ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20240628032812.280895-1-nichen@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dx4qoQlPZaG6FI2b4ClufdZB9k9eYU8N+FyxceWck9YLG9mnnvO
- cLvm3Jjf3/GL3vdpDT3+wZIiB18yfBzs+cSnGdz1cATRfzYcWPoaG48DYmWw0LZLP2uB+hl
- Xz1dsb005pu3di56zns6CUzjK67p2JnASgQUHLCr8PybEKwHqP9Fan+NRl6E0W6a+mS3n9Z
- YACq+irr0j5MqkfxnQFMg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:3LYUJZkI6qQ=;SZ013v6RcqX/uXL1yPPXZ2LVXAM
- hV96OijzHdb9eYhtjVlvsYFhuZ4upnwebPkwdFeSVQuLgmpulCUVs40DJZ9eVd6+2idD50CN3
- ZT2OyFT/d7pPu8EKJPtsqlmco3WtVrHQmRP83ukosUNmPqFqwcRZ7uUTWIMlZNBOVfTCX4wEp
- 4SE+Yg3u1pK/K/vVfoS33jhjtFumUN188DQa6UrZEytSdsJ1dJgfZ40oFYgmvnvZ/ir4gBWKh
- DxEb8oPZjMXirKy2ExwYPZG6TiyiJPYoSjn1UaNMYtnliNCHCYGKnR3491j8T/XICjVNxVDy5
- oRFffHXehNR431+BXnwv+NEGTq2YtnX9HCDNovCNOW3NG619g5yocmwWZillPb7AAUrR+6C7d
- e8GrtREfjAOXsI0HwejhNNurTnc4NAzvPsBF7LsXDC5JMWoptL2Z8sDNZCtZ8BmoVvdWhF1RJ
- 7pSNdREXqONcwmtX2liPGzwpvT19ANw+pr1SqrVKgZ36+rWMWbLnMKbQrRNg4dhC7YXmpksd7
- lKjsDKihYhv4eSUjjYe9Dq9hrOfPN3P6ZlCnQF1a3Caadj3cyrm7gY929Nih2JccIwl5oUsOq
- VE1nI9dq2U3PP8Ek91kEfdayj/w95HhhBV5GjDr+vW/E8rBtC2O/qwrLGnxz+gVpct4T4OpmA
- 7zOb+fb0Qe0ct5526Jm0RJ/jaiEtQ+9P1WxUrDRk+BCjOEF9qSs5vzLZJxxyoBmslEP2voYxr
- mg/OqxT7V7H+Zg5vxQXGTNAVQKe6CkKE+1Tpb0xyDl4uQTPEhDQIu1hIz3owAyR9QJMq9tTkQ
- uAx2yRizO8u+LmSkAxHNqVhajdc5Dp4C8lloHVIje+trU=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADLNfmYC/13MQQ6CMBCF4auQWVvTaaAUV97DsCjtIJMgkFYbC
+ eHuVty5/F/yvg0iBaYIl2KDQIkjz1MOdSrADXa6k2CfG5RUpSxRCzeSnV6LsL7WUgvUSIp8Y9B
+ 0kE9LoJ7fB3hrcw8cn3NYDz/hd/1RGs0/lVBI0aOpSl+5um78tbPryF2gs5sf0O77/gFijguWr
+ wAAAA==
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Beniamin Bia <beniamin.bia@analog.com>, 
+ Stefan Popa <stefan.popa@analog.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Michael Hennerich <michael.hennerich@analog.com>, 
+ linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Guillaume Stols <gstols@baylibre.com>, jstephan@baylibre.com, 
+ dlechner@baylibre.com
+X-Mailer: b4 0.14.0
 
-On 6/28/24 05:28, Chen Ni wrote:
-> Return clk_prepare_enable() in order to transfer the error if it fails.
->
-> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-> ---
->   drivers/video/fbdev/omap2/omapfb/dss/venc.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
+This series adds the following improvements over the current AD7606's
+driver implementation:
 
-applied.
-Thanks!
-Helge
+- Fix wrong usage of gpio array
+- Fix standby that was documented as ACTIVE_LOW but handled in the
+  driver as if it was ACTIVE_HIGH
+- Improve dt-bindings documentation
+- Switch mutex lock to scoped guard
+
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+---
+Changes in v2:
+- Change scoped guard to guard(mutex)(&st->lock). This was tested with
+  Rob's bot condition, and seems not to generate warning anymore.
+- Reorder the commits for avoiding bisection issues and respect commit
+  priority rules.
+- Add vdrive-supply to required properties.
+- Separate cosmetic changes from content ones in dt-binding
+  descriptions.
+- Move maxItems changes (and plural in descriptions) to the commit that
+  adds conditions.
+- Link to v1: https://lore.kernel.org/r/20240618-cleanup-ad7606-v1-0-f1854d5c779d@baylibre.com
+
+---
+Guillaume Stols (10):
+      dt-bindings: iio: adc: adi,ad7606: add missing datasheet link
+      dt-bindings: iio: adc: adi,ad7606: comment and sort the compatible names
+      dt-bindings: iio: adc: adi,ad7606: normalize textwidth
+      dt-bindings: iio: adc: adi,ad7606: improve descriptions
+      dt-bindings: iio: adc: adi,ad7606: add supply properties
+      dt-bindings: iio: adc: adi,ad7606: fix example
+      dt-bindings: iio: adc: adi,ad7606: add conditions
+      iio: adc: ad7606: fix oversampling gpio array
+      iio: adc: ad7606: fix standby gpio state to match the documentation
+      iio: adc: ad7606: switch mutexes to scoped_guard
+
+ .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 129 ++++++++++++++++-----
+ drivers/iio/adc/ad7606.c                           |  68 +++++------
+ drivers/iio/adc/ad7606_spi.c                       |   5 +-
+ 3 files changed, 131 insertions(+), 71 deletions(-)
+---
+base-commit: 07d4d0bb4a8ddcc463ed599b22f510d5926c2495
+change-id: 20240416-cleanup-ad7606-161e2ed9818b
+
+Best regards,
+-- 
+Guillaume Stols <gstols@baylibre.com>
 
 
