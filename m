@@ -1,173 +1,166 @@
-Return-Path: <linux-fbdev+bounces-2745-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-2753-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936F7942D62
-	for <lists+linux-fbdev@lfdr.de>; Wed, 31 Jul 2024 13:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1114E942E9F
+	for <lists+linux-fbdev@lfdr.de>; Wed, 31 Jul 2024 14:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F5F1283D77
-	for <lists+linux-fbdev@lfdr.de>; Wed, 31 Jul 2024 11:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3CFA28C043
+	for <lists+linux-fbdev@lfdr.de>; Wed, 31 Jul 2024 12:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38721AD40E;
-	Wed, 31 Jul 2024 11:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731641B1425;
+	Wed, 31 Jul 2024 12:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BU59HBNI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dSQa3CFW";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BU59HBNI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dSQa3CFW"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CD91A8BEF
-	for <linux-fbdev@vger.kernel.org>; Wed, 31 Jul 2024 11:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846C61B012E;
+	Wed, 31 Jul 2024 12:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722425901; cv=none; b=h68JI0lGYaRyC4ddnJ4hCoz7Pq/PJjgdnrU9NFsW3hcU3nwq6wsH6XUIr9u9EI1aHE4aVoQ40zoXx5hssazLxXnkxlK3HN381bXnpJHsv3nLxFHV2WDc60O1OBShrmeATWoxzH/wb/xUXgmtrFRW1q4Zzm+CdQScwuc3ktyVotA=
+	t=1722429313; cv=none; b=GbL0s9sEqcUdwpsJL6caNnhPKIXVY82do1bGriErR2c/HSYFAJg3MNv1XvCkqKBMVQ9Pu2et8raONrQx69XTKmwBRd6zUOcMV6MbEofBGTFqHqRmYq+VDnzEmq+4rvpKMNupdmNjzcgrodaBvXXZ38mNsZRXxBELFDhNnzBkArs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722425901; c=relaxed/simple;
-	bh=MRcb3H0cCeRUNZWmoGXwCN3qJqO9FFcHz5ZtUIzyW5s=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=nC7XS4zyDoTazBFLt77JlvLVIHPg0Wi8qeS0vTU0GeqvSaYJk2tgFV/wjFjtCj5jGwiEjWqZjf1DoC2P9k26jEoL49BZaPZcMsXnifsO4aaDolDJQShVJ6974EauKjB1Y//Cwx+azOGXHrKbCV6+y9oIGIFqHPvy5mfG4QFpkMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-81f95058fb9so756924239f.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 31 Jul 2024 04:38:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722425899; x=1723030699;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AZQzn55hmwUwe/OLN07Yt1bGgbGwuLAI4PDXp5aGGzQ=;
-        b=YScwdZS3wpzUZmmP2MbqsEFREVQC18wRMm4ksOTFxxNvu44XH3L3IphbHPD8ddKywj
-         9BxTVK0ulf2PVOK5oTO1BDOSvKzGC0xUrhua0uUVe2sPQFaaBPldqK/vm968JnxpDsNR
-         H6BCzmvJ0jjsppScwnWCe9u2hqfjJR23tENLHLMsFxZH4NiWISLo9t+4t8XB0GqVO0oW
-         XBDF+oYLw8ButgB5/BK8Gwm7NGtBWdjFqci5emdHrKoutdyOfX+wMxhEi9eokb2JNTkX
-         z++pWIPK29cvDm+dZ34AqFDOJNo18woxaRIv5tkUoDrh0yGUufdX69bikLA1px5232iF
-         juTw==
-X-Forwarded-Encrypted: i=1; AJvYcCXd8XD/JAypw0amlZTDowkCXBJCRodnk/+s5Rb8UAGcZBfTZPm5mzYGYi35bx3ynwGGbVaCPoRO4pOVKHSl+v/lze+z2oWjarXsUYI=
-X-Gm-Message-State: AOJu0YwJldUGPAlhO5/p3upoC6GuTfNrNIInzM4vUqqJIbJtOagEeHgp
-	KTq0v9CkS6WFco6rLUTQ8946jUy4j2qHmpBwPNOD0VDc3cqLthVqiPHBQBvFzftLAqyPQq8VINi
-	nyXbSQdUHz9/A9aOYnX5XR4afjLurcssWgeo8yQyLQIHHC9rNbdXiNeE=
-X-Google-Smtp-Source: AGHT+IEsBuLENj62DdnzKW8aEcsM1YkZAnwt3UvU7FAzopC0Cd1elTa9/gEeBOr1PiAxcEcNZIuXWDOSPCJBjwP31vXC5zpwLqRx
+	s=arc-20240116; t=1722429313; c=relaxed/simple;
+	bh=GukjMaHqku3EIpjCO+4g2pwTjbbFdjRQTijc0JnwzxM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jpi97aT2WZtlDoGQSysWC0Bm/x3MTTmoQSIMfUYwnqKlrWVpbK8iHAiWIDHI+jwIHJAi8NfAOkkdKDOug1FB+LQZNZW6mnI/lO49fi1rlfa6nzXBLOE90ZmgD2bo2nQM699Av1ecdmAhBcePMmc3+H+Gqd807CGo5w6l3ABBWfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BU59HBNI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dSQa3CFW; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BU59HBNI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dSQa3CFW; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 94EC71F82F;
+	Wed, 31 Jul 2024 12:35:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1722429305; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9gF6UC7GyZES1sywXW1iqfz+JjY6OfayYy0kTi8bYSQ=;
+	b=BU59HBNIDNXWVCguaR4/NHuA4jI/Thi7zv04Z09PhPLx0stsaKVL4vDyUfS9Y4Q5694xIf
+	yG96i7fJ4F3yTnNW9m+egYTCBucpYX+m+nGGEsF/HHNhYda9KqVRt8cdreojV8EStlb7Cu
+	CMGA4wwuX2ZAO+QaByK/NuFyNhyuIRc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1722429305;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9gF6UC7GyZES1sywXW1iqfz+JjY6OfayYy0kTi8bYSQ=;
+	b=dSQa3CFWWZT4kXd2ZVc+LP5emjTzF9h9g/WODYhFHgEOvOaIKyvWrAELxgtbT5GdvlKhYy
+	wfNIkA7lewpNUABw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BU59HBNI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dSQa3CFW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1722429305; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9gF6UC7GyZES1sywXW1iqfz+JjY6OfayYy0kTi8bYSQ=;
+	b=BU59HBNIDNXWVCguaR4/NHuA4jI/Thi7zv04Z09PhPLx0stsaKVL4vDyUfS9Y4Q5694xIf
+	yG96i7fJ4F3yTnNW9m+egYTCBucpYX+m+nGGEsF/HHNhYda9KqVRt8cdreojV8EStlb7Cu
+	CMGA4wwuX2ZAO+QaByK/NuFyNhyuIRc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1722429305;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9gF6UC7GyZES1sywXW1iqfz+JjY6OfayYy0kTi8bYSQ=;
+	b=dSQa3CFWWZT4kXd2ZVc+LP5emjTzF9h9g/WODYhFHgEOvOaIKyvWrAELxgtbT5GdvlKhYy
+	wfNIkA7lewpNUABw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5393313297;
+	Wed, 31 Jul 2024 12:35:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id do+LEnkvqmYiUQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 31 Jul 2024 12:35:05 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: deller@gmx.de
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-omap@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/9] fbdev: Use backlight power constants
+Date: Wed, 31 Jul 2024 14:33:41 +0200
+Message-ID: <20240731123502.1145082-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:150f:b0:4c0:9a05:44c4 with SMTP id
- 8926c6da1cb9f-4c6352e57admr767806173.0.1722425899452; Wed, 31 Jul 2024
- 04:38:19 -0700 (PDT)
-Date: Wed, 31 Jul 2024 04:38:19 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000e39b37061e898704@google.com>
-Subject: [syzbot] [fbdev?] KASAN: global-out-of-bounds Read in bit_putcs (3)
-From: syzbot <syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com>
-To: daniel@ffwll.ch, deller@gmx.de, dri-devel@lists.freedesktop.org, 
-	linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.81 / 50.00];
+	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[gmx.de];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	DKIM_TRACE(0.00)[suse.de:+];
+	FREEMAIL_ENVRCPT(0.00)[gmx.de]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -1.81
+X-Rspamd-Queue-Id: 94EC71F82F
 
-Hello,
+Commit a1cacb8a8e70 ("backlight: Add BACKLIGHT_POWER_ constants for
+power states") introduced dedicated constants for backlight power states.
+Convert fbdev drivers to the new constants.
 
-syzbot found the following issue on:
+The new constants replace the fbdev constants. This is part of a larger
+effort to make kernel subsystems more independent from fbdev code and
+headers.
 
-HEAD commit:    c912bf709078 Merge remote-tracking branches 'origin/arm64-..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=13b495bd980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=35545feca25ede03
-dashboard link: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-userspace arch: arm64
+Thomas Zimmermann (9):
+  fbdev: atmel_lcdfb: Use backlight power constants
+  fbdev: aty128fb: Use backlight power constants
+  fbdev: atyfb: Use backlight power constants
+  fbdev: chipsfb: Use backlight power constants
+  fbdev: nvidiafb: Use backlight power constants
+  fbdev: omapfb: Use backlight power constants
+  fbdev: radeonfb: Use backlight power constants
+  fbdev: rivafb: Use backlight power constants
+  fbdev: sh_mobile_lcdc_fb: Use backlight power constants
 
-Unfortunately, I don't have any reproducer for this issue yet.
+ drivers/video/fbdev/atmel_lcdfb.c                           | 4 ++--
+ drivers/video/fbdev/aty/aty128fb.c                          | 6 +++---
+ drivers/video/fbdev/aty/atyfb_base.c                        | 2 +-
+ drivers/video/fbdev/aty/radeon_backlight.c                  | 2 +-
+ drivers/video/fbdev/chipsfb.c                               | 2 +-
+ drivers/video/fbdev/nvidia/nv_backlight.c                   | 2 +-
+ drivers/video/fbdev/omap2/omapfb/displays/panel-dsi-cm.c    | 4 ++--
+ .../fbdev/omap2/omapfb/displays/panel-sony-acx565akm.c      | 2 +-
+ drivers/video/fbdev/riva/fbdev.c                            | 2 +-
+ drivers/video/fbdev/sh_mobile_lcdcfb.c                      | 6 +++---
+ 10 files changed, 16 insertions(+), 16 deletions(-)
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/caeac6485006/disk-c912bf70.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/501c87f28da9/vmlinux-c912bf70.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6812e99b7182/Image-c912bf70.gz.xz
+-- 
+2.45.2
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: global-out-of-bounds in __fb_pad_aligned_buffer include/linux/fb.h:633 [inline]
-BUG: KASAN: global-out-of-bounds in bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
-BUG: KASAN: global-out-of-bounds in bit_putcs+0x9b8/0xe30 drivers/video/fbdev/core/bitblit.c:185
-Read of size 1 at addr ffff80008b830d80 by task syz.1.1270/10828
-
-CPU: 0 PID: 10828 Comm: syz.1.1270 Not tainted 6.10.0-rc7-syzkaller-gc912bf709078 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:317
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:324
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x198/0x538 mm/kasan/report.c:488
- kasan_report+0xd8/0x138 mm/kasan/report.c:601
- __asan_report_load1_noabort+0x20/0x2c mm/kasan/report_generic.c:378
- __fb_pad_aligned_buffer include/linux/fb.h:633 [inline]
- bit_putcs_aligned drivers/video/fbdev/core/bitblit.c:96 [inline]
- bit_putcs+0x9b8/0xe30 drivers/video/fbdev/core/bitblit.c:185
- fbcon_putcs+0x318/0x4e8 drivers/video/fbdev/core/fbcon.c:1288
- do_update_region+0x1e8/0x3d0 drivers/tty/vt/vt.c:609
- update_region+0x1e0/0x478 drivers/tty/vt/vt.c:633
- vcs_write+0x90c/0x10c8 drivers/tty/vt/vc_screen.c:698
- do_loop_readv_writev fs/read_write.c:764 [inline]
- vfs_writev+0x5c8/0xb80 fs/read_write.c:973
- do_writev+0x178/0x304 fs/read_write.c:1018
- __do_sys_writev fs/read_write.c:1091 [inline]
- __se_sys_writev fs/read_write.c:1088 [inline]
- __arm64_sys_writev+0x80/0x94 fs/read_write.c:1088
- __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:48
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:131
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:150
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
- el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
- el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-
-The buggy address belongs to the variable:
- oid_data+0x340/0x3a0
-
-The buggy address belongs to the virtual mapping at
- [ffff80008b260000, ffff80008ee20000) created by:
- declare_kernel_vmas+0x58/0xb8 arch/arm64/mm/mmu.c:770
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1a9430
-flags: 0x5ffc00000002000(reserved|node=0|zone=2|lastcpupid=0x7ff)
-raw: 05ffc00000002000 fffffdffc5a50c08 fffffdffc5a50c08 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff80008b830c80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff80008b830d00: 00 00 00 07 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9
->ffff80008b830d80: f9 f9 f9 f9 f9 f9 f9 f9 00 00 00 00 06 f9 f9 f9
-                   ^
- ffff80008b830e00: 05 f9 f9 f9 06 f9 f9 f9 00 00 00 00 00 00 00 00
- ffff80008b830e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 02 f9 f9
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
