@@ -1,77 +1,77 @@
-Return-Path: <linux-fbdev+bounces-3062-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3064-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D361097D920
-	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Sep 2024 19:34:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DCB97D930
+	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Sep 2024 19:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99B9F2820DC
-	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Sep 2024 17:34:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC3EE1F217E4
+	for <lists+linux-fbdev@lfdr.de>; Fri, 20 Sep 2024 17:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA02118595B;
-	Fri, 20 Sep 2024 17:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57238186609;
+	Fri, 20 Sep 2024 17:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aQkYC+x3"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lcZ5ZSx3"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FE7184544
-	for <linux-fbdev@vger.kernel.org>; Fri, 20 Sep 2024 17:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D0A185931
+	for <linux-fbdev@vger.kernel.org>; Fri, 20 Sep 2024 17:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726853614; cv=none; b=kfLWYZhde/V79sGDfHoB1Y3qwUX75vW3LbrImtBi+zPUH2penHHchzROAhTqXqCfn44/zfBx1BU+tOZq2tjy8uHZ1vOUba/tOZUgLAm1PLoJEKekiK5tCmb3+qLSDp7I/TkWNGRqvI/Ur5h/qLJysT+mMHF7qUJCri4CrxLMRGI=
+	t=1726853617; cv=none; b=VCAa39y4ZHUle+odngemfeXDr2hjX/mI/k/yhqRJG6IDHxAUe2JEd15g7IpfXa2qNhzpa4jr+Asiy0UC1qJiu5Eo5nUkjYHdyp2NoiRnnSTsArL+qSEKgpg5j6bzB3nd4vt3iT0c9FneHNNK4oZapG+W4kzTSXtDJr5rARobZe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726853614; c=relaxed/simple;
-	bh=MT8c2AhQeYsYs8cmaeLRhGYDwFnuTuG5PMmK88lsU/w=;
+	s=arc-20240116; t=1726853617; c=relaxed/simple;
+	bh=rGbKHqnx/NA9Sx5Ie+fz9ZIrDMgsKImoOwwJ/a9nWEA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NsjvXQWSMquAXEiJ3+WKPSySJOjFmF2AFpkVgxyLORs5jTbHElrzaoSwRbLFe1c/PBIRvD3J2Cxk0vRFP5LnH2biXHyUDaBI5mjSG8ZXptFhH+kMGRu1UOdh5+NItCWLLeriAJYQGjcLuCxz4gmxGz7XdwJ4WGUSZ/H4o2rxYi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aQkYC+x3; arc=none smtp.client-ip=209.85.221.54
+	 In-Reply-To:To:Cc; b=T4MzsFFA/A0nhGpUhnFYf02BBCmU6BfluJSonFCO078L7CabQouG/aLo6MzzHezv5Rimo97jb37eSkQhDELB4HFnUaLaLuaRmq4Nwzk/q6Fr/OZ1SqO33o3NX8cyV0YxST7QBzDQpDLZIYMDOZiURxCwuAxt6b0ZlO+QF69obys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lcZ5ZSx3; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-378f600e090so1372714f8f.3
-        for <linux-fbdev@vger.kernel.org>; Fri, 20 Sep 2024 10:33:32 -0700 (PDT)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-374ba74e9b6so1738711f8f.0
+        for <linux-fbdev@vger.kernel.org>; Fri, 20 Sep 2024 10:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726853611; x=1727458411; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1726853612; x=1727458412; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IvmqOfkNyg3mbwnmFu/TPFnKJdY4EPfohFTJPCL4F8Y=;
-        b=aQkYC+x3nmYkQiwfkLLlrAY9myG48sneyTRn7dc8Vlb+2yhglq7xGY+jPiyVvA9AG2
-         Bxwvhe/gt5rnLT6F5fELA+/KKT7yM3ZBnVK2xr+bzXrSpd6Ry6SqVEwEAeSIAW38LMNv
-         LkDENwkjdNTrmsMahz1Y6CF6i1bqnBwSUiWecje5190/JTP+LrzXKX52DmSb0yGNn8MR
-         Y+YnbmjxW9EhaH/jYyUPAQ2Dp93f7zMsOG8F1NmVwFYt7yu2kuCr260XTd6lXa76XXUD
-         T90eNh23Xs58zGtIWJO5E+cdBPVFW1sHPGhDbDg0vC2ql0BibVWoBvLoX8tl7QRg40tC
-         MYMA==
+        bh=q92/JWErx+OZicU+GXTVjk0ikMmmaNiLFbmb1mbQCF8=;
+        b=lcZ5ZSx3X+NOYytTj1CsSi6NYOjIYpjwDxz8T7GmhLpmt9LF4HxEEBp2RTNsBV+SeQ
+         wV6LAwgm43QbLlALPQtTLlNGEVv0LAhqAUwF8I9W5pWYlQkIy2OXnZMdQ8wuZjq+3UAI
+         ZGvUXKuvF+qStbXRdaMG+sbUQh4lbqKBxHQnNXA8ajuZk9GdL+hsO1nmEhGFA37mcLDi
+         oTvZgHg3EVg+HXrU1FADN0Fqplxrai2QWeL8vUkqZuJ3j/4DLZl4YDlfW1XDGrVbiOPo
+         zy0CrEP/HLPCeXN8yHlXiXku3cvfq6CfPbMvLW7NIOES0XmBw6HWfh3YfwSSUPN+SRb2
+         oehw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726853611; x=1727458411;
+        d=1e100.net; s=20230601; t=1726853612; x=1727458412;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IvmqOfkNyg3mbwnmFu/TPFnKJdY4EPfohFTJPCL4F8Y=;
-        b=q4CM4Pn8jDIqkirAfys7FZF9Uz4aqKKVrWPyvI87RYi2diEKKZsMdKlBditjHzbLkC
-         /BbwXTPID2gWRjdInJcJIcvbMGCsJVfO+ytK59M6JddpwSCESVtId7VRZf4td3YjlYJ6
-         wgF5yKOcyeW+oSBeUdVIVW30QJsXRqMPuqbV8COunq0rIi8i3ikPB6IikbVeyPc3m8A5
-         fHI4yomrO1c6HwG8i94QhM2mMskP92sOdXL2HXRkxpa6qdWi0O1rDiKN0EDabCcYI2D2
-         mOf7U7B8aO0OF5obU8tdy4kxbNytTbEXOHglsWB0oSZgAnhh/qOoV7t+siifOxZQRxe/
-         zGhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsZsvIGNzm4xSqkofGarSSQfFLNsMr/JH5V6ehSXnaO4eZZOgSK1yxQ9i436cp3cqSTNQt7Rern4bWIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx09gURIpWYefWwBBB5b6dZw7IiUmJLYZ9JvltuuiQKzrlVlCb6
-	h5muzuKbsuvo7eU1uWCgO90eVFx1yOmnNLjV5P7U/ksR1F+NFSl06miaUl+7+UyNGGG/sQR/mfl
-	V
-X-Google-Smtp-Source: AGHT+IGelVRMsQTQSU+xPNgg15Ho2GXpbX1Ln0t5hXane5n5dnYSSMSr6M1qKp+vzCMN00YqqNJH7A==
-X-Received: by 2002:a5d:64c1:0:b0:374:c3e4:d6c5 with SMTP id ffacd0b85a97d-37a431a7142mr2209005f8f.57.1726853610516;
-        Fri, 20 Sep 2024 10:33:30 -0700 (PDT)
+        bh=q92/JWErx+OZicU+GXTVjk0ikMmmaNiLFbmb1mbQCF8=;
+        b=gtQvGWFT5rbyE10i3tgsBZssqzYn6UvrSEA4tFNUN6Qja6dFtgpMzSLSgxvSTQzkpi
+         GU0I0V1SLueDQDJRj76xoPvbevDbGD55VXefQG48Yy+m3HGtcX4jjzT8ao534VUow5vK
+         p1p0VtZX7iiCs45P2zWF5e7G+YbSiDxqtUY0KKDULQPbZE5OEdapA7QY8LHCIx3LQaV3
+         4Xwx/geQUq2r01ykzwfNqKccuDMNHRKO1oQvlUOdQ+FNTb06z2w8LCM17HDHayiETKON
+         BcPAFk2lrwbvq+kTqlCtfaBOXmufgR0rE0qxq55eqHqQwIsTzB6XZ9hCXq79VgNb/5GW
+         bFLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjGWoKjVPWU0ceMylDFzDZYyE7VGX2RXCs8L21uBEOjSQoVAcW/87reDjYTAuwXdpGDlrC6/+TaXF4mQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpwG+bK3zhkIXowQuYL25MJ/lBWdeJOEIFPCp2MY7zSDrQC1fX
+	SP+xe6RFUbjfUvRmoShQD82HrbS4Dnpqy+C/VKWgcO43TqjosCgBsG5sXhSxMmM2c4u+gjuH7nS
+	4
+X-Google-Smtp-Source: AGHT+IHiFZeHsSAWFx9ZmboLVADpTy9yI48Qwebf1x7tovVKQWe7xonWk4njrIIeah5oZxGPUzQOeg==
+X-Received: by 2002:a5d:6a04:0:b0:374:c847:831 with SMTP id ffacd0b85a97d-37a4238ce3fmr2862998f8f.55.1726853611434;
+        Fri, 20 Sep 2024 10:33:31 -0700 (PDT)
 Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e780e029sm18111177f8f.116.2024.09.20.10.33.29
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e780e029sm18111177f8f.116.2024.09.20.10.33.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Sep 2024 10:33:29 -0700 (PDT)
+        Fri, 20 Sep 2024 10:33:31 -0700 (PDT)
 From: Guillaume Stols <gstols@baylibre.com>
-Date: Fri, 20 Sep 2024 17:33:25 +0000
-Subject: [PATCH v2 05/10] iio: adc: ad7606: Sort includes in alphabetical
- order
+Date: Fri, 20 Sep 2024 17:33:26 +0000
+Subject: [PATCH v2 06/10] iio: adc: ad7606: Add PWM support for conversion
+ trigger
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -80,7 +80,7 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240920-ad7606_add_iio_backend_support-v2-5-0e78782ae7d0@baylibre.com>
+Message-Id: <20240920-ad7606_add_iio_backend_support-v2-6-0e78782ae7d0@baylibre.com>
 References: <20240920-ad7606_add_iio_backend_support-v2-0-0e78782ae7d0@baylibre.com>
 In-Reply-To: <20240920-ad7606_add_iio_backend_support-v2-0-0e78782ae7d0@baylibre.com>
 To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
@@ -99,60 +99,302 @@ Cc: linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org,
  aardelean@baylibre.com, dlechner@baylibre.com, 
  Guillaume Stols <gstols@baylibre.com>, jstephan@baylibre.com
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1726853604; l=1335;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1726853604; l=9213;
  i=gstols@baylibre.com; s=20240417; h=from:subject:message-id;
- bh=MT8c2AhQeYsYs8cmaeLRhGYDwFnuTuG5PMmK88lsU/w=;
- b=RzKFmBn040UGa7yTM6JsY9KvnbH6tbRt6zQy0B5hwTYpOEClvNSZL5i5J1VqCH8LtQie0TnTj
- KJNP6vwN65QAQSfYhmEy1TLwWy0uoRdjGXz0EvvNOQOcvsKe8ZRPfaM
+ bh=rGbKHqnx/NA9Sx5Ie+fz9ZIrDMgsKImoOwwJ/a9nWEA=;
+ b=bDWDXc/YIQSmgXwpX8pQ6d5eIK4VDK4epDWqaauFUN31lfe/Gg4bl648rgftOEsmybgyKbF+j
+ doPHbau3CQ+BDipDW/NAh0aNBm85/QAh45dfVAvCpjFVxGpnFSctq+u
 X-Developer-Key: i=gstols@baylibre.com; a=ed25519;
  pk=XvMm5WHuV67sGYOJZqIYzXndbaJOlNd8Q6li6vnb4Cs=
 
-Some of the includes were not in alphabetical order, this commit fixes
-it.
+Until now, the conversion were triggered by setting high the GPIO
+connected to the convst pin. This commit gives the possibility to
+connect the convst pin to a PWM.
+Connecting a PWM allows to have a better control on the samplerate,
+but it must be handled with care, as it is completely decorrelated of
+the driver's busy pin handling.
+Hence it is not recommended to be used "as is" but must be exploited
+in conjonction with IIO backend, and for now only a sampling frequency
+of 2 kHz is available.
 
 Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 ---
- drivers/iio/adc/ad7606_par.c | 6 +++---
- drivers/iio/adc/ad7606_spi.c | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad7606.c | 170 ++++++++++++++++++++++++++++++++++++++++-------
+ drivers/iio/adc/ad7606.h |   2 +
+ 2 files changed, 148 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
-index 02d8c309304e..d651639c45eb 100644
---- a/drivers/iio/adc/ad7606_par.c
-+++ b/drivers/iio/adc/ad7606_par.c
-@@ -5,13 +5,13 @@
-  * Copyright 2011 Analog Devices Inc.
-  */
- 
-+#include <linux/err.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/io.h>
- #include <linux/mod_devicetable.h>
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 9b457472d49c..b98057138295 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -13,11 +13,13 @@
+ #include <linux/kernel.h>
  #include <linux/module.h>
--#include <linux/gpio/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/types.h>
--#include <linux/err.h>
--#include <linux/io.h>
+ #include <linux/property.h>
++#include <linux/pwm.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/sysfs.h>
+ #include <linux/util_macros.h>
++#include <linux/units.h>
  
  #include <linux/iio/iio.h>
- #include "ad7606.h"
-diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
-index 62ec12195307..d3fbc7c7a823 100644
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -5,10 +5,10 @@
-  * Copyright 2011 Analog Devices Inc.
-  */
+ #include <linux/iio/buffer.h>
+@@ -83,6 +85,80 @@ static int ad7606_reg_access(struct iio_dev *indio_dev,
+ 	}
+ }
  
-+#include <linux/err.h>
- #include <linux/module.h>
- #include <linux/spi/spi.h>
- #include <linux/types.h>
--#include <linux/err.h>
++static int ad7606_pwm_set_high(struct ad7606_state *st)
++{
++	struct pwm_state cnvst_pwm_state;
++
++	if (!st->cnvst_pwm)
++		return -EINVAL;
++	pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
++	cnvst_pwm_state.enabled = true;
++	cnvst_pwm_state.duty_cycle = cnvst_pwm_state.period;
++
++	return pwm_apply_might_sleep(st->cnvst_pwm, &cnvst_pwm_state);
++}
++
++static int ad7606_pwm_set_low(struct ad7606_state *st)
++{
++	struct pwm_state cnvst_pwm_state;
++
++	if (!st->cnvst_pwm)
++		return -EINVAL;
++	pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
++	cnvst_pwm_state.enabled = true;
++	cnvst_pwm_state.duty_cycle = 0;
++
++	return pwm_apply_might_sleep(st->cnvst_pwm, &cnvst_pwm_state);
++}
++
++static int ad7606_pwm_set_swing(struct ad7606_state *st)
++{
++	struct pwm_state cnvst_pwm_state;
++
++	if (!st->cnvst_pwm)
++		return -EINVAL;
++
++	pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
++	cnvst_pwm_state.enabled = true;
++	cnvst_pwm_state.duty_cycle = cnvst_pwm_state.period / 2;
++
++	return pwm_apply_might_sleep(st->cnvst_pwm, &cnvst_pwm_state);
++}
++
++static bool ad7606_pwm_is_swinging(struct ad7606_state *st)
++{
++	struct pwm_state cnvst_pwm_state;
++
++	if (!st->cnvst_pwm)
++		return false;
++	pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
++	return cnvst_pwm_state.duty_cycle != cnvst_pwm_state.period &&
++	       cnvst_pwm_state.duty_cycle != 0;
++}
++
++static int ad7606_set_sampling_freq(struct ad7606_state *st, unsigned long freq)
++{
++	struct pwm_state cnvst_pwm_state;
++	bool is_swinging = ad7606_pwm_is_swinging(st);
++	bool is_high;
++
++	if (freq == 0)
++		return -EINVAL;
++
++	/* Retrieve the previous state. */
++	pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
++	is_high = cnvst_pwm_state.duty_cycle == cnvst_pwm_state.period;
++
++	cnvst_pwm_state.period = DIV_ROUND_UP_ULL(NSEC_PER_SEC, freq);
++	cnvst_pwm_state.polarity = PWM_POLARITY_NORMAL;
++	if (is_high)
++		cnvst_pwm_state.duty_cycle = cnvst_pwm_state.period;
++	else if (is_swinging)
++		cnvst_pwm_state.duty_cycle = cnvst_pwm_state.period / 2;
++
++	return pwm_apply_might_sleep(st->cnvst_pwm, &cnvst_pwm_state);
++}
++
+ static int ad7606_read_samples(struct ad7606_state *st)
+ {
+ 	unsigned int num = st->chip_info->num_channels - 1;
+@@ -117,9 +193,22 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
+ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch)
+ {
+ 	struct ad7606_state *st = iio_priv(indio_dev);
++
++	struct pwm_state cnvst_pwm_state;
+ 	int ret;
++	bool pwm_swings = false;
  
- #include <linux/iio/iio.h>
- #include "ad7606.h"
+-	gpiod_set_value(st->gpio_convst, 1);
++	if (st->gpio_convst) {
++		gpiod_set_value(st->gpio_convst, 1);
++	} else {
++		pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
++		/* Keep the current PWM state to set it back. */
++		if (ad7606_pwm_is_swinging(st))
++			pwm_swings = true;
++		ret = ad7606_pwm_set_high(st);
++		if (!ret)
++			return ret;
++	}
+ 	ret = wait_for_completion_timeout(&st->completion,
+ 					  msecs_to_jiffies(1000));
+ 	if (!ret) {
+@@ -130,7 +219,12 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch)
+ 	ret = ad7606_read_samples(st);
+ 	if (ret == 0)
+ 		ret = st->data[ch];
+-
++	if (!st->gpio_convst) {
++		if (!pwm_swings)
++			ret = ad7606_pwm_set_low(st);
++		else
++			ret = ad7606_pwm_set_swing(st);
++	}
+ error_ret:
+ 	gpiod_set_value(st->gpio_convst, 0);
+ 
+@@ -395,8 +489,9 @@ static int ad7606_request_gpios(struct ad7606_state *st)
+ {
+ 	struct device *dev = st->dev;
+ 
+-	st->gpio_convst = devm_gpiod_get(dev, "adi,conversion-start",
+-					 GPIOD_OUT_LOW);
++	st->gpio_convst = devm_gpiod_get_optional(dev, "adi,conversion-start",
++						  GPIOD_OUT_LOW);
++
+ 	if (IS_ERR(st->gpio_convst))
+ 		return PTR_ERR(st->gpio_convst);
+ 
+@@ -465,6 +560,7 @@ static int ad7606_buffer_postenable(struct iio_dev *indio_dev)
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+ 
+ 	gpiod_set_value(st->gpio_convst, 1);
++	ad7606_pwm_set_swing(st);
+ 
+ 	return 0;
+ }
+@@ -474,6 +570,7 @@ static int ad7606_buffer_predisable(struct iio_dev *indio_dev)
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+ 
+ 	gpiod_set_value(st->gpio_convst, 0);
++	ad7606_pwm_set_low(st);
+ 
+ 	return 0;
+ }
+@@ -521,6 +618,11 @@ static const struct iio_trigger_ops ad7606_trigger_ops = {
+ 	.validate_device = iio_trigger_validate_own_device,
+ };
+ 
++static void ad7606_pwm_disable(void *data)
++{
++	pwm_disable(data);
++}
++
+ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 		 const char *name, unsigned int id,
+ 		 const struct ad7606_bus_ops *bops)
+@@ -611,20 +713,47 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 			return ret;
+ 	}
+ 
+-	st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
+-					  indio_dev->name,
+-					  iio_device_id(indio_dev));
+-	if (!st->trig)
+-		return -ENOMEM;
+-
+-	st->trig->ops = &ad7606_trigger_ops;
+-	iio_trigger_set_drvdata(st->trig, indio_dev);
+-	ret = devm_iio_trigger_register(dev, st->trig);
+-	if (ret)
+-		return ret;
+-
+-	indio_dev->trig = iio_trigger_get(st->trig);
++	/* If convst pin is not defined, setup PWM. */
++	if (!st->gpio_convst) {
++		st->cnvst_pwm = devm_pwm_get(dev, NULL);
++		if (IS_ERR(st->cnvst_pwm))
++			return PTR_ERR(st->cnvst_pwm);
++		/*
++		 * PWM is not disabled when sampling stops, but instead its duty cycle is set
++		 * to 0% to be sure we have a "low" state. After we unload the driver, let's
++		 * disable the PWM.
++		 */
++		ret = devm_add_action_or_reset(dev, ad7606_pwm_disable,
++					       st->cnvst_pwm);
++		if (ret)
++			return ret;
+ 
++		/*
++		 * Set the sampling rate to 2 kHz so to be sure that the interruption can be
++		 * handled between within a single pulse.
++		 */
++		ret = ad7606_set_sampling_freq(st, 2 * KILO);
++		if (ret)
++			return ret;
++	} else {
++		st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
++						  indio_dev->name,
++						  iio_device_id(indio_dev));
++		if (!st->trig)
++			return -ENOMEM;
++		st->trig->ops = &ad7606_trigger_ops;
++		iio_trigger_set_drvdata(st->trig, indio_dev);
++		ret = devm_iio_trigger_register(dev, st->trig);
++		if (ret)
++			return ret;
++		indio_dev->trig = iio_trigger_get(st->trig);
++		ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
++						      &iio_pollfunc_store_time,
++						      &ad7606_trigger_handler,
++						      &ad7606_buffer_ops);
++		if (ret)
++			return ret;
++	}
+ 	ret = devm_request_threaded_irq(dev, irq,
+ 					NULL,
+ 					&ad7606_interrupt,
+@@ -633,13 +762,6 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+-					      &iio_pollfunc_store_time,
+-					      &ad7606_trigger_handler,
+-					      &ad7606_buffer_ops);
+-	if (ret)
+-		return ret;
+-
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+ EXPORT_SYMBOL_NS_GPL(ad7606_probe, IIO_AD7606);
+diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+index 6649e84d25de..c13dda444526 100644
+--- a/drivers/iio/adc/ad7606.h
++++ b/drivers/iio/adc/ad7606.h
+@@ -65,6 +65,7 @@ struct ad7606_chip_info {
+  * @bops		bus operations (SPI or parallel)
+  * @range		voltage range selection, selects which scale to apply
+  * @oversampling	oversampling selection
++ * @cnvst_pwm		pointer to the PWM device connected to the cnvst pin
+  * @base_address	address from where to read data in parallel operation
+  * @sw_mode_en		software mode enabled
+  * @scale_avail		pointer to the array which stores the available scales
+@@ -94,6 +95,7 @@ struct ad7606_state {
+ 	const struct ad7606_bus_ops	*bops;
+ 	unsigned int			range[16];
+ 	unsigned int			oversampling;
++	struct pwm_device		*cnvst_pwm;
+ 	void __iomem			*base_address;
+ 	bool				sw_mode_en;
+ 	const unsigned int		*scale_avail;
 
 -- 
 2.34.1
