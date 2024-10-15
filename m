@@ -1,196 +1,140 @@
-Return-Path: <linux-fbdev+bounces-3288-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3290-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B155699EE6A
-	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Oct 2024 15:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B8B99F1E6
+	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Oct 2024 17:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EE672818CD
-	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Oct 2024 13:57:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E74AE28280C
+	for <lists+linux-fbdev@lfdr.de>; Tue, 15 Oct 2024 15:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435F11D5178;
-	Tue, 15 Oct 2024 13:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E37C1DD0E2;
+	Tue, 15 Oct 2024 15:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="k86ZN16M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmB4dJ1E"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5F41C4A0F
-	for <linux-fbdev@vger.kernel.org>; Tue, 15 Oct 2024 13:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE3F170A19;
+	Tue, 15 Oct 2024 15:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729000605; cv=none; b=hduNb3PnFlTZ6dbJ05M7+/a0BOwsHjrlRwOfZnHsELKck+rjJGqH7J6RgfsPzP4t8YJXNdg6H6gHRgSsVshg2uMzgmuEriCjl2Nx//6blSEkhhjJEt7FLWqFVku3U0Fasmgva/gW3BlOsV4LElQyPY/lB1SwFd7bxvX4QzjSw6Y=
+	t=1729007354; cv=none; b=mRyfExr9o1afBoSQOVxFkK9pLzDBx3sFsJrscq88zcpm5UHnKb1qmen2xgJ6I87vfcpPCAggkY/mTh0K6ECZotrwJ4FLT1L8003sIAdMMew2/GiK/83sGygKic+ni0KBjsgubM+eAXhw8LoFeVXA9siCsIJCgQwSvOz9GJnfRiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729000605; c=relaxed/simple;
-	bh=8sj2ik6YIhgGPpUYAJWB3DqY/rpxFFg132670LOYgCg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=p1iHdhfMRij5S7wvVEgJjpNDFJeK7F0ddvGXqs2HQJ5zI8KHp7rxRvbpdTKb1E33OK8J5vDXko5w7INmGhRMzyDi9W5RXFNpwgyYS1A4Qx73p29z2Wxx1oIIFHc/nUChcXHnTIFO3SbuLTNr0hHdjRko28tzCmgm2nqf9R2IzOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=k86ZN16M; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43124843b04so30109035e9.2
-        for <linux-fbdev@vger.kernel.org>; Tue, 15 Oct 2024 06:56:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729000599; x=1729605399; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wfimGBiPs/xd5kQ6SFTwCIGnDDLl5cZX78W/oQcH5gw=;
-        b=k86ZN16MyOFbYo+4JwKQ1xYBdHCj8NQ7vdKdaNWoDZEWrBO8ejFRucdjROOoFkC/gl
-         pmk11MKPXInSGbNBzM/cf0FMne9YQ0uFHNv7kLEY9TQQ7rajZwRjfJZnN+GdykPHkyD0
-         3ID4vhIk9+Uafm4PRoohApwNV9HkEcm8OXvKXVP1a4xDRzXj/8nDzr33ZMZUa0r4SFd9
-         dSmB937849lTZ5BGX/XvveaKx6MUMZv1xbgP+R0y6X+4kR8r/ufrEylPIAyCRlU0znwO
-         QIh1ZD5Y/es7U7z0fi110oiW1GVTjjz/yWL6zAKchw51P3mxfaVOkJX27AIjqnTq7S9r
-         ZYeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729000599; x=1729605399;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wfimGBiPs/xd5kQ6SFTwCIGnDDLl5cZX78W/oQcH5gw=;
-        b=FBhG1RXCbRS8SrS6kPSWcj65oKx/U9A9XXo6OdNDebg+kpzeni6oFi6k82l9rDA71f
-         E8BQgrWwkXQUR3YTprG7YS5lNFItduypB9NNqJFY62ClqtYY2jF9lPzRx738mAy0LlBr
-         EQYayvSZDbj8TRGbYxy28oPyT3D6UFG78x1dLGV7Da/wEHmB7vfurhZv5+nPshmUl7AJ
-         zoEbfAk7N1CMO3N8CBwKIDUKXadz6mT1y2vcpyfe2izD2+5u6ELMl83R590rOOi/CUzP
-         goFJ8WuLcKoFHBC5/Aejz9g+CY21ewW9vd6E7xLsvmqV5sq0vsV+ujkiV8lZUfHynxHw
-         xI5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXq87gr123dmkzw5KPKhGfKijxn5IUcaLy9n4b+oT4/9RzuxPfKrzXCtNlYkjzpTCwwnVh+SnrgRWKIWg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywtjx4Nrs0/T6bPKaJCzJewPW93kImgKiHRCz7i1ygDprktTRd6
-	HQ82Zg5pDgQK8UEK35RMqE5aK4iXuY4i6RGo92MHtUd+cjcgyR+GU89A8ZGzhQQ=
-X-Google-Smtp-Source: AGHT+IEKh3xWTi5hf4sbT5P8PdIbNsnQOa5kUn7o9v8bR0uMH7vd17OSHnnAv62Xz75tzpQ58/ip5g==
-X-Received: by 2002:a05:600c:1e18:b0:431:166b:fc1e with SMTP id 5b1f17b1804b1-4311df42cdamr131676955e9.25.1729000599280;
-        Tue, 15 Oct 2024 06:56:39 -0700 (PDT)
-Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4313f56f241sm18848295e9.22.2024.10.15.06.56.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 06:56:38 -0700 (PDT)
-From: Guillaume Stols <gstols@baylibre.com>
-Date: Tue, 15 Oct 2024 13:56:21 +0000
-Subject: [PATCH v5 8/8] iio: adc: ad7606: Disable PWM usage for non backend
- version
+	s=arc-20240116; t=1729007354; c=relaxed/simple;
+	bh=8rs5FX8euimoaM+3TEF5t4bWzdqlREeZB9JxJ8XE8xM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=myDG40b5hioxGETLKbqLuaENTioeC8eawigIGy8yrSenqzcT7VMIiWE0JJQGh2xRiQcZoCWrFpBnIjW7BKFWA0VpYdYxm06FhBeXF3Sm8TYUSUdjom+0J/mV/q+j1FXJuiD3q8m4hat141eLQ11Tcoxc0+oqzzBSnxAZbOCEeFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmB4dJ1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2CEC4CEC6;
+	Tue, 15 Oct 2024 15:49:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729007354;
+	bh=8rs5FX8euimoaM+3TEF5t4bWzdqlREeZB9JxJ8XE8xM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GmB4dJ1EdYGO/ZUli8Icg0bDOLS/0AUWPsg/90a/xeHWFCI7amjMB6XsK9a0MT3hj
+	 p4lF7AKbO6OIIg6f1FbAfYokBk7rGOFWBopSlm4fwr3yCnCq87JzoShYWAF1vXDdn0
+	 pYg5PVf4V0zXkIzdl6zQk0+o8lqu4ac7jI+qRzvV+MD/RyKl4UbyMWCgacoQubTBc5
+	 2ARx5JvudAYmFhS3WJ/AzMLSRlbO7DQgpnSOucWZdeT6tZVbTgu9g4pEzhYuJy6Zz+
+	 IsyCW49MFuG3635ZcmrN1AurDeoiGWu5A/PO3mvr5GPkm0h5+sKN49KNcBkcncETIQ
+	 b11D/Z6vhhsxg==
+Date: Tue, 15 Oct 2024 10:49:12 -0500
+From: Rob Herring <robh@kernel.org>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+	Helge Deller <deller@gmx.de>, Jaroslav Kysela <perex@perex.cz>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-sound@vger.kernel.org, Sakari Ailus <sakari.ailus@iki.fi>
+Subject: Re: [PATCH v7 0/9] of: property: add
+ of_graph_get_next_port/port_endpoint()
+Message-ID: <20241015154912.GA1152221-robh@kernel.org>
+References: <87wmiirqwy.wl-kuninori.morimoto.gx@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241015-ad7606_add_iio_backend_support-v5-8-654faf1ae08c@baylibre.com>
-References: <20241015-ad7606_add_iio_backend_support-v5-0-654faf1ae08c@baylibre.com>
-In-Reply-To: <20241015-ad7606_add_iio_backend_support-v5-0-654faf1ae08c@baylibre.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Michael Hennerich <michael.hennerich@analog.com>, 
- linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
- aardelean@baylibre.com, dlechner@baylibre.com, jstephan@baylibre.com, 
- nuno.sa@analog.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Guillaume Stols <gstols@baylibre.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1729000592; l=2658;
- i=gstols@baylibre.com; s=20240417; h=from:subject:message-id;
- bh=8sj2ik6YIhgGPpUYAJWB3DqY/rpxFFg132670LOYgCg=;
- b=1u2rG+kjJiMqYohGDsnjVlDj3sIi34d9AcBG26SyutZ8VN80TTEQ0g/9rRT0jd/zVf+8HUkLX
- 24VBapyaxS3BkB8VGn298idC036IGXhLHEHFHfCi9s6y6b7XT1p5QNF
-X-Developer-Key: i=gstols@baylibre.com; a=ed25519;
- pk=XvMm5WHuV67sGYOJZqIYzXndbaJOlNd8Q6li6vnb4Cs=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wmiirqwy.wl-kuninori.morimoto.gx@renesas.com>
 
-Since the pwm was introduced before backend, there was a mock use, with
-a GPIO emulation. Now that iio backend is introduced, the mock use can
-be removed.
+On Wed, Oct 09, 2024 at 01:44:30AM +0000, Kuninori Morimoto wrote:
+> 
+> Hi Rob, Saravana, Tomi, Laurent, Sakari, Mark
+> 
+> This is v7 patch-set
+> 
+> Current Of-graph has "endpoint base" for loop, but doesn't have
+> "port base" loop. "endpoint base" loop only is not enough.
+> This patch-set add new "port base" for loop, and use it.
+> 
+> v6 -> v7
+> 	- based on latest linus/master branch
+> 	- remove "ports" base functions
+> 	- use "port" base function on "endpoint" function ([3/9])
+> 	- tidyup [1/9] explanation
+> 
+> v5 -> v6
+> 	- based on latest linus/master branch
+> 	- [9/9]: fixed compile warrning
+> 
+> v4 -> v5
+> 	- tidyup comments
+> 	- [8/9]: parent NULL check was removed
+> 	- [9/9]: use for_each_of_graph_port()
+> 
+> v3 -> v4
+> 	- new for_each loop includes __free()
+> 	 - comment indicates to use return_ptr() or no_free_ptr() if
+> 	   it need to continue to use node
+> 	 - each driver based on it
+> 	- care "prev" leak on of_graph_get_next_ports()
+> 	- of_graph_get_next_port_endpoint() indicates WARN() if port
+> 	  has non-endpoint node
+> 	- tidyup each git-log
+> 
+> v2 -> v3
+> 	- return NULL if it it doesn't have ports / port
+> 	- add visible comment on of_graph_get_next_ports()
+> 
+> v1 -> v2
+> 	- add each Reviewed-by / Acked-by
+> 	- tidyup/update Kernel Docs
+> 	- use prev as parameter
+> 	- update git-log explanation
+> 	- remove extra changes
+> 
+> Kuninori Morimoto (9):
+>   of: property: add of_graph_get_next_port()
+>   of: property: add of_graph_get_next_port_endpoint()
+>   of: property: use new of_graph functions
+>   ASoC: test-component: use new of_graph functions
+>   ASoC: audio-graph-card: use new of_graph functions
+>   ASoC: audio-graph-card2: use new of_graph functions
+>   gpu: drm: omapdrm: use new of_graph functions
+>   fbdev: omapfb: use new of_graph functions
+>   media: xilinx-tpg: use new of_graph functions
 
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
----
- drivers/iio/adc/ad7606.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+The DT parts look fine to me now. I see Mark acked this so he's not 
+expecting to take it. I can take it, but need acks on the fbdev and 
+media patches.
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 7871552ce5ac..0e830a17fc19 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -470,8 +470,6 @@ static int ad7606_pwm_set_high(struct ad7606_state *st)
- 	cnvst_pwm_state.duty_cycle = cnvst_pwm_state.period;
- 
- 	ret = pwm_apply_might_sleep(st->cnvst_pwm, &cnvst_pwm_state);
--	/* sleep 2 µS to let finish the current pulse */
--	fsleep(2);
- 
- 	return ret;
- }
-@@ -486,8 +484,6 @@ static int ad7606_pwm_set_low(struct ad7606_state *st)
- 	cnvst_pwm_state.duty_cycle = 0;
- 
- 	ret = pwm_apply_might_sleep(st->cnvst_pwm, &cnvst_pwm_state);
--	/* sleep 2 µS to let finish the current pulse */
--	fsleep(2);
- 
- 	return ret;
- }
-@@ -563,13 +559,7 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
- error_ret:
- 	iio_trigger_notify_done(indio_dev->trig);
- 	/* The rising edge of the CONVST signal starts a new conversion. */
--	if (st->gpio_convst) {
--		gpiod_set_value(st->gpio_convst, 1);
--	} else {
--		ret = ad7606_pwm_set_high(st)
--		if (ret < 0)
--			dev_err(st->dev, "Could not set PWM to high.");
--	}
-+	gpiod_set_value(st->gpio_convst, 1);
- 
- 	return IRQ_HANDLED;
- }
-@@ -900,10 +890,7 @@ static int ad7606_buffer_postenable(struct iio_dev *indio_dev)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 
--	if (st->gpio_convst)
--		gpiod_set_value(st->gpio_convst, 1);
--	else
--		return ad7606_pwm_set_high(st);
-+	gpiod_set_value(st->gpio_convst, 1);
- 
- 	return 0;
- }
-@@ -912,10 +899,7 @@ static int ad7606_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 
--	if (st->gpio_convst)
--		gpiod_set_value(st->gpio_convst, 0);
--	else
--		return ad7606_pwm_set_low(st);
-+	gpiod_set_value(st->gpio_convst, 0);
- 
- 	return 0;
- }
-@@ -1210,6 +1194,12 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 
- 		indio_dev->setup_ops = &ad7606_backend_buffer_ops;
- 	} else {
-+
-+		/* Reserve the PWM use only for backend (force gpio_convst definition) */
-+		if (!st->gpio_convst)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "No backend, connect convst to a GPIO");
-+
- 		init_completion(&st->completion);
- 		st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
- 						  indio_dev->name,
-
--- 
-2.34.1
-
+Rob
 
