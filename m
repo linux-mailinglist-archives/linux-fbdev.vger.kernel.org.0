@@ -1,91 +1,78 @@
-Return-Path: <linux-fbdev+bounces-3425-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3430-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57049EB304
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2024 15:20:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A040216AC68
-	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2024 14:20:04 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8A21BCA19;
-	Tue, 10 Dec 2024 14:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=ariccio.me header.i=@ariccio.me header.b="S9rRYHQf"
-X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 330459EB31F
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2024 15:25:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9EC1B2190;
-	Tue, 10 Dec 2024 14:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6EA2283018
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Dec 2024 14:25:23 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DA31ADFE4;
+	Tue, 10 Dec 2024 14:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohxgPAk5"
+X-Original-To: linux-fbdev@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF281AAA38;
+	Tue, 10 Dec 2024 14:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733840351; cv=none; b=uEkTWx6lgV4lluA4Fdjd0rUhtvzqim/8nGdy1csxUiWAcs0bkOe5+RO7V2d2tP2wzjqWA+0pQc3hDbUk3VVpvhGYObYgeqs+H5inEyZsS/G5HnZiHR0zrhyQ5XgdT3eMyZkhb25KwD74HwGyeKnkYFkHEJc7HkRytX+WY6ycDi8=
+	t=1733840719; cv=none; b=d5/ZmfVVBgIqT74sCLs64y8PVm7h4PSd8Yq0DYw52OxWGSmjdY2LXFOydRFNoZis6YlNDrLN2x83889K4DUHQHzylY17L07cpZqw2juDnvOwfSC/g4zJJmDSXZK9kg9+KB+kjJaaG8RQBPwc88tpwRW9Am67fOHWHvoTLuy125E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733840351; c=relaxed/simple;
-	bh=3i+zRGoIAHKVd1ck+sBGI2cSTSVfLNulHCLRTB2UM2Q=;
-	h=Date:To:From:Subject:Message-ID:MIME-Version:Content-Type; b=UP8BMlKpoStsE8QNx8RX175YAajnc7AzxvcdL6S9aYYibB+1xlzk224t5IarycsfAvCw8TlKBpgwy9mi+Uzf8k0HOAJgdN4ORj5bv+x+yEC0ZC+s8Rsz4rKLEda9zujhGyv88GAWcdYpnTiXGE7JEa87xpjEDW9GXUS7CLZLswI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ariccio.me; spf=pass smtp.mailfrom=ariccio.me; dkim=pass (2048-bit key) header.d=ariccio.me header.i=@ariccio.me header.b=S9rRYHQf; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ariccio.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ariccio.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ariccio.me;
-	s=protonmail2; t=1733840335; x=1734099535;
-	bh=3i+zRGoIAHKVd1ck+sBGI2cSTSVfLNulHCLRTB2UM2Q=;
-	h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=S9rRYHQfXfj/PIluj2/xZdYstKBPvz3w0HeYZrsoNQ9RBF6YoEg/U8PagBXHmKeg2
-	 HjWVsRJA/sZEh+jUCzuWD6oA5JL9yscBL0MvN/yzf0E5vO3+P3gzd8Qk8/9uENTqVw
-	 FVDmNEn607DIbOjBGKjooQ1+HZjFHOgwJOl6yfNrRl/u8K5sKzQ0XgJofFOiAVaG3S
-	 D9SrZ4DZAMseQTjDAd9isaJz4ix4vet27w1XZTzbjcgRuvuUjybyCYeUAuNHPP7AhS
-	 Gs2eYthrr+N3uXnR6IJWM6w9EZyFPhQq7LEzgrTMIq8nzSauLUSxW8WtO6p1R8e3du
-	 zuXzfiuL+uOhg==
-Date: Tue, 10 Dec 2024 14:18:48 +0000
-To: gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-From: Antonio Riccio <linux@ariccio.me>
-Subject: [PATCH] staging: fbtft: Remove unnecessary parentheses
-Message-ID: <Z1hNxNkVSt11ncXs@stream-circuit>
-Feedback-ID: 117734652:user:proton
-X-Pm-Message-ID: 81922902d7a06e1f45d4210d9402e12cd586accb
+	s=arc-20240116; t=1733840719; c=relaxed/simple;
+	bh=XvACE+bdqQyWiqXaX0FQMqrV41fU2XwxHSNf6quzRNM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qGYBVB7uuJ1OIfs+VS4Ef8uaN9EVVsp113nuiF7PG+/nqO0JhzU5Pr2eSbQO1eEt8EkDlRd5KRhATVnSPbiHSDGNUOs844BafJsQI8lFmrr93veZoscomoBdRrczaXt7ZRQjS7XSB8wfTJak53gq9i/DI10RXGEEHz5aBIP5tFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohxgPAk5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70476C4CEDE;
+	Tue, 10 Dec 2024 14:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733840718;
+	bh=XvACE+bdqQyWiqXaX0FQMqrV41fU2XwxHSNf6quzRNM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ohxgPAk5I/GLaIskYIwE6w1VuTM7PUnEFC3rvpKTg05SBwffEWgZhZsu9Z2n6QWOS
+	 lVcW1CavMeGNdG/X6t0wJiL02K7xz6BJjuEwicsEUZUzfPoIDVG7RKnusXs5vE2T+S
+	 1ZplfdjGTrRrjvPebjVdW4SNdDp/onKaRwh1gAR4=
+Date: Tue, 10 Dec 2024 15:24:43 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Antonio Riccio <linux@ariccio.me>
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: Remove unnecessary parentheses
+Message-ID: <2024121021-blurred-dotted-c78d@gregkh>
+References: <Z1hNxNkVSt11ncXs@stream-circuit>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z1hNxNkVSt11ncXs@stream-circuit>
 
-Adhere to Linux kernel coding style.
+On Tue, Dec 10, 2024 at 02:18:48PM +0000, Antonio Riccio wrote:
+> Adhere to Linux kernel coding style.
+> 
+> Reported by checkpatch:
+> 
+> CHECK: Unnecessary parentheses around 'devcode != 0x0000'
+> CHECK: Unnecessary parentheses around 'devcode != 0x9320'
+> 
+> Signed-off-by: Antonio Riccio <linux@ariccio.me>
+> ---
+>  drivers/staging/fbtft/fb_ili9320.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reported by checkpatch:
+Checkpatch is wrong here, sorry.  Please see the archives for the
+details as to why I don't take changes like this.
 
-CHECK: Unnecessary parentheses around 'devcode !=3D 0x0000'
-CHECK: Unnecessary parentheses around 'devcode !=3D 0x9320'
+sorry,
 
-Signed-off-by: Antonio Riccio <linux@ariccio.me>
----
- drivers/staging/fbtft/fb_ili9320.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/fbtft/fb_ili9320.c b/drivers/staging/fbtft/fb_=
-ili9320.c
-index 050fc2367c12..9f97cfa34b81 100644
---- a/drivers/staging/fbtft/fb_ili9320.c
-+++ b/drivers/staging/fbtft/fb_ili9320.c
-@@ -35,7 +35,7 @@ static int init_display(struct fbtft_par *par)
- =09par->fbtftops.reset(par);
-=20
- =09devcode =3D read_devicecode(par);
--=09if ((devcode !=3D 0x0000) && (devcode !=3D 0x9320))
-+=09if (devcode !=3D 0x0000 && devcode !=3D 0x9320)
- =09=09dev_warn(par->info->device,
- =09=09=09 "Unrecognized Device code: 0x%04X (expected 0x9320)\n",
- =09=09=09devcode);
---=20
-2.43.0
-
-
+greg k-h
 
