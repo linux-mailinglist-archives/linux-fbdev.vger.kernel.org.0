@@ -1,83 +1,174 @@
-Return-Path: <linux-fbdev+bounces-3446-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3448-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A759EE0EC
-	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Dec 2024 09:13:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40575188466B
-	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Dec 2024 08:13:36 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303A320B806;
-	Thu, 12 Dec 2024 08:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X403YC3n"
-X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9069EE3B6
+	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Dec 2024 11:06:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98C41FECD6;
-	Thu, 12 Dec 2024 08:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C98B2839DA
+	for <lists+linux-fbdev@lfdr.de>; Thu, 12 Dec 2024 10:06:56 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13072101BA;
+	Thu, 12 Dec 2024 10:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SzM+e4c5";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zFPTjN+S";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="C88eEKfu";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="m3hu/pJr"
+X-Original-To: linux-fbdev@vger.kernel.org
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D586E21018A
+	for <linux-fbdev@vger.kernel.org>; Thu, 12 Dec 2024 10:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733991211; cv=none; b=pZh5Pl6xc3bAcSHF+n72za6sOIsgJtl1AlGXCtEu/cNQNRk5tGV/GiE1R4+oxIpl3Z4yK31/+avBbKaV5KlDx+UwV45tZhMSrvevcWWinSxVOIMLq4gzCV8Fg0/0dDhcbuo0//9zPkG/bqyGvDkTREypdUlGW4uWzlaokXP7Qok=
+	t=1733998012; cv=none; b=gEsgOUCx45dIo+lf7bFRnQBZxXVPO87UTUIGqWPmML2pEp2cPVqiA5kSw8QnO63aqAd5h8e+v1MI7rBbmQo99BxAuiTdM0PyLr9Cstik+W0bq0XBR5z3Zlb6MohRBz/kIYLFPivMnGFgtVFo3KumMUaqbkxGFFXTQ50zWors9Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733991211; c=relaxed/simple;
-	bh=yFRZ+IH3VruDCKluh2Mfy3YvjHuvC7u/oBOqXdHG/UQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c0EZ0B2z+G374Ruu9F8LDjESLLDnyYBTC8GYoo0fSX1DuUcH9PWR8rCCwnwSeQ2bx+D4u8qr4nWv1TrUU4WdtqAIe50s3wR6qnmVVpnhXwtmjKnvNEwpOp6nEATdlL6+Bap6BsZ7PNshx9eSsPToK+4sbFkBkFBJBzB4QoM30k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X403YC3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DBBC4CECE;
-	Thu, 12 Dec 2024 08:13:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733991210;
-	bh=yFRZ+IH3VruDCKluh2Mfy3YvjHuvC7u/oBOqXdHG/UQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X403YC3nzX85sUU0gMsuEEhNCgIEXOUpGQE5pbSXbWlnTW9NCHbM8Q3f9cGjpt+hA
-	 6Y0s/H8FcFTkbkCLs3YHflvhtK8mzxgctedejqkte9rAG9l195yutRCvrB07H/1szj
-	 MzwgVw8v+V34GvVlDRYINKQRhxlICRxQ/LPaCE19SlwBah4IFu/Dvp3ceFu4tVsTYk
-	 IsyjI5WujSg7PLnlEPJVoZDu33oE6xjyVdqhXbFdKzpb8PS4LZmhktymYDJPtgF/3a
-	 DFSFEWTPpsPCAH2wrAFpSFXRgFSjQeTuVIUunj7PaQ4qY1R/9VNZPoRkx0yWHb67Fc
-	 X86sGlmel0fiA==
-Date: Thu, 12 Dec 2024 09:13:27 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Nick Chan <towinchenmi@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
-	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
-	Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>, 
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>, dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 1/3] dt-bindings: leds: backlight: apple,dwi-bl: Add
- Apple DWI backlight
-Message-ID: <6fazyksxkcbhugivwgozuyjdig37vnshbwtdmzjcbrqywgszvd@sm27uhqgsma4>
-References: <20241211113512.19009-1-towinchenmi@gmail.com>
- <20241211113512.19009-2-towinchenmi@gmail.com>
+	s=arc-20240116; t=1733998012; c=relaxed/simple;
+	bh=ecDIoMe6xeSi2wG4NptFtfmCHydhk9YvAbBViXdKRnU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HgKLbim7h2sE/aphERs6hyazFHrk+767my/hWtQM9T27Iu4G5Y8Jfe92VisNF51qEjVnLdGP6wSx8+ROtivUdW5nAJf/Ri5di+VFAt8O2CHexVOMLT8aB6IdZg0cBycqUlFOYddCFg4pGyoXHS3prZo1M1N5cQ4cOplchUIXQTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SzM+e4c5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zFPTjN+S; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=C88eEKfu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=m3hu/pJr; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EA3121F445;
+	Thu, 12 Dec 2024 10:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1733998008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	b=SzM+e4c5Ym1h/jm5jVRn2Nl51bBZwlCrsSXJWKE8eSsIvW1x9151YFQ/8jopNe/WT25DGg
+	dd1JI7f5fPyaMHMgN/Ns+wcJEoBAlD4ktf1B5G0Rxga4vLYmWhLSQa2b/9SiuHDatXE9HY
+	OzOzrwlsl6v5KmUvSCQM31/RRV2N4gA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1733998008;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	b=zFPTjN+SsvBeunjkwP/6JkWexsWilBM8ALnk3ZViWyFS1fpwyJhjXgRJzw0NyKM21lX+lG
+	LIfa6gdLNBg95qBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1733998007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	b=C88eEKfuMDlPH1HvCmRgYqp7pDVG0sASkljzBfoFjeIItcffK0rfCEdrJ6k6fzsg2nJixD
+	ehYwzmW1s/iAjBGe1kDFRbd0z2U+Z76a6jqrJ3XZLxn+NeyeS9jXOgjRu1dmjfQei+JTv+
+	/CUM5DG9DIH47O3FPita/Ms4GR3rDzc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1733998007;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	b=m3hu/pJriaq1pEPdNSNu7jWg+8lOgOsUJfmtvq7KSt8hFHyu4O52BzltbsBFM3X7OFUdd3
+	yYq2vSEFm2yEa6Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A70C013939;
+	Thu, 12 Dec 2024 10:06:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uB+YJ7e1WmeaGwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 12 Dec 2024 10:06:47 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	arnd@arndb.de,
+	deller@gmx.de,
+	simona@ffwll.ch,
+	airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 0/3] drm,fbdev: Fix module dependencies
+Date: Thu, 12 Dec 2024 11:04:42 +0100
+Message-ID: <20241212100636.45875-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241211113512.19009-2-towinchenmi@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid];
+	FREEMAIL_TO(0.00)[redhat.com,arndb.de,gmx.de,ffwll.ch,gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Wed, Dec 11, 2024 at 07:34:37PM +0800, Nick Chan wrote:
-> Add backlight controllers attached via Apple DWI 2-wire interface.
-> 
-> Signed-off-by: Nick Chan <towinchenmi@gmail.com>
-> ---
->  .../bindings/leds/backlight/apple,dwi-bl.yaml | 57 +++++++++++++++++++
->  1 file changed, 57 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/leds/backlight/apple,dwi-bl.yaml
+Fix the dependencies among the various graphics modules.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Before addressing the FB_CORE issue, patch 1 first resolves a problem
+with BACKLIGHT_CLASS_DEVICE. A number of fbdev drivers select it, which
+results in a recursive-dependency error after patch has been applied.
+Making these drivers (or parts of them) depend on BACKLIGHT_CLASS_DEVICE
+fixes this.
 
-Best regards,
-Krzysztof
+Patch 2 selects FB_CORE for DRM_GEM_DMA_HELPER and DRM_TTM_HELPER.
+This is necessary with the recently added DRM client library.
+
+Patch 3 is the second half of the patch provided by Arnd at [1]. It
+could not yet be merged because of the issues fixed by patch 1.
+
+Side note: For the majority of graphics drivers, backlight functionality
+depends on BACKLIGHT_CLASS_DEVICE. In a few cases drivers select the
+Kconfig token automatically. These drivers should be updated to depends
+on the token as well, such that backlight functionality is fully user-
+controlled.
+
+v2:
+- s/BACKLIGHT_DEVICE_CLASS/BACKLIGHT_CLASS_DEVICE (Helge)
+- Fix fbdev driver-dependency corner case (Arnd)
+
+[1] https://patchwork.freedesktop.org/series/141411/
+
+Arnd Bergmann (1):
+  drm: rework FB_CORE dependency
+
+Thomas Zimmermann (2):
+  fbdev: Fix recursive dependencies wrt BACKLIGHT_CLASS_DEVICE
+  drm/fbdev: Select FB_CORE dependency for fbdev on DMA and TTM
+
+ drivers/auxdisplay/Kconfig       |  2 +-
+ drivers/gpu/drm/Kconfig          |  3 +++
+ drivers/macintosh/Kconfig        |  1 +
+ drivers/staging/fbtft/Kconfig    |  1 +
+ drivers/video/fbdev/Kconfig      | 18 +++++++++++++-----
+ drivers/video/fbdev/core/Kconfig |  3 +--
+ 6 files changed, 20 insertions(+), 8 deletions(-)
+
+-- 
+2.47.1
 
 
