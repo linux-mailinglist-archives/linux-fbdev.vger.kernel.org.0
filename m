@@ -1,52 +1,55 @@
-Return-Path: <linux-fbdev+bounces-3475-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3479-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8D59F232D
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:45:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA409F2334
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 390E7165611
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:45:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CB81188646C
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33A714D2BD;
-	Sun, 15 Dec 2024 10:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6600914D29D;
+	Sun, 15 Dec 2024 10:51:17 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80DB1494A8
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9AB1494D8
+	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734259525; cv=none; b=LOt/QbVf8Uq0qNhVWB08uunHgG2Rritp43Hp48CcXhQharo15XZAi0orjB+l1/5ZqWI6jazV/UyuQHU2PBiPaFUwgd8zZ4LNQAqpKpdQLnZ4F+gr2JAszQwzx0FGpO4eOAlCgjahuYfhjjXKF1/5tjkyHt2S/V8wuzX3t6PMcHY=
+	t=1734259877; cv=none; b=PqMdBOU9vtACczNaxrtgJLbuRKN7tvML3HAqinHBT6Ub1SK9BLjq9ZFlOzLNKAHhTZF3XfZymZEQqGwDQ9xBqdcizPZGgSTVnLe8VUSvtay3fhbw/J7QDhoBuUbwdIY1xjExmbzUEE5Zuzna0MYoRbRgE/G4xjD5VCqUo2K3bTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734259525; c=relaxed/simple;
-	bh=0dbe42JMI18o2S+1bATwPcLi67ZrJlFvinIYsXH026k=;
+	s=arc-20240116; t=1734259877; c=relaxed/simple;
+	bh=Ki95VsDGPnVdCe6KW17Ff1vZgtvjH5m/lJTod8Jdr0U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D2hH2V8CmbBRC5u8rncB+IgjKJdqs6L7U2SIzl+f/MMQgopcycQFWYy/vnXKk6ix5c7PJYA9/qpb6FKYTLUR93Yx6OvJsnYsoFEtgf3IplkK+mJiXdakIkh01HEMSeKRGyRcDWqX28qaE4k8ZzzmMiNpLQQNGg3kauGb77WLiI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
+	 MIME-Version; b=jXLP20S5enBOrsMdtVIej4ed/CPsnMimvSCiy/UHwKs8mCr2ZjHNVqzayUE1QIlft+S2IRcTw5vhRfiMKarcHLTBJ93oTgCRqv1xWlMZfB0JvfQOWzOF4XnfC/JbIV2YbjDGTlTc1toTnZp9U49H7cWvKiGuQv2f8Sj5SZYmz1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4YB08d3PlMz4wxLF
+	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 11:45:21 +0100 (CET)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:8e92:9273:64e7:a1e1])
-	by laurent.telenet-ops.be with cmsmtp
-	id oylD2D00N4qjdAp01ylDAY; Sun, 15 Dec 2024 11:45:13 +0100
+	by michel.telenet-ops.be with cmsmtp
+	id oylD2D00T4qjdAp06ylDnj; Sun, 15 Dec 2024 11:45:13 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7a-001Kj5-0r;
+	id 1tMm7a-001KjA-2Q;
 	Sun, 15 Dec 2024 11:45:13 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7d-000nlL-FK;
+	id 1tMm7d-000nlP-Ft;
 	Sun, 15 Dec 2024 11:45:13 +0100
 From: Geert Uytterhoeven <geert@linux-m68k.org>
 To: linux-fbdev@vger.kernel.org
 Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH fbtest 02/17] tests: Print test description in debug mode
-Date: Sun, 15 Dec 2024 11:44:53 +0100
-Message-Id: <20241215104508.191237-3-geert@linux-m68k.org>
+Subject: [PATCH fbtest 03/17] Test002: Fix test description
+Date: Sun, 15 Dec 2024 11:44:54 +0100
+Message-Id: <20241215104508.191237-4-geert@linux-m68k.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241215104508.191237-1-geert@linux-m68k.org>
 References: <20241215104508.191237-1-geert@linux-m68k.org>
@@ -58,26 +61,26 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Print not only the test name, but also the test description.
+The test does not draw circles, but ellipses.
 
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- tests.c | 2 +-
+ tests/test002.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests.c b/tests.c
-index c92236f869f41594..b1573032372e8090 100644
---- a/tests.c
-+++ b/tests.c
-@@ -55,7 +55,7 @@ static void run_one_test(const struct test *test)
- {
-     enum test_res res;
+diff --git a/tests/test002.c b/tests/test002.c
+index 8f7cab0537535fcb..e24f0b3c629cf369 100644
+--- a/tests/test002.c
++++ b/tests/test002.c
+@@ -49,7 +49,7 @@ static enum test_res test002_func(void)
  
--    Debug("Running test %s\n", test->name);
-+    Debug("Running test %s (%s)\n", test->name, test->desc);
- 
-     if (test->visual != VISUAL_NONE && !visual_set(test->visual)) {
- 	Debug("Visual %d not supported\n", test->visual);
+ const struct test test002 = {
+     .name =	"test002",
+-    .desc =	"Draw a grid and some circles",
++    .desc =	"Draw a grid and some ellipses",
+     .visual =	VISUAL_MONO,
+     .func =	test002_func,
+ };
 -- 
 2.34.1
 
