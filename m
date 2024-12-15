@@ -1,55 +1,52 @@
-Return-Path: <linux-fbdev+bounces-3485-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3473-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C3E9F233A
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB199F232A
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 346F6188087E
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:53:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8D5C188666E
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CE81537D4;
-	Sun, 15 Dec 2024 10:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C8A153BF0;
+	Sun, 15 Dec 2024 10:45:24 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from weierstrass.telenet-ops.be (weierstrass.telenet-ops.be [195.130.137.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E2E14D2BD
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FED14A4F9
+	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734260003; cv=none; b=AnnbVv/rIfZqF5+VsWol0MS6OsBFSVJBEivbww7dDFWHigpd9YY9edXjwSZ1jDtZyju4NKE5BDccsGWMHzXq1yZXO0x2EnvFXEmT655cPFk1q0Sv0u6h2budfaew6A9Y2xdhmXMlXED3vqH8SEDNfkFqgixDGTePnxSayECm15Y=
+	t=1734259524; cv=none; b=rEDynYVDT7Qn8MijSpoVY23aE0v5GKqj0+YaCAw7n7mYpQ1F+szcRMiMKmnaDUkarvr2REfhC6fYt7cyr7cm1DV1vG+RXkz5fxi8r2KBqJ682fkllhMdWDoT1V6jSxISK97Y4niRn+Qp0D8HSf9joZpQkxPh+8kOORGQhnVqVKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734260003; c=relaxed/simple;
-	bh=RiSYV2u/rXGtvrBA9gxQ450GsKzspJ1QWTJ+kPHzw84=;
+	s=arc-20240116; t=1734259524; c=relaxed/simple;
+	bh=h6gTcNt0Kq5jy2CZ1jMUbozvqiXQG7WvxI04IQh5eVI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Cco0wGymq10L6i2KJ5Pk7gNxH7VVRac1hJtLffU2VXnPRr3ZAJy8u/9rhhtybyJwXkarrw02KXXlPYHZm1dBALlqOrQFbNxBR58JuzchI/Ndqd6H/TCn0dpVQ5lVSW7nQiWGh710jidF/Ji1oZAqmVsE8SZDVzEIsVG39uuuSOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.81
+	 MIME-Version; b=HaRbhefj14hGt/GyI0/iMXJn5WTCOe+KcGSKUiEWzFZvU+rqfmP0yfo3mOrCLsc9Hhfp3X6lHzVYP3WA0bHiBizhVu4OzjyyR5LeNxvRsWEQChqJxXKsDRdYfAi5C7Po/7sOsWGhVhnJuOfeBBku0IOUZHUhjN3TE1L5aJnGC3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
-	by weierstrass.telenet-ops.be (Postfix) with ESMTPS id 4YB08d3KMyz4wwsB
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 11:45:21 +0100 (CET)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:8e92:9273:64e7:a1e1])
-	by xavier.telenet-ops.be with cmsmtp
-	id oylD2D00P4qjdAp01ylDEm; Sun, 15 Dec 2024 11:45:13 +0100
+	by andre.telenet-ops.be with cmsmtp
+	id oylD2D00Y4qjdAp01ylDUQ; Sun, 15 Dec 2024 11:45:13 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7a-001KjT-51;
+	id 1tMm7a-001KjX-5e;
 	Sun, 15 Dec 2024 11:45:13 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7d-000nlm-Jd;
+	id 1tMm7d-000nlr-KG;
 	Sun, 15 Dec 2024 11:45:13 +0100
 From: Geert Uytterhoeven <geert@linux-m68k.org>
 To: linux-fbdev@vger.kernel.org
 Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH fbtest 08/17] drawops: Return early in generic_{draw,fill}_ellipse()
-Date: Sun, 15 Dec 2024 11:44:59 +0100
-Message-Id: <20241215104508.191237-9-geert@linux-m68k.org>
+Subject: [PATCH fbtest 09/17] drawops: Extract do_ellipse()
+Date: Sun, 15 Dec 2024 11:45:00 +0100
+Message-Id: <20241215104508.191237-10-geert@linux-m68k.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241215104508.191237-1-geert@linux-m68k.org>
 References: <20241215104508.191237-1-geert@linux-m68k.org>
@@ -61,359 +58,217 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This reduces indentation in the largest branches.
+generic_draw_ellipse() and generic_fill_ellipse() are very similar.
+Reimplement them as wrappers around a common helper function.
 
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- drawops/generic.c | 324 +++++++++++++++++++++++-----------------------
- 1 file changed, 162 insertions(+), 162 deletions(-)
+ drawops/generic.c | 132 ++++++++++------------------------------------
+ 1 file changed, 28 insertions(+), 104 deletions(-)
 
 diff --git a/drawops/generic.c b/drawops/generic.c
-index 4b64c20cc0fe68bc..471aefe38d43aaa4 100644
+index 471aefe38d43aaa4..b3218f50d86c6d4c 100644
 --- a/drawops/generic.c
 +++ b/drawops/generic.c
-@@ -295,90 +295,90 @@ static void draw_ellipse_points(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel)
- void generic_draw_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
- {
-     if (a == b)
--	draw_circle(x, y, a, pixel);
--    else {
--	u32 a2 = a*a;
--	u32 b2 = b*b;
--	if (a <= b) {
--	    u32 x1 = 0;
--	    u32 y1 = b;
--	    int S = a2*(1-2*b)+2*b2;
--	    int T = b2-2*a2*(2*b-1);
--	    int dT1 = 4*b2;
--	    int dS1 = dT1+2*b2;
--	    int dS2 = -4*a2*(b-1);
--	    int dT2 = dS2+2*a2;
--
--	    while (1) {
--		if (S < 0) {
--		    draw_ellipse_points(x, y, x1, y1, pixel);
--		    S += dS1;
--		    T += dT1;
--		    dS1 += 4*b2;
--		    dT1 += 4*b2;
--		    x1++;
--		} else if (T < 0) {
--		    draw_ellipse_points(x, y, x1, y1, pixel);
--		    if (y1 == 0)
--			break;
--		    S += dS1+dS2;
--		    T += dT1+dT2;
--		    dS1 += 4*b2;
--		    dT1 += 4*b2;
--		    dS2 += 4*a2;
--		    dT2 += 4*a2;
--		    x1++;
--		    y1--;
--		} else {
--		    draw_ellipse_points(x, y, x1, y1, pixel);
--		    if (y1 == 0)
--			break;
--		    S += dS2;
--		    T += dT2;
--		    dS2 += 4*a2;
--		    dT2 += 4*a2;
--		    y1--;
--		}
-+	return draw_circle(x, y, a, pixel);
-+
-+    u32 a2 = a*a;
-+    u32 b2 = b*b;
-+
-+    if (a <= b) {
-+	u32 x1 = 0;
-+	u32 y1 = b;
-+	int S = a2*(1-2*b)+2*b2;
-+	int T = b2-2*a2*(2*b-1);
-+	int dT1 = 4*b2;
-+	int dS1 = dT1+2*b2;
-+	int dS2 = -4*a2*(b-1);
-+	int dT2 = dS2+2*a2;
-+
-+	while (1) {
-+	    if (S < 0) {
-+		draw_ellipse_points(x, y, x1, y1, pixel);
-+		S += dS1;
-+		T += dT1;
-+		dS1 += 4*b2;
-+		dT1 += 4*b2;
-+		x1++;
-+	    } else if (T < 0) {
-+		draw_ellipse_points(x, y, x1, y1, pixel);
-+		if (y1 == 0)
-+		    break;
-+		S += dS1+dS2;
-+		T += dT1+dT2;
-+		dS1 += 4*b2;
-+		dT1 += 4*b2;
-+		dS2 += 4*a2;
-+		dT2 += 4*a2;
-+		x1++;
-+		y1--;
-+	    } else {
-+		draw_ellipse_points(x, y, x1, y1, pixel);
-+		if (y1 == 0)
-+		    break;
-+		S += dS2;
-+		T += dT2;
-+		dS2 += 4*a2;
-+		dT2 += 4*a2;
-+		y1--;
- 	    }
--	} else {
--	    u32 x1 = a;
--	    u32 y1 = 0;
--            int S = b2*(1-2*a)+2*a2;
--            int T = a2-2*b2*(2*a-1);
--            int dT1 = 4*a2;
--            int dS1 = dT1+2*a2;
--            int dS2 = -4*b2*(a-1);
--            int dT2 = dS2+2*b2;
--
--	    draw_ellipse_points(x, y, x1, y1, pixel);
--	    do {
--		if (S < 0) {
--		    S += dS1;
--		    T += dT1;
--		    dS1 += 4*a2;
--		    dT1 += 4*a2;
--		    y1++;
--		    draw_ellipse_points(x, y, x1, y1, pixel);
--		} else if (T < 0) {
--		    S += dS1+dS2;
--		    T += dT1+dT2;
--		    dS1 += 4*a2;
--		    dT1 += 4*a2;
--		    dS2 += 4*b2;
--		    dT2 += 4*b2;
--		    x1--;
--		    y1++;
--		    draw_ellipse_points(x, y, x1, y1, pixel);
--		} else {
--		    S += dS2;
--		    T += dT2;
--		    dS2 += 4*b2;
--		    dT2 += 4*b2;
--		    x1--;
--		    draw_ellipse_points(x, y, x1, y1, pixel);
--		}
--	    } while (x1 > 0);
- 	}
-+    } else {
-+	u32 x1 = a;
-+	u32 y1 = 0;
-+	int S = b2*(1-2*a)+2*a2;
-+	int T = a2-2*b2*(2*a-1);
-+	int dT1 = 4*a2;
-+	int dS1 = dT1+2*a2;
-+	int dS2 = -4*b2*(a-1);
-+	int dT2 = dS2+2*b2;
-+
-+	draw_ellipse_points(x, y, x1, y1, pixel);
-+	do {
-+	    if (S < 0) {
-+		S += dS1;
-+		T += dT1;
-+		dS1 += 4*a2;
-+		dT1 += 4*a2;
-+		y1++;
-+		draw_ellipse_points(x, y, x1, y1, pixel);
-+	    } else if (T < 0) {
-+		S += dS1+dS2;
-+		T += dT1+dT2;
-+		dS1 += 4*a2;
-+		dT1 += 4*a2;
-+		dS2 += 4*b2;
-+		dT2 += 4*b2;
-+		x1--;
-+		y1++;
-+		draw_ellipse_points(x, y, x1, y1, pixel);
-+	    } else {
-+		S += dS2;
-+		T += dT2;
-+		dS2 += 4*b2;
-+		dT2 += 4*b2;
-+		x1--;
-+		draw_ellipse_points(x, y, x1, y1, pixel);
-+	    }
-+	} while (x1 > 0);
+@@ -292,101 +292,6 @@ static void draw_ellipse_points(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel)
      }
  }
  
-@@ -403,88 +403,88 @@ static void fill_ellipse_points(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel)
- void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+-void generic_draw_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+-{
+-    if (a == b)
+-	return draw_circle(x, y, a, pixel);
+-
+-    u32 a2 = a*a;
+-    u32 b2 = b*b;
+-
+-    if (a <= b) {
+-	u32 x1 = 0;
+-	u32 y1 = b;
+-	int S = a2*(1-2*b)+2*b2;
+-	int T = b2-2*a2*(2*b-1);
+-	int dT1 = 4*b2;
+-	int dS1 = dT1+2*b2;
+-	int dS2 = -4*a2*(b-1);
+-	int dT2 = dS2+2*a2;
+-
+-	while (1) {
+-	    if (S < 0) {
+-		draw_ellipse_points(x, y, x1, y1, pixel);
+-		S += dS1;
+-		T += dT1;
+-		dS1 += 4*b2;
+-		dT1 += 4*b2;
+-		x1++;
+-	    } else if (T < 0) {
+-		draw_ellipse_points(x, y, x1, y1, pixel);
+-		if (y1 == 0)
+-		    break;
+-		S += dS1+dS2;
+-		T += dT1+dT2;
+-		dS1 += 4*b2;
+-		dT1 += 4*b2;
+-		dS2 += 4*a2;
+-		dT2 += 4*a2;
+-		x1++;
+-		y1--;
+-	    } else {
+-		draw_ellipse_points(x, y, x1, y1, pixel);
+-		if (y1 == 0)
+-		    break;
+-		S += dS2;
+-		T += dT2;
+-		dS2 += 4*a2;
+-		dT2 += 4*a2;
+-		y1--;
+-	    }
+-	}
+-    } else {
+-	u32 x1 = a;
+-	u32 y1 = 0;
+-	int S = b2*(1-2*a)+2*a2;
+-	int T = a2-2*b2*(2*a-1);
+-	int dT1 = 4*a2;
+-	int dS1 = dT1+2*a2;
+-	int dS2 = -4*b2*(a-1);
+-	int dT2 = dS2+2*b2;
+-
+-	draw_ellipse_points(x, y, x1, y1, pixel);
+-	do {
+-	    if (S < 0) {
+-		S += dS1;
+-		T += dT1;
+-		dS1 += 4*a2;
+-		dT1 += 4*a2;
+-		y1++;
+-		draw_ellipse_points(x, y, x1, y1, pixel);
+-	    } else if (T < 0) {
+-		S += dS1+dS2;
+-		T += dT1+dT2;
+-		dS1 += 4*a2;
+-		dT1 += 4*a2;
+-		dS2 += 4*b2;
+-		dT2 += 4*b2;
+-		x1--;
+-		y1++;
+-		draw_ellipse_points(x, y, x1, y1, pixel);
+-	    } else {
+-		S += dS2;
+-		T += dT2;
+-		dS2 += 4*b2;
+-		dT2 += 4*b2;
+-		x1--;
+-		draw_ellipse_points(x, y, x1, y1, pixel);
+-	    }
+-	} while (x1 > 0);
+-    }
+-}
+-
+-
+-    /*
+-     *  Draw a filled ellipse
+-     */
+-
+ static void fill_ellipse_points(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel)
  {
-     if (a == b)
--	fill_circle(x, y, a, pixel);
--    else {
--	u32 a2 = a*a;
--	u32 b2 = b*b;
--	if (a <= b) {
--	    u32 x1 = 0;
--	    u32 y1 = b;
--	    int S = a2*(1-2*b)+2*b2;
--	    int T = b2-2*a2*(2*b-1);
--	    int dT1 = 4*b2;
--	    int dS1 = dT1+2*b2;
--	    int dS2 = -4*a2*(b-1);
--	    int dT2 = dS2+2*a2;
--
--	    while (1) {
--		if (S < 0) {
--		    S += dS1;
--		    T += dT1;
--		    dS1 += 4*b2;
--		    dT1 += 4*b2;
--		    x1++;
--		} else if (T < 0) {
--		    fill_ellipse_points(x, y, x1, y1, pixel);
--		    if (y1 == 0)
--			break;
--		    S += dS1+dS2;
--		    T += dT1+dT2;
--		    dS1 += 4*b2;
--		    dT1 += 4*b2;
--		    dS2 += 4*a2;
--		    dT2 += 4*a2;
--		    x1++;
--		    y1--;
--		} else {
--		    fill_ellipse_points(x, y, x1, y1, pixel);
--		    if (y1 == 0)
--			break;
--		    S += dS2;
--		    T += dT2;
--		    dS2 += 4*a2;
--		    dT2 += 4*a2;
--		    y1--;
--		}
-+	return fill_circle(x, y, a, pixel);
-+
-+    u32 a2 = a*a;
-+    u32 b2 = b*b;
-+
-+    if (a <= b) {
-+	u32 x1 = 0;
-+	u32 y1 = b;
-+	int S = a2*(1-2*b)+2*b2;
-+	int T = b2-2*a2*(2*b-1);
-+	int dT1 = 4*b2;
-+	int dS1 = dT1+2*b2;
-+	int dS2 = -4*a2*(b-1);
-+	int dT2 = dS2+2*a2;
-+
-+	while (1) {
-+	    if (S < 0) {
-+		S += dS1;
-+		T += dT1;
-+		dS1 += 4*b2;
-+		dT1 += 4*b2;
-+		x1++;
-+	    } else if (T < 0) {
-+		fill_ellipse_points(x, y, x1, y1, pixel);
-+		if (y1 == 0)
-+		    break;
-+		S += dS1+dS2;
-+		T += dT1+dT2;
-+		dS1 += 4*b2;
-+		dT1 += 4*b2;
-+		dS2 += 4*a2;
-+		dT2 += 4*a2;
-+		x1++;
-+		y1--;
-+	    } else {
-+		fill_ellipse_points(x, y, x1, y1, pixel);
-+		if (y1 == 0)
-+		    break;
-+		S += dS2;
-+		T += dT2;
-+		dS2 += 4*a2;
-+		dT2 += 4*a2;
-+		y1--;
- 	    }
--	} else {
--	    u32 x1 = a;
--	    u32 y1 = 0;
--            int S = b2*(1-2*a)+2*a2;
--            int T = a2-2*b2*(2*a-1);
--            int dT1 = 4*a2;
--            int dS1 = dT1+2*a2;
--            int dS2 = -4*b2*(a-1);
--            int dT2 = dS2+2*b2;
--
--	    fill_ellipse_points(x, y, x1, y1, pixel);
--	    do {
--		if (S < 0) {
--		    S += dS1;
--		    T += dT1;
--		    dS1 += 4*a2;
--		    dT1 += 4*a2;
--		    y1++;
--		    fill_ellipse_points(x, y, x1, y1, pixel);
--		} else if (T < 0) {
--		    S += dS1+dS2;
--		    T += dT1+dT2;
--		    dS1 += 4*a2;
--		    dT1 += 4*a2;
--		    dS2 += 4*b2;
--		    dT2 += 4*b2;
--		    x1--;
--		    y1++;
--		    fill_ellipse_points(x, y, x1, y1, pixel);
--		} else {
--		    S += dS2;
--		    T += dT2;
--		    dS2 += 4*b2;
--		    dT2 += 4*b2;
--		    x1--;
--		}
--	    } while (x1 > 0);
- 	}
-+    } else {
-+	u32 x1 = a;
-+	u32 y1 = 0;
-+	int S = b2*(1-2*a)+2*a2;
-+	int T = a2-2*b2*(2*a-1);
-+	int dT1 = 4*a2;
-+	int dS1 = dT1+2*a2;
-+	int dS2 = -4*b2*(a-1);
-+	int dT2 = dS2+2*b2;
-+
-+	fill_ellipse_points(x, y, x1, y1, pixel);
-+	do {
-+	    if (S < 0) {
-+		S += dS1;
-+		T += dT1;
-+		dS1 += 4*a2;
-+		dT1 += 4*a2;
-+		y1++;
-+		fill_ellipse_points(x, y, x1, y1, pixel);
-+	    } else if (T < 0) {
-+		S += dS1+dS2;
-+		T += dT1+dT2;
-+		dS1 += 4*a2;
-+		dT1 += 4*a2;
-+		dS2 += 4*b2;
-+		dT2 += 4*b2;
-+		x1--;
-+		y1++;
-+		fill_ellipse_points(x, y, x1, y1, pixel);
-+	    } else {
-+		S += dS2;
-+		T += dT2;
-+		dS2 += 4*b2;
-+		dT2 += 4*b2;
-+		x1--;
-+	    }
-+	} while (x1 > 0);
+     if (x == 0) {
+@@ -400,11 +305,9 @@ static void fill_ellipse_points(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel)
      }
  }
  
+-void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
++static void do_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel,
++		       draw_func_t draw_inner, draw_func_t draw_outer)
+ {
+-    if (a == b)
+-	return fill_circle(x, y, a, pixel);
+-
+     u32 a2 = a*a;
+     u32 b2 = b*b;
+ 
+@@ -420,13 +323,15 @@ void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 
+ 	while (1) {
+ 	    if (S < 0) {
++		if (draw_inner)
++		    draw_inner(x, y, x1, y1, pixel);
+ 		S += dS1;
+ 		T += dT1;
+ 		dS1 += 4*b2;
+ 		dT1 += 4*b2;
+ 		x1++;
+ 	    } else if (T < 0) {
+-		fill_ellipse_points(x, y, x1, y1, pixel);
++		draw_outer(x, y, x1, y1, pixel);
+ 		if (y1 == 0)
+ 		    break;
+ 		S += dS1+dS2;
+@@ -438,7 +343,7 @@ void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 		x1++;
+ 		y1--;
+ 	    } else {
+-		fill_ellipse_points(x, y, x1, y1, pixel);
++		draw_outer(x, y, x1, y1, pixel);
+ 		if (y1 == 0)
+ 		    break;
+ 		S += dS2;
+@@ -458,7 +363,7 @@ void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 	int dS2 = -4*b2*(a-1);
+ 	int dT2 = dS2+2*b2;
+ 
+-	fill_ellipse_points(x, y, x1, y1, pixel);
++	draw_outer(x, y, x1, y1, pixel);
+ 	do {
+ 	    if (S < 0) {
+ 		S += dS1;
+@@ -466,7 +371,7 @@ void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 		dS1 += 4*a2;
+ 		dT1 += 4*a2;
+ 		y1++;
+-		fill_ellipse_points(x, y, x1, y1, pixel);
++		draw_outer(x, y, x1, y1, pixel);
+ 	    } else if (T < 0) {
+ 		S += dS1+dS2;
+ 		T += dT1+dT2;
+@@ -476,18 +381,37 @@ void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 		dT2 += 4*b2;
+ 		x1--;
+ 		y1++;
+-		fill_ellipse_points(x, y, x1, y1, pixel);
++		draw_outer(x, y, x1, y1, pixel);
+ 	    } else {
+ 		S += dS2;
+ 		T += dT2;
+ 		dS2 += 4*b2;
+ 		dT2 += 4*b2;
+ 		x1--;
++		if (draw_inner)
++		    draw_inner(x, y, x1, y1, pixel);
+ 	    }
+ 	} while (x1 > 0);
+     }
+ }
+ 
++void generic_draw_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
++{
++    if (a == b)
++	draw_circle(x, y, a, pixel);
++    else
++	do_ellipse(x, y, a, b, pixel, draw_ellipse_points,
++		   draw_ellipse_points);
++}
++
++void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
++{
++    if (a == b)
++	fill_circle(x, y, a, pixel);
++    else
++	do_ellipse(x, y, a, b, pixel, NULL, fill_ellipse_points);
++}
++
+ 
+     /*
+      *  Copy a rectangular area
 -- 
 2.34.1
 
