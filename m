@@ -1,87 +1,119 @@
-Return-Path: <linux-fbdev+bounces-3481-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3489-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25199F2336
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:51:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5969F2477
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 15:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A2F77A10F5
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:51:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2474163CBA
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 14:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8BE1537D4;
-	Sun, 15 Dec 2024 10:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779CB187325;
+	Sun, 15 Dec 2024 14:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="FzB742mu"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FEE12DD95
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7162030A;
+	Sun, 15 Dec 2024 14:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734259878; cv=none; b=dxuzJiohIgP5yf/jjEg9EsHZ+IhP+YsWYgkRapnR7I2ocpfv0vw3munfoAf/6A5aENyLKhn+cOecWcg0g4B2bOJqY225lq7j4WFVabjyuN8b8hcX7iMjqpzKdZeCIcOzuSwoCHq6/REr4VFem5gHIXzMLAij0oO8OqjitHb2zRg=
+	t=1734274524; cv=none; b=qM9IU3oiFgsJ0lHetcn8dyD5eaiKIxS4eAX5c5xy4Xa+DexF8e9u0zdn76dojquSNiJAMS6vdm9egP+aIPwjoCZyH2iy6ypqLUX7L9Rv7FPt2tupBfZ31TFtb98H9dAU4FwNKOXQA0g0oUcO1mN2fuVc7o/WiFWjK1AI4zhYIbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734259878; c=relaxed/simple;
-	bh=39oQ6eKrXrfbE7a6soyOQ3GtZarT7COYWib9oOhqYAw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PM4qBDwdLcLno6JVQ4CeSviD+peeDRdrIU3Zp1qSdGRkmAMnDy9Pe7M/AhIjKfBFsENT0zE7ag3X3DE7cc/+cYLp4yk5rKsIWq+jAEuexVJwmC/nXhYsgXASNu21WXnEkYZ384Iiqd6d0V3sjqfvA2v8vORm3Al9OQlclMzeHwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4YB08d3Jt5z4wxL6
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 11:45:21 +0100 (CET)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:8e92:9273:64e7:a1e1])
-	by michel.telenet-ops.be with cmsmtp
-	id oylD2D00j4qjdAp06ylDo0; Sun, 15 Dec 2024 11:45:14 +0100
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7a-001Kk4-Bh;
-	Sun, 15 Dec 2024 11:45:13 +0100
-Received: from geert by rox.of.borg with local (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7d-000nmV-P9;
-	Sun, 15 Dec 2024 11:45:13 +0100
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: linux-fbdev@vger.kernel.org
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH fbtest 17/17] util: Use __attribute__
-Date: Sun, 15 Dec 2024 11:45:08 +0100
-Message-Id: <20241215104508.191237-18-geert@linux-m68k.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241215104508.191237-1-geert@linux-m68k.org>
-References: <20241215104508.191237-1-geert@linux-m68k.org>
+	s=arc-20240116; t=1734274524; c=relaxed/simple;
+	bh=3xEK3Ew0UcjU13RC8Ahx24g141JMcVwvDiJkVvI7dDs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Rb3WB1sIYLxeOYA/Jo7krZivM8cGYdgj4B9m/Kfl6U0Hyo2eKdhsWqfCdJHZ/IJ+L7wBjBpaF2j4ZKnsZj2fwysiXVVftuCswGtGQBz85RIhC5v4ynriuXM5bel2jOZs1rjxkRBm3nDVE4Ds0Ewd0G5EKE6IMtLOcVrlV96Ki+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=FzB742mu; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1734274520;
+	bh=3xEK3Ew0UcjU13RC8Ahx24g141JMcVwvDiJkVvI7dDs=;
+	h=From:Date:Subject:To:Cc:From;
+	b=FzB742mum+23K1hGje4QQ3N9tWEwlX6ynw+WpT3U3zPNNe73XNqgY5c20FDZuv4bf
+	 dbSLz+hRT4QsEaASSKGa+YedyP9shnB7oKjtx4PN4QUJm69HQ2UmTLxT3kVJJwqcXi
+	 ilB0WJ4cnQWimS+MhGx+O7yJLj6nokzPZd6R2BS0=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Sun, 15 Dec 2024 15:55:17 +0100
+Subject: [PATCH] fbdev/udlfb: Use const 'struct bin_attribute' callback
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20241215-sysfs-const-bin_attr-udlfb-v1-1-40e87ed71d1f@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIANTtXmcC/x3MQQqDMBAAwK/Inl0wsRrsV0QkJhu7UGLJRmkR/
+ 97gcS5zglBiEnhWJyQ6WHiLBaquwL1sXAnZF4Nu9ENp1aH8JAi6LUrGheNsc064+3dY0Axm8CY
+ 0vnU9lOCTKPD3zsfpuv75GvhEbAAAAA==
+X-Change-ID: 20241215-sysfs-const-bin_attr-udlfb-7979d7f0d3c6
+To: Bernie Thompson <bernie@plugable.com>, Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734274518; l=1791;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=3xEK3Ew0UcjU13RC8Ahx24g141JMcVwvDiJkVvI7dDs=;
+ b=OFEzKBtvvZVB9v7+uzooOqyzatRSEGsUvJckrfTOe6OjpYLkZ9OxURvAH6NDn39sP7Vgta1xk
+ Gl6VtB9HKewBDEPVuGtPg9kcUt6+PLVXb2mwWfqUbIhBbWSjhZxyQds
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-Replace the rare __attribute by the more common __attribute__.
+The sysfs core now provides callback variants that explicitly take a
+const pointer. Make use of it to match the attribute definition.
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- include/util.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/udlfb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/util.h b/include/util.h
-index 5a6b5ab40d383d5a..1433b87b8dbefcfc 100644
---- a/include/util.h
-+++ b/include/util.h
-@@ -40,7 +40,7 @@ extern void Warning(const char *fmt, ...)
- extern void Error(const char *fmt, ...)
-     __attribute__ ((format (printf, 1, 2)));
- extern void Fatal(const char *fmt, ...)
--    __attribute__ ((noreturn)) __attribute ((format (printf, 1, 2)));
-+    __attribute__ ((noreturn)) __attribute__ ((format (printf, 1, 2)));
- extern void Debug(const char *fmt, ...)
-     __attribute__ ((format (printf, 1, 2)));
+diff --git a/drivers/video/fbdev/udlfb.c b/drivers/video/fbdev/udlfb.c
+index 71ac9e36f67c68aa7a54dce32323047a2a9a48bf..acadf0eb450c3d76c05fcb9cc7e7c3f6dd8f31ef 100644
+--- a/drivers/video/fbdev/udlfb.c
++++ b/drivers/video/fbdev/udlfb.c
+@@ -1416,7 +1416,7 @@ static ssize_t metrics_cpu_kcycles_used_show(struct device *fbdev,
  
+ static ssize_t edid_show(
+ 			struct file *filp,
+-			struct kobject *kobj, struct bin_attribute *a,
++			struct kobject *kobj, const struct bin_attribute *a,
+ 			 char *buf, loff_t off, size_t count) {
+ 	struct device *fbdev = kobj_to_dev(kobj);
+ 	struct fb_info *fb_info = dev_get_drvdata(fbdev);
+@@ -1438,7 +1438,7 @@ static ssize_t edid_show(
+ 
+ static ssize_t edid_store(
+ 			struct file *filp,
+-			struct kobject *kobj, struct bin_attribute *a,
++			struct kobject *kobj, const struct bin_attribute *a,
+ 			char *src, loff_t src_off, size_t src_size) {
+ 	struct device *fbdev = kobj_to_dev(kobj);
+ 	struct fb_info *fb_info = dev_get_drvdata(fbdev);
+@@ -1482,8 +1482,8 @@ static const struct bin_attribute edid_attr = {
+ 	.attr.name = "edid",
+ 	.attr.mode = 0666,
+ 	.size = EDID_LENGTH,
+-	.read = edid_show,
+-	.write = edid_store
++	.read_new = edid_show,
++	.write_new = edid_store
+ };
+ 
+ static const struct device_attribute fb_device_attrs[] = {
+
+---
+base-commit: 2d8308bf5b67dff50262d8a9260a50113b3628c6
+change-id: 20241215-sysfs-const-bin_attr-udlfb-7979d7f0d3c6
+
+Best regards,
 -- 
-2.34.1
+Thomas Weißschuh <linux@weissschuh.net>
 
 
