@@ -1,55 +1,55 @@
-Return-Path: <linux-fbdev+bounces-3480-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3484-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C999F2335
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:51:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403B29F2339
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:53:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA48A1886041
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:51:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E7D165644
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3C814D2BD;
-	Sun, 15 Dec 2024 10:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77A3152166;
+	Sun, 15 Dec 2024 10:53:22 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
+Received: from weierstrass.telenet-ops.be (weierstrass.telenet-ops.be [195.130.137.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92312C13D
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DED14D29D
+	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:53:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734259877; cv=none; b=rtjUrvmTKSXcn5wvEZ8Cz2tPsckndu28KvUv0ndoRTmcxIkN7sLLK3ENCUqS0eYqWlimi2Q+l5X4xJmg2JE6D86deDW6tPlTDOLcDwXGvXwGTWCWrUdt48J25+87fCl8XJoRD6HEhvVoIGTAhedUXNhfgL93Wu2LoObpJAeOtu0=
+	t=1734260002; cv=none; b=VjVj2L7I/gTJfGc0RItYbRtAo3DObs4eNr+hRElDk1k38ZYjFGPeb2HStc3j4QICGbnzoXczfFT731DLMrIH/qPnrmEDRk+/BlSyGbFTg+vTQYEF0KwnlIz3tQ9Cc+W1Gf326MvO57gsrztazLW0QPYWcSBW6dVfT0Np5d+ABic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734259877; c=relaxed/simple;
-	bh=zyj3ShxJQNX6ijMzXKQxlqR8dPw34gmFSlk84FsF/Bg=;
+	s=arc-20240116; t=1734260002; c=relaxed/simple;
+	bh=dF5aHEI9yltbH4AVdIEng2CdNqCOM9IJTlvYoaNgtZc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=X7Vjvc2PeFLy/LyNhqYtHL8jazmVBGMFCNE/HR7S7ORYN2JQUQV+Opjlnr1mf4Py221WX5lacRXlyTAKnKWTDE6NEeL5JgufpfKrfBmwa1Y5FUDFYzsLl7bCnbEB3nuZOE7ZHekW8KbonZGaW9c1o0TPv558pF/cMDQbMsv/LXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.49
+	 MIME-Version; b=nN+ARS3x9kKnfmrG2q5+7dTU11DF44OtQkIqkAZ/FOQNaKtKN1ca04PYqPJr7+BQAp2Lz+LcNxwe4MyB9CQ/OFcPmSvjYjJaPJ1eDe9CyejtPis2lhIslP7OLdVwT0WLaDcxlgGryxRuD1/xOd5hycaxOeg94CD6Ocmxy2Wn4aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4YB08d2sBBz4wxL4
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+	by weierstrass.telenet-ops.be (Postfix) with ESMTPS id 4YB08d2yhfz4wwdX
 	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 11:45:21 +0100 (CET)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:8e92:9273:64e7:a1e1])
-	by michel.telenet-ops.be with cmsmtp
-	id oylD2D00d4qjdAp06ylDnu; Sun, 15 Dec 2024 11:45:13 +0100
+	by xavier.telenet-ops.be with cmsmtp
+	id oylD2D00Y4qjdAp01ylDEq; Sun, 15 Dec 2024 11:45:14 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7a-001Kjx-9L;
+	id 1tMm7a-001Kk3-BC;
 	Sun, 15 Dec 2024 11:45:13 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7d-000nmI-Nq;
+	id 1tMm7d-000nmQ-OR;
 	Sun, 15 Dec 2024 11:45:13 +0100
 From: Geert Uytterhoeven <geert@linux-m68k.org>
 To: linux-fbdev@vger.kernel.org
 Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH fbtest 15/17] test013: Fix off-by-one error in maximum circle calculation
-Date: Sun, 15 Dec 2024 11:45:06 +0100
-Message-Id: <20241215104508.191237-16-geert@linux-m68k.org>
+Subject: [PATCH fbtest 16/17] visops: Mark fall-through switch case
+Date: Sun, 15 Dec 2024 11:45:07 +0100
+Message-Id: <20241215104508.191237-17-geert@linux-m68k.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241215104508.191237-1-geert@linux-m68k.org>
 References: <20241215104508.191237-1-geert@linux-m68k.org>
@@ -61,30 +61,23 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A circle with radius R has an actual diameter of 2*R+1 instead of 2*R.
-
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- tests/test013.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ visops/pseudocolor.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/test013.c b/tests/test013.c
-index 96fc1cd216b81b0a..25904270901eaded 100644
---- a/tests/test013.c
-+++ b/tests/test013.c
-@@ -63,10 +63,10 @@ static enum test_res test013_func(void)
- 
-     while (1)
- 	for (i = 0; i < sizeof(sizes)/sizeof(*sizes); i++) {
--	    size = sizes[i];
-+	    size = sizes[i] + 1;
- 	    if (size > fb_var.xres_virtual || size > fb_var.yres_virtual)
- 		goto out;
--	    benchmark_circles(size/2);
-+	    benchmark_circles(sizes[i]/2);
- 	    sizes[i] *= 10;
+diff --git a/visops/pseudocolor.c b/visops/pseudocolor.c
+index 2c3f4d9ac29b7b5e..112e2144979afbf3 100644
+--- a/visops/pseudocolor.c
++++ b/visops/pseudocolor.c
+@@ -50,6 +50,7 @@ void pseudocolor_create_tables(u32 bpp)
+ 	switch (bpp % 3) {
+ 	    case 2:
+ 		red_bits++;
++		__attribute__ ((fallthrough));
+ 	    case 1:
+ 		green_bits++;
  	}
- 
 -- 
 2.34.1
 
