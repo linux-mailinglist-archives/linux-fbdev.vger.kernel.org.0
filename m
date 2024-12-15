@@ -1,55 +1,52 @@
-Return-Path: <linux-fbdev+bounces-3479-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3474-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA409F2334
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:51:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E2B9F232B
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CB81188646C
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:51:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A911C165601
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6600914D29D;
-	Sun, 15 Dec 2024 10:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9BD14D29D;
+	Sun, 15 Dec 2024 10:45:25 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9AB1494D8
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28D214D2BD
+	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734259877; cv=none; b=PqMdBOU9vtACczNaxrtgJLbuRKN7tvML3HAqinHBT6Ub1SK9BLjq9ZFlOzLNKAHhTZF3XfZymZEQqGwDQ9xBqdcizPZGgSTVnLe8VUSvtay3fhbw/J7QDhoBuUbwdIY1xjExmbzUEE5Zuzna0MYoRbRgE/G4xjD5VCqUo2K3bTE=
+	t=1734259525; cv=none; b=ApBQgmVdS6g7fxqADf0pvSid7AtSZgGKQfdVWfajL4nLN3s8YiTvoEZFmCLUKd0DcosYFZr/Rqpq6Uxi456PTd42x41tn1qY2/CmEuib2p0FVy6dDoGlJgHb6aw1fT5SDjudMW5K8Z1nBPooPwZwrYr7hbA5zkPNy/VCSOAifRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734259877; c=relaxed/simple;
-	bh=Ki95VsDGPnVdCe6KW17Ff1vZgtvjH5m/lJTod8Jdr0U=;
+	s=arc-20240116; t=1734259525; c=relaxed/simple;
+	bh=ckgLCKZhlosLPfVF6woguPYpvmGpa8ywmnfGusgamBY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jXLP20S5enBOrsMdtVIej4ed/CPsnMimvSCiy/UHwKs8mCr2ZjHNVqzayUE1QIlft+S2IRcTw5vhRfiMKarcHLTBJ93oTgCRqv1xWlMZfB0JvfQOWzOF4XnfC/JbIV2YbjDGTlTc1toTnZp9U49H7cWvKiGuQv2f8Sj5SZYmz1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.49
+	 MIME-Version; b=SncAyOqsa4HM8zKYdqOtw787tcUbmlztYhj9tqFGt+J1D4vGIUNFAB/sJR4Z11Hh984/8JD9WWigt051F4+j5T/+4Oa/U+PcwxCgBjhbEo34UyWVYCTwtXAYJcxuPgZNgJfsRLf/LRXLdd1iMDsXKq9flTH9Y/A8RbOs+PdB8qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4YB08d3PlMz4wxLF
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 11:45:21 +0100 (CET)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:8e92:9273:64e7:a1e1])
-	by michel.telenet-ops.be with cmsmtp
-	id oylD2D00T4qjdAp06ylDnj; Sun, 15 Dec 2024 11:45:13 +0100
+	by albert.telenet-ops.be with cmsmtp
+	id oylD2D00T4qjdAp06ylDsd; Sun, 15 Dec 2024 11:45:13 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7a-001KjA-2Q;
+	id 1tMm7a-001KjF-2m;
 	Sun, 15 Dec 2024 11:45:13 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7d-000nlP-Ft;
+	id 1tMm7d-000nlT-GX;
 	Sun, 15 Dec 2024 11:45:13 +0100
 From: Geert Uytterhoeven <geert@linux-m68k.org>
 To: linux-fbdev@vger.kernel.org
 Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH fbtest 03/17] Test002: Fix test description
-Date: Sun, 15 Dec 2024 11:44:54 +0100
-Message-Id: <20241215104508.191237-4-geert@linux-m68k.org>
+Subject: [PATCH fbtest 04/17] drawops: Extract do_circle()
+Date: Sun, 15 Dec 2024 11:44:55 +0100
+Message-Id: <20241215104508.191237-5-geert@linux-m68k.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241215104508.191237-1-geert@linux-m68k.org>
 References: <20241215104508.191237-1-geert@linux-m68k.org>
@@ -61,26 +58,103 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The test does not draw circles, but ellipses.
+generic_draw_circle() and generic_fill_circle() are very similar.
+Reimplement them as wrappers around a common helper function.
 
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- tests/test002.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drawops/generic.c | 51 +++++++++++++++++------------------------------
+ 1 file changed, 18 insertions(+), 33 deletions(-)
 
-diff --git a/tests/test002.c b/tests/test002.c
-index 8f7cab0537535fcb..e24f0b3c629cf369 100644
---- a/tests/test002.c
-+++ b/tests/test002.c
-@@ -49,7 +49,7 @@ static enum test_res test002_func(void)
+diff --git a/drawops/generic.c b/drawops/generic.c
+index b2543b877a3a6154..9fd8aafb69a868a2 100644
+--- a/drawops/generic.c
++++ b/drawops/generic.c
+@@ -209,35 +209,6 @@ static void draw_circle_points(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel)
+     }
+ }
  
- const struct test test002 = {
-     .name =	"test002",
--    .desc =	"Draw a grid and some circles",
-+    .desc =	"Draw a grid and some ellipses",
-     .visual =	VISUAL_MONO,
-     .func =	test002_func,
- };
+-void generic_draw_circle(u32 x, u32 y, u32 r, pixel_t pixel)
+-{
+-    u32 x1 = 0;
+-    u32 y1 = r;
+-    int d = 1-r;
+-    int de = 3;
+-    int dse = -2*r+5;
+-
+-    do {
+-	draw_circle_points(x, y, x1, y1, pixel);
+-	if (d < 0) {	// Select E
+-	    d += de;
+-	    de += 2;
+-	    dse += 2;
+-	} else {	// Select SE
+-	    d += dse;
+-	    de += 2;
+-	    dse += 4;
+-	    y1--;
+-	}
+-	x1++;
+-    } while (x1 <= y1);
+-}
+-
+-
+-    /*
+-     *  Draw a filled circle
+-     */
+-
+ static void fill_circle_points_x(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel)
+ {
+     if (x == 0) {
+@@ -259,7 +230,10 @@ static void fill_circle_points_y(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel)
+     }
+ }
+ 
+-void generic_fill_circle(u32 x, u32 y, u32 r, pixel_t pixel)
++typedef void (*draw_func_t)(u32 cx, u32 cy, u32 x, u32 y, pixel_t pixel);
++
++static void do_circle(u32 x, u32 y, u32 r, pixel_t pixel, draw_func_t draw_x,
++		      draw_func_t draw_y)
+ {
+     u32 x1 = 0;
+     u32 y1 = r;
+@@ -268,7 +242,7 @@ void generic_fill_circle(u32 x, u32 y, u32 r, pixel_t pixel)
+     int dse = -2*r+5;
+ 
+     do {
+-	fill_circle_points_y(x, y, x1, y1, pixel);
++	draw_y(x, y, x1, y1, pixel);
+ 	if (d < 0) {	// Select E
+ 	    d += de;
+ 	    de += 2;
+@@ -277,14 +251,25 @@ void generic_fill_circle(u32 x, u32 y, u32 r, pixel_t pixel)
+ 	    d += dse;
+ 	    de += 2;
+ 	    dse += 4;
+-	    if (x1 != y1)
+-		fill_circle_points_x(x, y, x1, y1, pixel);
++	    if (draw_x && x1 != y1)
++		draw_x(x, y, x1, y1, pixel);
+ 	    y1--;
+ 	}
+ 	x1++;
+     } while (x1 <= y1);
+ }
+ 
++void generic_draw_circle(u32 x, u32 y, u32 r, pixel_t pixel)
++{
++    do_circle(x, y, r, pixel, NULL, draw_circle_points);
++}
++
++
++void generic_fill_circle(u32 x, u32 y, u32 r, pixel_t pixel)
++{
++    do_circle(x, y, r, pixel, fill_circle_points_x, fill_circle_points_y);
++}
++
+ 
+     /*
+      *  Draw an ellipse using a differential version of the Bresenham algorithm
 -- 
 2.34.1
 
