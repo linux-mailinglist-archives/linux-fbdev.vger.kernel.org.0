@@ -1,55 +1,55 @@
-Return-Path: <linux-fbdev+bounces-3486-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3478-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5509F233B
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:53:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FD39F2333
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 11:51:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BD3C7A07EF
-	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:53:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D87F165568
+	for <lists+linux-fbdev@lfdr.de>; Sun, 15 Dec 2024 10:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF10E1514CE;
-	Sun, 15 Dec 2024 10:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A9E14A635;
+	Sun, 15 Dec 2024 10:51:17 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from weierstrass.telenet-ops.be (weierstrass.telenet-ops.be [195.130.137.81])
+Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DA012DD95
-	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F27139D
+	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 10:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734260003; cv=none; b=uI22W/FuDWLSNMMGxOkVfJfRrAszhra94nJOZZON2InPW9vwhq6BfxP6urQ6F4IkWsDJ1v9yQ8Gry1qhvfkNa8n4FcIWaD/rsOH1Z9Jrt2PJ0UIyo/nEZ2XRXGf9XUiXZimBeiLrL+wffu8+xITibkMW5J1jK5wjfOTiq7dr4as=
+	t=1734259877; cv=none; b=So3fwFK4WgAmg5WOQ+raV9DWIMKRhPdNWZ6ZwBlVc8/L6qoOC0Da/V2Jq8Ycs+PJpSj/KIyhD6D1uwaMcznpYSwGSS/3/JG4+i1klGMdhvJg1KSXC+pjxShcTuXDYNf1vLahM2EiQDu09ufSKRtOhrpFCGxfDPZdtvwHFZYBNak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734260003; c=relaxed/simple;
-	bh=gWOlCwo033U3BeyaBw8VE5a5osE6PQ6ubCLjTkchrbg=;
+	s=arc-20240116; t=1734259877; c=relaxed/simple;
+	bh=xa/5Pvv+6jmIZuNlaDgSnuHxLFolDf+phO1ADj2xxTs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sUPwHcxRMX/Rds5+qkt9iQBEQd1N+XJM+WCCcp4TNvG1kKcN3MumD/6wx1v+PLNT8VhbocuIkr4FhsXt67xEFlhx9dDO/kH6Vq4vJRPy4HcTodjpzMPBsShBokElF6puPw/wD0aZK629plBKGC0w4hiJBIitCTtgTUq7jHtxh3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.81
+	 MIME-Version; b=a8nBkMkvRUt0NYjQ/uLU8+OZZnhr6pSuNoeJOBvNElbCgsknaGW1S+RYXz+VsQTPDartDmbNqtudkkh1UQw5ANEuC3QauYZ5OK7QVxWP6tYuhaJcG/rri4+9FaehFpXitTr5WjVNNDrJ7fpSMG/3x/Ki6eXiRJSVHlZuCTAOkdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
 Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-	by weierstrass.telenet-ops.be (Postfix) with ESMTPS id 4YB08d2zf7z4wwhR
+	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4YB08d2kHqz4wxK5
 	for <linux-fbdev@vger.kernel.org>; Sun, 15 Dec 2024 11:45:21 +0100 (CET)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:8e92:9273:64e7:a1e1])
 	by baptiste.telenet-ops.be with cmsmtp
-	id oylD2D00S4qjdAp01ylDMF; Sun, 15 Dec 2024 11:45:13 +0100
+	id oylD2D00U4qjdAp01ylDMH; Sun, 15 Dec 2024 11:45:13 +0100
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7a-001KjM-3n;
+	id 1tMm7a-001KjR-4T;
 	Sun, 15 Dec 2024 11:45:13 +0100
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1tMm7d-000nle-IR;
+	id 1tMm7d-000nli-J3;
 	Sun, 15 Dec 2024 11:45:13 +0100
 From: Geert Uytterhoeven <geert@linux-m68k.org>
 To: linux-fbdev@vger.kernel.org
 Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH fbtest 06/17] drawops: Remove always-false check in generic_fill_ellipse()
-Date: Sun, 15 Dec 2024 11:44:57 +0100
-Message-Id: <20241215104508.191237-7-geert@linux-m68k.org>
+Subject: [PATCH fbtest 07/17] drawops: Refactor generic_draw_ellipse()
+Date: Sun, 15 Dec 2024 11:44:58 +0100
+Message-Id: <20241215104508.191237-8-geert@linux-m68k.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241215104508.191237-1-geert@linux-m68k.org>
 References: <20241215104508.191237-1-geert@linux-m68k.org>
@@ -61,26 +61,82 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-x1 is u32, so it can never be negative.
+Make generic_draw_ellipse() more similar to generic_fill_ellipse().
 
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
- drawops/generic.c | 2 --
- 1 file changed, 2 deletions(-)
+ drawops/generic.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/drawops/generic.c b/drawops/generic.c
-index ba8154b7ee34ca18..e81dea1ba23d6595 100644
+index e81dea1ba23d6595..4b64c20cc0fe68bc 100644
 --- a/drawops/generic.c
 +++ b/drawops/generic.c
-@@ -467,8 +467,6 @@ void generic_fill_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+@@ -309,15 +309,18 @@ void generic_draw_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 	    int dS2 = -4*a2*(b-1);
+ 	    int dT2 = dS2+2*a2;
+ 
+-	    draw_ellipse_points(x, y, x1, y1, pixel);
+-	    do {
++	    while (1) {
+ 		if (S < 0) {
++		    draw_ellipse_points(x, y, x1, y1, pixel);
+ 		    S += dS1;
+ 		    T += dT1;
+ 		    dS1 += 4*b2;
+ 		    dT1 += 4*b2;
+ 		    x1++;
+ 		} else if (T < 0) {
++		    draw_ellipse_points(x, y, x1, y1, pixel);
++		    if (y1 == 0)
++			break;
+ 		    S += dS1+dS2;
+ 		    T += dT1+dT2;
+ 		    dS1 += 4*b2;
+@@ -327,14 +330,16 @@ void generic_draw_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 		    x1++;
+ 		    y1--;
+ 		} else {
++		    draw_ellipse_points(x, y, x1, y1, pixel);
++		    if (y1 == 0)
++			break;
+ 		    S += dS2;
+ 		    T += dT2;
+ 		    dS2 += 4*a2;
+ 		    dT2 += 4*a2;
+ 		    y1--;
+ 		}
+-		draw_ellipse_points(x, y, x1, y1, pixel);
+-	    } while (y1 > 0);
++	    }
+ 	} else {
+ 	    u32 x1 = a;
+ 	    u32 y1 = 0;
+@@ -353,6 +358,7 @@ void generic_draw_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 		    dS1 += 4*a2;
+ 		    dT1 += 4*a2;
+ 		    y1++;
++		    draw_ellipse_points(x, y, x1, y1, pixel);
+ 		} else if (T < 0) {
+ 		    S += dS1+dS2;
+ 		    T += dT1+dT2;
+@@ -362,14 +368,15 @@ void generic_draw_ellipse(u32 x, u32 y, u32 a, u32 b, pixel_t pixel)
+ 		    dT2 += 4*b2;
+ 		    x1--;
+ 		    y1++;
++		    draw_ellipse_points(x, y, x1, y1, pixel);
+ 		} else {
+ 		    S += dS2;
+ 		    T += dT2;
  		    dS2 += 4*b2;
  		    dT2 += 4*b2;
  		    x1--;
--		    if (x1 < 0)
--			break;
- 		    y1++;
- 		    fill_ellipse_points(x, y, x1, y1, pixel);
- 		} else {
++		    draw_ellipse_points(x, y, x1, y1, pixel);
+ 		}
+-		draw_ellipse_points(x, y, x1, y1, pixel);
+ 	    } while (x1 > 0);
+ 	}
+     }
 -- 
 2.34.1
 
