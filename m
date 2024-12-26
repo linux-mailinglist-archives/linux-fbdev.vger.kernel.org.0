@@ -1,48 +1,49 @@
-Return-Path: <linux-fbdev+bounces-3519-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3521-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5FA9FC79B
-	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Dec 2024 03:29:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40439FC7A1
+	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Dec 2024 03:29:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD75E1628E6
-	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Dec 2024 02:28:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94B4E7A18DC
+	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Dec 2024 02:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553831537A8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89233155753;
 	Thu, 26 Dec 2024 02:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="Lvk7K3qw"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="Eevo40RW"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E1714885D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E7114A0BC;
 	Thu, 26 Dec 2024 02:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735180098; cv=none; b=lHiAsOc6VhHoN32zNJHC1Z96ShcAToxfSPVzsdBLd82mIK/7sHrTpACm5yQzvyGi9nTlH6iU86rrXiBbt9XEjlLip1biq0L4QzH529z+9BZb3YHys041Rg+IfBfCJ9lco0kVP0YPg045geiH/ySW1g1SnuxGjfGcYJcyCeXJHUc=
+	t=1735180098; cv=none; b=N0xQrxJ/uT46qoTjl8h8RL/tjs28UksM/FbZwipUB84o21r+iOqzuCEfYXGViY3LmpF9uHvX/Xrr1DYB3Zu7VXOv+P8WAkC68SKzpkbqRMleE/CfJ12TX+yQKQI5J+iJfpUcRAQUXbSldWFn6LU35Csok+ZkXSqO4l1AjYkVXOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735180098; c=relaxed/simple;
-	bh=ztxe5tJRUqjHrCD67sDnKZ6vxwu49IZtZMftp/rUWAM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fFajFMw0bppC+VQuNGIdW+DEafFf2+QCzm5HCp7QvDZMF4DJ+YrBOAA04yyRHLO+7M8CUgwsfj+QUmA2FjNcz65uJ95msxkCr83nOrdW7U2q6wLrPPf5SUP3FOdhfkxckJXHCchJZWfehTholzoKXfmX8sOGZeJXKdojPWy3maw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=Lvk7K3qw; arc=none smtp.client-ip=46.235.229.95
+	bh=cACDnPioAgBuHuOikatqK1RNjbYawNrFuz90HUF5fXQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NWABgdMmjyCogxBtN51BiXkQIFuOIpTTMjM5IvzBDC5FMtDtxCo4qwJ4V5I26lJ/hJPymuxH9AKaS0Kr9s5zxD4kbDFLWwK5pmQP3LDRwAB7q0URkwREsiFEX9jDFsLfWgiQFT7r55TPooFZ/2LMMqT0YLdJVKZI1iKHDyvPU1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=Eevo40RW; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=lY+bpoGbSqA5dQMkhBlSwu7qgeb2Y0X+I/8GVHLM1bo=; b=Lvk7K3qwM8PdCJGk
-	FQUoE/GZa5+rEjYNTalXgsvQTZVGXA6vuPeDQwjNFV9851mwVM+RniwKx93fYRKDLGErxZkI7W8F7
-	q7euGFuEo04xmuQ6PRg1wa7cUn4wFbvg1bS9jr9LFfXNzS77ffAYtS1zMe1tDg5NUTdOBiqZlk7FW
-	ITDZ6JzwY5gwhApnB3hkcDl343gxGBVooBvvH1jz0qyd8c0C23gd7Gp2HMNpNm/k1ULypNEQXAWko
-	Y/afsMl+rdzgEQeIBUX+oT9bkB3Ww5peoZRZdH4dlHZsp5T/k9iy15sRSGmqilOk9jh3nan8gISJG
-	oQP3d/1xgLh7BNUTEA==;
+	:Subject; bh=8oqYD/B3UMlO69nH16a4qOpq5t9+uPPTLogH0zzGwks=; b=Eevo40RWUifZuus8
+	s48V+jvzoplAN44z3+2xITvRxcWrZODQotuSNCN8wjQZybqro18vPFkZgTbEAYY235W6LwC57qM0D
+	dpOdCBNN7PDJKRu9/yia/r984fVZljCpIJLXNEbIa71EQfRv66ll2UPeFeYN6r0XcLzuJBuEFjcAA
+	Orxi5NXo7PFbANyaAqxZDDIkL70ou2H+gmTU/LBgBb6NSDiUE61Mf4r4ZqSijCM3VZLWZAHJngA5B
+	8p/Lx6Sm+y23DjoDBG5Lqwcc08wY5/4H6y/CDracxO4tbiTPnV4PXOIv2htKKk8EMyo0q2EH1hoj3
+	XQQRX5RXR+LOz2Lmog==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1tQdbN-007F0L-25;
-	Thu, 26 Dec 2024 02:27:53 +0000
+	id 1tQdbO-007F0L-17;
+	Thu, 26 Dec 2024 02:27:54 +0000
 From: linux@treblig.org
 To: p.zabel@pengutronix.de,
 	airlied@gmail.com,
@@ -58,10 +59,12 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH 0/7] gpu: ipu-v3: Remove unused functions
-Date: Thu, 26 Dec 2024 02:27:45 +0000
-Message-ID: <20241226022752.219399-1-linux@treblig.org>
+Subject: [PATCH 1/7] gpu: ipu-v3: ipu-ic: Remove unused ipu_ic_task_graphics_init
+Date: Thu, 26 Dec 2024 02:27:46 +0000
+Message-ID: <20241226022752.219399-2-linux@treblig.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241226022752.219399-1-linux@treblig.org>
+References: <20241226022752.219399-1-linux@treblig.org>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -72,37 +75,117 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-Hi,
-  This set removes a bunch of functions in ipu-v3 that
-have been unused for a long time (since 2012-2017).
+ipu_ic_task_graphics_init() was added in 2014 by
+commit 1aa8ea0d2bd5 ("gpu: ipu-v3: Add Image Converter unit")
+but has been unused.
 
-  No changes to functions are made, just full deletions.
-
-  Build tested only.
+Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+---
+ drivers/gpu/ipu-v3/ipu-ic.c | 73 -------------------------------------
+ include/video/imx-ipu-v3.h  |  4 --
+ 2 files changed, 77 deletions(-)
 
-
-Dr. David Alan Gilbert (7):
-  gpu: ipu-v3: ipu-ic: Remove unused ipu_ic_task_graphics_init
-  gpu: ipu-v3: Remove unused ipu_rot_mode_to_degrees
-  gpu: ipu-v3: Remove unused ipu_idmac_channel_busy
-  gpu: ipu-v3: Remove unused ipu_image_convert_* functions
-  gpu: ipu-v3: Remove unused ipu_vdi_unsetup
-  gpu: ipu-v3: ipu-csi: Remove unused functions
-  gpu: ipu-v3 ipu-cpmem: Remove unused functions
-
- drivers/gpu/ipu-v3/ipu-common.c        |  38 ---------
- drivers/gpu/ipu-v3/ipu-cpmem.c         |  23 ------
- drivers/gpu/ipu-v3/ipu-csi.c           | 108 -------------------------
- drivers/gpu/ipu-v3/ipu-ic.c            |  73 -----------------
- drivers/gpu/ipu-v3/ipu-image-convert.c |  48 -----------
- drivers/gpu/ipu-v3/ipu-prv.h           |   2 -
- drivers/gpu/ipu-v3/ipu-vdi.c           |  11 ---
- include/video/imx-ipu-image-convert.h  |  32 --------
- include/video/imx-ipu-v3.h             |  14 ----
- 9 files changed, 349 deletions(-)
-
+diff --git a/drivers/gpu/ipu-v3/ipu-ic.c b/drivers/gpu/ipu-v3/ipu-ic.c
+index 846461bac70d..acd76ecc5221 100644
+--- a/drivers/gpu/ipu-v3/ipu-ic.c
++++ b/drivers/gpu/ipu-v3/ipu-ic.c
+@@ -321,79 +321,6 @@ void ipu_ic_task_disable(struct ipu_ic *ic)
+ }
+ EXPORT_SYMBOL_GPL(ipu_ic_task_disable);
+ 
+-int ipu_ic_task_graphics_init(struct ipu_ic *ic,
+-			      const struct ipu_ic_colorspace *g_in_cs,
+-			      bool galpha_en, u32 galpha,
+-			      bool colorkey_en, u32 colorkey)
+-{
+-	struct ipu_ic_priv *priv = ic->priv;
+-	struct ipu_ic_csc csc2;
+-	unsigned long flags;
+-	u32 reg, ic_conf;
+-	int ret = 0;
+-
+-	if (ic->task == IC_TASK_ENCODER)
+-		return -EINVAL;
+-
+-	spin_lock_irqsave(&priv->lock, flags);
+-
+-	ic_conf = ipu_ic_read(ic, IC_CONF);
+-
+-	if (!(ic_conf & ic->bit->ic_conf_csc1_en)) {
+-		struct ipu_ic_csc csc1;
+-
+-		ret = ipu_ic_calc_csc(&csc1,
+-				      V4L2_YCBCR_ENC_601,
+-				      V4L2_QUANTIZATION_FULL_RANGE,
+-				      IPUV3_COLORSPACE_RGB,
+-				      V4L2_YCBCR_ENC_601,
+-				      V4L2_QUANTIZATION_FULL_RANGE,
+-				      IPUV3_COLORSPACE_RGB);
+-		if (ret)
+-			goto unlock;
+-
+-		/* need transparent CSC1 conversion */
+-		ret = init_csc(ic, &csc1, 0);
+-		if (ret)
+-			goto unlock;
+-	}
+-
+-	ic->g_in_cs = *g_in_cs;
+-	csc2.in_cs = ic->g_in_cs;
+-	csc2.out_cs = ic->out_cs;
+-
+-	ret = __ipu_ic_calc_csc(&csc2);
+-	if (ret)
+-		goto unlock;
+-
+-	ret = init_csc(ic, &csc2, 1);
+-	if (ret)
+-		goto unlock;
+-
+-	if (galpha_en) {
+-		ic_conf |= IC_CONF_IC_GLB_LOC_A;
+-		reg = ipu_ic_read(ic, IC_CMBP_1);
+-		reg &= ~(0xff << ic->bit->ic_cmb_galpha_bit);
+-		reg |= (galpha << ic->bit->ic_cmb_galpha_bit);
+-		ipu_ic_write(ic, reg, IC_CMBP_1);
+-	} else
+-		ic_conf &= ~IC_CONF_IC_GLB_LOC_A;
+-
+-	if (colorkey_en) {
+-		ic_conf |= IC_CONF_KEY_COLOR_EN;
+-		ipu_ic_write(ic, colorkey, IC_CMBP_2);
+-	} else
+-		ic_conf &= ~IC_CONF_KEY_COLOR_EN;
+-
+-	ipu_ic_write(ic, ic_conf, IC_CONF);
+-
+-	ic->graphics = true;
+-unlock:
+-	spin_unlock_irqrestore(&priv->lock, flags);
+-	return ret;
+-}
+-EXPORT_SYMBOL_GPL(ipu_ic_task_graphics_init);
+-
+ int ipu_ic_task_init_rsc(struct ipu_ic *ic,
+ 			 const struct ipu_ic_csc *csc,
+ 			 int in_width, int in_height,
+diff --git a/include/video/imx-ipu-v3.h b/include/video/imx-ipu-v3.h
+index c422a403c099..0bb1d714cbf5 100644
+--- a/include/video/imx-ipu-v3.h
++++ b/include/video/imx-ipu-v3.h
+@@ -445,10 +445,6 @@ int ipu_ic_task_init_rsc(struct ipu_ic *ic,
+ 			 int in_width, int in_height,
+ 			 int out_width, int out_height,
+ 			 u32 rsc);
+-int ipu_ic_task_graphics_init(struct ipu_ic *ic,
+-			      const struct ipu_ic_colorspace *g_in_cs,
+-			      bool galpha_en, u32 galpha,
+-			      bool colorkey_en, u32 colorkey);
+ void ipu_ic_task_enable(struct ipu_ic *ic);
+ void ipu_ic_task_disable(struct ipu_ic *ic);
+ int ipu_ic_task_idma_init(struct ipu_ic *ic, struct ipuv3_channel *channel,
 -- 
 2.47.1
 
