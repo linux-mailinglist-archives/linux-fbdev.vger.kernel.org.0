@@ -1,49 +1,49 @@
-Return-Path: <linux-fbdev+bounces-3517-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3516-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112B49FC799
-	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Dec 2024 03:28:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA5C9FC797
+	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Dec 2024 03:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C9237A1645
-	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Dec 2024 02:28:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C84E47A14E3
+	for <lists+linux-fbdev@lfdr.de>; Thu, 26 Dec 2024 02:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC40714A609;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306DE149E17;
 	Thu, 26 Dec 2024 02:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="Hbo+h+Qc"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="B6Llc0TQ"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83F3145B0B;
-	Thu, 26 Dec 2024 02:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF38146D76;
+	Thu, 26 Dec 2024 02:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735180096; cv=none; b=WL/6xelRvLMVklt+5NOi7lJlvtDRrUd5TyZY/RFHAO4gC5HDozA3TVPbG2shZPzlmNYsvS+xnqiUJlfsRCuUVkpTay6wFoiAxETPnJ7wpQEBwarVlow+W3XkKN5tjqDRAYsLstxcTI/X/LZaEmXXtasEW50a6+sIaOKa72tluF4=
+	t=1735180096; cv=none; b=OOQ9q9jzpu1ml3fa0sqekUIvqqlI1v5ToDD8WmH27SiEl7n5dljbJz9mVpDLyxILZKTBObijN5h9P+id8iGiYvabxJUywjKYjzzKa8TqU71kTiFcKU8cj6TWCe7LR8l4Kmm6oJKXv4GLq3s0ShS9n2kyNjLzEMBAghUK+ZRcQwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735180096; c=relaxed/simple;
-	bh=8oORSKlqei3CTS83CU5HtbGtZAfHq5LpF1CcFkwiYE0=;
+	bh=lgi4msL8jzD/sDnb7usEXE5HwG/3xkJ44+z1/D61tF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPBX5hr6Y5KtOLfH/82WR/gsYEWr2PGERPTccwOI+UYQptuGCSuUFSwFRSLYCWsOIKC17K4CAD4oUv96XTW3310gFwAT7JXnuGUBK8G7sTD3W66ojeS/zG7wdXAg7KOft4F2snDP4pbO2lEdt8zV5qBT7GjKoCodaMU/V8ocgiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=Hbo+h+Qc; arc=none smtp.client-ip=46.235.229.95
+	 MIME-Version; b=At1NsyKOrb3D5kBQh9mOx3+1DJ7Ty1DC5LXJ+nXUJ5YxZFPA4T1HEYg1rKxgl5AeO5Uez4KArW3NxKuXHBOPHtqiK/Lx+0c/hNZefxJwBr8t/UYW1kzNhlx4XEJRQUDteKEq8RjsVj6LRQO9yYh5sXo0pgKNsLomy9BhgXLLUJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=B6Llc0TQ; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=0Ys/6PWadFMMf0CT+9doN3qX4Fu8/PHNQBlHP0QonJA=; b=Hbo+h+Qc0gFhN1uU
-	cZP9vtV4n77mGEgq0ULpbgkp2GX2pwmOezeKICNdTVBJuZY4YP8I5kvcnrfYVWW8FVaQ4A8QM2b8f
-	Ia1ktdvHqRvY4289h4MVl2fgToBWNrbk1obRuO4/7wFgKylJjid04Mdjq9ugjLjhHH6dPDoNGPhsy
-	FqYPOgdRPir/ydaTQi6p6i1nAs2xBg/JLqo7Csa19G6x3H49KkzVCCSsZoU/UueKECoKFsBzTYBWR
-	f8oNAHV+2lQFWaqLaoBNyn5C2K0n3LI/ULy/BY9KO0dyO6PqRaG8rxFdUeHTLsmT0YSyPWbf95vNG
-	5BahjFGcmuqsFUPl9w==;
+	:Subject; bh=pHpYoWcC3a1yibTmmSQIGYWTas0Sv+4pH8WU+FAozOM=; b=B6Llc0TQLzww4Rky
+	/dbg4HPyp+UBtHIXR5WjD4HGbvJDFE+hF5DvZoCmGG6meYjfz1OwGYukGVk1XBBh3PSLPVdieLhEk
+	j4iUZDaO19Pl9D7Yp5AmRZ6JzB2AyMmU7z0QyMCmjPn2LU9xRX5Rl3tmcF8ZEZu/ymOa0r+6GznYn
+	SFdJ6TKExnFsQnLzF4weKJ3t0ROAzdisHOBvoXMHo/LPSNFuyLvGzd/2bO14RfO6q9k7PgYbO4DrM
+	OSB9Lm2hhNbuZth/24DIaECh74tb2F8qFsUzX3J145VVJA2oX/GDE6kK3XjneaFC0p0uJWgVx0TwS
+	cVut6VQakL5qkxo+Yw==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1tQdbQ-007F0L-1Z;
-	Thu, 26 Dec 2024 02:27:56 +0000
+	id 1tQdbR-007F0L-0b;
+	Thu, 26 Dec 2024 02:27:57 +0000
 From: linux@treblig.org
 To: p.zabel@pengutronix.de,
 	airlied@gmail.com,
@@ -59,9 +59,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH 4/7] gpu: ipu-v3: Remove unused ipu_image_convert_* functions
-Date: Thu, 26 Dec 2024 02:27:49 +0000
-Message-ID: <20241226022752.219399-5-linux@treblig.org>
+Subject: [PATCH 5/7] gpu: ipu-v3: Remove unused ipu_vdi_unsetup
+Date: Thu, 26 Dec 2024 02:27:50 +0000
+Message-ID: <20241226022752.219399-6-linux@treblig.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241226022752.219399-1-linux@treblig.org>
 References: <20241226022752.219399-1-linux@treblig.org>
@@ -75,139 +75,52 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-ipu_image_convert_enum_format() and ipu_image_convert_sync() were both
-added in 2016 by
-commit cd98e85a6b78 ("gpu: ipu-v3: Add queued image conversion support")
-
-but have remained unused.
-
-Remove them.
-
-ipu_image_convert_sync() was the last user of
-image_convert_sync_complete().
+ipu_vdi_unsetup() was added in 2016 by
+commit 2d2ead453077 ("gpu: ipu-v3: Add Video Deinterlacer unit")
+but has remained unused.
 
 Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
- drivers/gpu/ipu-v3/ipu-image-convert.c | 48 --------------------------
- include/video/imx-ipu-image-convert.h  | 32 -----------------
- 2 files changed, 80 deletions(-)
+ drivers/gpu/ipu-v3/ipu-vdi.c | 11 -----------
+ include/video/imx-ipu-v3.h   |  1 -
+ 2 files changed, 12 deletions(-)
 
-diff --git a/drivers/gpu/ipu-v3/ipu-image-convert.c b/drivers/gpu/ipu-v3/ipu-image-convert.c
-index 841316582ea9..3c33b4defab5 100644
---- a/drivers/gpu/ipu-v3/ipu-image-convert.c
-+++ b/drivers/gpu/ipu-v3/ipu-image-convert.c
-@@ -355,20 +355,6 @@ static void dump_format(struct ipu_image_convert_ctx *ctx,
- 		(ic_image->fmt->fourcc >> 24) & 0xff);
+diff --git a/drivers/gpu/ipu-v3/ipu-vdi.c b/drivers/gpu/ipu-v3/ipu-vdi.c
+index a593b232b6d3..af9631fd4256 100644
+--- a/drivers/gpu/ipu-v3/ipu-vdi.c
++++ b/drivers/gpu/ipu-v3/ipu-vdi.c
+@@ -150,17 +150,6 @@ void ipu_vdi_setup(struct ipu_vdi *vdi, u32 code, int xres, int yres)
  }
+ EXPORT_SYMBOL_GPL(ipu_vdi_setup);
  
--int ipu_image_convert_enum_format(int index, u32 *fourcc)
+-void ipu_vdi_unsetup(struct ipu_vdi *vdi)
 -{
--	const struct ipu_image_pixfmt *fmt;
+-	unsigned long flags;
 -
--	if (index >= (int)ARRAY_SIZE(image_convert_formats))
--		return -EINVAL;
--
--	/* Format found */
--	fmt = &image_convert_formats[index];
--	*fourcc = fmt->fourcc;
--	return 0;
+-	spin_lock_irqsave(&vdi->lock, flags);
+-	ipu_vdi_write(vdi, 0, VDI_FSIZE);
+-	ipu_vdi_write(vdi, 0, VDI_C);
+-	spin_unlock_irqrestore(&vdi->lock, flags);
 -}
--EXPORT_SYMBOL_GPL(ipu_image_convert_enum_format);
+-EXPORT_SYMBOL_GPL(ipu_vdi_unsetup);
 -
- static void free_dma_buf(struct ipu_image_convert_priv *priv,
- 			 struct ipu_image_convert_dma_buf *buf)
+ int ipu_vdi_enable(struct ipu_vdi *vdi)
  {
-@@ -2437,40 +2423,6 @@ ipu_image_convert(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
- }
- EXPORT_SYMBOL_GPL(ipu_image_convert);
- 
--/* "Canned" synchronous single image conversion */
--static void image_convert_sync_complete(struct ipu_image_convert_run *run,
--					void *data)
--{
--	struct completion *comp = data;
--
--	complete(comp);
--}
--
--int ipu_image_convert_sync(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
--			   struct ipu_image *in, struct ipu_image *out,
--			   enum ipu_rotate_mode rot_mode)
--{
--	struct ipu_image_convert_run *run;
--	struct completion comp;
--	int ret;
--
--	init_completion(&comp);
--
--	run = ipu_image_convert(ipu, ic_task, in, out, rot_mode,
--				image_convert_sync_complete, &comp);
--	if (IS_ERR(run))
--		return PTR_ERR(run);
--
--	ret = wait_for_completion_timeout(&comp, msecs_to_jiffies(10000));
--	ret = (ret == 0) ? -ETIMEDOUT : 0;
--
--	ipu_image_convert_unprepare(run->ctx);
--	kfree(run);
--
--	return ret;
--}
--EXPORT_SYMBOL_GPL(ipu_image_convert_sync);
--
- int ipu_image_convert_init(struct ipu_soc *ipu, struct device *dev)
- {
- 	struct ipu_image_convert_priv *priv;
-diff --git a/include/video/imx-ipu-image-convert.h b/include/video/imx-ipu-image-convert.h
-index 3c71b8b94b33..003b3927ede5 100644
---- a/include/video/imx-ipu-image-convert.h
-+++ b/include/video/imx-ipu-image-convert.h
-@@ -40,19 +40,6 @@ struct ipu_image_convert_run {
- typedef void (*ipu_image_convert_cb_t)(struct ipu_image_convert_run *run,
- 				       void *ctx);
- 
--/**
-- * ipu_image_convert_enum_format() - enumerate the image converter's
-- *	supported input and output pixel formats.
-- *
-- * @index:	pixel format index
-- * @fourcc:	v4l2 fourcc for this index
-- *
-- * Returns 0 with a valid index and fills in v4l2 fourcc, -EINVAL otherwise.
-- *
-- * In V4L2, drivers can call ipu_image_enum_format() in .enum_fmt.
-- */
--int ipu_image_convert_enum_format(int index, u32 *fourcc);
--
- /**
-  * ipu_image_convert_adjust() - adjust input/output images to IPU restrictions.
-  *
-@@ -176,23 +163,4 @@ ipu_image_convert(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
- 		  ipu_image_convert_cb_t complete,
- 		  void *complete_context);
- 
--/**
-- * ipu_image_convert_sync() - synchronous single image conversion request
-- *
-- * @ipu:	the IPU handle to use for the conversion
-- * @ic_task:	the IC task to use for the conversion
-- * @in:		input image format
-- * @out:	output image format
-- * @rot_mode:	rotation mode
-- *
-- * Carry out a single image conversion. Returns when the conversion
-- * completes. The input/output formats and rotation mode must already
-- * meet IPU retrictions. The created context is automatically unprepared
-- * and the run freed on return.
-- */
--int ipu_image_convert_sync(struct ipu_soc *ipu, enum ipu_ic_task ic_task,
--			   struct ipu_image *in, struct ipu_image *out,
--			   enum ipu_rotate_mode rot_mode);
--
--
- #endif /* __IMX_IPU_IMAGE_CONVERT_H__ */
+ 	unsigned long flags;
+diff --git a/include/video/imx-ipu-v3.h b/include/video/imx-ipu-v3.h
+index 8870f65c9a8b..c9ed4b6a408b 100644
+--- a/include/video/imx-ipu-v3.h
++++ b/include/video/imx-ipu-v3.h
+@@ -463,7 +463,6 @@ struct ipu_vdi;
+ void ipu_vdi_set_field_order(struct ipu_vdi *vdi, v4l2_std_id std, u32 field);
+ void ipu_vdi_set_motion(struct ipu_vdi *vdi, enum ipu_motion_sel motion_sel);
+ void ipu_vdi_setup(struct ipu_vdi *vdi, u32 code, int xres, int yres);
+-void ipu_vdi_unsetup(struct ipu_vdi *vdi);
+ int ipu_vdi_enable(struct ipu_vdi *vdi);
+ int ipu_vdi_disable(struct ipu_vdi *vdi);
+ struct ipu_vdi *ipu_vdi_get(struct ipu_soc *ipu);
 -- 
 2.47.1
 
