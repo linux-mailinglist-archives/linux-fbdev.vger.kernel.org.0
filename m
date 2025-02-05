@@ -1,43 +1,43 @@
-Return-Path: <linux-fbdev+bounces-3687-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3685-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67E6A2937F
-	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Feb 2025 16:13:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1566A28F9C
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Feb 2025 15:27:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE52B188DC02
-	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Feb 2025 15:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91F5E3A9B73
+	for <lists+linux-fbdev@lfdr.de>; Wed,  5 Feb 2025 14:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C379B18B460;
-	Wed,  5 Feb 2025 15:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96473155382;
+	Wed,  5 Feb 2025 14:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwvmshoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pN/jtu/i"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9485F376;
-	Wed,  5 Feb 2025 15:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664EC14A088;
+	Wed,  5 Feb 2025 14:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767640; cv=none; b=PFxug31mVWtI8RoE2b1EwRj+1p+LI8recql8TixJqoPNKDHHWmkEcHYJxplgZ2fFoV5gs5XLZCK6Qyt8eYEw2Jfq9EuuYqOqZu1mYXJWbaIuZ3QxzlrHqZuF87Oe6xgBLNkXPcVx5kai/pCsC5pyL8NiOb/ZcCjiYmbEHKKyz4g=
+	t=1738765548; cv=none; b=Vle5LTFt/LilEEDSX1UoDG9Qa01bSTUZ0EHopbFfU/xKZkeQswVEwGY1byEqstDarK/aE6XG0AbimBQa4Gs+wTkrE2PYEUdQVtc87Youj7czuPqyYfKcWUV5aRydpjo4RYy80vGxjrk8S7hopAPWEIHPALYIY7XpjGJvQmSqoE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767640; c=relaxed/simple;
-	bh=SSxV7Twdz4JEXudo3L1T7WHvOJsEzhKZmXm3KNFOwjA=;
+	s=arc-20240116; t=1738765548; c=relaxed/simple;
+	bh=rdBayyIqClqn3YDOp73mHJxCK+7YHwhsrxLB5hBfjvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OW4tXpnTVd1kFPuzoAyTGfSiRrPB8DljvuR4Ci9FIrE9bt9kb00MERxFHAwkGg7ur38WyJ7XgREFKDUA+Mzb/TB38GvUso72O8J6r1nm1kjOMRoZplJGsQK9iW6/oDOMywjGxtuG4UrpLoI3k+1npmDBEpqbMhuMqQFbBPNIMHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwvmshoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCDAC4CED1;
-	Wed,  5 Feb 2025 15:00:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PEPD2I0WgLL5aUN3tA+zAZcDpwkf6x2SR7hSWOpALys2nMyXXA/U5nnvV1195mnnPqIygTiF39mU7hH2b2f6o9KX4wx9aGrUKwIbW2pdqVd3RM+7PpvKdjJNixkMXKRGXnxQbP4phR4kSLJxpND9AfVPIhu9a1vLwy6LdYGZdwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pN/jtu/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E8FC4CED1;
+	Wed,  5 Feb 2025 14:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767640;
-	bh=SSxV7Twdz4JEXudo3L1T7WHvOJsEzhKZmXm3KNFOwjA=;
+	s=korg; t=1738765548;
+	bh=rdBayyIqClqn3YDOp73mHJxCK+7YHwhsrxLB5hBfjvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwvmshoX1NeWKSyAXdMAcRLhoT3piakurE5gYnNuUgHxS5aHmtWEUwrEoPtK+R8kn
-	 Dkcqk3OiN/UhkGONLzacgkL3YxGVEAtkE2GSxH9P7KzN1rNOK8YVpP5fXzPEGtDtzm
-	 Lptotf5OscH9+20PUhvHOQmj0YaGst5dct3VDyCU=
+	b=pN/jtu/iReUKZyiqTbiu+JRJDzGgnbO70J7P3ABgGNgq6wHZmeYoiEbzQC0h2+kUk
+	 WosCq+1UxFXD2clFpruKpjpNYxeXXHsqW20fzjWZxch6FL7jOcMdSmk9dZvT2kJoxo
+	 D3YX8oKMF+8fG4wy6Gc2RCGm+MMZszLq64J6+okg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -54,12 +54,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-efi@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 432/623] efi: sysfb_efi: fix W=1 warnings when EFI is not set
-Date: Wed,  5 Feb 2025 14:42:54 +0100
-Message-ID: <20250205134512.748971645@linuxfoundation.org>
+Subject: [PATCH 6.6 277/393] efi: sysfb_efi: fix W=1 warnings when EFI is not set
+Date: Wed,  5 Feb 2025 14:43:16 +0100
+Message-ID: <20250205134430.908148811@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +72,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -116,7 +116,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-index cc807ed35aedf..1e509595ac034 100644
+index 456d0e5eaf78b..f479680299838 100644
 --- a/drivers/firmware/efi/sysfb_efi.c
 +++ b/drivers/firmware/efi/sysfb_efi.c
 @@ -91,6 +91,7 @@ void efifb_setup_from_dmi(struct screen_info *si, const char *opt)
