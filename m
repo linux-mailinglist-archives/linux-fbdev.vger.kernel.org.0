@@ -1,100 +1,185 @@
-Return-Path: <linux-fbdev+bounces-3688-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3693-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A162A2A3EC
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Feb 2025 10:15:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1C4A2ACAE
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Feb 2025 16:40:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99F3E1671C5
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Feb 2025 09:15:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46543188747C
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Feb 2025 15:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2ABC214818;
-	Thu,  6 Feb 2025 09:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E517A2288D0;
+	Thu,  6 Feb 2025 15:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SZYN8cYg";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XHBCv36H";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="SZYN8cYg";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XHBCv36H"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E65D225A5F
-	for <linux-fbdev@vger.kernel.org>; Thu,  6 Feb 2025 09:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0921624C2;
+	Thu,  6 Feb 2025 15:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738833321; cv=none; b=XVRtL6iQ9xHRswEWEFV9bb3voeo4hsLggevJ+8pZxwToXmuLpX2Mpqd5fcuYEOTT68e+Ng5VXEFpa7xWxWXLSAMvUwH/VOS7U3S2jYxKwexb/y/tyce2f9B1tbKXM/HigGIIbCMpsdlvdebEKoa8VO7xm5c5xzAWs9VV7BDSn9Q=
+	t=1738856447; cv=none; b=n1QpnNmLz6WBr+xec82KGfL6IgC+coquKDqbJ5KPxbleIKJN6Lwo8wDyhXJ6hpT4d+XIWdwOM+JB7fUaeoTwcv7/hlcDPa85blDGA78j1DJB3jdEqQZvLTwYQVMvSxn3rVTU5f+nyNmEoU/iIDwen0ohjdaqYSbL3dW/fxNSjqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738833321; c=relaxed/simple;
-	bh=5hFr9r0+xVw070raBzXtRqNzSe0omxbKrZ3Wlaemwj8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=kvBDfMCFka1einorwQXqY4f+7iJ3+yJEGLG1Pwdj4poiEmbNoLUr92BF81QfwuhAnJ1oxLHp08ZJOksXJWrpMAdWPzIxHOf2txDvHra37MLTX6sESDHCcugM81ZwRlyMKlzoG57l0XVghd9QGz77aUaGWnGK6AMBwkvXcnLAlC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3d05999a1a4so4571895ab.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 06 Feb 2025 01:15:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738833319; x=1739438119;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xYOBYj7aJAB6p76ECKhTSVve+8W7ayGSimHBE//XKLw=;
-        b=Lclf1o5geaJSZVCSp9gxGMbJwLJYSipglaiIK4oC/OsoFHgmPVXINvVSPlApsTuVvr
-         6Lzm2LVZSFl5foHDvrUmamcgE7B2nFd8pjOAA45RSH1UaIzK+u5TP8LCz92s5vRWoFjD
-         aK5yrg1x9cAD8hIK71zOHAjlydXyL0uPz2SHUjSZV3V/7BDZlzgWUfe9WKPYa6v9P7MK
-         C+aGFyH9R6rzQhgdg0drsUF4kXb+WBkCk/JMjwBTMwPkFtjxIjmO4Mk/vZ8v2FMfTMqj
-         H9zgLcvBPxSAY57EZfg+9MZc6YEd1par2a5hXBKM5Xhtn36xiCfj1i+VLVeZFCNjJQrB
-         TiGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVyz4Vy91orW6OeWjqtSbqJZH9KHOwDcj6MEONIUHmq9aK1yqdTjgdA4F9CM5rjAUtUxFGr6ESRdldP2A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAdCU4sfoCPGkX+anPJKfJpZ7CzsSJ+RjYvm4QElmzXpUE2sB8
-	fd9E2oEQfAZ7hfnp61pBIj0EDJxwfY2aYArBxvvdZnA712eFxiNYbNG1hpTmfhmFDljLNwhq2kb
-	5MXI4+oWc/J/z3YZa0mZXeRxn9u83bzqWASAtcuczrOh8QUaTyEMZRvo=
-X-Google-Smtp-Source: AGHT+IEAqn2vw/fSFk8xV6QOIyrYA4RUnDiruBcJFhNgf8a+1jZtTCFOWtpHjqNyI8XXA1cwYd00rCgCnpFDGVPthTAimqgwbmqr
+	s=arc-20240116; t=1738856447; c=relaxed/simple;
+	bh=qKaBM5c0+4VOJzO+MoyTBbbOY41jlNHrORwIDJupZJs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pjS1bgVQfIcIeRTySVzKYvDcq2bOFc24MdPWlR7a4BU0pLBcaGunzXbZTuDoUZWHKQ1VMukCEKhy4DHyQ1fM4PiOGY6fM047E1wSnFz91PWeurwtVQ/UgAWRnSuBnQi3ZcD0miwuN+izofLY/XSFgN4zSfTPlLfqNEvehSyvhFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SZYN8cYg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XHBCv36H; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=SZYN8cYg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XHBCv36H; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 136002111F;
+	Thu,  6 Feb 2025 15:40:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1738856444; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=/xgMD1Faxm0qO52k1H+QacINyfxkkqf6yxZmV6fupSY=;
+	b=SZYN8cYgsKK/9+T1yHibQOVLk+KmGphs8gkCsN4MRriCmI49+9jeWbqOjdz0Td83O+Ghny
+	9nILAU4p0ukFO5qAOsIQ53ZlCFo9BtEpOGhq+8iTRk1zVmmOa7A2weaoA9E9v3obM0eyXW
+	fZFx0LMGGSuqNfEM1sRlCHns0C7XPeI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1738856444;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=/xgMD1Faxm0qO52k1H+QacINyfxkkqf6yxZmV6fupSY=;
+	b=XHBCv36HfiPGvcW5b/BeP+qY0LTqeCcBgtEv9m12QhNRsTcmaaScrgJUUjT5PIr3YufOHj
+	t0DqhWLvlGc8W8Cw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1738856444; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=/xgMD1Faxm0qO52k1H+QacINyfxkkqf6yxZmV6fupSY=;
+	b=SZYN8cYgsKK/9+T1yHibQOVLk+KmGphs8gkCsN4MRriCmI49+9jeWbqOjdz0Td83O+Ghny
+	9nILAU4p0ukFO5qAOsIQ53ZlCFo9BtEpOGhq+8iTRk1zVmmOa7A2weaoA9E9v3obM0eyXW
+	fZFx0LMGGSuqNfEM1sRlCHns0C7XPeI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1738856444;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=/xgMD1Faxm0qO52k1H+QacINyfxkkqf6yxZmV6fupSY=;
+	b=XHBCv36HfiPGvcW5b/BeP+qY0LTqeCcBgtEv9m12QhNRsTcmaaScrgJUUjT5PIr3YufOHj
+	t0DqhWLvlGc8W8Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C779513697;
+	Thu,  6 Feb 2025 15:40:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id UD1lL/vXpGf4PAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 06 Feb 2025 15:40:43 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: pavel@ucw.cz,
+	lee@kernel.org,
+	danielt@kernel.org,
+	jingoohan1@gmail.com,
+	deller@gmx.de,
+	simona@ffwll.ch
+Cc: linux-leds@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [RFC PATCH 00/13] backlight, lcd, led: Remove fbdev dependencies
+Date: Thu,  6 Feb 2025 16:30:19 +0100
+Message-ID: <20250206154033.697495-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d88:b0:3cf:bc71:94ef with SMTP id
- e9e14a558f8ab-3d04f901a64mr49860765ab.17.1738833319407; Thu, 06 Feb 2025
- 01:15:19 -0800 (PST)
-Date: Thu, 06 Feb 2025 01:15:19 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67a47da7.050a0220.19061f.05fa.GAE@google.com>
-Subject: [syzbot] Monthly fbdev report (Feb 2025)
-From: syzbot <syzbot+list52071043e7dbf4b67ce6@syzkaller.appspotmail.com>
-To: deller@gmx.de, dri-devel@lists.freedesktop.org, 
-	linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_TO(0.00)[ucw.cz,kernel.org,gmail.com,gmx.de,ffwll.ch];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-Hello fbdev maintainers/developers,
+This series removes the last dependencies on fbdev from the backlight,
+lcd and led subsystems. Each depends on fbdev events to track display
+state. Make fbdev inform each subsystem via a dedicated interface
+instead.
 
-This is a 31-day syzbot report for the fbdev subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/fbdev
+Patches 1 to 3 make fbdev track blank state for each display, so
+that backlight code doesn't have to.
 
-During the period, 1 new issues were detected and 0 were fixed.
-In total, 6 issues are still open and 25 have already been fixed.
+Patches 4 to 6 remove fbdev event handling from backlight code. Patches
+7 to 9 remove fbdev event handling from lcd code and patches 10 to 12
+do the same for led's backlight trigger.
 
-Some of the still happening issues:
+The final patch removes the event constants from fbdev.
 
-Ref Crashes Repro Title
-<1> 527     Yes   KASAN: vmalloc-out-of-bounds Write in imageblit (4)
-                  https://syzkaller.appspot.com/bug?extid=c4b7aa0513823e2ea880
-<2> 6       No    BUG: unable to handle kernel paging request in bitfill_aligned (4)
-                  https://syzkaller.appspot.com/bug?extid=66bde8e1e4161d4b2cca
-<3> 3       No    UBSAN: array-index-out-of-bounds in fbcon_info_from_console
-                  https://syzkaller.appspot.com/bug?extid=a7d4444e7b6e743572f7
+With the series applied, the three subsystems do no longer depend
+on fbdev. It's also a clean up for fbdev. Fbdev used to send out a
+large number of events. That mechanism has been deprecated for some
+time and converted call to dedicated functions instead.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Testing is very welcome, as I don't have the hardware to really test
+this series.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+Thomas Zimmermann (13):
+  fbdev: Rework fb_blank()
+  fbdev: Track display blanking state
+  fbdev: Send old blank state in FB_EVENT_BLANK
+  backlight: Implement fbdev tracking with blank state from event
+  backlight: Move blank-state handling into helper
+  backlight: Replace fb events with a dedicated function call
+  backlight: lcd: Maintain global list of lcd devices
+  backlight: lcd: Move event handling into helpers
+  backlight: lcd: Replace fb events with a dedicated function call
+  leds: backlight trigger: Maintain global list of led backlight
+    triggers
+  leds: backlight trigger: Move blank-state handling into helper
+  leds: backlight trigger: Replace fb events with a dedicated function
+    call
+  fbdev: Remove constants of unused events
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+ drivers/leds/trigger/ledtrig-backlight.c |  49 +++++-----
+ drivers/video/backlight/backlight.c      |  93 +++++--------------
+ drivers/video/backlight/lcd.c            | 109 +++++++++--------------
+ drivers/video/fbdev/core/fb_backlight.c  |  12 +++
+ drivers/video/fbdev/core/fb_info.c       |   1 +
+ drivers/video/fbdev/core/fbmem.c         |  88 +++++++++++++++---
+ drivers/video/fbdev/core/fbsysfs.c       |   8 +-
+ include/linux/backlight.h                |  22 ++---
+ include/linux/fb.h                       |  12 +--
+ include/linux/lcd.h                      |  12 ++-
+ include/linux/leds.h                     |   6 ++
+ 11 files changed, 204 insertions(+), 208 deletions(-)
 
-You may send multiple commands in a single email message.
+-- 
+2.48.1
+
 
