@@ -1,43 +1,43 @@
-Return-Path: <linux-fbdev+bounces-3729-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3730-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E51A2BA23
-	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Feb 2025 05:20:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29757A2BA24
+	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Feb 2025 05:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7803A4C4E
-	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Feb 2025 04:20:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15CEF1888D64
+	for <lists+linux-fbdev@lfdr.de>; Fri,  7 Feb 2025 04:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D5E232369;
-	Fri,  7 Feb 2025 04:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FE823236E;
+	Fri,  7 Feb 2025 04:20:43 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from c64.rulez.org (c64.rulez.org [79.139.58.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2666D1DE8B4
-	for <linux-fbdev@vger.kernel.org>; Fri,  7 Feb 2025 04:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AB51DE8B4
+	for <linux-fbdev@vger.kernel.org>; Fri,  7 Feb 2025 04:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.139.58.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738902038; cv=none; b=l9QNNEX5Bt4eS16GnjuWJt2WrPcE4P8s6EOrAdbAMJJXqHRdHfEunrU+ILZPj2T4Eq14M0tyhKuENHOelFnZmBpbwHNjq8C5eHx8xagu6Ld6oEj4VFAY/3+c/nz4PkvFp2K4Uc+wFIenLoGb0u3puw1hDtBYPNsvExMgfxVrqrI=
+	t=1738902043; cv=none; b=RqmhcLMPozPER0aaJdYbFZFZBsvp5ixYJGhYYJNpcu/mQ3Bvn4cNjG66Prv6YKyJYVqophC07TF/butq0VPXhkMv90Jd0L4jTBSShmjrql69bCKomizL6CQBuy5OsPL7J0WNNd2UHdRWc/+D10SbiXrDzFA1hmD63sz0cYNoKaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738902038; c=relaxed/simple;
-	bh=zTn3vjcs7wnei0IUTn8PHIttfLxeRXGFRAOBl8RBVFA=;
+	s=arc-20240116; t=1738902043; c=relaxed/simple;
+	bh=+q8k1gloU80ImDmu9rIV9mvZm7sNB2SA9DglZyTyozg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A+MvllKxXmPZ2mIN4HJZWAZ8lKVmQJLgkG0wuOzA+FRks1JY6q6MFjnnPxCPFWwMJQpEt4oZFDzlY7WXexDPr8C9cKxTQrHC5cenhDrYrv2k6SzokgwaAe5Bl77HwnQ1dEZEpKLJeGlTPjWs/tkg7nFjaugzsBkW6KvKtcAYhRA=
+	 MIME-Version; b=CU0mS4TXuak3schsQw5+7Z95TKIh607VZpuiewl6YXoRYBGI0fz8jvgdgqzzdRQ3z9FAHbbl64r8l1BrxRlByzOQVH6br1gIMFYz10+0U52JwO9hxZ+WTVnfEkc2forsE6mbLp8OZo77N6BXaIP6jxlj/FfwZmx5hpe3QyZkqVU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c64.rulez.org; spf=pass smtp.mailfrom=c64.rulez.org; arc=none smtp.client-ip=79.139.58.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c64.rulez.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c64.rulez.org
 Received: by c64.rulez.org (Postfix, from userid 1000)
-	id 31967105CB; Fri,  7 Feb 2025 05:19:52 +0100 (CET)
+	id 38328105CD; Fri,  7 Feb 2025 05:19:52 +0100 (CET)
 From: Zsolt Kajtar <soci@c64.rulez.org>
 To: linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org
 Cc: Zsolt Kajtar <soci@c64.rulez.org>
-Subject: [PATCH RESEND 07/13] fbdev: core: Use generic fillrect for as cfb_fillrect
-Date: Fri,  7 Feb 2025 05:18:12 +0100
-Message-Id: <20250207041818.4031-8-soci@c64.rulez.org>
+Subject: [PATCH RESEND 08/13] fbdev: core: Use generic fillrect for as sys_fillrect
+Date: Fri,  7 Feb 2025 05:18:13 +0100
+Message-Id: <20250207041818.4031-9-soci@c64.rulez.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20250207041818.4031-1-soci@c64.rulez.org>
 References: <20250207041818.4031-1-soci@c64.rulez.org>
@@ -51,22 +51,15 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
 ---
- drivers/video/fbdev/core/cfbfillrect.c | 362 +------------------------
- 1 file changed, 11 insertions(+), 351 deletions(-)
+ drivers/video/fbdev/core/sysfillrect.c | 314 +------------------------
+ 1 file changed, 9 insertions(+), 305 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/cfbfillrect.c b/drivers/video/fbdev/core/cfbfillrect.c
-index cbaa4c9e2..116d56de2 100644
---- a/drivers/video/fbdev/core/cfbfillrect.c
-+++ b/drivers/video/fbdev/core/cfbfillrect.c
-@@ -7,365 +7,25 @@
-  *  License.  See the file COPYING in the main directory of this archive for
+diff --git a/drivers/video/fbdev/core/sysfillrect.c b/drivers/video/fbdev/core/sysfillrect.c
+index e49221a88..48d0f0efb 100644
+--- a/drivers/video/fbdev/core/sysfillrect.c
++++ b/drivers/video/fbdev/core/sysfillrect.c
+@@ -12,314 +12,18 @@
   *  more details.
-  *
-- * NOTES:
-- *
-- *  Also need to add code to deal with cards endians that are different than
-- *  the native cpu endians. I also need to deal with MSB position in the word.
-- *
   */
  #include <linux/module.h>
 -#include <linux/string.h>
@@ -74,64 +67,45 @@ index cbaa4c9e2..116d56de2 100644
  #include <asm/types.h>
 -#include "fb_draw.h"
  
- #if BITS_PER_LONG == 32
--#  define FB_WRITEL fb_writel
--#  define FB_READL  fb_readl
--#else
--#  define FB_WRITEL fb_writeq
--#  define FB_READL  fb_readq
--#endif
--
 -    /*
 -     *  Aligned pattern fill using 32/64-bit memory accesses
 -     */
 -
 -static void
--bitfill_aligned(struct fb_info *p, unsigned long __iomem *dst, int dst_idx,
--		unsigned long pat, unsigned n, int bits, u32 bswapmask)
+-bitfill_aligned(struct fb_info *p, unsigned long *dst, int dst_idx,
+-		unsigned long pat, unsigned n, int bits)
 -{
 -	unsigned long first, last;
 -
 -	if (!n)
 -		return;
 -
--	first = fb_shifted_pixels_mask_long(p, dst_idx, bswapmask);
--	last = ~fb_shifted_pixels_mask_long(p, (dst_idx+n) % bits, bswapmask);
+-	first = FB_SHIFT_HIGH(p, ~0UL, dst_idx);
+-	last = ~(FB_SHIFT_HIGH(p, ~0UL, (dst_idx+n) % bits));
 -
 -	if (dst_idx+n <= bits) {
--		// Single word
+-		/* Single word */
 -		if (last)
 -			first &= last;
--		FB_WRITEL(comp(pat, FB_READL(dst), first), dst);
+-		*dst = comp(pat, *dst, first);
 -	} else {
--		// Multiple destination words
+-		/* Multiple destination words */
 -
--		// Leading bits
--		if (first!= ~0UL) {
--			FB_WRITEL(comp(pat, FB_READL(dst), first), dst);
+-		/* Leading bits */
+- 		if (first!= ~0UL) {
+-			*dst = comp(pat, *dst, first);
 -			dst++;
 -			n -= bits - dst_idx;
 -		}
 -
--		// Main chunk
+-		/* Main chunk */
 -		n /= bits;
--		while (n >= 8) {
--			FB_WRITEL(pat, dst++);
--			FB_WRITEL(pat, dst++);
--			FB_WRITEL(pat, dst++);
--			FB_WRITEL(pat, dst++);
--			FB_WRITEL(pat, dst++);
--			FB_WRITEL(pat, dst++);
--			FB_WRITEL(pat, dst++);
--			FB_WRITEL(pat, dst++);
--			n -= 8;
--		}
--		while (n--)
--			FB_WRITEL(pat, dst++);
+-		memset_l(dst, pat, n);
+-		dst += n;
 -
--		// Trailing bits
+-		/* Trailing bits */
 -		if (last)
--			FB_WRITEL(comp(pat, FB_READL(dst), last), dst);
+-			*dst = comp(pat, *dst, last);
 -	}
 -}
 -
@@ -144,7 +118,7 @@ index cbaa4c9e2..116d56de2 100644
 -     */
 -
 -static void
--bitfill_unaligned(struct fb_info *p, unsigned long __iomem *dst, int dst_idx,
+-bitfill_unaligned(struct fb_info *p, unsigned long *dst, int dst_idx,
 -		  unsigned long pat, int left, int right, unsigned n, int bits)
 -{
 -	unsigned long first, last;
@@ -156,41 +130,41 @@ index cbaa4c9e2..116d56de2 100644
 -	last = ~(FB_SHIFT_HIGH(p, ~0UL, (dst_idx+n) % bits));
 -
 -	if (dst_idx+n <= bits) {
--		// Single word
+-		/* Single word */
 -		if (last)
 -			first &= last;
--		FB_WRITEL(comp(pat, FB_READL(dst), first), dst);
+-		*dst = comp(pat, *dst, first);
 -	} else {
--		// Multiple destination words
--		// Leading bits
+-		/* Multiple destination words */
+-		/* Leading bits */
 -		if (first) {
--			FB_WRITEL(comp(pat, FB_READL(dst), first), dst);
+-			*dst = comp(pat, *dst, first);
 -			dst++;
 -			pat = pat << left | pat >> right;
 -			n -= bits - dst_idx;
 -		}
 -
--		// Main chunk
+-		/* Main chunk */
 -		n /= bits;
 -		while (n >= 4) {
--			FB_WRITEL(pat, dst++);
+-			*dst++ = pat;
 -			pat = pat << left | pat >> right;
--			FB_WRITEL(pat, dst++);
+-			*dst++ = pat;
 -			pat = pat << left | pat >> right;
--			FB_WRITEL(pat, dst++);
+-			*dst++ = pat;
 -			pat = pat << left | pat >> right;
--			FB_WRITEL(pat, dst++);
+-			*dst++ = pat;
 -			pat = pat << left | pat >> right;
 -			n -= 4;
 -		}
 -		while (n--) {
--			FB_WRITEL(pat, dst++);
+-			*dst++ = pat;
 -			pat = pat << left | pat >> right;
 -		}
 -
--		// Trailing bits
+-		/* Trailing bits */
 -		if (last)
--			FB_WRITEL(comp(pat, FB_READL(dst), last), dst);
+-			*dst = comp(pat, *dst, last);
 -	}
 -}
 -
@@ -198,65 +172,50 @@ index cbaa4c9e2..116d56de2 100644
 -     *  Aligned pattern invert using 32/64-bit memory accesses
 -     */
 -static void
--bitfill_aligned_rev(struct fb_info *p, unsigned long __iomem *dst,
--		    int dst_idx, unsigned long pat, unsigned n, int bits,
--		    u32 bswapmask)
+-bitfill_aligned_rev(struct fb_info *p, unsigned long *dst, int dst_idx,
+-		    unsigned long pat, unsigned n, int bits)
 -{
--	unsigned long val = pat, dat;
+-	unsigned long val = pat;
 -	unsigned long first, last;
 -
 -	if (!n)
 -		return;
 -
--	first = fb_shifted_pixels_mask_long(p, dst_idx, bswapmask);
--	last = ~fb_shifted_pixels_mask_long(p, (dst_idx+n) % bits, bswapmask);
+-	first = FB_SHIFT_HIGH(p, ~0UL, dst_idx);
+-	last = ~(FB_SHIFT_HIGH(p, ~0UL, (dst_idx+n) % bits));
 -
 -	if (dst_idx+n <= bits) {
--		// Single word
+-		/* Single word */
 -		if (last)
 -			first &= last;
--		dat = FB_READL(dst);
--		FB_WRITEL(comp(dat ^ val, dat, first), dst);
+-		*dst = comp(*dst ^ val, *dst, first);
 -	} else {
--		// Multiple destination words
--		// Leading bits
+-		/* Multiple destination words */
+-		/* Leading bits */
 -		if (first!=0UL) {
--			dat = FB_READL(dst);
--			FB_WRITEL(comp(dat ^ val, dat, first), dst);
+-			*dst = comp(*dst ^ val, *dst, first);
 -			dst++;
 -			n -= bits - dst_idx;
 -		}
 -
--		// Main chunk
+-		/* Main chunk */
 -		n /= bits;
 -		while (n >= 8) {
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
+-			*dst++ ^= val;
+-			*dst++ ^= val;
+-			*dst++ ^= val;
+-			*dst++ ^= val;
+-			*dst++ ^= val;
+-			*dst++ ^= val;
+-			*dst++ ^= val;
+-			*dst++ ^= val;
 -			n -= 8;
 -		}
--		while (n--) {
--			FB_WRITEL(FB_READL(dst) ^ val, dst);
--			dst++;
--		}
--		// Trailing bits
--		if (last) {
--			dat = FB_READL(dst);
--			FB_WRITEL(comp(dat ^ val, dat, last), dst);
--		}
+-		while (n--)
+-			*dst++ ^= val;
+-		/* Trailing bits */
+-		if (last)
+-			*dst = comp(*dst ^ val, *dst, last);
 -	}
 -}
 -
@@ -269,11 +228,11 @@ index cbaa4c9e2..116d56de2 100644
 -     */
 -
 -static void
--bitfill_unaligned_rev(struct fb_info *p, unsigned long __iomem *dst,
--		      int dst_idx, unsigned long pat, int left, int right,
--		      unsigned n, int bits)
+-bitfill_unaligned_rev(struct fb_info *p, unsigned long *dst, int dst_idx,
+-		      unsigned long pat, int left, int right, unsigned n,
+-		      int bits)
 -{
--	unsigned long first, last, dat;
+-	unsigned long first, last;
 -
 -	if (!n)
 -		return;
@@ -282,68 +241,59 @@ index cbaa4c9e2..116d56de2 100644
 -	last = ~(FB_SHIFT_HIGH(p, ~0UL, (dst_idx+n) % bits));
 -
 -	if (dst_idx+n <= bits) {
--		// Single word
+-		/* Single word */
 -		if (last)
 -			first &= last;
--		dat = FB_READL(dst);
--		FB_WRITEL(comp(dat ^ pat, dat, first), dst);
+-		*dst = comp(*dst ^ pat, *dst, first);
 -	} else {
--		// Multiple destination words
+-		/* Multiple destination words */
 -
--		// Leading bits
+-		/* Leading bits */
 -		if (first != 0UL) {
--			dat = FB_READL(dst);
--			FB_WRITEL(comp(dat ^ pat, dat, first), dst);
+-			*dst = comp(*dst ^ pat, *dst, first);
 -			dst++;
 -			pat = pat << left | pat >> right;
 -			n -= bits - dst_idx;
 -		}
 -
--		// Main chunk
+-		/* Main chunk */
 -		n /= bits;
 -		while (n >= 4) {
--			FB_WRITEL(FB_READL(dst) ^ pat, dst);
--			dst++;
+-			*dst++ ^= pat;
 -			pat = pat << left | pat >> right;
--			FB_WRITEL(FB_READL(dst) ^ pat, dst);
--			dst++;
+-			*dst++ ^= pat;
 -			pat = pat << left | pat >> right;
--			FB_WRITEL(FB_READL(dst) ^ pat, dst);
--			dst++;
+-			*dst++ ^= pat;
 -			pat = pat << left | pat >> right;
--			FB_WRITEL(FB_READL(dst) ^ pat, dst);
--			dst++;
+-			*dst++ ^= pat;
 -			pat = pat << left | pat >> right;
 -			n -= 4;
 -		}
 -		while (n--) {
--			FB_WRITEL(FB_READL(dst) ^ pat, dst);
--			dst++;
+-			*dst ^= pat;
 -			pat = pat << left | pat >> right;
 -		}
 -
--		// Trailing bits
--		if (last) {
--			dat = FB_READL(dst);
--			FB_WRITEL(comp(dat ^ pat, dat, last), dst);
--		}
+-		/* Trailing bits */
+-		if (last)
+-			*dst = comp(*dst ^ pat, *dst, last);
 -	}
 -}
 -
--void cfb_fillrect(struct fb_info *p, const struct fb_fillrect *rect)
+-void sys_fillrect(struct fb_info *p, const struct fb_fillrect *rect)
 -{
 -	unsigned long pat, pat2, fg;
 -	unsigned long width = rect->width, height = rect->height;
 -	int bits = BITS_PER_LONG, bytes = bits >> 3;
 -	u32 bpp = p->var.bits_per_pixel;
--	unsigned long __iomem *dst;
+-	unsigned long *dst;
 -	int dst_idx, left;
 -
 -	if (p->state != FBINFO_STATE_RUNNING)
 -		return;
 -
--	if (p->flags & FBINFO_VIRTFB)
--		fb_warn_once(p, "Framebuffer is not in I/O address space.");
+-	if (!(p->flags & FBINFO_VIRTFB))
+-		fb_warn_once(p, "Framebuffer is not in virtual address space.");
 -
 -	if (p->fix.visual == FB_VISUAL_TRUECOLOR ||
 -	    p->fix.visual == FB_VISUAL_DIRECTCOLOR )
@@ -351,9 +301,9 @@ index cbaa4c9e2..116d56de2 100644
 -	else
 -		fg = rect->color;
 -
--	pat = pixel_to_pat(bpp, fg);
+-	pat = pixel_to_pat( bpp, fg);
 -
--	dst = (unsigned long __iomem *)((unsigned long)p->screen_base & ~(bytes-1));
+-	dst = (unsigned long *)((unsigned long)p->screen_base & ~(bytes-1));
 -	dst_idx = ((unsigned long)p->screen_base & (bytes - 1))*8;
 -	dst_idx += rect->dy*p->fix.line_length*8+rect->dx*bpp;
 -	/* FIXME For now we support 1-32 bpp only */
@@ -361,11 +311,9 @@ index cbaa4c9e2..116d56de2 100644
 -	if (p->fbops->fb_sync)
 -		p->fbops->fb_sync(p);
 -	if (!left) {
--		u32 bswapmask = fb_compute_bswapmask(p);
--		void (*fill_op32)(struct fb_info *p,
--				  unsigned long __iomem *dst, int dst_idx,
--		                  unsigned long pat, unsigned n, int bits,
--				  u32 bswapmask) = NULL;
+-		void (*fill_op32)(struct fb_info *p, unsigned long *dst,
+-				  int dst_idx, unsigned long pat, unsigned n,
+-				  int bits) = NULL;
 -
 -		switch (rect->rop) {
 -		case ROP_XOR:
@@ -375,32 +323,28 @@ index cbaa4c9e2..116d56de2 100644
 -			fill_op32 = bitfill_aligned;
 -			break;
 -		default:
--			printk( KERN_ERR "cfb_fillrect(): unknown rop, defaulting to ROP_COPY\n");
+-			printk( KERN_ERR "cfb_fillrect(): unknown rop, "
+-				"defaulting to ROP_COPY\n");
 -			fill_op32 = bitfill_aligned;
 -			break;
 -		}
 -		while (height--) {
 -			dst += dst_idx >> (ffs(bits) - 1);
 -			dst_idx &= (bits - 1);
--			fill_op32(p, dst, dst_idx, pat, width*bpp, bits,
--				  bswapmask);
+-			fill_op32(p, dst, dst_idx, pat, width*bpp, bits);
 -			dst_idx += p->fix.line_length*8;
 -		}
 -	} else {
 -		int right, r;
--		void (*fill_op)(struct fb_info *p, unsigned long __iomem *dst,
+-		void (*fill_op)(struct fb_info *p, unsigned long *dst,
 -				int dst_idx, unsigned long pat, int left,
 -				int right, unsigned n, int bits) = NULL;
 -#ifdef __LITTLE_ENDIAN
 -		right = left;
 -		left = bpp - right;
-+#  define FB_WRITEL       fb_writel
-+#  define FB_READL        fb_readl
- #else
+-#else
 -		right = bpp - left;
-+#  define FB_WRITEL       fb_writeq
-+#  define FB_READL        fb_readq
- #endif
+-#endif
 -		switch (rect->rop) {
 -		case ROP_XOR:
 -			fill_op = bitfill_unaligned_rev;
@@ -409,7 +353,8 @@ index cbaa4c9e2..116d56de2 100644
 -			fill_op = bitfill_unaligned;
 -			break;
 -		default:
--			printk(KERN_ERR "cfb_fillrect(): unknown rop, defaulting to ROP_COPY\n");
+-			printk(KERN_ERR "sys_fillrect(): unknown rop, "
+-				"defaulting to ROP_COPY\n");
 -			fill_op = bitfill_unaligned;
 -			break;
 -		}
@@ -425,15 +370,17 @@ index cbaa4c9e2..116d56de2 100644
 -		}
 -	}
 -}
-+#define FB_MEM            __iomem
-+#define FB_FILLRECT       cfb_fillrect
-+#define FB_FILLRECT_NAME  "cfb_fillrect"
-+#define FB_SPACE          0
-+#define FB_SPACE_NAME     "I/O"
-+#define FB_SCREEN_BASE(a) ((a)->screen_base)
++#define FB_READL(a)       (*a)
++#define FB_WRITEL(a,b)    do { *(b) = (a); } while (false)
++#define FB_MEM            /* nothing */
++#define FB_FILLRECT       sys_fillrect
++#define FB_FILLRECT_NAME  "sys_fillrect"
++#define FB_SPACE          FBINFO_VIRTFB
++#define FB_SPACE_NAME     "virtual"
++#define FB_SCREEN_BASE(a) ((a)->screen_buffer)
 +#include "fb_fillrect.h"
  
- EXPORT_SYMBOL(cfb_fillrect);
+ EXPORT_SYMBOL(sys_fillrect);
  
 -- 
 2.30.2
