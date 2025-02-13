@@ -1,239 +1,152 @@
-Return-Path: <linux-fbdev+bounces-3795-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3797-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9092CA341D9
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Feb 2025 15:25:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E44DA342AC
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Feb 2025 15:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5B0F3AB763
-	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Feb 2025 14:23:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A38187A5DF5
+	for <lists+linux-fbdev@lfdr.de>; Thu, 13 Feb 2025 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3703828137C;
-	Thu, 13 Feb 2025 14:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97E6227EAA;
+	Thu, 13 Feb 2025 14:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="F+1tJBUb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="k5rxu4iG";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="F+1tJBUb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="k5rxu4iG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ap6WYbK/"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619EE28136D;
-	Thu, 13 Feb 2025 14:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F91B14B95A;
+	Thu, 13 Feb 2025 14:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739456589; cv=none; b=db8MWeViSWwi+SHZAXzoABB+rj7WS6egRwMl+11AZIgoGWkRCJotJWgwbMOUGGlJlnRQdDwuHUGv0Q2ZLe1+haBtgIpa2G16gGyrj65TOqAgJKTmq5SG46GM4L/lzGu7nZ3EvhlAoR2BFlg/W1TE5doluaAVqbesCgWsEfh8yP8=
+	t=1739457535; cv=none; b=cvzug2skn9DwDlMle/MHHnMR4b6LvCT0FuOuePmm+aBc4k/2xU0MdEcM+mWjCydbqplngzvEZAN5cC9ixFkIB7OMRmXr82V46ACavGMSouubfKuvvJftoSKdFdNyf1+x3hDGrBXbR4kEpwM3kEbDi+sFt04Ae2+QjheafTLI+3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739456589; c=relaxed/simple;
-	bh=xkWcMo614NnRIZQvT7Gp8RJXRRQY/5523KLZusx5xyQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AXmg4V8fKmOSI7KJWJxucN4x0yIzzN273eAYPSM+jYsf63hpnAxmBmsAIEvcq0jmGpOicNQDTtBEXdgUHHfayPeyOh0oiTY7aWyr3htOiII5APza0giVJJgTbX2x+QF9WDdGZlP+VNzzLlQbAAngyK64sE3U15PZINMjXoh74qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=F+1tJBUb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=k5rxu4iG; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=F+1tJBUb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=k5rxu4iG; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 841A71F8B9;
-	Thu, 13 Feb 2025 14:23:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1739456584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SV430ZVHech1r7WVWnh4RfJYZ1tXwOkt3eGoUhCqUuI=;
-	b=F+1tJBUbymoaGfF+1AcuFBKTN4LBaEXIcvpfU58Mtj79Ge/RwgfJP981VHYYCL65uTk3Kn
-	RG0YfKSCtVekCaLphHsR93GvorMHP8sbeD0ipn3AD4UaEsDmboCvH3WhZZz0rNgf0fyj0y
-	/yUgQswXNfppw7enJWTzF9pJeovLXlE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1739456584;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SV430ZVHech1r7WVWnh4RfJYZ1tXwOkt3eGoUhCqUuI=;
-	b=k5rxu4iGE1i70H63xfm6PgEDg5z/2pPWR0noXZH057N8ntR3Wg3eqbeIX33EWPMHSS3rfS
-	Fa9iVCr5JRQUy+CQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1739456584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SV430ZVHech1r7WVWnh4RfJYZ1tXwOkt3eGoUhCqUuI=;
-	b=F+1tJBUbymoaGfF+1AcuFBKTN4LBaEXIcvpfU58Mtj79Ge/RwgfJP981VHYYCL65uTk3Kn
-	RG0YfKSCtVekCaLphHsR93GvorMHP8sbeD0ipn3AD4UaEsDmboCvH3WhZZz0rNgf0fyj0y
-	/yUgQswXNfppw7enJWTzF9pJeovLXlE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1739456584;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SV430ZVHech1r7WVWnh4RfJYZ1tXwOkt3eGoUhCqUuI=;
-	b=k5rxu4iGE1i70H63xfm6PgEDg5z/2pPWR0noXZH057N8ntR3Wg3eqbeIX33EWPMHSS3rfS
-	Fa9iVCr5JRQUy+CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 44D3A137DB;
-	Thu, 13 Feb 2025 14:23:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 853GDkgArmdBZgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 13 Feb 2025 14:23:04 +0000
-Message-ID: <dec54fa6-a8ad-45e6-bdfd-7e9183646a5a@suse.de>
-Date: Thu, 13 Feb 2025 15:23:03 +0100
+	s=arc-20240116; t=1739457535; c=relaxed/simple;
+	bh=WY/i989U0hs/MJB1fntLsREdJlrSX0W6s5TjWclDq1Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qc95p6PdXjKNQ7umAKaK4lVH2czbjTCDJAbW9/aAwcMg1T746ITvKXSv35QR9DI0W9C8NakZBhIl4YS5ibyQp1kiLuPoemBmWYT1luHJRVRggx0idfe5/ea9QHyghc9AX/L75oUOQgPkxzzy7NnwYN9YAl7W2OLywkAuIU4uvLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ap6WYbK/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CAAC4CED1;
+	Thu, 13 Feb 2025 14:38:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739457535;
+	bh=WY/i989U0hs/MJB1fntLsREdJlrSX0W6s5TjWclDq1Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ap6WYbK/TGk6P8RFED3owRPtshnbdMqmZH4KUeLwsh/tv5h/6L0yk753aJNyHsMyN
+	 51AoF+yRzr42pRMOoMjZpA9VPcKt9M1J+sPEixOhTRIprr28sEtnIDx24LcIE/WTo9
+	 ZJd8T0TyzgRQzTbGW1FCJJGstfJ9W4RpC9AqiOmo=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 140/422] m68k: vga: Fix I/O defines
+Date: Thu, 13 Feb 2025 15:24:49 +0100
+Message-ID: <20250213142441.949277766@linuxfoundation.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250213142436.408121546@linuxfoundation.org>
+References: <20250213142436.408121546@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/13] leds: backlight trigger: Maintain global list of
- led backlight triggers
-To: Lee Jones <lee@kernel.org>
-Cc: pavel@ucw.cz, danielt@kernel.org, jingoohan1@gmail.com, deller@gmx.de,
- simona@ffwll.ch, linux-leds@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-References: <20250206154033.697495-1-tzimmermann@suse.de>
- <20250206154033.697495-11-tzimmermann@suse.de>
- <20250211140046.GU1868108@google.com>
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+
+6.12-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250211140046.GU1868108@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[ucw.cz,kernel.org,gmail.com,gmx.de,ffwll.ch,vger.kernel.org,lists.freedesktop.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
 
-Hi
+commit 53036937a101b5faeaf98e7438555fa854a1a844 upstream.
 
-Am 11.02.25 um 15:00 schrieb Lee Jones:
-> On Thu, 06 Feb 2025, Thomas Zimmermann wrote:
->
->> Maintain a list of led backlight triggers. This will replace the
->> fbdev notifiers that all backlight triggers currently subscribe to.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> ---
->>   drivers/leds/trigger/ledtrig-backlight.c | 13 +++++++++++++
->>   1 file changed, 13 insertions(+)
->>
->> diff --git a/drivers/leds/trigger/ledtrig-backlight.c b/drivers/leds/trigger/ledtrig-backlight.c
->> index 487577d22cfc..c1c1aa60cf07 100644
->> --- a/drivers/leds/trigger/ledtrig-backlight.c
->> +++ b/drivers/leds/trigger/ledtrig-backlight.c
->> @@ -23,8 +23,13 @@ struct bl_trig_notifier {
->>   	int old_status;
->>   	struct notifier_block notifier;
->>   	unsigned invert;
->> +
->> +	struct list_head entry;
-> You don't appear to be doing anything with the list here.
->
-> It would be better if you introduced the list when it's first utilised.
+Including m68k's <asm/raw_io.h> in vga.h on nommu platforms results
+in conflicting defines with io_no.h for various I/O macros from the
+__raw_read and __raw_write families. An example error is
 
-That's patch 12. I'll merge them.
+   In file included from arch/m68k/include/asm/vga.h:12,
+                 from include/video/vga.h:22,
+                 from include/linux/vgaarb.h:34,
+		 from drivers/video/aperture.c:12:
+>> arch/m68k/include/asm/raw_io.h:39: warning: "__raw_readb" redefined
+      39 | #define __raw_readb in_8
+	 |
+   In file included from arch/m68k/include/asm/io.h:6,
+		    from include/linux/io.h:13,
+		    from include/linux/irq.h:20,
+		    from include/asm-generic/hardirq.h:17,
+		    from ./arch/m68k/include/generated/asm/hardirq.h:1,
+		    from include/linux/hardirq.h:11,
+		    from include/linux/interrupt.h:11,
+                    from include/linux/trace_recursion.h:5,
+		    from include/linux/ftrace.h:10,
+		    from include/linux/kprobes.h:28,
+		    from include/linux/kgdb.h:19,
+		    from include/linux/fb.h:6,
+		    from drivers/video/aperture.c:5:
+   arch/m68k/include/asm/io_no.h:16: note: this is the location of the previous definition
+      16 | #define __raw_readb(addr) \
+	 |
 
-Best regards
-Thomas
+Include <asm/io.h>, which avoids raw_io.h on nommu platforms.
+Also change the defined values of some of the read/write symbols in
+vga.h to __raw_read/__raw_write as the raw_in/raw_out symbols are not
+generally available.
 
->
->>   };
->>   
->> +static struct list_head ledtrig_backlight_list;
->> +static struct mutex ledtrig_backlight_list_mutex;
->> +
->>   static int fb_notifier_callback(struct notifier_block *p,
->>   				unsigned long event, void *data)
->>   {
->> @@ -118,6 +123,10 @@ static int bl_trig_activate(struct led_classdev *led)
->>   	if (ret)
->>   		dev_err(led->dev, "unable to register backlight trigger\n");
->>   
->> +	mutex_lock(&ledtrig_backlight_list_mutex);
->> +	list_add(&n->entry, &ledtrig_backlight_list);
->> +	mutex_unlock(&ledtrig_backlight_list_mutex);
->> +
->>   	return 0;
->>   }
->>   
->> @@ -125,6 +134,10 @@ static void bl_trig_deactivate(struct led_classdev *led)
->>   {
->>   	struct bl_trig_notifier *n = led_get_trigger_data(led);
->>   
->> +	mutex_lock(&ledtrig_backlight_list_mutex);
->> +	list_del(&n->entry);
->> +	mutex_unlock(&ledtrig_backlight_list_mutex);
->> +
->>   	fb_unregister_client(&n->notifier);
->>   	kfree(n);
->>   }
->> -- 
->> 2.48.1
->>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071629.DNEswlm8-lkp@intel.com/
+Fixes: 5c3f968712ce ("m68k/video: Create <asm/vga.h>")
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v3.5+
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/20250107095912.130530-1-tzimmermann@suse.de
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/m68k/include/asm/vga.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+--- a/arch/m68k/include/asm/vga.h
++++ b/arch/m68k/include/asm/vga.h
+@@ -9,7 +9,7 @@
+  */
+ #ifndef CONFIG_PCI
+ 
+-#include <asm/raw_io.h>
++#include <asm/io.h>
+ #include <asm/kmap.h>
+ 
+ /*
+@@ -29,9 +29,9 @@
+ #define inw_p(port)		0
+ #define outb_p(port, val)	do { } while (0)
+ #define outw(port, val)		do { } while (0)
+-#define readb			raw_inb
+-#define writeb			raw_outb
+-#define writew			raw_outw
++#define readb			__raw_readb
++#define writeb			__raw_writeb
++#define writew			__raw_writew
+ 
+ #endif /* CONFIG_PCI */
+ #endif /* _ASM_M68K_VGA_H */
+
 
 
