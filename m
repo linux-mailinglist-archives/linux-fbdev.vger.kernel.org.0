@@ -1,143 +1,105 @@
-Return-Path: <linux-fbdev+bounces-3969-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-3972-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BCBA4E54B
-	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Mar 2025 17:16:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF97A4E749
+	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Mar 2025 17:59:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3B9B189FD41
-	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Mar 2025 16:07:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 422398E16E5
+	for <lists+linux-fbdev@lfdr.de>; Tue,  4 Mar 2025 16:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB0127E1A0;
-	Tue,  4 Mar 2025 15:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5A2299B3F;
+	Tue,  4 Mar 2025 16:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gbOreJ2B"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="syaRRWYg"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from beeline2.cc.itu.edu.tr (beeline2.cc.itu.edu.tr [160.75.25.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29302356DC
-	for <linux-fbdev@vger.kernel.org>; Tue,  4 Mar 2025 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10468299B41
+	for <linux-fbdev@vger.kernel.org>; Tue,  4 Mar 2025 16:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.116
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741103309; cv=pass; b=C0lusM18o8g1Xb/FEdPmBUE0jKaUoQts8skjxELgIa27oXnr7pxuFOnRAmcNffcorsjXGbfvk2YFhxp3uggGEd93hNvbuNDDgEx4y82iHngOSVxzlRNd3dp8DqjfqVgqkgcJHQvKreGig1YQrldzR+E1fL51Y3sRQ8AHOAJbRcQ=
+	t=1741105744; cv=pass; b=AIiXMLJYjVXjMvkVDF8EB/1brsWPnqNSFVjXn+1CXXzjj2nw4LcZ2sWIWpyMdZ1lFR+f4cokwf/LUaaaXsNDphsyPM9feI1YnlM3R/qXDGxNzOEDtXRmH8stMXn3LiexeqI20Wz7NPjvOpcLgigVgAPvlHR1kf4bff0W/G/BkfE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741103309; c=relaxed/simple;
-	bh=YOKNIjJrYk3beqqvelnnK1DyZo8zD6Bu7MA1IsL+RaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pvBtZFLHd6pqmTTe56v9XoLHkPcywHkShHRia+HMMMx1khiXzWdJZqVJVoewz84EkWSRNs0Hr/t5oNfw61I4srs7jGPkWdztYE+69JAVAhBXlcmCL62UT0lzksy4C/sDtXjRKqfx0R3pOmW6uVo5zmEKuXlZEVBxpQZ7/mUI4IQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gbOreJ2B; arc=none smtp.client-ip=209.85.128.47; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; arc=pass smtp.client-ip=160.75.25.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+	s=arc-20240116; t=1741105744; c=relaxed/simple;
+	bh=Gd1dlzOdtFDhJaQmIY23pfMlDTcKoNMpTpwfvcXDjhY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HtCxshTCfcjbqYI/FPMds1gnx+AMjX31cE1jBb39Rjo3vsT5swAVruZOl1/50HDQtcIccjeShFnQe8H2WdI1Z96cn81/ChhPwhM6Vd0BRWKRQQb6ymdICnXbSKSW6JeKBZfD23/bS1qUEVzmXrqjy4V4Ye1F4Cg2iTUD38xyWoI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=syaRRWYg; arc=none smtp.client-ip=212.227.15.4; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; arc=pass smtp.client-ip=160.75.25.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
 Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline2.cc.itu.edu.tr (Postfix) with ESMTPS id D5F86408B64C
-	for <linux-fbdev@vger.kernel.org>; Tue,  4 Mar 2025 18:48:24 +0300 (+03)
+	by beeline2.cc.itu.edu.tr (Postfix) with ESMTPS id 386D7408B5EF
+	for <linux-fbdev@vger.kernel.org>; Tue,  4 Mar 2025 19:29:01 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
 Authentication-Results: lesvatest1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key, unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gbOreJ2B
+	dkim=pass (2048-bit key, unprotected) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=syaRRWYg
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6fxN510SzG0n1
-	for <linux-fbdev@vger.kernel.org>; Tue,  4 Mar 2025 18:39:20 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6h0X6w5jzG380
+	for <linux-fbdev@vger.kernel.org>; Tue,  4 Mar 2025 19:27:08 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id CFE5742732; Tue,  4 Mar 2025 18:39:04 +0300 (+03)
+	id DE8C741898; Tue,  4 Mar 2025 19:27:02 +0300 (+03)
 Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gbOreJ2B
-X-Envelope-From: <linux-kernel+bounces-541381-bozkiru=itu.edu.tr@vger.kernel.org>
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=syaRRWYg
+X-Envelope-From: <linux-kernel+bounces-541397-bozkiru=itu.edu.tr@vger.kernel.org>
 Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gbOreJ2B
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=syaRRWYg
 Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
-	by le2 (Postfix) with ESMTP id 8606C4272C
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:33:05 +0300 (+03)
+	by le2 (Postfix) with ESMTP id D310643402
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:37:17 +0300 (+03)
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by fgw2.itu.edu.tr (Postfix) with SMTP id 5C79A2DCE0
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:33:05 +0300 (+03)
+	by fgw2.itu.edu.tr (Postfix) with SMTP id AB8652DCE0
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:37:17 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F9761894809
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:32:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C846B18833CB
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D781F4615;
-	Mon,  3 Mar 2025 10:30:56 +0000 (UTC)
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBA71F37D4;
+	Mon,  3 Mar 2025 10:37:04 +0000 (UTC)
+Received: from mout.web.de (mout.web.de [212.227.15.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CDA1F419E
-	for <linux-kernel@vger.kernel.org>; Mon,  3 Mar 2025 10:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36B51F0E44;
+	Mon,  3 Mar 2025 10:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740997853; cv=none; b=miBVimrxzRvJfExj0Zj5VvchZsCcYRpOE4ynM/KE28iB3+kJDYf5gAqJoFYIf2YsYvZd+1qAplYjHyUlfK1i2yMfkNwWQHzgx++uiD8vQXUatKgAyu25m22/98pTgQr/GTfBC2QesQ1wzCQtKoWFcwzqe+5JfzI60rS0x4KCiB8=
+	t=1740998221; cv=none; b=BOWZwKCW2x1NufVGcQ1q4D+SiNGXA9PxrGL+8EZUD/rngKMUrtmqUzYl64uuBGZFcCQqglRCsPNUynaROCmlbPi/kHiKXwnSoBfr91xDGQfu5WOc9PG5W/KuozQ/y3KGzQqugrShK8anKpcxZUjX37NLix6dV0nMqrL/OQ8695A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740997853; c=relaxed/simple;
-	bh=YOKNIjJrYk3beqqvelnnK1DyZo8zD6Bu7MA1IsL+RaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tga37USjRw91/zvCeciNhDyR90/lo+5EJhkhGD775ON78gFKl+Le4I3uZSsoWMzrhKqVn5a3AmZa70KyAAHdjXeF1USe9LD5wfvpNUX9OtLRZdFGPuK5sE38CjfKoygZCKMfekm0S/roMd5Z2kvLv7bEqioYbkM2f4+NQ7i1bL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gbOreJ2B; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-439950a45daso26550355e9.2
-        for <linux-kernel@vger.kernel.org>; Mon, 03 Mar 2025 02:30:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740997848; x=1741602648; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bVbo8Bp188ctbON8ZulP+OSFSxe/rMczkjpmYA+ieRQ=;
-        b=gbOreJ2BuqR5/h11au9IMo/Io15opOnW+V1yhNtHlFUPDO5WjJhOSGXVBTKrQOE6tG
-         eBv6O/PF1+HvocI0A2gKShZaloVODZ7SXP4iYus+5OLQmh+F+40AiQFlTz7cS90kcMWU
-         RUop0bNrKayKXWqrjz5i+K09laZtbc/V9A17lWUOE9Z2aTkbCRAsF9dM9Z9s2SQ7jwJx
-         TLf2oOZttBiWzGMx4adyz3ZrBUnomZSHecYGMFgVqA6DSYuZlAQSz5KRAuT1ha0O6Zdv
-         FtNXf/A+shjFLP4dBSQukM2ZLt9phfQ6Kmrzg+fI49PHLSvxFrPtqAJQdM4PmtGvW+AN
-         09rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740997848; x=1741602648;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bVbo8Bp188ctbON8ZulP+OSFSxe/rMczkjpmYA+ieRQ=;
-        b=ACIxTIsatweC0OoiW2sPncdFmM8k2NBiAlEIqVJ1gWD0tMn4B1tZn2xqXojYcgDAvQ
-         QjBaxzDzqoZiJnvgzsuanaLbMFuIb+INHwpQ7OpZilnHReryDCC/ysF/XzzEC9vqn1c5
-         xpYwxPpHmqvuAh2l8g4mCfzs+Z8gZxQKx2nwPoPX2mdsp26GMbWWFil97NITY2rTFZHN
-         S+JB/uSbDdaROQFh7NSoHSkbYsHkYcea2vw6Hz4w6HIqS54kqtAmxPuDmMtPdpE+qkv2
-         ZociQRVHsJ3Yj55gsC+TpCGgcqHwFm0oSCM+9odsT+8ynqqDbEeZpL4oXxRrZFk0DZxL
-         GUxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+g1w50UhR57AFe8agmESdqYoQEzV1TUTJ1Kt7a4SCYFIpin4DITSvMT9UzjvrZ4xGddWb8tkz696Npz8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhn7eLUQLzJcPdm/Q/r1F6t5oYiDPfLmXEzakUPLLWk0NypPQX
-	OpYvfYnCQOxdZLc5n/5dXlWEQPUCLEszNHCaXS0zNwsG3WLo70pLMiPh9FvCK5g=
-X-Gm-Gg: ASbGnctSoMy49hhTSVBL+yv5p1Aowfxw8zvfJFsVG37X2oFtBvvwUQnrVbPCsMDPx+B
-	zcvR0c/iM0LmcMtft/XTnTkqKQPRS+zlfkBvSlYRNzI5NOZygLQqgBoXh6EpScIZObStNXitD2u
-	z9jMYQUnIAC5akZqD1rkdIzfvyFR6lcR8zlfiVCyou06MHLG0qB+0ZQkdaxcWE8cJ39dCPHI7TJ
-	FV74kfifp0k6WIhjmfD4DOkPfydfe3/6txe3JAfYs8rjd+YpKzlJz0RNKSB3mXhYwdndhjsuGZ9
-	dBZDaZCyjnOxty3dz41znNh4p51ZAGHQh1h52uzQfMZ/HEhfORHGxvXaJ9i8EQ8ykrzFyxHBYE1
-	TRhjhjxvAXAycKfwc8OGKKWomUA==
-X-Google-Smtp-Source: AGHT+IH9VAhW9tJPNhTeqngSyn+en5grFHwVORQOd7xIovLbkp/2JtR0igU6P17pWqd3YNtGaZA2uw==
-X-Received: by 2002:a05:600c:3513:b0:439:9f42:c137 with SMTP id 5b1f17b1804b1-43ba66e218emr116219575e9.11.1740997848443;
-        Mon, 03 Mar 2025 02:30:48 -0800 (PST)
-Received: from localhost (amontpellier-556-1-148-206.w109-210.abo.wanadoo.fr. [109.210.4.206])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b737043aasm153133835e9.14.2025.03.03.02.30.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 02:30:47 -0800 (PST)
-Date: Mon, 3 Mar 2025 11:30:46 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Markus Elfring <Markus.Elfring@web.de>, 
-	kernel-janitors@vger.kernel.org, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Antonino Daplas <adaplas@pol.net>, Helge Deller <deller@gmx.de>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Yihao Han <hanyihao@vivo.com>, cocci@inria.fr, 
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RESEND] video: au1100fb: Move a variable assignment
- behind a null pointer check in au1100fb_setmode()
-Message-ID: <hwk2nf62owdo3olxrwt5tu7nwfpjkrr3yawizfpb3xn6ydeekx@xwz7nh5ece2c>
-References: <40c60719-4bfe-b1a4-ead7-724b84637f55@web.de>
- <1a11455f-ab57-dce0-1677-6beb8492a257@web.de>
- <86551e6f-d529-1ff6-6ce6-b9669d10e6cb@web.de>
- <3f1e7aaa-501a-44f1-8122-28e9efa0a33c@web.de>
- <ugymllbkcsg22ffgyofvkquh5afbvoyv2nna5udmy3xfhv2rjz@jhgghzldzm4u>
- <eebf8c0c-7a6a-405f-aaab-2a8a8c2bd91f@stanley.mountain>
+	s=arc-20240116; t=1740998221; c=relaxed/simple;
+	bh=Gd1dlzOdtFDhJaQmIY23pfMlDTcKoNMpTpwfvcXDjhY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U0VDRw/gYgJqDq6BtHMb1Dxw9XaDgBddOszfmmmXofXkb6LvBsZnuQfqQPefHi8cTLx85XfLhzeUztW1m5pvIEQLa1KVzu0TVGNs+D85Pt5Pe/mJwgWbGbdn+tT9U4xykEO5E1QCdpz6OyNavcgO3fkuVUYe4bKJJj9D4EBU7y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=syaRRWYg; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1740998190; x=1741602990; i=markus.elfring@web.de;
+	bh=3I1wcV88eyEZRxUAaJIlfqeblDAV/oemtgH82LOxxOs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=syaRRWYgiccYmjw9qtXIAxcZR+keMGcrCcJdHVt3VXZv09UXatyFGPrquv2NFk2k
+	 8rkHgHgD2g7XPO0fprbnhkv5tiw9dbQ7kToh8TeUXF2qrzl0gPkszu7S1y9QYT0uJ
+	 EdrUOqUsU3gcsYd0migjTQbC7m89boUFAQ3arY3U+U5KpxRsvuuWXw6Fqn+/vXIJA
+	 /JB1W7WK4mstuz12wAav1C8lfgxLH90kLihkhaM9hRy3pxFLl9ufqxjItLQCiJ9e2
+	 y1+sB5ANVpnTWI2WPIHiytD9OZD1+m6CkUMSnBiYSD9OnWFy50JqU5cd91m+dhzyx
+	 NPWiJzd8UiFK0dXpCQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.93.19]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mc1VL-1tH5qj13Ed-00i7EN; Mon, 03
+ Mar 2025 11:36:30 +0100
+Message-ID: <82bce096-271a-43a7-a2cf-95b48669ce3c@web.de>
+Date: Mon, 3 Mar 2025 11:36:28 +0100
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -145,94 +107,70 @@ List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="w37fhouumevfpx4n"
-Content-Disposition: inline
-In-Reply-To: <eebf8c0c-7a6a-405f-aaab-2a8a8c2bd91f@stanley.mountain>
+User-Agent: Mozilla Thunderbird
+Subject: Re: video: au1100fb: Move a variable assignment behind a null pointer
+ check in au1100fb_setmode()
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>, kernel-janitors@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: Antonino Daplas <adaplas@pol.net>, Helge Deller <deller@gmx.de>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Yihao Han <hanyihao@vivo.com>,
+ cocci@inria.fr, LKML <linux-kernel@vger.kernel.org>
+References: <40c60719-4bfe-b1a4-ead7-724b84637f55@web.de>
+ <1a11455f-ab57-dce0-1677-6beb8492a257@web.de>
+ <86551e6f-d529-1ff6-6ce6-b9669d10e6cb@web.de>
+ <3f1e7aaa-501a-44f1-8122-28e9efa0a33c@web.de>
+ <ugymllbkcsg22ffgyofvkquh5afbvoyv2nna5udmy3xfhv2rjz@jhgghzldzm4u>
+ <eebf8c0c-7a6a-405f-aaab-2a8a8c2bd91f@stanley.mountain>
+ <hwk2nf62owdo3olxrwt5tu7nwfpjkrr3yawizfpb3xn6ydeekx@xwz7nh5ece2c>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <hwk2nf62owdo3olxrwt5tu7nwfpjkrr3yawizfpb3xn6ydeekx@xwz7nh5ece2c>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:vdcLTwaxRRUTNKgdh3PAdhRaE7ojz7Hr9lnrj+MHgE+1lORdgI3
+ LdUTlDAHkrkILlfVtj8Y+FWZ7efdKmsh7dpqRFXHOeHBR7Y2LJkXflzI4TeVUHOA+5S6WK7
+ ducSX12HIESWGnfoCyf5qkT0mmHMrzlzrSiA2hi/nzhZG/O60wWcTcMWWLl8EQv29pU76Qj
+ NN4uq50yUWCyJv4fhWAoA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:6QNZLrdoyzo=;Egynd8vm+A0h2t4Qd75YIb7BLKe
+ VujM9TYK15+bBtsLBJI53tpI65Z4qlFAJE3j27GIjFsUKW3YLbe6Ml7tsNYhWq8ZZsczz9FB8
+ GMgmVT7galXa2FAsES6Vm4e2mqhxh0T3k8okb1CE+oz0zcBelDXH4X9hHRPZ1WDYzTiQC+1/z
+ 7Z5yA++/5VTizt5XBCfRe/Rk8FeecqeV0tcUrfMcbedMFJKyTXkXRBUWvB8jl7wAhKuvOHv28
+ wUjJ57e6/oJfNchJKaGwkHrqYalUgvcfgrUav1YLTB/ZErIiAu/InyQjaNaOhNf921AxS1wP5
+ KMTvBhrB/jNUGhvB2Vu7g9T0Aa/LponvTTVJb/MjQslfUhKEtB22JiQuRW5QJNgsTqIt9TpGF
+ voUzCyoJJ73UnuH0qQiyrQEvJeOt4D6ysgXc0D0T0ejvSXqaFQGThYmdqBzF08OkuAlgTE3FN
+ QXyUsQDZYK+Ao9gsml6vzF04hcH9wcN07W8jvrRtE858AYpo9mLff3+MFwSWQZZjbw7IU2Ktq
+ sGlcfJn+LLnNRNA6YGrs/gnE1mXZHia8aZKJIroUHOufq12kNdJJ1aOVn8xeE9EPa+2TM9jwF
+ u+zQINKT/giAGzWtl9aUo1Y1Q7JiIOCG5IOMB3imAzbWn+uEvxyI/aTdCKRcVMjJ/Jpnb/i09
+ ukl/8yYwNFnYUmFcYWwgxhnpdW2QIXRmXNs8gZAAKnZ7H6fhXsKb76SBsMtLek+gUQygi1FYl
+ AwMiQuxAFmWA/BoG2wyx81eB2y2oqsRlGOsPB7eN+2/YA9P/XtvoRZHpfQzW9NaJHm2mMJr+E
+ d0wLekUgx0m8tzDUOEhzK01OzEb0PpogQ4vbf8/zNshffO+iAHCCwe++RmaEr/NW6DoCJVGGZ
+ AKHyuqFG7EsegodcRap+TSO5amIhA8eAvb3iyCEiCX4YEsB+UHKavrceeuvoR5n1yngXui2sV
+ hTS4uTTfeGEdC0HARsj/h2tJn4PsmkEv8/pKaZ3SEjCLSNU/I7QnRbUHt++MIoCI94mmOVtEe
+ wyLH6sQ8rowX/WWh7heBZrI8klsxOA6k2q+OavDc3UnIdAw9WV7Ob84tjlCdlljYGmNUs2QzN
+ FaDVv/RLFHixOjpF72nSHnDzZubHXNSAdJE4rNufcPYv3x8d/W47Xs8T/4HEkG21KwW6dcw8O
+ sQY4I8H8lyn+SDBhynfhsFODV7w3PYs8bRWeoBsy4Thg57EEIn1XW1DX9BVp9xzuvRQWr8et1
+ gZnVkpmWZt2ChNp1QP5hzUUxp3w80ANE4R7MFUwdqzCcsIsrvT/qmZGAqhkujs3bjZTvU3fN1
+ UphLrxY+3rSfMzlIUG7KBA0/qJk7CRVuCSSyYE9I1xX4TovyKtV6Eg0u7YzHHi7u1Cdzr0u2C
+ VONrsep64vb7vqsMn4mZSn12IFGLP0O6anM3zoxd0XapdR8G+0iHCECWBHeAXsw1ODFMGcnro
+ /v/p4Ag==
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6fxN510SzG0n1
+X-ITU-Libra-ESVA-ID: 4Z6h0X6w5jzG380
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741707566.59317@wRp9i8GKYnkkrpJNQjRXGg
+X-ITU-Libra-ESVA-Watermark: 1741710452.37844@DXMq/pxMPsFTTBdT8W8jgQ
 X-ITU-MailScanner-SpamCheck: not spam
 
+> 	struct fb_info *info =3D &fbdev->info;
+>
+> 	if (!fbdev)
+> 		return -EINVAL;
 
---w37fhouumevfpx4n
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH RESEND] video: au1100fb: Move a variable assignment
- behind a null pointer check in au1100fb_setmode()
-MIME-Version: 1.0
+Is such a null pointer check still relevant for the discussed function imp=
+lementation?
 
-On Mon, Mar 03, 2025 at 01:08:29PM +0300, Dan Carpenter wrote:
-> On Mon, Mar 03, 2025 at 10:19:06AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > Hello,
-> >=20
-> > On Sun, Mar 02, 2025 at 07:02:12PM +0100, Markus Elfring wrote:
-> > > From: Markus Elfring <elfring@users.sourceforge.net>
-> > > Date: Thu, 13 Apr 2023 21:35:36 +0200
-> > >=20
-> > > The address of a data structure member was determined before
-> > > a corresponding null pointer check in the implementation of
-> > > the function =E2=80=9Cau1100fb_setmode=E2=80=9D.
-> > >=20
-> > > Thus avoid the risk for undefined behaviour by moving the assignment
-> > > for the variable =E2=80=9Cinfo=E2=80=9D behind the null pointer check.
-> > >=20
-> > > This issue was detected by using the Coccinelle software.
-> > >=20
-> > > Fixes: 3b495f2bb749 ("Au1100 FB driver uplift for 2.6.")
-> > > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> >=20
-> > Acked-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> >=20
-> > Should also get
-> >=20
-> > Cc: stable@vger.kernel.org
-> >=20
-> > to ensure this is backported to stable.
->=20
-> It's not a bugfix, it's a cleanup.  That's not a dereference, it's
-> just pointer math.  It shouldn't have a Fixes tag.
->=20
-> Real bugs where we dereference a pointer and then check for NULL don't
-> last long in the kernel.  Most of the stuff Markus is sending is false
-> positives like this.
-
-I thought a compiler translating the code
-
-	struct fb_info *info =3D &fbdev->info;
-
-	if (!fbdev)
-		return -EINVAL;
-
-is free (and expected) to just drop the if block. I wasn't aware that
-this only applies when the pointer is actually dereferenced. Testing
-that with arm-linux-gnueabihf-gcc 14.2.0 seems to confirm what you're
-saying.
-
-Thanks for letting me know. With that learned I agree that the Fixes tag
-should be dropped (and Cc: stable not added).
-
-Best regards
-Uwe
-
---w37fhouumevfpx4n
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfFhNMACgkQj4D7WH0S
-/k5nPwgAstc+P1JFVJcAu2QOmJtpmMvfsusSqi09w0aEnPTXJ7eWgHQj2HCmKJ2A
-tpsfvf8kA5JHjm0dDyhnnr8MT+SSDNDnXQX6Ql4rFwC61a+xBBYE+68xUYe5XyHF
-98yWGWsnGV5liC6rrj5PcRpur1bml3Wj3UEbsTiGyaTNzOAbQyw8ygwvkHH60sIe
-XtvnKO/KgD8nSdHP8GE8uPv//BbKJmM4n/Tnvm9t4W9IeVnwC9RedLmElvgbOimt
-YVRPNPNG/KDOW0VIfUv1zmx/xXpnbqUhQmls/wYjc7ZF85CYgjm7eFm3xKhfquTC
-sEGbyzVTmAU0THTQ7X7Odz9uKL8q0A==
-=j/U6
------END PGP SIGNATURE-----
-
---w37fhouumevfpx4n--
+Regards,
+Markus
 
 
