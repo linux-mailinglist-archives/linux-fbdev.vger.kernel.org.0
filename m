@@ -1,75 +1,79 @@
-Return-Path: <linux-fbdev+bounces-4151-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-4152-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53409A7769F
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Apr 2025 10:40:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00080A776B3
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Apr 2025 10:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E31C4188A5D6
-	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Apr 2025 08:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B371F16953C
+	for <lists+linux-fbdev@lfdr.de>; Tue,  1 Apr 2025 08:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15841EB1AC;
-	Tue,  1 Apr 2025 08:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64901EB1BB;
+	Tue,  1 Apr 2025 08:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="SjWDIs9N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s+7pij40"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889AD1A83E4;
-	Tue,  1 Apr 2025 08:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B934D1D88A6;
+	Tue,  1 Apr 2025 08:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743496819; cv=none; b=GoKV/35+gk1zPXhDXQsipXSBRlIlbGlKz6epI3OmiJXTfq2OnYdhPaS3vDKducqy00Tc4YjdTQWKyNOBHQm5ooAmUcv/uBLZWsyq2n07dS86E8SNSn4vICjc6qFWH0BsvxsNF6g6z2HqmwW/KFK9lAb+FfwYE+P+Wm57fcE6KDY=
+	t=1743497096; cv=none; b=YjDPKCs6l0QSh1HS+AHmQ+pAl60Rv15vT3Uk/k2gUrwz0yVzSNTrv9rdIBMy4kHW7bBcUJwhthOSywS+Dpbn5MypoL4NYeQLTGnPnVCN0DUNygLMUdrd6eMn6ia+Zck+JxqJbeCWy6JhR7xO6soD9Xslc+ARQyZpk4g9h+fuNxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743496819; c=relaxed/simple;
-	bh=oSXQoDk5rnHxTGq0QwglgYgL8weJwwWigb4+0jYl/Cg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b15sJC7B08pkHG6MECVb11vc+Q6jG/8ne04jkYN1u+07LUiKcOk4AtEnKeyUS1JHu0P5n1r6gLnxEofOWHgtZfnCxXxhODAm4SxL4Ldw7KVYWAoLRCgDvqP+8HcUA3c1ZDcmD4Zx+pObHVEKSJLWFKY9ZDJgWmJMY0cO0gHFTUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=SjWDIs9N; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1743496810;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=70J3qbqUkhpGfcXlW2ynPrpc/c8CjZPQmWcMnQ7zHgc=;
-	b=SjWDIs9N+nxAtJw5mMhsl6F0LJ9DBEVxQ2zXCX+TwQTUnNH9sq/DvmXxBW7d5kM7GEvUg5
-	o2D9ah2UfPkm/pCmqQqemJvyoe/lsKVnvn7ve5c2SNs0lyFf18apuYNN5WXz6YBo8UnkBE
-	qq/f5dV/d9MU9ILlm9SFmd3GHRWqu4E=
-To: ville.syrjala@linux.intel.com
-Cc: arefev@swemel.ru,
-	deller@gmx.de,
-	dri-devel@lists.freedesktop.org,
-	jani.nikula@intel.com,
-	linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	tzimmermann@suse.de
-Subject: Re: [PATCH 1/1] fbdev: atyfb: Fix buffer overflow
-Date: Tue,  1 Apr 2025 11:40:10 +0300
-Message-ID: <20250401084010.5886-1-arefev@swemel.ru>
-In-Reply-To: <Z-rzIfUMmOq1UZY1@intel.com>
-References: <Z-rzIfUMmOq1UZY1@intel.com>
+	s=arc-20240116; t=1743497096; c=relaxed/simple;
+	bh=wGqJBd7vfSvA8X3iZNsqbJZdCnTFtO00dJM6lUv2rKY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NlzQygQT4w4UhVQlGGsBB0z0AWxsoUJe1VqEOpQp2dZO3KeKK9C0IL+ySVHvNuj+bmvhhWPcvEsfiOgMMA78SnZp7Nuoa3rcOEhr1UMnckJCfVHnlUZrBVImekrX7Tw9SDVAXvH+gPwb7ntk/hUB8Q0h9OsbCGqS9rkTNNSNIMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s+7pij40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CDBC4CEE4;
+	Tue,  1 Apr 2025 08:44:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743497096;
+	bh=wGqJBd7vfSvA8X3iZNsqbJZdCnTFtO00dJM6lUv2rKY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s+7pij409ktgdqtrmt5J2yw5Avsc47NJG6b2awemQ7Om7i7j1fYfw9q1XtGP9eS+L
+	 gJMod3wyBgb67LwHItVpzHD0E601jawMP7ajeSUL9kWse3RVzPQxENjfFBa18z3oAr
+	 vRpSf3MtwxcYr59wFo3KM/BP/sjxcu0bkHAr8hEan4yQBqvs/rwwdhPpvZcw5jY/dl
+	 IWbMKVgHKQ9JqTZb2vAmWnNlokqhq36bm9tMQy2wvIi7sGXXkvS6/4RmuLWo6mS0kX
+	 FEuknwhmhNPFDtLmwNK+Rnr2TfwTn2/zqNM7s4pUgxOuRd9U8UzwGz/o+HK11wsZp7
+	 V1eqFVOMgIAsg==
+Date: Tue, 1 Apr 2025 09:44:51 +0100
+From: Daniel Thompson <danielt@kernel.org>
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: lee@kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH v3] backlight: pm8941: Add NULL check in wled_configure()
+Message-ID: <Z-ung-_3ErYHqnXU@aspen.lan>
+References: <20250401025737.16753-1-bsdhenrymartin@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401025737.16753-1-bsdhenrymartin@gmail.com>
 
-Hi Ville. Hi Jani.
-Thank you for your answers.
+On Tue, Apr 01, 2025 at 10:57:37AM +0800, Henry Martin wrote:
+> devm_kasprintf() returns NULL when memory allocation fails. Currently,
+> wled_configure() does not check for this case, which results in a NULL
+> pointer dereference.
+>
+> Add NULL check after devm_kasprintf() to prevent this issue.
+>
+> Fixes: f86b77583d88 ("backlight: pm8941: Convert to using %pOFn instead of device_node.name")
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 
-One small question. 
-This chip (3D RAGE LT (Mach64 LG)) is very old it is 25 or 
-maybe 30 years old, why is it not removed from the core?
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
 
-Regards Denis.
+
+Daniel.
 
