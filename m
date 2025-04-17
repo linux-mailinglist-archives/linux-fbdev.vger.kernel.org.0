@@ -1,164 +1,134 @@
-Return-Path: <linux-fbdev+bounces-4249-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-4254-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7EB0A9244F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Apr 2025 19:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB4AA92B8C
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Apr 2025 21:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459161897147
-	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Apr 2025 17:47:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B22141B62382
+	for <lists+linux-fbdev@lfdr.de>; Thu, 17 Apr 2025 19:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089C52561DA;
-	Thu, 17 Apr 2025 17:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB291FF1B4;
+	Thu, 17 Apr 2025 19:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfYGK1d2"
+	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="S1lRRZWa"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic305-20.consmr.mail.gq1.yahoo.com (sonic305-20.consmr.mail.gq1.yahoo.com [98.137.64.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A45324111D;
-	Thu, 17 Apr 2025 17:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789A01DF733
+	for <linux-fbdev@vger.kernel.org>; Thu, 17 Apr 2025 19:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.64.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912015; cv=none; b=ZaT7lqphI5gcbRceKFppC0en3P0IetApTtPeqtDOcZYUKUrhmSjAj4Aq7CgiiOMUoYxD/DVSNBu1InoFvnTFyTbk+OveExA49vf00XjoJeCC1BEVDOvOMrv2jXh1w9dhrLhOea7PPz1WMtw14w6xxTybIR3tFoouVy78+uQsG50=
+	t=1744917224; cv=none; b=ig9+tXHRG6YIRmqLLQNYQg0uo6FoFdwttlJ7w4K9qtTnZORJH6Wbh4PxM0Gnbc14GlBMaV9MOrbB7XAWpWag5IuNmWHny/9Y0miuNx/VB/F+2nQoxB/qY1TMVkCwB2588Dz6ZNz9PPnu6F0bTlp3J4Ix8/pN9SssoxGysvBkntI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912015; c=relaxed/simple;
-	bh=lfAIyq7sUVDvRco6w0Bs2SPY7/nE5Sle1eLod1lWlNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PIH/djOJA06aDPzK25bSadNG2ZQyoTWUlYWw3ZgfPUavCY2r0jUozq2BlPB4+jM3M8Y5+7VFhep4izwyRV5DrqT3aKKoPg0+hwrYqm/mbkhiRriEefz3ydzaYBLGtWqJKNl0QerdNUWutqZViKlqA435Tbe3yxyRfHRXn10QUps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfYGK1d2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72202C4CEE4;
-	Thu, 17 Apr 2025 17:46:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912014;
-	bh=lfAIyq7sUVDvRco6w0Bs2SPY7/nE5Sle1eLod1lWlNQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sfYGK1d2/Ni9tU5h+d1g45a8zse6aEYq/PFbuGn32G3iq0ShVbLqHG9+iAEYqxwtu
-	 MFMAT2pOzuZ2hS56oon49Zv2E6MeawUyUnIe43ynmSDNmh63L3SIrGQ6L9ybBCRX54
-	 vivTXIUVO3PoS1vbeRxQl6qiRxn4au27lIZDM5x4=
-Date: Thu, 17 Apr 2025 19:46:52 +0200
-From: Greg Korah-Hartman <gregkh@linuxfoundation.org>
-To: Ruben Wauters <rubenru09@aol.com>
-Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	s=arc-20240116; t=1744917224; c=relaxed/simple;
+	bh=xsG94a3CVpgEo0wqWkIm6AJqrfZQy7ImCt21WbqsL2E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=Si4V4xM3w7klHsE482vR+pY96kfq4r5FeZtXmDsCLFviy+7Vc31gFfCigqQUYrF/aue18T7c0ENn9XpFgdWmFYd2YHX9HH+mfauaLEGWHfnxe7IO+5xIyafWngPW68xpbJymnLnGoVvk7qOD2vBiIcfcsB/BdoLM4AhNI1LetQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=S1lRRZWa; arc=none smtp.client-ip=98.137.64.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1744917215; bh=rPlrtz6zs5q9DINCcihvTUByo9aixRe8ODi9PYS2j5o=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=S1lRRZWaSSnMxCGhBGNTbEyrzPliXdgL2KUtm6Am8lRzCXsFkkAcS90J70i1HQOyrbwMY9qij8+N8pRhFWqGGNI4INoMwjXIgoksHajUmK533jkJLZLqndJWZVzsw9qT5NrsrwJzwcQFUxT64DUjqfh8sKFhbtclqQjAYNDaaN5v4mcjvSLPUTl/XVlXzc64i0eCo/RiY6r01TXb2XWhKPLC9Akrc1pUojM8PdAV2mWFpQScw/i4kq7kVXZ/tsWhS+NUMOfxDmDrIk80YFJMnLvJdmedsDqr2mwFp5OQBTNmi+ahZ5DO5LIjQ9en3STwXNJl+PtqLyNrO/23Y9nS0g==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1744917215; bh=1Ad2R3eEMQYFRQjefqknSj8KL1p3KqFNsw+mv1J8cz1=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=EFryaXji81vAxZk/90V7xk/xDIBaeZYWehMyRWT4GUd8p0n3cw73shJI2+e0GzblDbsh6RUNN4XYoawqHNZbepw/n8v8399cJzcmzeGlEPYWv4CymC/0/FZ+vjELsyaRWvT9qk2dOniWEUHyDxflaLIUq7XVIS4MgV3X92dC8M/oZDuqvkQ9UmBL6yD4p5dPHwuTFutCEIuGnD91XEuWXEAaO5MBgOGzQP6RHitgKrcY/N9He1/1v8pBeD8rtmjtQuwZ4Bpoc+O9kEqiemVNTRuNIbHlFtW+ZtB9n+scdgJCNaLjgl8Ruv2GgWz6JVzyaRjZZGrO/xsyVt+NPE16kA==
+X-YMail-OSG: QngtbiQVM1kDgWIYI78bovrukFjaWf.sp6N.yg8DMNai5PO7l7mGTOSbDXge0Kf
+ Y.308aTcXcRKw8ST22RwkdcleWrfRiQZj9L5LkD_xtwfmO7s14b8zLB.yzaOEfOxGuFWdA8pB0ql
+ F0xcUCXmAZqoUc5M1sZlDdC28yrESaIKEcPfeg7p2ecAoYW3FNwxkyZZnb6WSl33Sl.2tSqTjlys
+ mgfKafxFrU7dZh2UNXg8ElZCKYISBKx8AaSYgcwLDWSPZRugH1jh.qffyKdaTpReGW.t9fZx3JdK
+ neUPogv5U96BpfYrKV.0bChaAnhERMxET1qx4hVH.IOaLjre0DYjDY47OBQOSvXAxfIuSbzZShkI
+ isFEj5GjuOsfJ9jLskbBgcswd0LVlSBgMGHcVM4282P.7sCOKUADMlqUtxES9KoV3cFqsohhBQFX
+ Cw55mUo0.YjlCRH6FESZU_8jYIHOQUWQZNhk_Z.nR1VcoRh2z1Zaj2Ksy_PvqOWItDk9H607BtWd
+ JbJRbdsxzb1vsZ8.MBS5gkOFmIAy2fY2lnMaj.xwh0QssiSCPpq1Cu8zxIDs6BNdRSrvf9FVxDJ7
+ .Ul1lIyq.ZLvDttUHaRG1kb_D.tE6cujvm4QFUGUdrJ5yIjwMybwINaE7NlnrJIchzTlisZhWciQ
+ uE2GVxf_HRaqqNFDC6IqsLUje.rsEalGqIpNt1236SDAbIpkBLTP_U422txXIOkbAFuz7lvH1nMC
+ 7zI6JjOoRXCU9gs2BqntjRSHFDbzYT7oM40_KXcqzC.TCzi75jB2k67DG6nBWBv.G8q643dHwt3c
+ ott9YxAdqrDWqpwimptDnoiFl0yz8fEgGhzapKV.JU0qKKu3S8oDWZ1kBlPaaRF7b5lG9r.2QTVh
+ b0uDCt77w5grQ40IY7D0WE1m5pgTZV4MMh_85sFydYy12w6qv.UqoFjmavJqcAWLfnQr8gmDfuRX
+ 4lPjZwTzHma7yTYW7QRwnmQ9LBd2NLZGr9PKqBjsEEVLUYJNERvj1obnrbjgT59eCz1WIQHOpsHB
+ .w.OVhqpv9hAq6iCcb_L6ent3XNOxyuFZA6ml2_p7anIzjyfRTmr_QjlfRtR0tVK1Vp2lk.OfX5X
+ f8uFB7ki36TNwXZl7h8A3kutwE2JwRfqdG3twloTfS_DcuMWHKFQveoJkcRl9q7yM3Lk4OVrxCM4
+ x0qukTrUveBpvQCZd7LWuIp8eJG2.NGFAFuo2PsSrjd8eA6ZfpxInOVea1ezAV7lm20hcHm.DUK4
+ 4YwfU1WTl0DArkdveIKRt7Ux59bE1igqknRiePgT8OXQSObnqCvW2riu3cX47NrXkoQwch.zwGWP
+ ld0yulk2q7vleWmmsKyTvSxe8H5NRy6r.L7zXcZlOaLrZfbZjfpikkAOFSok8PyuJHK6PTU6YaI4
+ jYlKYycU91bKRY_hMB3B6pi3tKhPiYom4EqJ7aFVxaUpQQS3XZAAAXKcFolpklRg6fQfcQXv_HJl
+ 6pN0LM0AsI0ZG6_6f8cJjxbXTDcAdlwwX7Hw_h3yrEtlkXrijuGSvMDu_ETyi7aD2uX3uUE7wSq1
+ 2CjhQYd3WixVADXU0T.6OLCa0HqPZs2xLCHXuHJQ.PI7bL8sQqUDu8pOla1EuQrc4Br4NF6zMvZy
+ uts1wBsfPL1ttKXFNyXdXV42.dZACeq1Std3pHW7ctDYUhMNxEmDNkAT3Cv38xr9lXtFpvFZbOy_
+ dl3HelL.raN2EZW6ydxEdyEjcQUKT1.KUmQkhG.HcvZNeTcoUL.worHAfWeWEmIEr9I7kU9i7inC
+ 4uW2xiSJ46yqx0bcr0uEAs81Vkej3ye52amd5.cNxqenyr.FWSxX.CXmM66fvaDTNUaMnhHCfMME
+ C0A_5zLAuzRriq28gqOYFerafzGGL0Ju5CtKPU3RL0m4GiNSpr3gptPME7z65g4QWEoD_0LflHRC
+ .HbIALEaSBdQv3censXIZwJwPfnT4K_VnJT_A_1UZyxZIsYtvV.OxpXiMiIVsyY1G.5u9c_6UC.x
+ Ib7HdTPMMFtFkddiuAqInUz2VCnz0D5VbqplN2UOiSFWdJ4TQjUxWwWLGblSi2S00cvKBI5UMl6x
+ CBkZ1ad440EPrY5I_q3jzn1sxlu5isH5v72FCn9MVg_piAGK344VIYmrh1cqV1DeaSplXF2GJSXf
+ BcYZUo.44nhOmCezZlq521VXGSLsjXIYn1ZfiLr27pOZ0JA9YDxZaOWUrpozhDgzj1aUgIAlR4iZ
+ NY2AkjdkoIanyUQ1HD3xiblZWJJ.k4rlF9Y1N.eVr1wz8UojPq2sBE67q5nf93dM0JEJTCgZ4bvy
+ GOHUJoibI_BdizY6q
+X-Sonic-MF: <rubenru09@aol.com>
+X-Sonic-ID: 0dc75867-1b56-429f-b2cb-686d59c06d36
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.gq1.yahoo.com with HTTP; Thu, 17 Apr 2025 19:13:35 +0000
+Received: by hermes--production-ir2-858bd4ff7b-9r9sx (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6040ee699aaf3d3f072b53831b62751d;
+          Thu, 17 Apr 2025 19:03:24 +0000 (UTC)
+From: Ruben Wauters <rubenru09@aol.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
 	Teddy Wang <teddy.wang@siliconmotion.com>,
-	Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>,
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+	Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+Cc: Ruben Wauters <rubenru09@aol.com>,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: sm750fb: fix instances of camel case
-Message-ID: <2025041741-uncoiled-glove-854d@gregkh>
-References: <20250417153101.353645-1-rubenru09.ref@aol.com>
- <20250417153101.353645-1-rubenru09@aol.com>
- <2025041758-mounting-populace-458f@gregkh>
- <6ec1fa494ee823549fb97a48121cb28e37f1cc4d.camel@aol.com>
+Subject: [PATCH 0/8] staging: sm750fb: cleanup ddk750_sii164
+Date: Thu, 17 Apr 2025 20:02:48 +0100
+Message-ID: <20250417190302.13811-1-rubenru09@aol.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6ec1fa494ee823549fb97a48121cb28e37f1cc4d.camel@aol.com>
+References: <20250417190302.13811-1-rubenru09.ref@aol.com>
 
-On Thu, Apr 17, 2025 at 06:28:07PM +0100, Ruben Wauters wrote:
-> On Thu, 2025-04-17 at 18:58 +0200, Greg Korah-Hartman wrote:
-> > On Thu, Apr 17, 2025 at 04:27:47PM +0100, Ruben Wauters wrote:
-> > > As per the kernel style guidelines, and as reported by
-> > > checkpatch.pl,
-> > > replaced instances of camel case with snake_case where appropriate
-> > > and
-> > > aligned names in the header with those in the c file.
-> > > 
-> > > Signed-off-by: Ruben Wauters <rubenru09@aol.com>
-> > > ---
-> > >  drivers/staging/sm750fb/ddk750_sii164.c | 113 ++++++++++++--------
-> > > ----
-> > >  drivers/staging/sm750fb/ddk750_sii164.h |  26 +++---
-> > >  2 files changed, 69 insertions(+), 70 deletions(-)
-> > > 
-> > > diff --git a/drivers/staging/sm750fb/ddk750_sii164.c
-> > > b/drivers/staging/sm750fb/ddk750_sii164.c
-> > > index 89700fc5dd2e..20c2f386220c 100644
-> > > --- a/drivers/staging/sm750fb/ddk750_sii164.c
-> > > +++ b/drivers/staging/sm750fb/ddk750_sii164.c
-> > > @@ -12,11 +12,11 @@
-> > >  #define USE_HW_I2C
-> > >  
-> > >  #ifdef USE_HW_I2C
-> > > -    #define i2cWriteReg sm750_hw_i2c_write_reg
-> > > -    #define i2cReadReg  sm750_hw_i2c_read_reg
-> > > +    #define I2C_WRITE_REG sm750_hw_i2c_write_reg
-> > > +    #define I2C_READ_REG  sm750_hw_i2c_read_reg
-> > 
-> > Close, but these are really a function name, not a macro, right?
-> > 
-> > And what sets this #define?  If it's always enabled, then unwrap this
-> > indirection instead of keeping it around
-> 
-> Will take a look into it, if it turns out that this is in fact actually
-> used/different, what would be the best way to name this? checkpatch.pl
-> doesn't like the camelCase that's currently there.
-> 
-> > >  #else
-> > > -    #define i2cWriteReg sm750_sw_i2c_write_reg
-> > > -    #define i2cReadReg  sm750_sw_i2c_read_reg
-> > > +    #define I2C_WRITE_REG sm750_sw_i2c_write_reg
-> > > +    #define I2C_READ_REG  sm750_sw_i2c_read_reg
-> > >  #endif
-> > >  
-> > >  /* SII164 Vendor and Device ID */
-> > > @@ -25,7 +25,7 @@
-> > >  
-> > >  #ifdef SII164_FULL_FUNCTIONS
-> > >  /* Name of the DVI Controller chip */
-> > > -static char *gDviCtrlChipName = "Silicon Image SiI 164";
-> > > +static char *dvi_controller_chip_name = "Silicon Image SiI 164";
-> > 
-> > This is a totally different thing.
-> 
-> It is, however I believe it is somewhat more descriptive, I suppose it
-> doesn't really matter though and if it should be the same, just made
-> snake_case, I can do that.
-> > 
-> > >  #endif
-> > >  
-> > >  /*
-> > > @@ -37,14 +37,14 @@ static char *gDviCtrlChipName = "Silicon Image
-> > > SiI 164";
-> > >   */
-> > >  unsigned short sii164_get_vendor_id(void)
-> > >  {
-> > > -	unsigned short vendorID;
-> > > +	unsigned short vendor;
-> > 
-> > Why change this?
-> 
-> Again removing camelCase, kernel style guide says that shorter names
-> are preferred (unless I misinterpreted that), I could make it vendor_id
-> if that is preferred, I believe the same would be with device_id below
-> it.
-> 
-> > This is a mix of lots of different changes, please break things up
-> > into
-> > "one logical change per patch"
-> 
-> Would it be best to split each rename (function or variable) into a
-> separate patch? I do agree it is quite a lot and I was a little unsure
-> when sending this one, but I also don't want to make a lot of different
-> patches and spam your email with 100 patches at once.
+This patch series fixes errors shown by checkpatch.pl in
+ddk750_sii164.c and .h
 
-Do "one logical thing at a time".  Think about what you would want to
-see if you were the reviewer.  Sometimes yes, 100 patches is fine, but
-really, make it in smaller chunks as odds are something is going to go
-wrong with that many at once.
+The changes are mostly camelCase to snake_case changes,
+however include a variable rename to a clearer name
+and removal of the USE_HW_I2C check.
 
-See all of the other patches on the list for examples, you have
-thousands to learn from :)
+This patch series is created from spliting an earlier
+patch into smaller, more logical changes.
 
-good luck!
+The patches will need to be applied in order.
 
-greg k-h
+I have included details of the latter within the patch
+description itself.
+
+It is also worth noting that I do not have the hardware in
+question, so I am unable to test whether any functional
+changes would be better served one way or another.
+
+Thank you
+
+Ruben
+
+Ruben Wauters (8):
+  staging: sm250fb: remove USE_HW_I2C check
+  staging: sm750fb: rename gDviCtrlChipName
+  staging: sm750fb: rename vendorID to vendor_id
+  staging: sm750fb: rename sii164_init_chip params
+  staging: sm750fb: rename sii164_set_power's param
+  staging: sm750fb: rename sii164SelectHotPlugDetectionMode
+  staging: sm750fb: rename detectReg to detect_reg
+  staging: sm750fb: rename hotPlugValue to hot_plug_value
+
+ drivers/staging/sm750fb/ddk750_sii164.c | 119 +++++++++++-------------
+ drivers/staging/sm750fb/ddk750_sii164.h |  22 ++---
+ 2 files changed, 63 insertions(+), 78 deletions(-)
+
+-- 
+2.45.2
+
 
