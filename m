@@ -1,122 +1,136 @@
-Return-Path: <linux-fbdev+bounces-4274-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-4276-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8CBA9399D
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Apr 2025 17:28:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 881E1A93BAA
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Apr 2025 19:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E0818A2AC2
-	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Apr 2025 15:28:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35F911B63685
+	for <lists+linux-fbdev@lfdr.de>; Fri, 18 Apr 2025 17:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DED211476;
-	Fri, 18 Apr 2025 15:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5898218EB0;
+	Fri, 18 Apr 2025 17:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="NbA5GtSH"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="D/5dyZLX"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from sonic304-24.consmr.mail.gq1.yahoo.com (sonic304-24.consmr.mail.gq1.yahoo.com [98.137.68.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42F638FB9
-	for <linux-fbdev@vger.kernel.org>; Fri, 18 Apr 2025 15:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.68.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E53613C9B3;
+	Fri, 18 Apr 2025 17:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744990109; cv=none; b=Qydx8hypAqUuLf9CjEn/6kgb6lZLr7Tw9ITg12uAc1wWl2U7e+wdIO1YRCb0fguYnaE6oBKGKJ+uMKyOInmhGXh4LCZRCC/krTqY3FHU89FUcTHiJknKvtz2l8Ei6e1ENCS7ynom1aKPqgQKe3DNohuBs6NdG1/pDj4dK6Mrwfk=
+	t=1744996040; cv=none; b=Wixn5F6SMFI8GVAAJQmonMUekZTMAN3xDAqa1ePuYKNdEyaTjBDBuXRfzkwZT0cGoL+f+dmKhKpy/LvJ62f/JbMdoEGhXEnSAKe6BPuDTg22rdVGxVclClwKYhdvxtYT725FTFRlW2YkU2ygxQeTT/Qj0TW1tmG6l9n/wXEON5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744990109; c=relaxed/simple;
-	bh=oHAltb2RCAda/KHTxVe6fxcmyWA9v1kKvq8QUwuvyYk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzhiMtC765RdF3d08OdjLTkueZ0jE2Wi+KzZSdi38K9MC1wj2RecZw7fjW4w6pdTLuFf/NkaF+mqVsmbxU/zCEeQzc0HUkM2p9AhD2QxB2+VSC2xo2NqmxYtb0OdNCt7YZggyAX8+w0lRLoOh8B4ZHYGrw6J43opAxNht+23PSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=NbA5GtSH; arc=none smtp.client-ip=98.137.68.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1744990107; bh=Wvm/4YMU9spXuZGQvSVOvYtIyZayWzPpXcdS32wUGT0=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=NbA5GtSHa08W6G8QUT9vBNcdv/fdzplQsupUbMHZi0mNSZssG59meeCJ741N9Utsw4eZTFxB4ViS0QDW0Nr7r4f7GcQuYnzZhbBBO7y8uAB+U9quh3sK569UaopCPjotxahCqsYNJsrmpnA/1htSwVorga3UYqARs8ZCpjVHP/ISb4ALKG5iJc2O9qeqOZ4sqtG4qbwE0cxeDN9PpjtXBmvgA9eNhVaE/KQAk6DzYbQ+etBYJfDfDpyWggnRyx+1FaN9v678h2wzGGPhVU3zsLky3KFrnF99Xw/Qt/OddG+RbaugxEVbNjb0TpD8KMttcR4dWZZVw0nHiVqDXWbiZA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1744990107; bh=sLkGsuEcXZ0nAfJviSQCbimE54BHpbh2DhTjMScZQ3M=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=o41nZY2kLDAh87bSWy8xzcicSxSNeQhxL458qifqGLjP7zEPwxQmNvEAAe1em/07k6rHQHvls5S0apOBgsQrn0L2fk7DKBwwtplKqJzw5O+o+NWYm7fbFjtTUVIxohm1I44TQpivH0VB1fdb3xnLf2bwk6Y5U8DvC65aCCYHpX78JeDrgvyCRACxCw6SpVl9iTPnzTPTb7qoctTmWRoUlZPAAr/15NbLONTd9kCWc6o4N1L9BDX41T6UFtuRMS884VhmgsEFDCTlQahuwV7Uww5tIirwrnxqaaTcZpPgPK0J6n4xzThLlxvuHyrk+hsV7afZDNSyd2K1T2fOUfxd2w==
-X-YMail-OSG: wezLz6AVM1nTWqp1u09kmuQgqoZuzjwdCt77..xhUgT69.f8gVklIEMfbfJS2.6
- _hTdMJdZn2k45bI3rIj2S6vHt2zuS3To.Vc5LLpPWeJE2fWJ1qjfb5I_KGXsb2RpnnnruYqiGCQ.
- .ll5abp0ed.sT.0elva0Gs339dcsIL8SQ5ZbvNW_MYJbq7IrcnqvltZ8VGnltrVzJQp5F5dcqI6w
- IeAxcYciFtcRGOnu2gNSC5qykbB.npxd9_U4moyQlNk84Kt0mos2Cu3rcunAZA1qOzb4Fjj.5aQV
- 77J8Fjn9bYmUIozCv4lKnK1FPxY4hwIP9MpbdZMOY2OSbOzyky3lxqz2qArBr9N9RBZuhKX3WVLc
- kN1v3SjC2h2olBmI7XZGkzKpVGC87m68tAU8X7edqr2q_tH0wj1mG_aNhOYWx_2QkPcKXIYd6UuF
- glLuU1_ODbIdUPcX6RXzWTCA9TjmUfYQ3Z3fzaFLMUKkaLRRF1ZK6pZG1kfEanW1MpbwZ5uAmq2X
- DBzlteXYJmDS04dUDCsoo3AYX9slnOt9hK.Jxo3p5o7iqMk2nhy8aEnO5_iqRrm.HfZjZiEtGUeO
- 7qKOL7Rrf.4F6F75rLoDe8_ZcIj.AbZIeNb8y6nE35m6wyFX8rPwxW_rNjpEIA81PvoHp3AfRoF1
- bYzVYAiruCgp.uAAJukXXH5JR4.UZc46ePt1hNQz9TMqXc0r_TpPJQWBU7i7m5O6jxqCS_Pghb6W
- yDVVIlyBIyt7phxABPGA0g.Hn3jsUYVyuiduyWuxgDjY6cDLw4Ro8G8tyFkIuCG7smINLM46R9Ht
- WSlsWxy_5kYC_fmxT.rTkRyUeWVzulHTavURy.8YdAPrHnZ7WcQR.4eeqvmqnk9l3.iMCTMFGbU9
- p0ypWAPzSMSIYKYJYyna_xQ17uCOAUbnhnOYAnYpn9gBM7CWt.VmGbgHK69jeQJCs4XgCpdoJcN.
- ejdof2Srwg0Y1f7FNeLRszvICgziuUHR8gan63pxBICAdlHkNZzH1GVyIXk.lU.PKSpKyIva9yAT
- H5c_AB9UPV6Iv3Spi4XQ_3UWk7yegEGpIF7SoFa53VWqs5qgQEv76r3YKRRwWPwVO2.TEOV2qRz2
- jPF.bmjXkBKYO1UwiSSzvib3OIQJWsPHtwq66cri.HmU2pkbEfuQgeFx3G0Szu7eiOGIqy4PiAT4
- DO6ZnEnHPgmKH5SEZfHnqb_nOWIX4ntJ5C6rPX9sl3UqNSMrTl6zzOqAJsT2M9xisvpJtEmxNX6p
- GJZdFHgAoztqVIhFjW4yFKDzryThIIZSdu0ckP6R2y1wILoKDxhOPiwOHT2SZYiTfyn5v8elmp9h
- T9JGigfDbe2MMdmbQKDo8MlpDblO0z.9ItyLOUY5IFKFUnXdVz5f1oDXXf.V6kMx5.o47Wh53NvI
- kc6qOkDZyFeAajIZdeokOJl8kL8E00ZtycTs4lmNFkaaxjzg0qRMQENqpNNjxA7TXA_7O49dO9EQ
- FcF83f5Dqf.oG8lepSRAstU_7QaLjiOz248xI1JVgRPlBIQMVM.rWMff6D70z2uA3AXdQpBaDieL
- 1n.DJ2YCiDc8km6DHXLDr0gqsiJmfjHWpvHhBwqsmVIeNoQ0btawb8Z.E79cJebralVX8O9qN7mD
- 26fGkrNQ6muWlUPcXsPqZWQK34G.q0tJyKRkDEfHbYx2_xOt6T2wYFoEJSZb.kFRwp0BgVAJ_5s7
- UlN.vZQFncR6VuDNo0bNF06DW2oTvtkbdaeI7nYr0GW7J4DbDi1j3Wk7XwuEyWUaeQe2mwDGh.hH
- GbNnFuomtBiJsNVOiD75LB_PF.pUjtW7o0xTYOwPtBQmNjQUNAINgWD2T0fEMPfywRGAKLas0ikf
- jjQ9d7PZ4cWOy6NJan3eHizC.VNoka8dBIGAkw70iuoxwva2G.dDZ6bT5OxmfTl34_PbL0Bj5xAK
- yA_umXhfYqAWb1EeE_Oe255ttXkf.0ZnDj3yvzqNW9GAwBvb5Rp5mWvhKJKOgdFzICEG18fgGdO5
- 3wvVezovgJGxXFgmsj8a8vpGLKbcF02oiDe4iexKYc2nyB3eggqxr8DKsj4Vx38RrUiR2_1Uxoc8
- FvhiTMxvkxUbyRn6KDUNF9YztVF57LHek2kPOqlosOxIL4m7XrsGIDp0KO6s2F1m0NBj6ElsWkrt
- tdoGj4a9SpxtsMR.C_QnjpOv1epRV4BkE4Sm_31xFxGjTTWJtOQzKp_6ixLCkyNzJauvyQM_.FDL
- IhKNYlIhKRZU8GadFM3TW.EZbR.R1kmo3Xoh_QsOsFdCYNdmvlXVM1yQVi0mP7eEr3TI8IM_qs8R
- C.i75
-X-Sonic-MF: <rubenru09@aol.com>
-X-Sonic-ID: 4c9a8b58-6ba6-4f6c-b63b-45bffe4a0db7
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.gq1.yahoo.com with HTTP; Fri, 18 Apr 2025 15:28:27 +0000
-Received: by hermes--production-ir2-858bd4ff7b-rjtcv (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 8d9c4354726140fe64c22851ae4eda49;
-          Fri, 18 Apr 2025 15:18:19 +0000 (UTC)
-From: Ruben Wauters <rubenru09@aol.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-	Teddy Wang <teddy.wang@siliconmotion.com>,
-	Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-Cc: Ruben Wauters <rubenru09@aol.com>,
-	linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] staging: sm750fb: remove irrelevant TODO line
-Date: Fri, 18 Apr 2025 16:17:50 +0100
-Message-ID: <20250418151755.42624-5-rubenru09@aol.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250418151755.42624-1-rubenru09@aol.com>
-References: <20250418151755.42624-1-rubenru09@aol.com>
+	s=arc-20240116; t=1744996040; c=relaxed/simple;
+	bh=nFFn7I+g/tnnYz6luw61kYvkvMc5y4MmqUN2RfOy298=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPfpRsdP+vl2W6GH7Pxr4KFVLRPaWAd6OV/igI4MjS4rNz1eOQeocLV1oBbX2WalsbpQTlBMfbnkD3b3p0lI8GxwjUw5zdjOWeX5t2blZy8k1vsHuXCyYByov4GfpWEmjjvzJm4BtAYMPOfvALk2tUleVlUyW0HMON20RI+njgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=D/5dyZLX; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 69D3610273DBF;
+	Fri, 18 Apr 2025 19:07:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744996036; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=CY3ybeEvZswn7mTzJEo870uU1YtFroIwRrSUBzp5+v0=;
+	b=D/5dyZLXHPrXzHpWT4ABFOWkh6sluYURfX7f2u8rkqFUrONd5tplGzJ+DMlLx+3LbBctVT
+	BHu5lKRc+CEFJ345J9lnXrregcz5YxGZlqh1p2FyVhyCKSDPV3HsWUlqzn3xNf7YFAhbxo
+	YEhu8w2fVyeazJmWW+F/GK+AKA/BhPGNYj/A9rIE/K8LcCAHS1qxD4zDmdTDs3uzU6iOFW
+	8/YPNQD93G1kSUzwmSkl0UWJX7mnDS5PQDGot/iqnjYO1dDmRC31Rg/Jz2P0YM+XUTySgZ
+	FJyhU0C8ql8OHN4VsI3KE4oT4bZlZySOCUbaom+Ult6gxc4N8z4P90ozoUF2Vg==
+Date: Fri, 18 Apr 2025 19:07:10 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Leonid Arapov <arapovl839@gmail.com>, Helge Deller <deller@gmx.de>,
+	krzysztof.kozlowski@linaro.org, u.kleine-koenig@baylibre.com,
+	linux@treblig.org, linux-omap@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH AUTOSEL 5.10 8/8] fbdev: omapfb: Add 'plane' value check
+Message-ID: <aAKGvh0fdMZPT9Jd@duo.ucw.cz>
+References: <20250403192031.2682315-1-sashal@kernel.org>
+ <20250403192031.2682315-8-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ZBo/N4CwvGP6QfRI"
+Content-Disposition: inline
+In-Reply-To: <20250403192031.2682315-8-sashal@kernel.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-As all code referencing USE_HW_I2C and USE_DVICHIP has now
-been deleted, this patch removes the TODO line referencing
-it.
 
-Signed-off-by: Ruben Wauters <rubenru09@aol.com>
----
- drivers/staging/sm750fb/TODO | 3 ---
- 1 file changed, 3 deletions(-)
+--ZBo/N4CwvGP6QfRI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/staging/sm750fb/TODO b/drivers/staging/sm750fb/TODO
-index 9dd57c566257..7ce632d040b3 100644
---- a/drivers/staging/sm750fb/TODO
-+++ b/drivers/staging/sm750fb/TODO
-@@ -3,9 +3,6 @@ TODO:
- - use kernel coding style
- - refine the code and remove unused code
- - Implement hardware acceleration for imageblit if image->depth > 1
--- check on hardware effects of removal of USE_HW_I2C and USE_DVICHIP (these two
--	are supposed to be sample code which is given here if someone wants to
--	use those functionalities)
- - must be ported to the atomic kms framework in the drm subsystem (which will
-   give you a basic fbdev driver for free)
- 
--- 
-2.48.1
+Hi!
 
+> Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_=
+WB
+> of the enum parameter plane.
+>=20
+> The value of this parameter is initialized in dss_init_overlays and in the
+> current state of the code it cannot take this value so it's not a real
+> problem.
+>=20
+> For the purposes of defensive coding it wouldn't be superfluous to check
+> the parameter value, because some functions down the call stack process
+> this value correctly and some not.
+>=20
+> For example, in dispc_ovl_setup_global_alpha it may lead to buffer
+> overflow.
+>=20
+> Add check for this value.
+>=20
+> Found by Linux Verification Center (linuxtesting.org) with SVACE static
+> analysis tool.
+
+As changelog explains, this is robustness, not really a bug fix. We
+should not need it in -stable. (Or maybe rules file should be updated,
+because noone seems to be following this rule).
+
+Best regards,
+								Pavel
+							=09
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> @@ -2751,9 +2751,13 @@ int dispc_ovl_setup(enum omap_plane plane, const s=
+truct omap_overlay_info *oi,
+>  		bool mem_to_mem)
+>  {
+>  	int r;
+> -	enum omap_overlay_caps caps =3D dss_feat_get_overlay_caps(plane);
+> +	enum omap_overlay_caps caps;
+>  	enum omap_channel channel;
+> =20
+> +	if (plane =3D=3D OMAP_DSS_WB)
+> +		return -EINVAL;
+> +
+> +	caps =3D dss_feat_get_overlay_caps(plane);
+>  	channel =3D dispc_ovl_get_channel_out(plane);
+> =20
+>  	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
+
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--ZBo/N4CwvGP6QfRI
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKGvgAKCRAw5/Bqldv6
+8k5AAKCQX8B0UtiYfqSSUIgj9Cciyl+X/ACgtg4ARUVHHH5jlNdHfPqoc3tE+/Y=
+=SFK+
+-----END PGP SIGNATURE-----
+
+--ZBo/N4CwvGP6QfRI--
 
