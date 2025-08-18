@@ -1,117 +1,174 @@
-Return-Path: <linux-fbdev+bounces-4822-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-4825-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095F0B29D6A
-	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Aug 2025 11:16:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A65B29F8E
+	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Aug 2025 12:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75275E24E9
-	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Aug 2025 09:16:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E47922A2DA0
+	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Aug 2025 10:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AB71FDE14;
-	Mon, 18 Aug 2025 09:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6043E2765F9;
+	Mon, 18 Aug 2025 10:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="YAovJyNe"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="B3JmU40+";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P54mdeCe";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="B3JmU40+";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P54mdeCe"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E020131770E
-	for <linux-fbdev@vger.kernel.org>; Mon, 18 Aug 2025 09:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF45C30DED2
+	for <linux-fbdev@vger.kernel.org>; Mon, 18 Aug 2025 10:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755508590; cv=none; b=bnkCiZOxv0nKSpl02Ldkn2rDHA/oC1fthzyNFFgpW5h5Gat+vSz/5GtFaG3NzWrILRfFYpvWDSLm5Kj1TLj77dSBPEwhcozdjeR6qcKKvzrJQlgj6/Pmsz7h4qeYOdHXzVWcy+XIBNtcx10BOKyp/J2iNC5dB1YjGs6hHOAG8TA=
+	t=1755514196; cv=none; b=L7mqU8m85Qg0eOqnL++CppsSUI3RPVLJAQBUhGZjGRPnw7sUSm4fv+WivRrw5vPD/iuA08sMF8kGEuZccDZ6cOwZNURc1rWKRzPqp4elBh6c0Bu+Ghiwddwzlw4ZZht6wWV4OnrvTHsbBliHSwiWLGOZCwAveA0juFossbjb9es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755508590; c=relaxed/simple;
-	bh=5uLKx4iguI8kGPc2AmysFSfdfkA+TlT9pFoZ/+x9ucE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tGvu9unQe1qS5/fqb48CSfBxUq6+wJUoDw8kZZ1rbirPIdjihK1wQC6sQk0N6lGEqiUuP9fJSHKNXQ/jisj8DQJar9sMajXbz7NQksihwieceABbhHSOEB6/ep0ziIMYvWODhIjCfVfOxaYrTZ3NZAlJdaTjmhqv1U9cbdB+hHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=YAovJyNe; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45a1b05a49cso27864695e9.1
-        for <linux-fbdev@vger.kernel.org>; Mon, 18 Aug 2025 02:16:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1755508587; x=1756113387; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5uLKx4iguI8kGPc2AmysFSfdfkA+TlT9pFoZ/+x9ucE=;
-        b=YAovJyNe5zxCHo5TBYl+UL2QOQpuegFk98rMaoLockEF0tq5DvbERP+oqzYpvV4nDF
-         LZsGPCjaW1J1irUFntNGJxMHACEOzA1bo/goGCwInAp/qPWmba0yAhDaxRx3zUgZlxrG
-         eDTp0BmstUD5QWGzLSM03ZfOH/Rq7kAmLnhKFguZtrsmu6yXEQZkQLhRTgLxGAHppv3v
-         BpJHG+hvJKL/LroFUL3NTA2DGdFA5HahKkS55J3nA+X/5ni8oRUK0rAabyhEbhqub9vz
-         xmgdKHeMghGJxm06tgQu+Mhy3ZiW8UGN5ecNTQNxmMYFHYVp0xChCFvMHiLYaz5LHrPD
-         jUpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755508587; x=1756113387;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5uLKx4iguI8kGPc2AmysFSfdfkA+TlT9pFoZ/+x9ucE=;
-        b=dwhtdLNt/xO6J52gyMtshAcQP7LPhkOiQjjwOfzMfa/dG7TkWIPN7RWOGP05HJvLj8
-         SMS2bly/vX8vYtxncCVeXkubCZjaAUyXpmaHLtRpiSl519aNNIQyA+27hWZZH6RZA9UW
-         06W4nVGE42o7DAvtnROe3XegJtvJHh4UEo8UTvEkR/PmAv/KkrODyKhx8LltY+rTTXPZ
-         v3xqaX6DS0DUbHKY09aoB+U6fqq2mvPkJc8lCzt/PIbdIFwEFE7cpI+FP8F0BXGMmq6E
-         5IIoVYiyW+4kpm8gWuqClV7Ltw194bSaj/O+VOkCPTnuez5vT2YVINIn3z2JRVHvNrjn
-         GjNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWVCDfJpZkymf91C4kEB1qPPfmwRm8gRdMgEvi/sByu4IYLcQ1vYKp1LpfIg3sdC7ipU9H9h66GH1tpOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ9RCfL89FOoWsfDA43/hcQIDD+xZuSrLT3FEYIxZBXPauoVGf
-	n+8RL0Hu6urJp6FJxV62lQh12vwAeLcTschvxf+VNgIF6AZ3co8V07bB58cV7fAWnJM=
-X-Gm-Gg: ASbGnctR5dAA/IPMdS/Vfwmzp3chV9iKZJ0gFSUSXQDnSmoSTiQ7LHXW5qAAImcFyHu
-	U8r3ntxHj69cq3vrkMP9BoZTZDc0sh0C5ps2kWMbmYIAk4/v9ENnAxr/r4I78TwXEc0VDcvx3UX
-	O5KGFM5oGkEA4cL4SXUHZQxo5jVloEw6e1zgVOFyrjOiH4ss2/ve0AuPRpfhuqt8dW4YQB8IdMI
-	jfOKoL0SN9uusdcMpF7eHNmXFI3uFHr15XsXNEKq7n8oN2r7/FlGWgdy7ohAjZoSvwf00FCIiz5
-	b/yQnc859/XXiKzEWsh3EFl3NZz9hfvdCPo0Nv2JEdT7XRMVHy2EbAajBocTK0RJkfa8kw6Je41
-	jswUkX8vv2K5FwoyjczZbS1UclKmrx2FS6xYyYSxjY1k0uC53W7FhrWAVG1XgM1rgARWG3UylQz
-	sDsxaLmQ==
-X-Google-Smtp-Source: AGHT+IHDUhr5tbZW68XtBaWVE5750X38A7H/faFXckj5O/o+hqZwSOPx/6BzSCyybhISbzqKROogNA==
-X-Received: by 2002:a05:600c:45c6:b0:43c:fcbc:9680 with SMTP id 5b1f17b1804b1-45a2185dad9mr83576675e9.25.1755508587052;
-        Mon, 18 Aug 2025 02:16:27 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb68079341sm11907856f8f.50.2025.08.18.02.16.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 02:16:26 -0700 (PDT)
-Date: Mon, 18 Aug 2025 10:16:24 +0100
-From: Daniel Thompson <daniel@riscstar.com>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Flavio Suligoi <f.suligoi@asem.it>, Lee Jones <lee@kernel.org>,
-	Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 2/2] backlight: mp3309c: Initialize backlight properties
- without memset
-Message-ID: <aKLvaP55PIVhyFSc@aspen.lan>
-References: <cover.1751361465.git.u.kleine-koenig@baylibre.com>
- <14514a1b0d3df6438aa10bb74f1c4fc2367d9987.1751361465.git.u.kleine-koenig@baylibre.com>
+	s=arc-20240116; t=1755514196; c=relaxed/simple;
+	bh=tyV9IBXkedlGif0DstxpIClOGSoIQZ5zLciVBG0WYNw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a3rynxVdbnuv8pHOJK1oG6U/g0fL6hgB14pZURTsbtAlmStan0WkgPl0RGGM1uzTNnznEkmaCXexeLPlsxMJhbW213LXsyn94fE9GozD7zHRS23V3S18+GuknR0VasoPdNYin+mnSWICAXOd4TYsVGhhKnP9LptPeFWprk4puIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=B3JmU40+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P54mdeCe; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=B3JmU40+; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P54mdeCe; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0F8DB1F44E;
+	Mon, 18 Aug 2025 10:49:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755514185; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=XadkrTwdTNZR/f4ID8Lrj2WkVCxvKtsABauxJ9Ar6Z4=;
+	b=B3JmU40+Znrg3g2AdC9PKYk1O0RHI2AzLzu5BLgIRg3wWIiAO9ROm1R7vmb9BsxHvkymqa
+	P2so8hmBKfR74rEanmkMj5fKZXm9I/MDzCXMKwDHqzZ+MeYVJZOUmkiX54tlmZ/Yrqqhsf
+	8bLyfWnGDhN+5IHlY1nZVbwt4w+/1IM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755514185;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=XadkrTwdTNZR/f4ID8Lrj2WkVCxvKtsABauxJ9Ar6Z4=;
+	b=P54mdeCeoPBRBOZ67ktk4rrVEMJLnRIR4Ps30dt4J9EkrgTDHF8MC6IcnHVn9H0OtfFwRR
+	DJ0f8V7oCEskEvCw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=B3JmU40+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=P54mdeCe
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755514185; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=XadkrTwdTNZR/f4ID8Lrj2WkVCxvKtsABauxJ9Ar6Z4=;
+	b=B3JmU40+Znrg3g2AdC9PKYk1O0RHI2AzLzu5BLgIRg3wWIiAO9ROm1R7vmb9BsxHvkymqa
+	P2so8hmBKfR74rEanmkMj5fKZXm9I/MDzCXMKwDHqzZ+MeYVJZOUmkiX54tlmZ/Yrqqhsf
+	8bLyfWnGDhN+5IHlY1nZVbwt4w+/1IM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755514185;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=XadkrTwdTNZR/f4ID8Lrj2WkVCxvKtsABauxJ9Ar6Z4=;
+	b=P54mdeCeoPBRBOZ67ktk4rrVEMJLnRIR4Ps30dt4J9EkrgTDHF8MC6IcnHVn9H0OtfFwRR
+	DJ0f8V7oCEskEvCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D1B7813686;
+	Mon, 18 Aug 2025 10:49:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9izBMUgFo2hQVQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 18 Aug 2025 10:49:44 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: simona@ffwll.ch,
+	deller@gmx.de,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/6] fbcon: Move bitops callbacks into separate struct
+Date: Mon, 18 Aug 2025 12:36:35 +0200
+Message-ID: <20250818104655.235001-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <14514a1b0d3df6438aa10bb74f1c4fc2367d9987.1751361465.git.u.kleine-koenig@baylibre.com>
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 0F8DB1F44E
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_TO(0.00)[ffwll.ch,gmx.de,vger.kernel.org,lists.freedesktop.org];
+	TO_DN_SOME(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_ENVRCPT(0.00)[gmx.de]
+X-Spam-Score: -3.01
 
-On Tue, Jul 01, 2025 at 11:22:37AM +0200, Uwe Kleine-König wrote:
-> Assigning values to a struct using a compound literal (since C99) also
-> guarantees that all unspecified struct members are empty-initialized, so
-> it properly replaces the memset to zero.
->
-> The code looks a bit nicer and more idiomatic (though that might be
-> subjective?). The resulting binary is a bit smaller. On ARCH=arm with
-> an allnoconfig + minimal changes to enable the mp3309c driver the
-> difference is 12 bytes.
->
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Instances of fbcon use a number callbacks to support tile-based
+drawing or console rotation. The fields are writeable in struct
+fbcon_ops. Each case; unrotated, various rotated and tile-based
+drawing; uses a set of related calbacks. Updating these 'bitops'
+at runtime is spread throughout various helper functions.
 
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+This series puts related callbacks into dedicated instances of the
+new type struct fbcon_bitops. Changing the callbacks at runtime
+then only requires to pick the correct instance. It further allows
+the various struct fbcon_bitops' to be declared 'static const', which
+makes them write-protected at runtime.
 
+Makes the fbcon bitops easier and safer to use and modify.
 
-Daniel.
+Thomas Zimmermann (6):
+  fbcon: Fix empty lines in fbcon.h
+  fbcon: Rename struct fbcon_ops to struct fbcon
+  fbcon: Set rotate_font callback with related callbacks
+  fbcon: Move fbcon callbacks into struct fbcon_bitops
+  fbcon: Streamline setting rotated/unrotated bitops
+  fbcon: Pass struct fbcon to callbacks in struct fbcon_bitops
+
+ drivers/video/fbdev/core/bitblit.c      | 148 ++++----
+ drivers/video/fbdev/core/fb_internal.h  |   2 +
+ drivers/video/fbdev/core/fbcon.c        | 459 ++++++++++++------------
+ drivers/video/fbdev/core/fbcon.h        |  33 +-
+ drivers/video/fbdev/core/fbcon_ccw.c    | 180 +++++-----
+ drivers/video/fbdev/core/fbcon_cw.c     | 172 ++++-----
+ drivers/video/fbdev/core/fbcon_rotate.c |  47 +--
+ drivers/video/fbdev/core/fbcon_rotate.h |  18 +-
+ drivers/video/fbdev/core/fbcon_ud.c     | 192 +++++-----
+ drivers/video/fbdev/core/softcursor.c   |  18 +-
+ drivers/video/fbdev/core/tileblit.c     |  49 +--
+ 11 files changed, 681 insertions(+), 637 deletions(-)
+
+-- 
+2.50.1
+
 
