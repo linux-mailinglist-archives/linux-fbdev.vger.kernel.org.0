@@ -1,43 +1,43 @@
-Return-Path: <linux-fbdev+bounces-4830-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-4831-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68E4B2A71F
-	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Aug 2025 15:50:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DA2B2AB15
+	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Aug 2025 16:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1F70564B68
-	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Aug 2025 13:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F020A3B745C
+	for <lists+linux-fbdev@lfdr.de>; Mon, 18 Aug 2025 14:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26616A93D;
-	Mon, 18 Aug 2025 13:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DD134AAED;
+	Mon, 18 Aug 2025 14:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSsohK7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3Tyvn/F"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FC0335BA0;
-	Mon, 18 Aug 2025 13:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6284B34AAE7;
+	Mon, 18 Aug 2025 14:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524481; cv=none; b=JF1XU/g23RsQWYkpnrQUdKJaVCii497IvxRxEjENLcWZiXTCSgAgLMJ/iWHUeadlUFPNFRnBXVQcc0FF9DNTjORRQZyulYp8zjSMTccJQG2FmDqFSxW0hMFjNTdBDHJDoVtnBw+hBqJAYPEFuqhChA7+bjBnk0IiDqsi/h6ux8s=
+	t=1755526372; cv=none; b=i+UiCw7iSMy8AzZuQV1pHLU7G4S4+yIzFNiGF0Nef3ZplIMdJAQ45d5DD4yPHGjOSmTpUf4l/7QExbKUgBQFJJb7OS+t9I1nMKtzHbakm++uGFRnWNbIQ4i8jCPACKdy1E8MBJJ0Tag7a1GVUrCUFhBKD00oRdNNIsCCkehUSnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524481; c=relaxed/simple;
-	bh=trB9AkrcUEdNRbN97zhTZn8SczTpHwlLjWUsFjPMVj8=;
+	s=arc-20240116; t=1755526372; c=relaxed/simple;
+	bh=/+WAivZW01v1a7L8oPYFxcA5yz27G7SmQMQ6ZxI3qfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gj7k+VM+clScf7ZCuM2mkqoXlQ4yglOHeCjtIReHfUEAnPI49GY380mYkjDo3wGC1O2zTHq7XyZ2pD2d+IcW59s4I4+RCzK4HbtOW4MRO5JQGfoaxx647vA2Um0m+9LvIDOGinrQ91OX+N1TLC0KjdSDP/bwfc5H1CM+t6GR5FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSsohK7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F61EC113D0;
-	Mon, 18 Aug 2025 13:41:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fbdKHyQMWMOKzUJnIh9ABOSfI9wfSkB467E/YGMqoNlJX5meo+UyK2ZkRCWoilklgCJZYYF/+AtLCFPG+Hgk7H3aTzo0lo5ApyFAaADcjZcwLIARVXgAAd8b3os4yEc6YmU2IWEOc9FHHdTycQB/EzfskBUDcCVOnw/zyn5BVtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3Tyvn/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894CCC116C6;
+	Mon, 18 Aug 2025 14:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524480;
-	bh=trB9AkrcUEdNRbN97zhTZn8SczTpHwlLjWUsFjPMVj8=;
+	s=korg; t=1755526372;
+	bh=/+WAivZW01v1a7L8oPYFxcA5yz27G7SmQMQ6ZxI3qfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSsohK7yRTJGUP26IgYaRyl28qTbMyTUCvrG64K7vrssVq6cto6EbkzYF418zIryp
-	 zQyloesXKuaCO1IekMMVCrpBSOcVZ4j8jWPRniWGNXii11wBqg/OXdNaRvZ9wPqBuB
-	 XQEcMySkPkSIUkIUWd5aB0Q9flLE4pSKRyuFdTSo=
+	b=D3Tyvn/FsozOqZ6wCBXuHmev9Q58RMwh4yfOJ2X9lT7yefcQ96RdRsDqMqLHl4oC3
+	 txWN/w7TKbvpfwqla6LaoDmdRSG0r3ulCFU9gGCgx9B2EzDIoOJR72KyQNzrEdHeRq
+	 Tv5RTpJCHPQO/k970wUPI9Ezq/u+NJG952L/yf/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Helge Deller <deller@gmx.de>,
 	linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.15 485/515] fbdev: nvidiafb: add depends on HAS_IOPORT
-Date: Mon, 18 Aug 2025 14:47:51 +0200
-Message-ID: <20250818124517.094676777@linuxfoundation.org>
+Subject: [PATCH 6.16 536/570] fbdev: nvidiafb: add depends on HAS_IOPORT
+Date: Mon, 18 Aug 2025 14:48:43 +0200
+Message-ID: <20250818124526.525598155@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
