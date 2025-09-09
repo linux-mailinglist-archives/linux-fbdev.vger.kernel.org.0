@@ -1,117 +1,121 @@
-Return-Path: <linux-fbdev+bounces-4920-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-4922-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABFAB4A229
-	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Sep 2025 08:25:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3FBB4A266
+	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Sep 2025 08:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 286B94E3237
-	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Sep 2025 06:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BEF21B26278
+	for <lists+linux-fbdev@lfdr.de>; Tue,  9 Sep 2025 06:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4C130596E;
-	Tue,  9 Sep 2025 06:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD73A303A28;
+	Tue,  9 Sep 2025 06:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0pQ6SS7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aHbef1bh"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A5A302166;
-	Tue,  9 Sep 2025 06:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695672E2DD8;
+	Tue,  9 Sep 2025 06:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757399014; cv=none; b=pirHo5uUnTrAuNle4ntUsm7sCq2WSG6ai5cx7t+Sx2c0EemI7OfSEC7+PdZGUUkHJAWdZEXMqTx+/91fM6vBm/+D1cEXHOj3jxN6DxZeOkYJiAY8oOp0HS3fPZ9+DZT5QM+2OmjXtDQ4bkiUORqH/Mg9GPHznEcmzbNb2XxOyEI=
+	t=1757399881; cv=none; b=bXi1RxDDNS6FQHKNJp6xtkATwjPfryn9MLWvNMa2335h/58DM3WamTBrIAjj2qz+h4+PxgZF/0MRORStvTWlO9hWUHq5Ve9wMUFIEjbaSRoGNUmVFfP7vGNExSumoztFmKaH6dEBmyZJh8dlUioDGOLs0Eg1iRNH5uN5fN3LBZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757399014; c=relaxed/simple;
-	bh=RpvqyvM6Tia415RbHYKNy7KCcVHJVN5DwJEHb6JVKqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jaD1QkK70TkyYH3fHnyvk4eAIH6f3QtX/mgONquJhr9BvHOKRdEJEy1EJ2dx/TgZ4bSYb/809hNH+L5nrDf99FUknHVvs19YdX0vAQrfE5/Bq/PesRzobqb8i3gr9rGPVp7gf6YtnAufWd/EcK357C1pQnbzy7WsMJ7bSmxZePE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0pQ6SS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221BFC4CEF5;
-	Tue,  9 Sep 2025 06:23:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757399012;
-	bh=RpvqyvM6Tia415RbHYKNy7KCcVHJVN5DwJEHb6JVKqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=z0pQ6SS7eR2zJMW725Xm153fb0MmYDN1/F8RX2jDWN2asJKPn77OQKv9tW/ECSX74
-	 n91mDIMxCmVgzgjo0XihSloDRxk0DL7XjSz5NeCnILW9zIXDgL3wto4DW60mCvCOnb
-	 9v07Qb67+9Mg9qqlyJjeIBBIGn/m4BzYCjgW5pRE=
-Date: Tue, 9 Sep 2025 08:23:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Mukesh R <mrathor@linux.microsoft.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	linux-arch@vger.kernel.org, virtualization@lists.linux.dev,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
-	jikos@kernel.org, bentiss@kernel.org, kys@microsoft.com,
-	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-	dmitry.torokhov@gmail.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, bhelgaas@google.com,
-	James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
-	deller@gmx.de, arnd@arndb.de, sgarzare@redhat.com, horms@kernel.org
-Subject: Re: [PATCH v1 2/2] Drivers: hv: Make CONFIG_HYPERV bool
-Message-ID: <2025090946-antibody-mortician-d6e1@gregkh>
-References: <20250906010952.2145389-1-mrathor@linux.microsoft.com>
- <20250906010952.2145389-3-mrathor@linux.microsoft.com>
- <2025090621-rumble-cost-2c0d@gregkh>
- <d7d7b23f-eaea-2dbc-9c9d-4bee082f6fe7@linux.microsoft.com>
+	s=arc-20240116; t=1757399881; c=relaxed/simple;
+	bh=pfVPxDxt9WcZWPqzB85AUj4avLsvCa8ghrZrU5R+vBk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lBkgKyi2B+Fbj2z67NFgzDSrQH8QYUJ6PsceiInoHhYQWLZ8X1M5/M9YT1LzaViTa7ycNTHdKzyJ/0cTNzsFOrqIIckVeXjjytpaXqxn8IkArDrNssexwX7KNV7YZWzcANNo61rQxHJqU1YvKkkJZdJEpcSFKDI9hGdLwgtPRww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aHbef1bh; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-24eb713b2dfso32594575ad.0;
+        Mon, 08 Sep 2025 23:38:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757399880; x=1758004680; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HJiukvQMYchQJB9oFovtwsPeen/LDiO7bwNq5dPromA=;
+        b=aHbef1bhuoeK0ZsMF2gIA9GU0FW1U7fb8D0AfXUS/uSC/2ZExWETk6zYTmVJjiCL+0
+         iGkczpqF4O4vo/a8yENiLjChL2lhpxC3EU1eONL6B1co4PWdg7zjc6lld6xkG08saD/u
+         ZZ+/BKWPDGbLy0eCMiv2VQnRrv2XBBq1MCLkT2D2/uiuzpjUJAYnRv/PSKfzZENAWe8v
+         +GHZzQF+I/L8nMXRpQG3EMbHe7P7+JKu40rreh4HzYT+4UXkia20xD9Mnk0475A7NRzF
+         1bavTQgjkgPC4U3aYn8uuMMF9RRLiaeYm/ttfUiHLv+BInCz49GtZzJ1EVkM0uoOIxu1
+         OXaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757399880; x=1758004680;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HJiukvQMYchQJB9oFovtwsPeen/LDiO7bwNq5dPromA=;
+        b=GXp1rxDEBjojUwJWR4wnHxxgmuMaWvHKUD1Zo1q3lhhuuewi48NaKdIJjXWXv+JJZD
+         8qfO6YQ4sffscwiTJBvaK1ZzJFoXxYNPpT1q/rDGb8T3+HjVMvzqLZR0Tbeg+/wIInDh
+         MO+k6M0Bs64tHDiXjQ05RV1sUc2R46STzsbQqz8RM2gCxio1hQx+KI4C5GmnkSJ1ZlLM
+         TpUj3wSkP0WKp1U7FGved4Jdl9vVDli2Pfq/fyZ5z24YgIzWZkbSV4coqYbMlAdyLxDT
+         iSwdIQiRr6ppA87c83IOs0qohsy1VOo43LzFjxROqRFqrsVHE2qT3HzS57SrNcbHbb5g
+         Narw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqOMB77hfmz1tKxB+4PYmNXEmYR+po+0ME6izVgENJQQnPuBxfqaLY0/V+x0mCl20RYBOBNfOtAh8xSA8=@vger.kernel.org, AJvYcCX6OLqhL4tNnNrWgzzaRxDtzbbwUSQ5zLwaig80XI47lUomd68P1+9mG8U10FP12Ff/FhYGGztEWl8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVBJyKOpFweX16xXiDIujjsclWipbBuIWaARewT2WyQGu7/+X0
+	YmSnNzC3EMJns9B+QTujQ7YEFYxgM0jCPyb7QQf2NTwk6aiKQ1m16e50+DRwHBt5
+X-Gm-Gg: ASbGncvwqpelNa6xbosgrKFThcuNumMi8BZjJmy3kDYSRJN3PffAiTspxLDP6ZwbYSo
+	hOD3fbjn6+aTAfzIcYL1WacAK/SgYBsXv/n5EXlGPi3YuH8y3a4zU+4ryETjoeF3G4WiUh9kdd+
+	39RWhHLDrRrc2+ToZVQHQZJ0+3bWh8JWiTIWW2RD/1PjvIOg1XzA1qr/Jb0QyXsHuVCe7fqiLFH
+	nEBTlhqhmDPMgnMgddhhnt4EnIDXBQWHtDZgZTJkOGGS276mogipBevnHmNrRLOkLxd7Me6COtq
+	mbbc0U/mnXKzbUxBXrh+wxo71tkSbuSP/mebY4RywThw7i5Jpw4sxC6MaiHh362dC5udpWeM5hz
+	F7xoU4HWvf+BE/QuWkKTk/OF1iCt01zK0itX7
+X-Google-Smtp-Source: AGHT+IFotQUFwQ0lDMECPT4okq9EM0mj1zKB3mE36lhz+JWVRbzizXv+ZEreuSwiB9QKkN0vzAYNcw==
+X-Received: by 2002:a17:902:ea09:b0:246:7a43:3f84 with SMTP id d9443c01a7336-2516d33d4ebmr152795015ad.5.1757399879430;
+        Mon, 08 Sep 2025 23:37:59 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24903724b94sm299653805ad.35.2025.09.08.23.37.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 23:37:58 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 1C2AD4206923; Tue, 09 Sep 2025 13:37:56 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux Framebuffer <linux-fbdev@vger.kernel.org>,
+	Linux DRI Development <dri-devel@lists.freedesktop.org>
+Cc: Helge Deller <deller@gmx.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: [PATCH 0/3] Documentation: fbcon: formatting cleanup and improvements
+Date: Tue,  9 Sep 2025 13:37:40 +0700
+Message-ID: <20250909063744.30053-1-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d7d7b23f-eaea-2dbc-9c9d-4bee082f6fe7@linux.microsoft.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=659; i=bagasdotme@gmail.com; h=from:subject; bh=pfVPxDxt9WcZWPqzB85AUj4avLsvCa8ghrZrU5R+vBk=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBn7Tx20iWWJjb/lWBh8I1FUi3Guacrjs6uD9i9I019af tpCU0Wlo5SFQYyLQVZMkWVSIl/T6V1GIhfa1zrCzGFlAhnCwMUpABORyGb4n3z/yTEjjXcT+Vv+ Xljb/Dg67vzpPRs1ys24ltkvtzayq2X4K2ixfbfWP88tBZvtPlSHWTg/m3lcer2I9ko59VUiS6/ 2cQMA
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 08, 2025 at 02:01:34PM -0700, Mukesh R wrote:
-> On 9/6/25 04:36, Greg KH wrote:
-> > On Fri, Sep 05, 2025 at 06:09:52PM -0700, Mukesh Rathor wrote:
-> >> With CONFIG_HYPERV and CONFIG_HYPERV_VMBUS separated, change CONFIG_HYPERV
-> >> to bool from tristate. CONFIG_HYPERV now becomes the core Hyper-V
-> >> hypervisor support, such as hypercalls, clocks/timers, Confidential
-> >> Computing setup, PCI passthru, etc. that doesn't involve VMBus or VMBus
-> >> devices.
-> > 
-> > But why are you making it so that this can not be a module anymore?  You
-> > are now forcing ALL Linux distro users to always have this code in their
-> > system, despite not ever using the feature.  That feels like a waste to
-> > me.
-> > 
-> > What is preventing this from staying as a module?  Why must you always
-> > have this code loaded at all times for everyone?
-> 
-> This is currently not a module. I assume it was at the beginning. In
-> drivers/Makefile today:
-> 
-> obj-$(subst m,y,$(CONFIG_HYPERV))       += hv/
-> 
-> 
-> More context: CONFIG_HYPERV doesn't really reflect one module. It is
-> both for kernel built in code and building of stuff in drivers/hv.
-> 
-> drivers/hv then builds 4 modules:
-> 
-> obj-$(CONFIG_HYPERV)            += hv_vmbus.o
-> obj-$(CONFIG_HYPERV_UTILS)      += hv_utils.o
-> obj-$(CONFIG_HYPERV_BALLOON)    += hv_balloon.o
-> obj-$(CONFIG_MSHV_ROOT)         += mshv_root.o
-> 
-> Notice vmbus is using CONFIG_HYPERV because there is no 
-> CONFIG_HYPERV_VMBUS. We are trying to fix that here.
+Hi,
 
-Ah, I missed that this was getting changed in the Makefile in patch 1,
-that is what I was worried about.
+Here are reST formatting cleanup and improvements for fbcon documentation.
+The shortlog below should be self-explanatory.
 
-Nevermind, this should be fine, sorry for the noise.  I'll go queue it
-up later today.
+This series is based on docs-next tree.
 
-greg k-h
+Enjoy!
+
+Bagas Sanjaya (3):
+  Documentation: fbcon: Add boot options and attach/detach/unload
+    section headings
+  Documentation: fbcon: Reindent 8th step of attach/detach/unload
+  Documentation: fbcon: Use admonition directives
+
+ Documentation/fb/fbcon.rst | 42 ++++++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 18 deletions(-)
+
+
+base-commit: 7e5a0fe4e8ae2eb341f8ebbee2b24231a58fc28b
+-- 
+An old man doll... just what I always wanted! - Clara
+
 
