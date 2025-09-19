@@ -1,96 +1,138 @@
-Return-Path: <linux-fbdev+bounces-5015-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5017-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2D9B860FD
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Sep 2025 18:37:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B57B8782A
+	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Sep 2025 02:37:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B28E94669CB
-	for <lists+linux-fbdev@lfdr.de>; Thu, 18 Sep 2025 16:37:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC3593A990B
+	for <lists+linux-fbdev@lfdr.de>; Fri, 19 Sep 2025 00:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273523128B4;
-	Thu, 18 Sep 2025 16:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0EC3245031;
+	Fri, 19 Sep 2025 00:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="UZe0w0rR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gs9xeE5z"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A41D23C507;
-	Thu, 18 Sep 2025 16:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3FD230274
+	for <linux-fbdev@vger.kernel.org>; Fri, 19 Sep 2025 00:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758213457; cv=none; b=f5GHPNNLLUlZnZ0EonDC0sQ4ywxk+JSH13Fu3Zfvn7h40SsELYpJZog8iOYnWyheU9S4JqRW7DgCOiASJLdhjvgBkPvFONwIP9MWKH1IS/MWTMmFPK8CerxKoCKYUX+dw4+3D0TP4Z14l+zCTGZGx2ULgy1gK0wLT12EPD3ELvg=
+	t=1758242226; cv=none; b=JpOY4/6AWp4DuUd1ZaouQAGDrxYOvdDaAvRydtz11uJkFdMdrEmvYHFvY4yLv6ee+HgyvgMx9jNaJ727eNXu8XmJTSqbGNh6CFSHwzIKribVrUobUHLqES7YJphM9mjOWkJMoFBt3phSDoU7yOHkhHpIP8ArxKz5/8ZGcw/CUhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758213457; c=relaxed/simple;
-	bh=IrcnXMaTqy1N+7c8LcrUly8rrgilMMAu8XxmYF2RPGE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Thz2oko7s/ZwHWZ2942vF4F1FPv/v0IVHsg5TmBv1A+vsux+gR1igpb1QslpVwGR+dSZvdSu9hS6vJLRWTgfmN4jsQIWx4l5CQTigoKxXR3rUd/qdTKEMF+qcJtyvF0hBdckaXBqSIuy1FfAMkRJ6yxnVQHg8hYQccnG1NTagy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=UZe0w0rR; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 9B9A7406FA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1758213452; bh=L9szdGSNdMCYHon3m7+1Z2PiMa4HJ7fzR+DoUw4hOfo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UZe0w0rR//C5WKDhbukAj2qlgSg/rU56cO6rvaiGFwP/uT4FFlW8UIVV/9YBsuYrg
-	 5qk5dKpWfcpfSP3CTQ7q7r/mVnt508nGlFlPTnXeeft3vcXX18CRLsofzDHkdyIQ2m
-	 OywnBGNUlK776a614F3K35+7kyV2Ly/D69LgMOUMiEzPnUNjgOfCa443W93Tkhv9zf
-	 5I5xDIbRmZPhDefm3NJNGyGtOkOJJkG/fN8sdUyj5RzMYWanwS3lh5COBrg+QW0s7D
-	 b39J0Bp/AEwKCzKst8Hw1fstBf/fYJ1kanIsvCTr18qmXs3liZPQbDjYns8VrC8vbr
-	 Gr24tuugLYGXA==
-Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 9B9A7406FA;
-	Thu, 18 Sep 2025 16:37:32 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Bagas Sanjaya <bagasdotme@gmail.com>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Documentation
- <linux-doc@vger.kernel.org>, Linux Framebuffer
- <linux-fbdev@vger.kernel.org>, Linux DRI Development
- <dri-devel@lists.freedesktop.org>
-Cc: Helge Deller <deller@gmx.de>, Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Re: [PATCH 0/3] Documentation: fbcon: formatting cleanup and
- improvements
-In-Reply-To: <20250909063744.30053-1-bagasdotme@gmail.com>
-References: <20250909063744.30053-1-bagasdotme@gmail.com>
-Date: Thu, 18 Sep 2025 10:37:31 -0600
-Message-ID: <875xdf90ok.fsf@trenco.lwn.net>
+	s=arc-20240116; t=1758242226; c=relaxed/simple;
+	bh=/zHl7Hocdub5nwWFq/uhyVeik+EKW0ciwzHubkGEnkM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gvPnAqNiYn5pAW4Bf/ZNdKNHf0uoEI94EFvmLTnM5wzTg2tvQyxIEwSVGn/6tACGeV/+PSvVhz0efFuZ6xj75PEc38OO+9ksNM2HNB6xjxJHPDJZkbsL4M+MADBAf0YUwyIQthhW8nGrtH/hnN9MCGj38W2sV/nfGiX+bzxT+H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gs9xeE5z; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b54b3cafdcaso1111917a12.0
+        for <linux-fbdev@vger.kernel.org>; Thu, 18 Sep 2025 17:37:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758242224; x=1758847024; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xNKV2H1bYIOdZ9kzp0zgPBPORIzeOGUyz2fBTqyLjPw=;
+        b=gs9xeE5zIAvPuHixu9CkhcPmKme81+umC4AdGwD0VFrXicHioYAozaol0pFcSEZ9GJ
+         7ZJIII8xxmxw1UT7Q9JetFaA+FdqKWEPnSkwsxFkXfBdid1kFoaW09NP4XBRLrkH2v9R
+         rm0JB/TcD19ZfjglRqmqGhflOwLR74ylAPLm5ya76ri1b0m1OBFHU4NxCCa6bCLynGoK
+         HhJemlqxN0P6oT+PwsH6gFYnQepctRDtIc3NHdMmH8SY7CSpRY/PMGtMKSTPvqcNWiMp
+         a8yDUEgJBHny8IAU3IlsgfbpLVP0kEls8kuBXiZDj0daQyre50rWyNmve4FksFoVubjQ
+         giFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758242224; x=1758847024;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xNKV2H1bYIOdZ9kzp0zgPBPORIzeOGUyz2fBTqyLjPw=;
+        b=cX2FKA1f2et06intTFj9wqS0f1XX/O/46eNwc8gG3vzVAUTlJjfGEqeWYDhnDKHszu
+         ZCKZ06FaqoC+DMgRkOAzRBheOhCE2FkkOzozOssamhvIux/uKth0YMKIgv77LooB79y1
+         Xcz97sttnRv8sqoahzjivpiv75lYg1yL8WVR2/84bpeKEKuVV7V49/A4wpk1OEwzT0ow
+         f/oBVDzfbjX4bNQcB5eAfBa3eWeQ7Wp6XlIBQjEEe0StiwzhCdPPbfPmSPktLQgzXkzU
+         GRfxPMzy1Kv8kEnk3Zg+BMllEcLirnIriu5BKMMdes3IM4LMS5WrihGyENKe2t33qnyF
+         2H7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWgCB0GSGMCTr5e7Al05uB30ij+zJXFHzqmXFNi6L/KVZPE4YLK/kNhY5dfieAa4+TAn93qEGoDAEfgDA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTWWZOU/d8zPRERlgrErrOiwFG1AAHJ4DynfkJF2Y4ilwbjjr+
+	G2RCKS1fhM4jBnmTivqeGoqo+Ej5z1ZYxNYeURZLun48ic0b60BqabY3
+X-Gm-Gg: ASbGncvq5HhP0x8ktZ7mIc1e97+tpbFA1YmHpl2o479K0uHbQcf/cNsIYLJLx9ev+xd
+	h48St5mkbD8YkCZWWHho6EZIJJGI/Baxva0IN2qYUB9b6l1OD6J1bpJIiOW8NSbgEYbGyZoUDUW
+	4hds7T8ZXPlA85KO+cOMgTYMA4HNSpV2jbBUjU9Enk/Ou4WDUTJGf4KKoYicG7DjK5gpzS5gYiX
+	eVA/w/lywxlul3zn7N+YxRyuCHQ3zH9Mn4Vt8dQ2rqkjtyLxyhGljMQrLNxu/KnI4RDTKx3qDVF
+	mBFQGS3VUxS8on8Ems2J96H1aTIw6N6V1DdFusWy30UjiVkrAej6iYWAxhyMCLAO2aDQSPJhXec
+	UylqzyH9+lrzmpwB9wfxGAQYokLvnWPwf/Yi92Rwa
+X-Google-Smtp-Source: AGHT+IE/yBNlcgm9BPTKttWbmAHCiZjMO8WtHGa5VVD5WcCQjQ2ZZ0IocaszrdjGPXBK2fPfpIuodQ==
+X-Received: by 2002:a17:902:d2d2:b0:25c:e4ab:c424 with SMTP id d9443c01a7336-269ba534e05mr24162985ad.33.1758242224003;
+        Thu, 18 Sep 2025 17:37:04 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2698033ff66sm36649275ad.133.2025.09.18.17.37.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 17:37:02 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id EA12F420B4E0; Fri, 19 Sep 2025 07:36:59 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux Framebuffer <linux-fbdev@vger.kernel.org>,
+	Linux DRI Development <dri-devel@lists.freedesktop.org>
+Cc: Helge Deller <deller@gmx.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Teddy Wang <teddy.wang@siliconmotion.com>,
+	Bernie Thompson <bernie@plugable.com>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arvind Sankar <nivedita@alum.mit.edu>
+Subject: [PATCH 0/3] framebuffer docs toctree index refactoring
+Date: Fri, 19 Sep 2025 07:36:37 +0700
+Message-ID: <20250919003640.14867-1-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1139; i=bagasdotme@gmail.com; h=from:subject; bh=/zHl7Hocdub5nwWFq/uhyVeik+EKW0ciwzHubkGEnkM=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBlnllSdYxS+K3jwt99iXc3oxld1K1Pf7Ez88NJ9dk+K9 //qzx07OkpZGMS4GGTFFFkmJfI1nd5lJHKhfa0jzBxWJpAhDFycAjCRF4UM/+O/ua3WsUgKtWGW +994d06Y6xeL9kMOz44+b5u9a/7XZG5Ghs2hFX9eNwdKVG6//E5p/97fpw++fPU3LW+bZDbXeiF mWWYA
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
-Bagas Sanjaya <bagasdotme@gmail.com> writes:
+Hi,
 
-> Hi,
->
-> Here are reST formatting cleanup and improvements for fbcon documentation.
-> The shortlog below should be self-explanatory.
->
-> This series is based on docs-next tree.
->
-> Enjoy!
->
-> Bagas Sanjaya (3):
->   Documentation: fbcon: Add boot options and attach/detach/unload
->     section headings
->   Documentation: fbcon: Reindent 8th step of attach/detach/unload
->   Documentation: fbcon: Use admonition directives
->
->  Documentation/fb/fbcon.rst | 42 ++++++++++++++++++++++----------------
->  1 file changed, 24 insertions(+), 18 deletions(-)
+Here is simple toctree refactoring for framebuffer documentation,
+based on docs-next tree. Simple because it only splits the toctree
+in patch [3/3] into two sections.
 
-It looks like nobody has picked these up yet, so I've applied them.
+Enjoy!
 
-Thanks,
+Bagas Sanjaya (3):
+  Documentation: fb: ep93xx: Demote section headings
+  Documentation: fb: Retitle driver docs
+  Documentation: fb: Split toctree
 
-jon
+ Documentation/fb/aty128fb.rst  |  8 ++--
+ Documentation/fb/efifb.rst     |  6 +--
+ Documentation/fb/ep93xx-fb.rst |  4 --
+ Documentation/fb/gxfb.rst      |  8 ++--
+ Documentation/fb/index.rst     | 80 +++++++++++++++++++---------------
+ Documentation/fb/lxfb.rst      |  9 ++--
+ Documentation/fb/matroxfb.rst  |  9 ++--
+ Documentation/fb/pvr2fb.rst    |  6 +--
+ Documentation/fb/sa1100fb.rst  |  9 ++--
+ Documentation/fb/sisfb.rst     |  6 +--
+ Documentation/fb/sm712fb.rst   |  6 +--
+ Documentation/fb/tgafb.rst     |  6 +--
+ Documentation/fb/udlfb.rst     |  6 +--
+ Documentation/fb/vesafb.rst    |  6 +--
+ 14 files changed, 81 insertions(+), 88 deletions(-)
+
+
+base-commit: 348011753d99b146c190aae262ee361d03cb0c5e
+-- 
+An old man doll... just what I always wanted! - Clara
+
 
