@@ -1,109 +1,220 @@
-Return-Path: <linux-fbdev+bounces-5047-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5049-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A39B967FB
-	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Sep 2025 17:07:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B713EB96864
+	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Sep 2025 17:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B223173E87
-	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Sep 2025 15:07:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0FFA3A7D16
+	for <lists+linux-fbdev@lfdr.de>; Tue, 23 Sep 2025 15:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E7C244685;
-	Tue, 23 Sep 2025 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E37C26563B;
+	Tue, 23 Sep 2025 15:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ulKAAr9r";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sUGH+Zfq";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ulKAAr9r";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sUGH+Zfq"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from psionic.psi5.com (psionic.psi5.com [185.187.169.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE74246BB4;
-	Tue, 23 Sep 2025 15:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.187.169.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB3C25A340
+	for <linux-fbdev@vger.kernel.org>; Tue, 23 Sep 2025 15:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758640059; cv=none; b=vBEfjfN3RHK3haxj02HnwP/0F1bK+zniEhlQoMzbxcdjiPIWNgHSEgEjnbFBX5IWig65z4Y8UAOHLAgJnJWld2Hq1vMmKpcuIm+QV25gBzDT6rKfQAQzOSyZHfFDpxQyXX9YECX/5rRFK9rrS1uZe5/ey0mfw2dMO9il4dSaQb8=
+	t=1758640505; cv=none; b=Hm7PrzZGJtqQg9cW7Wbl7nwb2oGlJiiYToLbRTpLgNvMbatF/fENwrRbH6xU5Rqm14gNtAVN6gSgNjszZ8citi+J4iu7srH/CYJ5P9fdUtN3SqSx4654wBYS35yH2yxnCMi+v5qHJ4IIXjPLirhuNGs3SdUixZaamQXPvumnvEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758640059; c=relaxed/simple;
-	bh=Ev8ok5cn/l8aR83oLAKn5J8yEAs/ij6LJ1LuS7Vhgts=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lOtkY1ybqkYKjAtoPflKmqgi5OxGWuB4t3xZXy8bGaHMo4LXXjYzLzPFg5UgXvpZEaeBSJi9YmeRJMO0Ypho34Gop6GcOsTWxOLBhB6mffAG4l7iptaW2LbP1lLevCer1G/JQFMBxGTdOrpWMsM6CmD3THiKSmvVs7yLpG2eoTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass smtp.mailfrom=hogyros.de; arc=none smtp.client-ip=185.187.169.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hogyros.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hogyros.de
-Received: from localhost.localdomain (unknown [IPv6:2400:2410:b120:f200:2e09:4dff:fe00:2e9])
+	s=arc-20240116; t=1758640505; c=relaxed/simple;
+	bh=eJhVXdPCwDEVlFLRrAWQlRYtN4vZHVUrPVqjy5gX164=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iLXFjikmcfKLbu839pp/wATKQkDqvgBcMVdgMw5oFvaPdkmK3QDzCWZPA66+ys9s2EYorrxFOZnscz/H5saCneQcOPIPLoanqk2KFx3au8jPzJjdOC+eMm1Nye0j28GkXxlJRKA4/JJeeLd5v7qdvjdoJ34Ja1e1CvBuZslBsAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ulKAAr9r; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sUGH+Zfq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ulKAAr9r; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sUGH+Zfq; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by psionic.psi5.com (Postfix) with ESMTPSA id 1FA9C3F116;
-	Tue, 23 Sep 2025 17:07:24 +0200 (CEST)
-From: Simon Richter <Simon.Richter@hogyros.de>
-To: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: Simon Richter <Simon.Richter@hogyros.de>,
-	stable <stable@vger.kernel.org>
-Subject: [PATCH] fbcon: fix buffer overflow in fbcon_set_font
-Date: Wed, 24 Sep 2025 00:06:28 +0900
-Message-ID: <20250923150642.2441-1-Simon.Richter@hogyros.de>
-X-Mailer: git-send-email 2.47.3
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 269A12210B;
+	Tue, 23 Sep 2025 15:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758640496; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Qrap3zrlwqq38JIujBy9Py/9DHRcj3SDYEx6STNCrfg=;
+	b=ulKAAr9rO/c+0LBTRBwuP2KABYtHLcguWnwigZ7bu+8T78q7PbYUc/Lxvku67iDxrru6b3
+	xPD84hv04rf52mRYHJeEfHMjiD3+f3kbL7h9K/DvMLoGJ+q6MU6c/wuyZewTYFEiCh9cIm
+	cognpEqCIZQ/7OmEw1lymoOT7hWfz94=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758640496;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Qrap3zrlwqq38JIujBy9Py/9DHRcj3SDYEx6STNCrfg=;
+	b=sUGH+ZfqzfEXPXd/BGwAG4/8mVhxrnNTsUbBQZUcUPhMi9qzvm1aLkfUcCuwzJsvm02KHa
+	nlYmr0HCwCSiP2Bg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ulKAAr9r;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sUGH+Zfq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1758640496; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Qrap3zrlwqq38JIujBy9Py/9DHRcj3SDYEx6STNCrfg=;
+	b=ulKAAr9rO/c+0LBTRBwuP2KABYtHLcguWnwigZ7bu+8T78q7PbYUc/Lxvku67iDxrru6b3
+	xPD84hv04rf52mRYHJeEfHMjiD3+f3kbL7h9K/DvMLoGJ+q6MU6c/wuyZewTYFEiCh9cIm
+	cognpEqCIZQ/7OmEw1lymoOT7hWfz94=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1758640496;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Qrap3zrlwqq38JIujBy9Py/9DHRcj3SDYEx6STNCrfg=;
+	b=sUGH+ZfqzfEXPXd/BGwAG4/8mVhxrnNTsUbBQZUcUPhMi9qzvm1aLkfUcCuwzJsvm02KHa
+	nlYmr0HCwCSiP2Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD62B13AAF;
+	Tue, 23 Sep 2025 15:14:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id mFyBL2+50mhBVQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 23 Sep 2025 15:14:55 +0000
+Message-ID: <d7c9b216-cadb-4c07-8122-800b58f14fad@suse.de>
+Date: Tue, 23 Sep 2025 17:14:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fbdev/radeon: Update stale product link in
+ Kconfig/FB_RADEON
+To: Sukrut Heroorkar <hsukrut3@gmail.com>, Helge Deller <deller@gmx.de>,
+ Arnd Bergmann <arnd@arndb.de>, Randy Dunlap <rdunlap@infradead.org>,
+ Gonzalo Silvalde Blanco <gonzalo.silvalde@gmail.com>,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+ "open list:FRAMEBUFFER LAYER" <dri-devel@lists.freedesktop.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: skhan@linuxfoundation.org, david.hunter.linux@gmail.com
+References: <20250923084157.11582-1-hsukrut3@gmail.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20250923084157.11582-1-hsukrut3@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,gmx.de,arndb.de,infradead.org,linaro.org,vger.kernel.org,lists.freedesktop.org];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	RCVD_TLS_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 269A12210B
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
 
-Commit 1a194e6c8e1ee745e914b0b7f50fa86c89ed13fe introduced overflow
-checking for the font allocation size calculation, but in doing so moved
-the addition of the size for font housekeeping data out of the kmalloc
-call.
+Hi
 
-As a result, the calculated size now includes those extra bytes, which
-marks the same number of bytes beyond the allocation as valid font data.
+Am 23.09.25 um 10:41 schrieb Sukrut Heroorkar:
+> The previous Radeon product page link was no longer valid. Repalce
+> it with the current working link.
+>
+> Signed-off-by: Sukrut Heroorkar <hsukrut3@gmail.com>
+> ---
+>   drivers/video/fbdev/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+> index c21484d15f0c..3037455adf48 100644
+> --- a/drivers/video/fbdev/Kconfig
+> +++ b/drivers/video/fbdev/Kconfig
+> @@ -949,7 +949,7 @@ config FB_RADEON
+>   	  don't need to choose this to run the Radeon in plain VGA mode.
+>   
+>   	  There is a product page at
+> -	  https://products.amd.com/en-us/GraphicCardResult.aspx
+> +	  https://www.amd.com/en/products/specifications/graphics.html
 
-The crc32() call and the later memcmp() in fbcon_set_font() already perform
-an out-of-bounds read, the latter is flagged on ppc64el:
+May I suggest to remove this URL entirely?
 
-    memcmp: detected buffer overflow: 4112 byte read of buffer size 4096
+Best regards
+Thomas
 
-when loading Lat15-Fixed16.psf.gz.
+>   
+>   config FB_RADEON_I2C
+>   	bool "DDC/I2C for ATI Radeon support"
 
-Since the addition of the extra size should only go into the kmalloc()
-call, calculate this size in a separate variable.
-
-Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
-Fixes: 1a194e6c8e1e ("fbcon: fix integer overflow in fbcon_do_set_font")
-Cc: stable <stable@vger.kernel.org> #v5.9+
----
- drivers/video/fbdev/core/fbcon.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 5fade44931b8..a3fbf42c57d9 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2518,7 +2518,7 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
- 	unsigned charcount = font->charcount;
- 	int w = font->width;
- 	int h = font->height;
--	int size;
-+	int size, allocsize;
- 	int i, csum;
- 	u8 *new_data, *data = font->data;
- 	int pitch = PITCH(font->width);
-@@ -2551,10 +2551,10 @@ static int fbcon_set_font(struct vc_data *vc, const struct console_font *font,
- 		return -EINVAL;
- 
- 	/* Check for overflow in allocation size calculation */
--	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &size))
-+	if (check_add_overflow(FONT_EXTRA_WORDS * sizeof(int), size, &allocsize))
- 		return -EINVAL;
- 
--	new_data = kmalloc(size, GFP_USER);
-+	new_data = kmalloc(allocsize, GFP_USER);
- 
- 	if (!new_data)
- 		return -ENOMEM;
 -- 
-2.47.3
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
 
 
