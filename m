@@ -1,216 +1,156 @@
-Return-Path: <linux-fbdev+bounces-5106-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5108-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715EDBC6D55
-	for <lists+linux-fbdev@lfdr.de>; Thu, 09 Oct 2025 01:03:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B3CBC7909
+	for <lists+linux-fbdev@lfdr.de>; Thu, 09 Oct 2025 08:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AEAA18894A3
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Oct 2025 23:03:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17C873E61A0
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Oct 2025 06:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D692C031E;
-	Wed,  8 Oct 2025 23:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBD82D060C;
+	Thu,  9 Oct 2025 06:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="p7MV0I4o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6ZZ2hOk"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8DE1E25F9;
-	Wed,  8 Oct 2025 23:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F442848A0;
+	Thu,  9 Oct 2025 06:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759964591; cv=none; b=SIG3DCw3yrd0+cioqILDAdqGA0+MW9a8aup6Mx7wgesk6P9L/RMkJQhOTJgbGrdgkziYkGcHwba5gP9L9Q4Bt8zL6xnnPO2CIReCox+zLKDrSUGXq9qjl67L1ndHiTUVXVf1rm4tLH5Lflp19uz/cGNrrzKb2O2kMTZGBsqViOY=
+	t=1759992508; cv=none; b=uuwGQnkKs/j99d86Tv9Ykc3Aqj7N3AvfUMYlZEDH6FM9hVNdzjqE4TJH8Jpx2OwuJT/1Ie5IMbtkcxj7zkAJkRonyxTdgTy8qf03Hc80DPUaOQknbbwFHmIYsRzHSH9OgEbtMqr5j6rk96WAU2nj7AQn/6IGFC6O1pMq6XqBVTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759964591; c=relaxed/simple;
-	bh=Qh4apJsKdEQDbKnbcHSrefH+QGPPUWhORULgvKtYQKQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rdDxlVsLDVJy4OJesL3wBl5hMF1W6D5j6eeP0NIu4GgyuSri0nyzweOHYN/MTwf8ffLoC7un5GV0VMYW0kBpzyiVnxiISb+JjHp5RVaEnLOIpulk/NT8eM4kqz3BgkP0q0na/KAdv0ppfA3js/Z/NX/p7vvOeRHpFZ0mFUIcjt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=p7MV0I4o; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1759964580; x=1760569380; i=deller@gmx.de;
-	bh=x9vTxoQVMIBYa4egvTWqg1s9EsIH2uXuVj8h3WxMs/4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=p7MV0I4oRFVwnrXAFQKBfmYDUQan7/41t1QFV5QysLt75ie+fiFtLqovoveE7GdE
-	 oNKpgsvsMjmEp9wyosz074wqVqzyt9ZRDxIM5g2lscfasPA1SCUJ9YD2Vpt3YImR6
-	 SC9cT11/AdFbjsBJHnzNeId7qjbQ39nvp6AAvxSoVGA03Kiz2MHvAbh7f6g8vDggr
-	 g+2ulgEyehK3Xuwe5IjNHG4ByThpD8KCsuEt1dri6ZXkjDOMemY875oFUhCLXC88D
-	 nJQHeymqJNXoj6+i4hoBYtH+idQxX4iDdn1CZ+lmnVHzVmSXOzS/ruOAdGq5ZrIzI
-	 Y5mpbbdS7/tqi3Pwyw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.50.53]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MzhnN-1uKJpF0NA9-013Y1d; Thu, 09
- Oct 2025 01:03:00 +0200
-Message-ID: <54ed44ef-7f89-4f56-b2c0-f36b2f0bfa63@gmx.de>
-Date: Thu, 9 Oct 2025 01:02:58 +0200
+	s=arc-20240116; t=1759992508; c=relaxed/simple;
+	bh=YvCdpNxP7NaYCSCzTAxqQo43I2kRITJnvwPMfac8Qvw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qvDdTvd6/6N7brCSYNg5z1HPkRov2N1thQoFE1HhnLvdFPhB8dMiGBB/N2TI8B1TXoB1G+9oYis/Kn6UL1amZNrHsDWFZ4yHhf6ehhD26Xia2jGrRvLUXsQSnnwNmT0eoPIDPEcy2oyU2t6Vu24V7B1txwSZ1gjuQHXM9pGgeuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6ZZ2hOk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DEE04C4CEE7;
+	Thu,  9 Oct 2025 06:48:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759992508;
+	bh=YvCdpNxP7NaYCSCzTAxqQo43I2kRITJnvwPMfac8Qvw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=p6ZZ2hOkXv2b3TsJ2txsu3peoMrhDJ4cUp9EJVd9UTd5LCX1k4+pEaue94OzPTMyR
+	 vYs8KRXSASV/F3VcyKFFvIqxVsvN8VhC9F3Frfr2mnytTVCykDUfBKjlwITrytRJ3C
+	 +he4GWLoGxVMgam8CFKDsY7AfDvTwTf2Wn0L+/Cg496o2EYIweJ7uTF7XXQdDz2ERZ
+	 BiOlaGt+EtF4zsvSqop6JsV1c60GMsBbcJhO1dF+QOVbnmecJ/ihrwVzijaK7O9xxQ
+	 RdTiK85LmFgtZ/SGVgHI7dj1Y8LtdFM7aIhrNCKpIps/QIEurWVeUtPW0RP3h1Z9QR
+	 YHgz8kdZ8NVGA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C959ECCA472;
+	Thu,  9 Oct 2025 06:48:27 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Subject: [PATCH v4 0/4] backlight: add new max25014 backlight driver
+Date: Thu, 09 Oct 2025 08:48:24 +0200
+Message-Id: <20251009-max25014-v4-0-6adb2a0aa35f@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: Fix logic error in "offb" name match
-To: Finn Thain <fthain@linux-m68k.org>, Simona Vetter <simona@ffwll.ch>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Javier Martinez Canillas <javierm@redhat.com>
-Cc: stable@vger.kernel.org, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <f91c6079ef9764c7e23abd80ceab39a35f39417f.1759964186.git.fthain@linux-m68k.org>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <f91c6079ef9764c7e23abd80ceab39a35f39417f.1759964186.git.fthain@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:yszPytJKr1rUEp/XtQ4Bbg2NOYg2Ekx52TPQz/roI8zj0uqf5Xg
- B07UcTt9CysMkdH5e0z7BQ3kbKWn0fX8mQk/3RUu+jQwhATo0uo5IAiUTkbHcz3ceQK7+c3
- P3fnVjNGcoIFbT0Djs6Xh6Auk9Mn1THO31zxmpZ+EK9JGnCds4YVGtZnBCNDPa3VoG2MVsU
- jZXLUEtCrP8jjTjLJTNDw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:PjASLaVM4L0=;MURyKVSoKhf8q5jSV9Je+CV8qjI
- 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
- 9bmxUBOPO7OHDKi2ZLWhcvcJEI=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALha52gC/22NQQ6DIBAAv2I4l4ZFEOmp/2h6QFyVRKVBY2yMf
+ y/agybtbWezM7uQAYPDgdyShQSc3OB8H0FcEmIb09dIXRmZcMYly3hGOzPHCQQVnCmpAcFUksT
+ zV8DKzXvq8YzcuGH04b2XJ9i234ji8ohMQBllmFuLOvZyvNfe+n4Mvm2v1ndkK038sHPQJ5tHW
+ 1alMliAADR/7fSwNcDJTqNdsrQSWJhUyd/f67p+ANmSlfshAQAA
+X-Change-ID: 20250626-max25014-4207591e1af5
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fbdev@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759992506; l=2923;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=YvCdpNxP7NaYCSCzTAxqQo43I2kRITJnvwPMfac8Qvw=;
+ b=eC4PsaECsTf07ZDbdKRBsRMKmT6s+SJTW/b+N6Fx7HNp1/fJT5JOKouBKqoJ6Gk50fAUFilgk
+ AKjbBdYWCuwAfayOo2hHv8NUCPBXp5nCHhLgeNCkDZOOSFc8ArxewsG
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-On 10/9/25 00:56, Finn Thain wrote:
-> A regression was reported to me recently whereby /dev/fb0 had disappeare=
-d
-> from a PowerBook G3 Series "Wallstreet". The problem shows up when the
-> "video=3Dofonly" parameter is passed to the kernel, which is what the
-> bootloader does when "no video driver" is selected. The cause of the
-> problem is the "offb" string comparison, which got mangled when it got
-> refactored. Fix it.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 93604a5ade3a ("fbdev: Handle video=3D parameter in video/cmdline.=
-c")
-> Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-> ---
->   drivers/video/fbdev/core/fb_cmdline.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+The Maxim MAX25014 is an automotive grade backlight driver IC. Its
+datasheet can be found at [1].
 
-applied.
+With its integrated boost controller, it can power 4 channels (led
+strings) and has a number of different modes using pwm and or i2c.
+Currently implemented is only i2c control.
 
-Thanks!
-Helge
+link: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX25014.pdf [1]
+
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+Changes in v4:
+- use a led node to describe the backlight
+- use led-sources to enable specific channels
+- also wait 2ms when there is a supply but no enable
+- change dev_warn() to dev_err() in error path in max25014_check_errors()
+- set backlight_properties.scale to BACKLIGHT_SCALE_LINEAR
+- rebase latest next
+- add address-cells and size-cells to i2c4 in av101hdt-a10.dtso
+- Link to v3: https://lore.kernel.org/r/20250911-max25014-v3-0-d03f4eba375e@gocontroll.com
+
+Changes in v3:
+- fixed commit message type intgrated -> integrated
+- added maximum and description to maxim,iset-property
+- dropped unused labels and pinctrl in bindings example
+- put the compatible first in the bindings example and dts
+- removed brackets around defines
+- removed the leftover pdata struct field
+- removed the initial_brightness struct field
+- Link to v2: https://lore.kernel.org/r/20250819-max25014-v2-0-5fd7aeb141ea@gocontroll.com
+
+Changes in v2:
+- Remove leftover unused property from the bindings example
+- Complete the bindings example with all properties
+- Remove some double info from the maxim,iset property
+- Remove platform_data header, fold its data into the max25014 struct
+- Don't force defines to be unsigned
+- Remove stray struct max25014 declaration
+- Remove chipname and device from the max25014 struct
+- Inline the max25014_backlight_register() and strings_mask() functions
+- Remove CONFIG_OF ifdef
+- Link to v1: https://lore.kernel.org/r/20250725-max25014-v1-0-0e8cce92078e@gocontroll.com
+
+---
+Maud Spierings (4):
+      dt-bindings: backlight: Add max25014 bindings
+      backlight: add max25014atg backlight
+      arm64: dts: freescale: moduline-display-av101hdt-a10: add backlight
+      arm64: dts: freescale: moduline-display-av123z7m-n17: add backlight
+
+ .../bindings/leds/backlight/maxim,max25014.yaml    | 109 ++++++
+ MAINTAINERS                                        |   6 +
+ ...x8p-ml81-moduline-display-106-av101hdt-a10.dtso |  32 ++
+ ...x8p-ml81-moduline-display-106-av123z7m-n17.dtso |  27 +-
+ drivers/video/backlight/Kconfig                    |   7 +
+ drivers/video/backlight/Makefile                   |   1 +
+ drivers/video/backlight/max25014.c                 | 409 +++++++++++++++++++++
+ 7 files changed, 590 insertions(+), 1 deletion(-)
+---
+base-commit: 7c3ba4249a3604477ea9c077e10089ba7ddcaa03
+change-id: 20250626-max25014-4207591e1af5
+
+Best regards,
+-- 
+Maud Spierings <maudspierings@gocontroll.com>
+
+
 
