@@ -1,60 +1,66 @@
-Return-Path: <linux-fbdev+bounces-5232-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5234-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F29AC3CA72
-	for <lists+linux-fbdev@lfdr.de>; Thu, 06 Nov 2025 17:58:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E069C3CB1B
+	for <lists+linux-fbdev@lfdr.de>; Thu, 06 Nov 2025 18:05:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5147189DF81
-	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Nov 2025 16:58:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CC7B4F5FB1
+	for <lists+linux-fbdev@lfdr.de>; Thu,  6 Nov 2025 17:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8477D331A43;
-	Thu,  6 Nov 2025 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BB134D4DB;
+	Thu,  6 Nov 2025 17:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTyDg9OS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDVjEKim"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F312D12E2;
-	Thu,  6 Nov 2025 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1134034CFCC;
+	Thu,  6 Nov 2025 17:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762448310; cv=none; b=Shue9TjSAY4DGD0PU5WcsZyhEvt/48p74DwxwrAoG0wexLNaulJcsuoh8VkadrmdxoKHjVi1QQWlJ7nN5qprf8oQfBjxKq4BrCQWxzXtd9wrZEa7m+5m+vcET3baCniZX9crLGbtD6+BjCBGah7Fh99PcVrwPxRGBRyTdBHxHx4=
+	t=1762448448; cv=none; b=jRnJE/sCWeRYLXj9J4Bvfu0LoIj7U54+l7J45MrfdO0baZ82xII1A9IqHI9E8RsXRrzRY6iD2VeSgEBL4Kpv8zY7M8UKOrglh69G8kyKMDxQPJaThKbBWXwZYiJ2gXwSfPqkWCHgr425Ea/LSy2EBHngjD4iSprKgRx+4xAZcLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762448310; c=relaxed/simple;
-	bh=71V4FIo2y+M4KAyJTyXGLsgHH48fxpWbne7lhs/Dq3A=;
+	s=arc-20240116; t=1762448448; c=relaxed/simple;
+	bh=wrgqo59yPdMKQ+qoBa8t2ahWgAq+kcaeZ6wytvG29Mg=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=KnbNQiYs0wtUjIFnrFj25QlXYRT+GffWxMBi5zqr5B/kmkBtOh7UXKKnzVi/oYB48R2cj+4gmMKqc1ssgffzfo1yMDGiuJA2lgGycN9NURd0GdF3XQha3pLk/cgepbZzv8BIHzIjeL+60n+E35oTZiV0wVa4WUIquYzkz4OkyFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTyDg9OS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBFCC116C6;
-	Thu,  6 Nov 2025 16:58:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YvLE3G2JmjWBlUDWozmnnnCO6zKn6tEUA3fJkOWu1ScKHTjcLRF5iFBIYVR2n7or6KWy+92t7D/27SL69Sm+qbZLWiliHjIzHvZWomMa1PuIqRSaKSYKeBTwN49wgcxJTnwTohU/wlG15xSaa+DbISYQiAE+H/tQoV6FnSa53ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDVjEKim; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F04C116C6;
+	Thu,  6 Nov 2025 17:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762448310;
-	bh=71V4FIo2y+M4KAyJTyXGLsgHH48fxpWbne7lhs/Dq3A=;
+	s=k20201202; t=1762448445;
+	bh=wrgqo59yPdMKQ+qoBa8t2ahWgAq+kcaeZ6wytvG29Mg=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ZTyDg9OSjzmgeEwzWEwqhSpnBgTVq4stc9rd5Z6n7W/bK50KLnuUCxpIBswNgVlXf
-	 S9KjsyO8ojFjY7qCyHpYvw2oYybuWL7TGvyqnImyFhGEtNsOG3MRbpBNdzHjCo8WeL
-	 RFwZjIzwqF4DsQoMpDUuj/WzUl7HXJdDdSNq/v16wZYwwTC/peMR2tNCmoKAQw+WCT
-	 zT1M+EXq1hXwGb9xvc4FGUwgsuy+TQq6air4HfPOWOK9J+yS4wTqWnpDW1UhmNp2DI
-	 eb4OMFTqka/AyVa/lJ2sn7AWULQrSdxGNmloPQXFaI47OciyRR8no0Njv3kzRVm8nE
-	 guSJcDEspmAIg==
+	b=CDVjEKimD+y61aHoCmYDX5QWMc8JR5fO97SM3VpqLixV4RVE5077KJOYoWMdLJ3Zs
+	 kMT11WBAQApMK5IRZ+Nnai0nz+rAJSnUAOsev17qnR9OrBUMLbxjh65Q6/ikm5k5n0
+	 XdA30hWHZZY65tHzbJF0+7VAJzGAowheI7mUZzFN05g5HGDD/RBqA96jfQMbxWRI8M
+	 5RTfZcd5oCJ2Xyi78OzZ+fPnNOZowCslC110PCoaRhmIc+bMVyBe2gODV9qhtLKtjN
+	 WmUeGSSJofZbYXfWtOYyxO0TuNjfn8aeoujoKUE091PMtFkuyuDkh8wHfx6f4nUqmQ
+	 Puz/POu6iSt6A==
 From: Lee Jones <lee@kernel.org>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Daniel Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, 
- Helge Deller <deller@gmx.de>, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Randy Dunlap <rdunlap@infradead.org>, linux-leds@vger.kernel.org, 
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-fbdev@vger.kernel.org
-In-Reply-To: <20250729-expresswire-dep-fix-v1-1-635cd4cc746b@dujemihanovic.xyz>
-References: <20250729-expresswire-dep-fix-v1-1-635cd4cc746b@dujemihanovic.xyz>
-Subject: Re: (subset) [PATCH 1/2] leds: Drop duplicate LEDS_EXPRESSWIRE
- config
-Message-Id: <176244830776.1960780.8531286743558641469.b4-ty@kernel.org>
-Date: Thu, 06 Nov 2025 16:58:27 +0000
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
+ Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>, 
+ Jean-Jacques Hiblot <jjhiblot@ti.com>, 
+ Tomi Valkeinen <tomi.valkeinen@ti.com>, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Saravana Kannan <saravanak@google.com>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Daniel Thompson <daniel.thompson@linaro.org>, 
+ dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>
+In-Reply-To: <20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com>
+References: <20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com>
+Subject: Re: (subset) [PATCH v6] backlight: led-backlight: add devlink to
+ supplier LEDs
+Message-Id: <176244844196.1963389.1499748337381220684.b4-ty@kernel.org>
+Date: Thu, 06 Nov 2025 17:00:41 +0000
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -65,16 +71,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.15-dev-52d38
 
-On Tue, 29 Jul 2025 19:18:29 +0200, Duje Mihanović wrote:
-> While moving said config symbol out of the "if NEW_LEDS" block, I
-> accidentally left a copy inside that block. Remove it.
+On Mon, 19 May 2025 22:19:11 +0200, Luca Ceresoli wrote:
+> led-backlight is a consumer of one or multiple LED class devices, but
+> devlink is currently unable to create correct supplier-producer links when
+> the supplier is a class device. It creates instead a link where the
+> supplier is the parent of the expected device.
 > 
+> One consequence is that removal order is not correctly enforced.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/2] leds: Drop duplicate LEDS_EXPRESSWIRE config
-      commit: ea1c4c7e648d1ca91577071fc42fdc219521098c
+[1/1] backlight: led-backlight: add devlink to supplier LEDs
+      commit: 67d8eed26eadb1edd4873d24889be26aa9b73fe5
 
 --
 Lee Jones [李琼斯]
