@@ -1,107 +1,169 @@
-Return-Path: <linux-fbdev+bounces-5295-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5297-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5154C6D737
-	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Nov 2025 09:35:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7678EC6DEFC
+	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Nov 2025 11:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 985054F2BB2
-	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Nov 2025 08:26:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 73EEF2DC6A
+	for <lists+linux-fbdev@lfdr.de>; Wed, 19 Nov 2025 10:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED97C328B43;
-	Wed, 19 Nov 2025 08:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267F934B1A0;
+	Wed, 19 Nov 2025 10:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ncQv555x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PQpL5b+0"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0E932721B;
-	Wed, 19 Nov 2025 08:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FCE34AAF7
+	for <linux-fbdev@vger.kernel.org>; Wed, 19 Nov 2025 10:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763540780; cv=none; b=fz3LKR7K60Oxp3Efp9p1/3j3PKl576XaWAq8TbJyE/gqTQl1YtFsZXIH2v2C+ITI7rbZxYIbHO7KH4NNBpxxZshtySTa5PXsjlNzK4Cp9LEq+uPjTJWorZmAgreA0309nnFLw1vxjK4PcfZ9boFwbX4e8Tdl6MZsbdCgI6GMyO4=
+	t=1763547524; cv=none; b=Hz+s/VyhkQ0moij1xm7F4g0DxIGfEpvqMV9UO+S7SmcIrNso01LTbik4BlmkMPzY9PP9NTAWdiVOdqoU8arTsFGBc8Hc8g/FoxOosB9p1hchOh17qPBRsuUIi3JZ8ELUf3HvptZ6fzA7KHy7ZiwbhS+R+g5HsfS6A+aIRjEg/qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763540780; c=relaxed/simple;
-	bh=jcPepnZLZgpDua5txvocFEmcFpPGA3RIdeogtsflON8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aQY/U1kLH70y4QtYr0cUam3a9QFG4K+iwgam9E4tppnKD6clNywIvUAirVYDeMS5rPTi7WH3dtH9sjnrNo1wDnj+yMRGDg4HyORkFCU3y6wq7jxjLsu/q+EHk0IPh+sIjFeKN4roKJqv89a6zznRrJSwPEfo2+j+4T0tFF78n/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ncQv555x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D67BBC116B1;
-	Wed, 19 Nov 2025 08:26:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763540780;
-	bh=jcPepnZLZgpDua5txvocFEmcFpPGA3RIdeogtsflON8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ncQv555xAkzsNq2E8THOD/w5ae5i9Vr778lCVxm6zsdvcDRuydmic8J35CTOIQbDQ
-	 Cjz0+BieySvLVT9Qa1oDXyYYSM1ZNxwVxHBZI7OV6FpTwiAa98TYgDtMLqyQiH9DkW
-	 r+Xgkg8YjVirW7S+sOHqoLWEd7Pu+LVQgq9ApRnHTudpvOhzKNGNCEI6jIi0R9b9iL
-	 DFH8QwU7zjfhpSD6KZ9fnuik1d4iKzHInsTHwOWWm0cGgBgPRtJ1YM1/JDcvFSTgUz
-	 P3dk94qSyZ4f48+rM1YNPOSugSnB9zLNGGxwC08y7DpP512ah1Ou2nmZwFGSlkQV8M
-	 Rv8pVr4ixh3Hw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4A8FCF259E;
-	Wed, 19 Nov 2025 08:26:19 +0000 (UTC)
-From: Petri Karhula via B4 Relay <devnull+petri.karhula.novatron.fi@kernel.org>
-Date: Wed, 19 Nov 2025 08:25:47 +0000
-Subject: [PATCH v2 2/2] mfd: cgbc: Add support for backlight
+	s=arc-20240116; t=1763547524; c=relaxed/simple;
+	bh=i5jrwu2khNIASVVE4w6mIB7MzCxaBQWjGiiDYE0y4Ds=;
+	h=Content-Type:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To; b=STFmlcS2LKFN7GPQEkDvpF62w7hmfz8O3cSFKH2cOjcskUHn86Xf8frfjLrchQLiukV5U8+P2f1wemrZ30qYksP/jkliu42HP50ds+RJe+MC7VFGrVKW4oid1Y0CSIyixr4sxGC96UTKj4PcceAGQTKxZX6Aw6VLYgi6BlFGHYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PQpL5b+0; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-299d40b0845so58798835ad.3
+        for <linux-fbdev@vger.kernel.org>; Wed, 19 Nov 2025 02:18:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763547522; x=1764152322; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:subject:references:cc:to
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i5jrwu2khNIASVVE4w6mIB7MzCxaBQWjGiiDYE0y4Ds=;
+        b=PQpL5b+00jOo5E33iwAJDFRDvjN5RPltkS1zcFj2nTCaH7SL3r/19b2QLsBfOsfDeP
+         9eRGQXD1X45Mh1RvXPtIsvZS9KDqf+e0j0gTu+PYQOw6wXL960QRDGD/uTru/5mdg/h7
+         Ok5VuMF9ArdvqBqeAlUuMwNInGcqzEX+xm25ZPh4tjS/zuQSIHJVJL4XqpgxBozCsMtQ
+         v6l8uu7ECle/0N4jJCVsqHbBnd/m4DGAE1R409akhJW5wPx+qJDGPFhPqQlAAAGjsc01
+         jguGNC3aQIREcoU+mo/HukdEcE5B3IvsJRiebdBzf+WkH/PN9r2C6kuZcvn1/2iY0OfO
+         ZlVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763547522; x=1764152322;
+        h=in-reply-to:from:content-language:subject:references:cc:to
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i5jrwu2khNIASVVE4w6mIB7MzCxaBQWjGiiDYE0y4Ds=;
+        b=rVB6R/hWjmy5zyw8MPeMmYyDaVag017+HlxdoaJ/DdhvTDHX9QgN1deFngsbrxuz0j
+         v2bnBkRhUHtq0Ugwrfs1mLARypg9EyWki+CSKc8yyITGPCCSs6ZqSLeEXre3eAE5gt8n
+         fUhjnGs8UNjkRtcE9Oybvxc5c91nh+f2Uc5xcZnE0AeIxlWBZAxikXWszEtURxzIbC4g
+         gaF6KUJMhGjGJQiWQ9kYh0EQGO/ythpOybe7oEpMAtGD85o07KcTBtj4N31qJUzQx7BH
+         bj0X7falWcMRrOamLdLoiB2ftswt2L0CT8Juz8hIv2+hEB1qDk+CdjOcxiqE/UuQQ+q3
+         UfLw==
+X-Gm-Message-State: AOJu0Yxs3xSzrLmpgpV05nHCsxxaA0OVxOqwCXEVaFeBrZYsrcUDal0c
+	SP8PtCiKzzGJ3D/KhQik9fLxr8XZBmcGuP5jeuKNE0QSee3WoZ0uood2
+X-Gm-Gg: ASbGncsrd5FTfjNpq1AQnmkabhOgg6rV5gL5cenMkPw3SpIz3ZXtcYFzZLN46ywSMRl
+	2L8Wo3ejNiqgGvykZQ6PIt+cGUEdsi5tCR1Fet9WDwMh/sjz0+FJISnS0fhdN5IU3bHhFKj6ekF
+	w7tpDvQNNUjT6WLzdcckwdUBtM6ud2UuAnQu0iTAW8XXiWn/F74OWkcCV9bd4AxUhwXPlWXcWP5
+	qaIK+qk+CB4YwKHetsFxU1uLt70ScEndRnv1w9JYPheLpuuqmg6BYlUnqpHckZQTOVruFXX0LE7
+	Z9QSbUBS2lepeIFid7JIZnL2mL8mA8veWzJbSVCGlSrnxt8/rN7iidSluK0t8KKyZBsQj1MFSaJ
+	OiKdZP7zQKeHehTYBHhPdDE5e9KYPKFGG1Wh6BKVlBZb+V7DZwRVw2FoALu0sIlCLFxQ9+tYMTg
+	CiWyloDtzKb/uECit1
+X-Google-Smtp-Source: AGHT+IHo81EFKjdonFQULY1623YZ31+3U7GxWRqYCXpWQ3Xyke8u7PJQDpGSccbnBuVm5L2hrvtr6Q==
+X-Received: by 2002:a17:902:f602:b0:298:5736:de9b with SMTP id d9443c01a7336-2986a7668f6mr218243835ad.50.1763547522467;
+        Wed, 19 Nov 2025 02:18:42 -0800 (PST)
+Received: from [192.168.0.149] ([14.139.108.62])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2b0e15sm202304865ad.60.2025.11.19.02.18.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Nov 2025 02:18:42 -0800 (PST)
+Content-Type: multipart/mixed; boundary="------------ByzKerrVfgv0yworCRMeTYyF"
+Message-ID: <e69c10c5-ee82-4229-b7b6-e3993442595b@gmail.com>
+Date: Wed, 19 Nov 2025 15:48:41 +0530
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: syzbot+5a40432dfe8f86ee657a@syzkaller.appspotmail.com
+Cc: linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzkaller-bugs@googlegroups.com
+References: <691c279e.a70a0220.3124cb.00b5.GAE@google.com>
+Subject: Re: [syzbot] [fbdev?] KASAN: vmalloc-out-of-bounds Write in imageblit
+ (6)
+Content-Language: en-US
+From: shaurya <ssranevjti@gmail.com>
+In-Reply-To: <691c279e.a70a0220.3124cb.00b5.GAE@google.com>
+
+This is a multi-part message in MIME format.
+--------------ByzKerrVfgv0yworCRMeTYyF
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251119-cgbc-backlight-v2-2-4d4edd7ca662@novatron.fi>
-References: <20251119-cgbc-backlight-v2-0-4d4edd7ca662@novatron.fi>
-In-Reply-To: <20251119-cgbc-backlight-v2-0-4d4edd7ca662@novatron.fi>
-To: Thomas Richard <thomas.richard@bootlin.com>, Lee Jones <lee@kernel.org>, 
- Daniel Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, 
- Helge Deller <deller@gmx.de>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-fbdev@vger.kernel.org, Petri Karhula <petri.karhula@novatron.fi>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763540778; l=730;
- i=petri.karhula@novatron.fi; s=20251118; h=from:subject:message-id;
- bh=KPNSZCbWidPbzGQwgMCbuFj/C6Dnnhi7zAXThQ+Pso8=;
- b=A7+u4KN5Q5OzUvkb74yRsfjSwPDVsYz3jVlv1sGdlQe1+mLVQgad1xROxS1PTS1iZ1WxiMgXK
- 3nCRWzu6gzTCiIKkZwybI23Dy0+poEOu0GLUs3La79VILxRSokKxgXM
-X-Developer-Key: i=petri.karhula@novatron.fi; a=ed25519;
- pk=LRYJ99jPPsHJwdJEPkqlmzAMqo6oyw7I421aHEfDp7o=
-X-Endpoint-Received: by B4 Relay for petri.karhula@novatron.fi/20251118
- with auth_id=567
-X-Original-From: Petri Karhula <petri.karhula@novatron.fi>
-Reply-To: petri.karhula@novatron.fi
 
-From: Petri Karhula <petri.karhula@novatron.fi>
+#syz test:
+git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+--------------ByzKerrVfgv0yworCRMeTYyF
+Content-Type: text/x-patch; charset=UTF-8; name="0001-testing-my-fix.patch"
+Content-Disposition: attachment; filename="0001-testing-my-fix.patch"
+Content-Transfer-Encoding: base64
 
-The Board Controller has control for display backlight.
-Add backlight cell for the cgbc-backlight driver which
-adds support for backlight brightness control.
+RnJvbSAxODhmYzdlZWE0YTAwNTAwYTgwNmI3YjEyMmQyMDI4OWFiYzJiZjAwIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBTaGF1cnlhIFJhbmUgPHNzcmFuZV9iMjNAZWUudmp0
+aS5hYy5pbj4KRGF0ZTogV2VkLCAxOSBOb3YgMjAyNSAxNTo0NDo1MSArMDUzMApTdWJqZWN0
+OiBbUEFUQ0hdIHRlc3RpbmcgbXkgZml4CgpTaWduZWQtb2ZmLWJ5OiBTaGF1cnlhIFJhbmUg
+PHNzcmFuZV9iMjNAZWUudmp0aS5hYy5pbj4KLS0tCiBkcml2ZXJzL3ZpZGVvL2ZiZGV2L2Nv
+cmUvZmJfaW1hZ2VibGl0LmggfCA2NiArKysrKysrKysrKysrKysrKysrKysrKy0tCiAxIGZp
+bGUgY2hhbmdlZCwgNjIgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS9kcml2ZXJzL3ZpZGVvL2ZiZGV2L2NvcmUvZmJfaW1hZ2VibGl0LmggYi9kcml2ZXJz
+L3ZpZGVvL2ZiZGV2L2NvcmUvZmJfaW1hZ2VibGl0LmgKaW5kZXggM2IyYmI0OTQ2NTA1Li5h
+ZWU3ZjQwMzIxNjQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvdmlkZW8vZmJkZXYvY29yZS9mYl9p
+bWFnZWJsaXQuaAorKysgYi9kcml2ZXJzL3ZpZGVvL2ZiZGV2L2NvcmUvZmJfaW1hZ2VibGl0
+LmgKQEAgLTQ4NSwxMSArNDg1LDY5IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBmYl9pbWFnZWJs
+aXQoc3RydWN0IGZiX2luZm8gKnAsIGNvbnN0IHN0cnVjdCBmYl9pbWFnZSAqaW1hZ2UpCiAJ
+c3RydWN0IGZiX2FkZHJlc3MgZHN0ID0gZmJfYWRkcmVzc19pbml0KHApOwogCXN0cnVjdCBm
+Yl9yZXZlcnNlIHJldmVyc2UgPSBmYl9yZXZlcnNlX2luaXQocCk7CiAJY29uc3QgdTMyICpw
+YWxldHRlID0gZmJfcGFsZXR0ZShwKTsKKwlzdHJ1Y3QgZmJfaW1hZ2UgY2xpcHBlZF9pbWFn
+ZTsKKwl1MzIgbWF4X3gsIG1heF95OworCXVuc2lnbmVkIGxvbmcgbWF4X29mZnNldF9ieXRl
+czsKKworCS8qIFZhbGlkYXRlIGJhc2ljIHBhcmFtZXRlcnMgKi8KKwlpZiAoIWltYWdlIHx8
+ICFwLT5zY3JlZW5fYnVmZmVyIHx8ICFwLT5zY3JlZW5fc2l6ZSB8fCAKKwkgICAgIWltYWdl
+LT53aWR0aCB8fCAhaW1hZ2UtPmhlaWdodCkKKwkJcmV0dXJuOworCisJLyogQ2FsY3VsYXRl
+IG1heGltdW0gYWRkcmVzc2FibGUgY29vcmRpbmF0ZXMgYmFzZWQgb24gdmlydHVhbCByZXNv
+bHV0aW9uIGFuZCBidWZmZXIgc2l6ZSAqLworCW1heF94ID0gcC0+dmFyLnhyZXNfdmlydHVh
+bDsKKwltYXhfeSA9IHAtPnZhci55cmVzX3ZpcnR1YWw7CisJCisJLyogQWxzbyBjaGVjayBh
+Z2FpbnN0IGFjdHVhbCBidWZmZXIgc2l6ZSB0byBwcmV2ZW50IHZtYWxsb2Mgb3ZlcmZsb3cg
+Ki8KKwl7CisJCXVuc2lnbmVkIGxvbmcgZWZmZWN0aXZlX3dpZHRoX2J5dGVzOworCQl1MzIg
+cmlnaHRfZWRnZSA9IGltYWdlLT5keCArIGltYWdlLT53aWR0aDsKKworCQlpZiAocmlnaHRf
+ZWRnZSA8IGltYWdlLT5keCkKKwkJCXJpZ2h0X2VkZ2UgPSBtYXhfeDsKKwkJZWxzZQorCQkJ
+cmlnaHRfZWRnZSA9IG1pbihyaWdodF9lZGdlLCBtYXhfeCk7CisKKwkJZWZmZWN0aXZlX3dp
+ZHRoX2J5dGVzID0gKHVuc2lnbmVkIGxvbmcpcmlnaHRfZWRnZSAqIGJwcDsKKwkJZWZmZWN0
+aXZlX3dpZHRoX2J5dGVzID0gKGVmZmVjdGl2ZV93aWR0aF9ieXRlcyArIDcpIC8gODsKKwor
+CQlpZiAoZWZmZWN0aXZlX3dpZHRoX2J5dGVzID4gcC0+c2NyZWVuX3NpemUpIHsKKwkJCW1h
+eF95ID0gMDsKKwkJfSBlbHNlIGlmIChwLT5maXgubGluZV9sZW5ndGgpIHsKKwkJCXUzMiBt
+YXhfbGluZXMgPSAocC0+c2NyZWVuX3NpemUgLSBlZmZlY3RpdmVfd2lkdGhfYnl0ZXMpIC8K
+KwkJCQkJcC0+Zml4LmxpbmVfbGVuZ3RoICsgMTsKKwkJCWlmIChtYXhfbGluZXMgPCBtYXhf
+eSkKKwkJCQltYXhfeSA9IG1heF9saW5lczsKKwkJfQorCX0KKworCS8qIElmIGltYWdlIGlz
+IGNvbXBsZXRlbHkgb3V0c2lkZSBib3VuZHMsIHNraXAgaXQgKi8KKwlpZiAoaW1hZ2UtPmR4
+ID49IG1heF94IHx8IGltYWdlLT5keSA+PSBtYXhfeSkKKwkJcmV0dXJuOworCisJLyogQ3Jl
+YXRlIGNsaXBwZWQgaW1hZ2UgLSBjbGlwIHRvIHZpcnR1YWwgcmVzb2x1dGlvbiBib3VuZHMg
+Ki8KKwljbGlwcGVkX2ltYWdlID0gKmltYWdlOworCQorCS8qIENsaXAgd2lkdGggaWYgaXQg
+ZXh0ZW5kcyBiZXlvbmQgcmlnaHQgZWRnZSAqLworCWlmIChjbGlwcGVkX2ltYWdlLmR4ICsg
+Y2xpcHBlZF9pbWFnZS53aWR0aCA+IG1heF94KSB7CisJCWlmIChjbGlwcGVkX2ltYWdlLmR4
+IDwgbWF4X3gpCisJCQljbGlwcGVkX2ltYWdlLndpZHRoID0gbWF4X3ggLSBjbGlwcGVkX2lt
+YWdlLmR4OworCQllbHNlCisJCQlyZXR1cm47IC8qIGNvbXBsZXRlbHkgb3V0c2lkZSAqLwor
+CX0KKwkKKwkvKiBDbGlwIGhlaWdodCBpZiBpdCBleHRlbmRzIGJleW9uZCBib3R0b20gZWRn
+ZSAqLworCWlmIChjbGlwcGVkX2ltYWdlLmR5ICsgY2xpcHBlZF9pbWFnZS5oZWlnaHQgPiBt
+YXhfeSkgeworCQlpZiAoY2xpcHBlZF9pbWFnZS5keSA8IG1heF95KQorCQkJY2xpcHBlZF9p
+bWFnZS5oZWlnaHQgPSBtYXhfeSAtIGNsaXBwZWRfaW1hZ2UuZHk7CisJCWVsc2UKKwkJCXJl
+dHVybjsgLyogY29tcGxldGVseSBvdXRzaWRlICovCisJfQogCi0JZmJfYWRkcmVzc19mb3J3
+YXJkKCZkc3QsIGltYWdlLT5keSAqIGJpdHNfcGVyX2xpbmUgKyBpbWFnZS0+ZHggKiBicHAp
+OworCWZiX2FkZHJlc3NfZm9yd2FyZCgmZHN0LCBjbGlwcGVkX2ltYWdlLmR5ICogYml0c19w
+ZXJfbGluZSArIGNsaXBwZWRfaW1hZ2UuZHggKiBicHApOwogCi0JaWYgKGltYWdlLT5kZXB0
+aCA9PSAxKQotCQlmYl9iaXRtYXBfaW1hZ2VibGl0KGltYWdlLCAmZHN0LCBiaXRzX3Blcl9s
+aW5lLCBwYWxldHRlLCBicHAsIHJldmVyc2UpOworCWlmIChjbGlwcGVkX2ltYWdlLmRlcHRo
+ID09IDEpCisJCWZiX2JpdG1hcF9pbWFnZWJsaXQoJmNsaXBwZWRfaW1hZ2UsICZkc3QsIGJp
+dHNfcGVyX2xpbmUsIHBhbGV0dGUsIGJwcCwgcmV2ZXJzZSk7CiAJZWxzZQotCQlmYl9jb2xv
+cl9pbWFnZWJsaXQoaW1hZ2UsICZkc3QsIGJpdHNfcGVyX2xpbmUsIHBhbGV0dGUsIGJwcCwg
+cmV2ZXJzZSk7CisJCWZiX2NvbG9yX2ltYWdlYmxpdCgmY2xpcHBlZF9pbWFnZSwgJmRzdCwg
+Yml0c19wZXJfbGluZSwgcGFsZXR0ZSwgYnBwLCByZXZlcnNlKTsKIH0KLS0gCjIuMzQuMQoK
 
-Signed-off-by: Petri Karhula <petri.karhula@novatron.fi>
----
- drivers/mfd/cgbc-core.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/cgbc-core.c b/drivers/mfd/cgbc-core.c
-index 4782ff1114a9..10bb4b414c34 100644
---- a/drivers/mfd/cgbc-core.c
-+++ b/drivers/mfd/cgbc-core.c
-@@ -237,6 +237,7 @@ static struct mfd_cell cgbc_devs[] = {
- 	{ .name = "cgbc-i2c", .id = 1 },
- 	{ .name = "cgbc-i2c", .id = 2 },
- 	{ .name = "cgbc-hwmon"	},
-+	{ .name = "cgbc-backlight" },
- };
- 
- static int cgbc_map(struct cgbc_device_data *cgbc)
-
--- 
-2.34.1
-
-
+--------------ByzKerrVfgv0yworCRMeTYyF--
 
