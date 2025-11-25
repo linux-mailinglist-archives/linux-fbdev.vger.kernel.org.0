@@ -1,174 +1,242 @@
-Return-Path: <linux-fbdev+bounces-5364-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5371-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD6BC85077
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Nov 2025 13:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F6CC85219
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Nov 2025 14:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6103F3B1BB8
-	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Nov 2025 12:54:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC1F83A34AD
+	for <lists+linux-fbdev@lfdr.de>; Tue, 25 Nov 2025 13:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCE7320CA0;
-	Tue, 25 Nov 2025 12:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2172322550;
+	Tue, 25 Nov 2025 13:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUl/X9YL"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CtCvQfaN";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="U0dwF6b/";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CtCvQfaN";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="U0dwF6b/"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F78B27467D;
-	Tue, 25 Nov 2025 12:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DCD31A565
+	for <linux-fbdev@vger.kernel.org>; Tue, 25 Nov 2025 13:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764075285; cv=none; b=OKSj6/+ZqqQ98+EV/TcXJZuoN1hj0SvikknVtNYPJw9yXUvHxgmzA12vVSB5eGPbuPooVTgX/fCuIAO4nLVJofon6HjW3v4ExQ9cCFPxWzvI4Uw8HKH5bX98r0ZVSOHwQFhlJNDR/qFHmuWvV8lFER1Djxu3QEj96cpTw7t8EDw=
+	t=1764076260; cv=none; b=NP7IalesPfj107gcrvbpFBbd2PgdkzKDR7KAopOLkXq/gyBZtCDCkVBpWuZIEL+OC++4hVeA9Igc90opy9Op5/mGHUd+9cbbPaA4ptQItn4yRogiqRPNLsOl24VYZVpVhA3HhqT46IcR1dUJtxFYtM2EdmUEh/NjZ7UdHxv1pXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764075285; c=relaxed/simple;
-	bh=+jw/W3j0K2vTtBJik+HnMKvnJjYPhesKjmTKzL4L1Bo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qrtOUNACnMN8QAjx2SP10k3W8BosFHUMaNbypKxDJmhPXd8Srj3z8DnvGIpj4vEO0gxLqSZ1pOFDlPb8acFBFk2IutI+ZAYN2g4FGfcKQWFPTVLg3Kz5fkY+c5ItaqOfNmYBm6a1tVkcApOSW8uDNbq35IU4d9XE+KLh2W9lw3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUl/X9YL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31767C4CEF1;
-	Tue, 25 Nov 2025 12:54:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764075285;
-	bh=+jw/W3j0K2vTtBJik+HnMKvnJjYPhesKjmTKzL4L1Bo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XUl/X9YLWbfmR1Trrn7yx21QAOAU9RUByP3DS+MuZ1JAbs7JGeqVlU9lte8xWL5Ve
-	 v8SHzXmC59Ms2mDueos1npgjuo9c6v673ZUua/0mEsb45w3OtbMur62qudXceNs0Io
-	 YDgbqpeKcml5n5HX8+E/9fEwZfWbrREcGN83Oy5NtpU7qmEbd7ogvdEawOjlEvwUf4
-	 YGg3Fab+UCmC6vVFJr+QBUF5S6XsMhHv7Zy1HkC+i2zHn0iw4/3IObjsaHEsMXIS94
-	 gBnAQsW7MIxb8mnM/dwfTZ8Fegb3t2yJdqO8KnsKN10EZL+9lnzK86ECEz7vXqj3Eb
-	 QmJTuKXzYrUzA==
-Date: Tue, 25 Nov 2025 12:54:39 +0000
-From: Lee Jones <lee@kernel.org>
-To: Daniel Thompson <daniel@riscstar.com>
-Cc: Michael Grzeschik <mgr@pengutronix.de>,
-	Daniel Thompson <danielt@kernel.org>,
-	Mark Brown <broonie@kernel.org>, linux-pwm@vger.kernel.org,
-	linux-fbdev@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Pengutronix <kernel@pengutronix.de>
-Subject: Re: [PATCH] backlight: pwm_bl: apply the initial backlight state
- with sane defaults
-Message-ID: <20251125125439.GA1127788@google.com>
-References: <20250731-blpwm-v1-1-0171fd31bff9@pengutronix.de>
- <f492d4d3-751c-40a3-bb93-0e1bb192cde7@sirena.org.uk>
- <aRxr_sR0ksklFsw-@aspen.lan>
- <aSVnulk0yfAd4UCx@pengutronix.de>
- <aSWUOoyusb2BJ6QA@aspen.lan>
+	s=arc-20240116; t=1764076260; c=relaxed/simple;
+	bh=WESIcmO8Wb6E2IWkOQ4yIhObYfNnW8ZF8heQ1rb04DQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NOfDacZVs5VXof38SFWzVdHuhlCNs7qBQr8eO9CHZsTPx9C+GLfdrq8ahqZKa3DCMMdlye6P26UC0ECOxZ4lqjXxvTSWljC3sCF4xrRi6cgrH3NYAki6diTQeM4XPGNle68ok/bZ9S/THTKEalXqVyMQfCicxa/E8hpsKywMdpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CtCvQfaN; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=U0dwF6b/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CtCvQfaN; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=U0dwF6b/; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6DCE35BD12;
+	Tue, 25 Nov 2025 13:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764076257; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SU4Jg/dD5WoZXzs8WKG18kFR1gP37G36Wp8wI+XfWqs=;
+	b=CtCvQfaN7av2wok3vHBhCq+07UIL2rqJMw8yHMOTrQn8xkZvQ+FMJBsqkHU9ZIKmxl9sBP
+	2I5wK0gK5dYSn5uXgPKMwegUOhqeGaSKBdsBkCaxi8Y9WUUcKSJAFvSNbOntZmi7PjAehB
+	Yvv4G5TQdc7APuEFDInazUbiBMOlo5M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764076257;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SU4Jg/dD5WoZXzs8WKG18kFR1gP37G36Wp8wI+XfWqs=;
+	b=U0dwF6b/GoNQ1iqx1LuYTLSb9EyOgAnoguXOMt/DLUlUFcoA6OM2VNYajx5WHsgpo7CGa1
+	CvpSORy114Xf5XBQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CtCvQfaN;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="U0dwF6b/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764076257; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SU4Jg/dD5WoZXzs8WKG18kFR1gP37G36Wp8wI+XfWqs=;
+	b=CtCvQfaN7av2wok3vHBhCq+07UIL2rqJMw8yHMOTrQn8xkZvQ+FMJBsqkHU9ZIKmxl9sBP
+	2I5wK0gK5dYSn5uXgPKMwegUOhqeGaSKBdsBkCaxi8Y9WUUcKSJAFvSNbOntZmi7PjAehB
+	Yvv4G5TQdc7APuEFDInazUbiBMOlo5M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764076257;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=SU4Jg/dD5WoZXzs8WKG18kFR1gP37G36Wp8wI+XfWqs=;
+	b=U0dwF6b/GoNQ1iqx1LuYTLSb9EyOgAnoguXOMt/DLUlUFcoA6OM2VNYajx5WHsgpo7CGa1
+	CvpSORy114Xf5XBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA5173EA63;
+	Tue, 25 Nov 2025 13:10:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DJTtM9+qJWkaGAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 25 Nov 2025 13:10:55 +0000
+Message-ID: <d1decb2e-ce22-47db-9e17-2492364e5886@suse.de>
+Date: Tue, 25 Nov 2025 14:10:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] drm: Remove remaining support for kdb
+To: simona@ffwll.ch, airlied@gmail.com, alexander.deucher@amd.com,
+ christian.koenig@amd.com, lyude@redhat.com, dakr@kernel.org, deller@gmx.de,
+ mripard@kernel.org, maarten.lankhorst@linux.intel.com,
+ jason.wessel@windriver.com, danielt@kernel.org, dianders@chromium.org
+Cc: dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251125130634.1080966-1-tzimmermann@suse.de>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20251125130634.1080966-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aSWUOoyusb2BJ6QA@aspen.lan>
+X-Rspamd-Queue-Id: 6DCE35BD12
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,amd.com,redhat.com,kernel.org,gmx.de,linux.intel.com,windriver.com,chromium.org];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:dkim]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
 
-On Tue, 25 Nov 2025, Daniel Thompson wrote:
 
-> On Tue, Nov 25, 2025 at 09:24:26AM +0100, Michael Grzeschik wrote:
-> > On Tue, Nov 18, 2025 at 12:52:14PM +0000, Daniel Thompson wrote:
-> > > On Fri, Nov 14, 2025 at 02:09:56PM +0000, Mark Brown wrote:
-> > > > On Thu, Jul 31, 2025 at 10:47:18AM +0200, Michael Grzeschik wrote:
-> > > > > Currently when calling pwm_apply_might_sleep in the probe routine
-> > > > > the pwm will be configured with an not fully defined state.
-> > > > >
-> > > > > The duty_cycle is not yet set in that moment. There is a final
-> > > > > backlight_update_status call that will have a properly setup state.
-> > > > > However this change in the backlight can create a short flicker if the
-> > > > > backlight was already preinitialised.
-> > > >
-> > > > I'm seeing the libre.computer Renegade Elite producing warnings during
-> > > > boot in -next which bisect to this patch.  The warnings are:
-> > > >
-> > > > [   24.175095] input: adc-keys as /devices/platform/adc-keys/input/input1
-> > > > [   24.176612] ------------[ cut here ]------------
-> > > > [   24.177048] WARNING: CPU: 0 PID: 0 at kernel/context_tracking.c:127 ct_kernel_exit.constprop.0+0x98/0xa0
-> > > >
-> > > > ...
-> > > >
-> > > > [   24.190106] Call trace:
-> > > > [   24.190325]  ct_kernel_exit.constprop.0+0x98/0xa0 (P)
-> > > > [   24.190775]  ct_idle_enter+0x10/0x20
-> > > > [   24.191096]  cpuidle_enter_state+0x1fc/0x320
-> > > > [   24.191476]  cpuidle_enter+0x38/0x50
-> > > > [   24.191802]  do_idle+0x1e4/0x260
-> > > > [   24.192094]  cpu_startup_entry+0x34/0x3c
-> > > > [   24.192444]  rest_init+0xdc/0xe0
-> > > > [   24.192734]  console_on_rootfs+0x0/0x6c
-> > > > [   24.193082]  __primary_switched+0x88/0x90
-> > > > [   24.193445] ---[ end trace 0000000000000000 ]---
-> > > >
-> > > > which seems a little surprising but there is some console stuff there
-> > > > that looks relevant.
-> > > >
-> > > > Full log:
-> > > >
-> > > >     https://lava.sirena.org.uk/scheduler/job/2086528#L897
-> > >
-> > > Michael, reading these logs it looks to me like the underlying oops
-> > > is this backtrace (which makes a lot more sense given the code you
-> > > altered):
-> > >
-> > > [   24.133631] Call trace:
-> > > [   24.133853]  pwm_backlight_probe+0x830/0x868 [pwm_bl] (P)
-> > > [   24.134341]  platform_probe+0x5c/0xa4
-> > > [   24.134679]  really_probe+0xbc/0x2c0
-> > > [   24.135001]  __driver_probe_device+0x78/0x120
-> > > [   24.135391]  driver_probe_device+0x3c/0x154
-> > > [   24.135765]  __driver_attach+0x90/0x1a0
-> > > [   24.136111]  bus_for_each_dev+0x7c/0xdc
-> > > [   24.136462]  driver_attach+0x24/0x38
-> > > [   24.136785]  bus_add_driver+0xe4/0x208
-> > > [   24.137124]  driver_register+0x68/0x130
-> > > [   24.137468]  __platform_driver_register+0x24/0x30
-> > > [   24.137888]  pwm_backlight_driver_init+0x20/0x1000 [pwm_bl]
-> > > [   24.138389]  do_one_initcall+0x60/0x1d4
-> > > [   24.138735]  do_init_module+0x54/0x23c
-> > > [   24.139073]  load_module+0x1760/0x1cf0
-> > > [   24.139407]  init_module_from_file+0x88/0xcc
-> > > [   24.139787]  __arm64_sys_finit_module+0x1bc/0x338
-> > > [   24.140207]  invoke_syscall+0x48/0x104
-> > > [   24.140549]  el0_svc_common.constprop.0+0x40/0xe0
-> > > [   24.140970]  do_el0_svc+0x1c/0x28
-> > > [   24.141268]  el0_svc+0x34/0xec
-> > > [   24.141548]  el0t_64_sync_handler+0xa0/0xf0
-> > > [   24.141920]  el0t_64_sync+0x198/0x19c
-> > >
-> > > Should we back out the patch for now?
-> >
-> > I would be fine with that. But actually I would like to see the
-> > proof that without the patch, this backtrace will not trigger.
-> > Looking through the codepath, I could not directly find a case
-> > where this should happen.
-> 
-> I took a look at the logs Mark provided and I think the problem
-> is a divide-by-zero caused by calling pwm_backlight_brightness_default()
-> when state.period is zero.
-> 
-> It emerges as a BRK because the compiler recognised there is undefined
-> behaviour. The zero that we divide by comes from a ternary condition in
-> fls(). The compiler recognises one of the conditional code paths will
-> result in undefined behaviour so, it doesn't need to generating code for
-> the bad code path, it just injects a brk instruction.
-> 
-> 
-> > Mark, is there a way to rerun this without my patch?
-> 
-> I have to admit I thought this was why Mark provided a bisect log!
-> 
-> Anyhow, unless someone can refute the analysis above I do think we need
-> to pull the patch.
 
-Un-applied now, thanks.
+Am 25.11.25 um 13:52 schrieb Thomas Zimmermann:
+> Remove the rest of the kbd support from DRM. Driver support has been
+
+s/kbd/kdb/g  as in 'kernel debugger'
+
+> broken for years without anyone complaining.
+>
+> Kdb cannot use regular DRM mode setting, so DRM drivers have to
+> implement an additional hook to make it work (in theory). As outlined
+> by Sima in commit 9c79e0b1d096 ("drm/fb-helper: Give up on kgdb for
+> atomic drivers") from 2017, kdb is not compatible with DRM atomic mode
+> setting. Non-atomic mode setting meanwhile has become rare.
+>
+> Only 3 DRM drivers implement the hooks for kdb support. Amdgpu and
+> nouveau use non-atomic mode setting on older devices. But both drivers
+> have switched to generic fbdev emulation, which isn't compatible with
+> kdb. Radeon still runs kdb, but it doesn't work in practice. See the
+> commits in this series for details
+>
+> Therefore remove the remaining support for kdb from the DRM drivers
+> and from DRM fbdev emulation. Also remove the hooks from fbdev, as
+> there are no fbdev drivers with kdb support.
+>
+> If we ever want to address kdb support within DRM drivers, a place to
+> start would be the scanout buffers used by DRM's panic screen. These
+> use the current display mode. They can be written and flushed without
+> mode setting involved.
+>
+> Note: kdb over serial lines is not affected by this series and continues
+> to work as before.
+>
+> Thomas Zimmermann (5):
+>    drm/amdgpu: Do not implement mode_set_base_atomic callback
+>    drm/nouveau: Do not implement mode_set_base_atomic callback
+>    drm/radeon: Do not implement mode_set_base_atomic callback
+>    drm/fbdev-helper: Remove drm_fb_helper_debug_enter/_leave()
+>    fbcon: Remove fb_debug_enter/_leave from struct fb_ops
+>
+>   Documentation/process/debugging/kgdb.rst    |  28 -----
+>   drivers/gpu/drm/amd/amdgpu/dce_v10_0.c      |  35 ++-----
+>   drivers/gpu/drm/amd/amdgpu/dce_v6_0.c       |  35 ++-----
+>   drivers/gpu/drm/amd/amdgpu/dce_v8_0.c       |  35 ++-----
+>   drivers/gpu/drm/drm_fb_helper.c             | 108 --------------------
+>   drivers/gpu/drm/nouveau/dispnv04/crtc.c     |  24 +----
+>   drivers/gpu/drm/radeon/atombios_crtc.c      |  74 ++++----------
+>   drivers/gpu/drm/radeon/radeon_legacy_crtc.c |  23 ++---
+>   drivers/gpu/drm/radeon/radeon_mode.h        |  10 +-
+>   drivers/video/fbdev/core/fbcon.c            |  24 -----
+>   drivers/video/fbdev/core/fbcon.h            |   1 -
+>   include/drm/drm_fb_helper.h                 |  21 ----
+>   include/drm/drm_modeset_helper_vtables.h    |  23 -----
+>   include/linux/fb.h                          |   4 -
+>   14 files changed, 63 insertions(+), 382 deletions(-)
+>
+>
+> base-commit: 0a21e96e0b6840d2a4e0b45a957679eeddeb4362
 
 -- 
-Lee Jones [李琼斯]
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
 
