@@ -1,110 +1,124 @@
-Return-Path: <linux-fbdev+bounces-5451-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5453-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035E3CA2FAB
-	for <lists+linux-fbdev@lfdr.de>; Thu, 04 Dec 2025 10:26:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B16CA4097
+	for <lists+linux-fbdev@lfdr.de>; Thu, 04 Dec 2025 15:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 390743007A0F
-	for <lists+linux-fbdev@lfdr.de>; Thu,  4 Dec 2025 09:26:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE39D300671A
+	for <lists+linux-fbdev@lfdr.de>; Thu,  4 Dec 2025 14:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD3A335087;
-	Thu,  4 Dec 2025 09:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C63331A45;
+	Thu,  4 Dec 2025 14:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXMJFlx5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a3Orrx4B"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C09334C06
-	for <linux-fbdev@vger.kernel.org>; Thu,  4 Dec 2025 09:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1E28632B;
+	Thu,  4 Dec 2025 14:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764839863; cv=none; b=G+kZJBh3fX6s0P13RGwbNteaFfHQIi2s5jJ6ukTbNEJluSYYduLNFGx48Y0Ylsrj0M28kenF3IB/YycjQapiYpAWEeQG+DaTp9y5wM8OBM56/Kab5fDlwJG3JiCGvuEzouMLCbpxW98wOtx3b1p/motTfjSn/jt5OB3eteBTDoY=
+	t=1764858928; cv=none; b=UPJ0Rg4PNpjzfMloOTBVdnbjoyGIB8h5W2BDdmjv3QajiQ+CQ+bNe9B5DdKt5c71HiJIS8cumkhiIbCR+Yut5GItmeyItmn79umY2PpTw3XJQw3nqyUZiEE7Z/tyuJNVZYA5hxYJXTv2Hr/uiLSpwDBZrJ8zQGZiO31MeW+ua3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764839863; c=relaxed/simple;
-	bh=bdxR7v9DL4giaQ0nD6cGSOn8HPdLK+CBHB+mv5p51TE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rRwrzqEVKMtJ8+iMtaGwHYY/B5a8BgX9H6mt4VTYpU6r2n/t4Qvn4Z/W3VJm1GdMCut2w9IRkAopfodFjssKA0XABrIDRvREdWHJrxlrMB3/wF3YupTKmwM0rmoKJhiKceJcIKNlfbJlgA5CeCJ2dzM7wFBt5+RjfRKcHbPOfMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXMJFlx5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866A6C4AF0B
-	for <linux-fbdev@vger.kernel.org>; Thu,  4 Dec 2025 09:17:43 +0000 (UTC)
+	s=arc-20240116; t=1764858928; c=relaxed/simple;
+	bh=lLVclWI8aKJ6C/SzCVMRPXeSdT2Og1oCcOJ4yEa2BEI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QOWwMyQhJeGS5NmkFYcYRCorMqDk9KzC8grk3LkQhmJnuHrrkbPiyc0s1lGuiOHYvs9c6pHL+UY49VLZkY5Oc4OpWtiX4kZzM+lePWAq0bi2JylTz5Bi+KMTguTqWZ2kE/YzcdvuTCoZ0Zk4MFkYUpD4rpGOkLUBas3FfiIvA9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a3Orrx4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3CCA5C4CEFB;
+	Thu,  4 Dec 2025 14:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764839863;
-	bh=bdxR7v9DL4giaQ0nD6cGSOn8HPdLK+CBHB+mv5p51TE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lXMJFlx51rTedas29KHnOrmyDSqkZ9OMYrKSulTiX57PBwHm2eQiqLevCstNDBnVT
-	 nCVGTNp7fzETozRNuQAA5mbYmXhdurch8QsIn1ts0SUX0878qPP6F5FVDYrBr3wT9W
-	 AkgTKbQXFCzm1WMgZMKHaINZLTSqwLCCAD0dAxU5Kk45tsxO0uZPJvt91vcWn+0bYC
-	 C2IgMJeK7my4B4xpP9tsR0pWBNKZ4d4GMAlf00wpJGT2bjit1qFoztrZDlC8sl6QNP
-	 7TWkDlYiX/OoujuaVpQfW9eeV92YLP9lkU3JZRQx/bEk4561i1k13l8QYbKxWEI4oz
-	 nLySSoiGo2EBQ==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-596ba05aaecso664917e87.0
-        for <linux-fbdev@vger.kernel.org>; Thu, 04 Dec 2025 01:17:43 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUtpvmAh5uGG42LtkC8lhwEJ6fx7GuNwnUn5FTYr1Lz8UTcM/vK+JneQqHrbhNFYEugEMvA/89CLGF8Sw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3P2evaKknMzg+1IiPpX0bXmgeTKXXcU9yh+CBwMrW90c3U1Zq
-	dDcjgiSQisN8PjU/F1Uz8YnnUEG/YNrJ2lcC23vq3m4gHv3DWKU/RAJYcKh8wjCOJNrAi9bxnE5
-	qIUaGitWlzxmJLC0bx6OpCZByBKCggeU=
-X-Google-Smtp-Source: AGHT+IEepIIomfWFRr0Rx3UmKjb+4HGFPEe9u/4871RbpTRAjdKjp2QqrAmQWNspq2CaP1lGYKWgUBnucw5FQcFMAE4=
-X-Received: by 2002:a05:6512:3b0e:b0:55f:4633:7b2 with SMTP id
- 2adb3069b0e04-597d3fdddf4mr1972090e87.46.1764839861912; Thu, 04 Dec 2025
- 01:17:41 -0800 (PST)
+	s=k20201202; t=1764858928;
+	bh=lLVclWI8aKJ6C/SzCVMRPXeSdT2Og1oCcOJ4yEa2BEI=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=a3Orrx4ByjhGwawEhLItzd/docva392ZBL/hWJG3yKYDmOBZoVvA211hPY2eQkKtG
+	 a6FMTcTcBL2Nmsnr4ZkgF3rG/JTqalgOcO9xzIzOfLJpjmgRTqUCyqRrWRa/9mODNE
+	 P9xT+1Q1h7vt8gjSWvjTW1maL92jH+fHE8EME8UmdP+DRjMWFbo/T+CFxGrQPaM8LQ
+	 j7am9GHrj55ILICWZ4GxmL9vr1Z9j6+hKmdvPP5OHT1hcTKCHZ29wAmg+GOuvhqrjI
+	 B+n8eGo+k8sLP8PaWTnkaZ9sqw3fo2ie75RWSGN9rDSNJpXqVV0DdJGzIDn89PWmhg
+	 IvWyr6bCM/sRA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29D5DD1F9AF;
+	Thu,  4 Dec 2025 14:35:28 +0000 (UTC)
+From: Petri Karhula via B4 Relay <devnull+petri.karhula.novatron.fi@kernel.org>
+Subject: [PATCH v5 0/2] Backlight driver to control backlight behind
+ Congatec Board Controller.
+Date: Thu, 04 Dec 2025 14:35:25 +0000
+Message-Id: <20251204-cgbc-backlight-v5-0-26f1be6a69c3@novatron.fi>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251126160854.553077-1-tzimmermann@suse.de> <aSe1ZBXa3JBidhem@r1chard>
- <fc4ea259-3389-46e2-b860-972aa8179507@suse.de>
-In-Reply-To: <fc4ea259-3389-46e2-b860-972aa8179507@suse.de>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 4 Dec 2025 10:17:29 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE8Q6FGX5+64gPyW=ExicR4UbnEDeW4ycCsSsD2WtaYJA@mail.gmail.com>
-X-Gm-Features: AWmQ_bm9xn92SSdHRbzJXHCDOFUkHMVJIr0kEdVYpgmMwEspup4WiDKMgeR24mo
-Message-ID: <CAMj1kXE8Q6FGX5+64gPyW=ExicR4UbnEDeW4ycCsSsD2WtaYJA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/9] arch,sysfb,efi: Support EDID on non-x86 EFI systems
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Richard Lyu <richard.lyu@suse.com>, javierm@redhat.com, arnd@arndb.de, 
-	helgaas@kernel.org, x86@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC2cMWkC/3XMy6rCMBSF4VeRjI1k71zanpHvIQ6SndgGpT2kJ
+ SjSdzc6qgSH/4L1PdkcUgwz+9s9WQo5znEaS+j9jtFgxz7w6EszFKgBoOXUO+LO0vUW+2HhUhO
+ A6LwTrmXl9J/CJd4/4OlceojzMqXHx8/wXn9SGThwImNJSwFCquM4ZbukaTxcIntjGbdAVwHIB
+ VdeBe8bssZgDcgNgLoCZAGgtUGhaTsFUANqCzQVoApg0GiUroFG+m9gXdcXs7vILHEBAAA=
+X-Change-ID: 20251118-cgbc-backlight-35c1109db0b8
+To: Thomas Richard <thomas.richard@bootlin.com>, Lee Jones <lee@kernel.org>, 
+ Daniel Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, 
+ Helge Deller <deller@gmx.de>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-fbdev@vger.kernel.org, Petri Karhula <petri.karhula@novatron.fi>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764858927; l=1655;
+ i=petri.karhula@novatron.fi; s=20251118; h=from:subject:message-id;
+ bh=lLVclWI8aKJ6C/SzCVMRPXeSdT2Og1oCcOJ4yEa2BEI=;
+ b=B6dFIzaNwfEif/FlvO0zjYuXO4Lz3oSLFRx/EYBet2+3f0lQcu5SlqVz41s6njaAVp5nDg2k+
+ c04olMITHRPDP6chKxqoUg1BIA5jY1FJKWA5WNgxyhwiqtNvfgcUfha
+X-Developer-Key: i=petri.karhula@novatron.fi; a=ed25519;
+ pk=LRYJ99jPPsHJwdJEPkqlmzAMqo6oyw7I421aHEfDp7o=
+X-Endpoint-Received: by B4 Relay for petri.karhula@novatron.fi/20251118
+ with auth_id=567
+X-Original-From: Petri Karhula <petri.karhula@novatron.fi>
+Reply-To: petri.karhula@novatron.fi
 
-On Thu, 27 Nov 2025 at 08:43, Thomas Zimmermann <tzimmermann@suse.de> wrote:
->
-> Hi
->
-> Am 27.11.25 um 03:20 schrieb Richard Lyu:
-> > Hi Thomas,
-> >
-> > I am attempting to test this patch series but encountered merge conflicts when applying it to various trees.
-> > Could you please clarify the specific base commit (or branch/tag) this series was generated against?
->
-> Thanks for testing.
->
-> >
-> > When testing on the next branch on commits 7a2ff00 and e41ef37, I hit a conflict on PATCH v3 4/9:
-> > patching file drivers/pci/vgaarb.c
-> > Hunk #2 FAILED at 557.
-> > 1 out of 2 hunks FAILED -- rejects in file drivers/pci/vgaarb.c
-> >
-> > When testing against 3a86608 (Linux 6.18-rc1), the following conflicts occurred:
-> > patching file drivers/gpu/drm/sysfb/efidrm.c
-> > Hunk #1 FAILED at 24.
-> > 1 out of 2 hunks FAILED -- rejects in file drivers/gpu/drm/sysfb/efidrm.c
-> > patching file drivers/gpu/drm/sysfb/vesadrm.c
-> > Hunk #1 FAILED at 25.
-> > 1 out of 2 hunks FAILED -- rejects in file drivers/gpu/drm/sysfb/vesadrm.c
-> >
-> > Please let me know the correct base, and I will retest.
->
-> It's in the cover letter: d724c6f85e80a23ed46b7ebc6e38b527c09d64f5 The
-> commit is in linux-next. The idea is that the EFI tree can pick up the
-> changes easily in the next cycle. linux-next seemed like the best
-> choice. Best regards Thomas
+This driver provides backlight brightness control through the Linux
+backlight subsystem. It communicates with the board controller to
+adjust LCD backlight using PWM signals. Communication is done
+through Congatec Board Controller core driver.
+    
 
-Thanks. I will queue this up as soon as -rc1 is released.
+Signed-off-by: Petri Karhula <petri.karhula@novatron.fi>
+---
+Changes in v5:
+- Added current and requested brightnesses to verification error message.
+- Link to v4: https://lore.kernel.org/r/20251127-cgbc-backlight-v4-0-626523b7173d@novatron.fi
+
+Changes in v4:
+- Factor out brightness read into a helper
+- Set backlight_properties.scale to BACKLIGHT_SCALE_LINEAR
+- Link to v3: https://lore.kernel.org/r/20251125-cgbc-backlight-v3-0-18ae42689411@novatron.fi
+
+Changes in v3:
+- Fixed review comments and simplified the structure of the driver
+- Link to v2: https://lore.kernel.org/r/20251119-cgbc-backlight-v2-0-4d4edd7ca662@novatron.fi
+
+Changes in v2:
+- Separated Board Controller core driver change into its own patch
+- Link to v1: https://lore.kernel.org/r/20251118-cgbc-backlight-v1-1-cc6ac5301034@novatron.fi
+
+---
+Petri Karhula (2):
+      backlight: Add Congatec Board Controller (CGBC) backlight support
+      mfd: cgbc: Add support for backlight
+
+ drivers/mfd/cgbc-core.c           |   1 +
+ drivers/video/backlight/Kconfig   |  11 +++
+ drivers/video/backlight/Makefile  |   1 +
+ drivers/video/backlight/cgbc_bl.c | 180 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 193 insertions(+)
+---
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
+change-id: 20251118-cgbc-backlight-35c1109db0b8
+
+Best regards,
+-- 
+Petri Karhula <petri.karhula@novatron.fi>
+
+
 
