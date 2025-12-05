@@ -1,220 +1,129 @@
-Return-Path: <linux-fbdev+bounces-5463-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5466-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C988BCA72C1
-	for <lists+linux-fbdev@lfdr.de>; Fri, 05 Dec 2025 11:33:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B109BCA78E8
+	for <lists+linux-fbdev@lfdr.de>; Fri, 05 Dec 2025 13:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7B523011ED3
-	for <lists+linux-fbdev@lfdr.de>; Fri,  5 Dec 2025 10:33:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC59F3079A1C
+	for <lists+linux-fbdev@lfdr.de>; Fri,  5 Dec 2025 12:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E89A3191A8;
-	Fri,  5 Dec 2025 10:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE89332ED23;
+	Fri,  5 Dec 2025 12:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="akJniKg7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hvozc79D"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03549313523;
-	Fri,  5 Dec 2025 10:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DBB3101DD;
+	Fri,  5 Dec 2025 12:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764930777; cv=none; b=BMbUYfRQLVFuQeNZua7VyjkkP2AuA8PZ+E1xKW1YThLDhvRvjsssa+FMYFCNp0lR9fKp+EK0YiMX2Pkq9ze9cSzfjKJbwunmwDiIJvxzfcnsUHGVqCLB3war0y3sge0HKMC9YzF9dLhP37DAYScwUJwgehxCcSEyfGpTBggdOG4=
+	t=1764937191; cv=none; b=c9ekIU88+3xIDld2R+1LWpz8RlTU4ikzeo9HFUJwu4BR/Vqu801PgWC31qgWCLIWRKoFGRpQJ0LLjSAXqv//TcF9PO8hO4Z1iFFBdtuiHIaUNN1rwiYuDG287eObZZ/KVkQ6MU7O/YCz6aF6jUDAdQ3F9ZA2SzS2YwusVMQWmYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764930777; c=relaxed/simple;
-	bh=V9M8hjgGQ9hrOMIoJQBhUVwM0eQGHQ14u8OjwqXrNGQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r0ytkkeEsNQKec1zCGHr/KbL3AM82wi1UP2IYSxwi2eHEfhb4PKyJibAJkAXvhkHgBbUkCNB1p2+8RzjwjLQpWYDRoIGI4am+q+XSdNwIYOFzHqYRT73XTfLOMHUTVlcL1lWTqFDqYcaGKwOowJ754Tn28p2+7XAUBvBUtBZkqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=akJniKg7; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1764930749; x=1765535549; i=deller@gmx.de;
-	bh=6bfDO+uLvOSGQXGW3TkYOKRK1XJyCw2LRBDcIhSJU7Q=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=akJniKg7IVtZl11BMF42VGqt0jwUHj+0tj3egmVGCaSoIyd6rbJxTDpwvJodlBuW
-	 BxP1SlBE+kuDUYiF6CLTyhuZ0OmhBCsA1r8dTCFtHwYrXovnRcrou4cgSizt/4Cs0
-	 WKdxHl6i8YMDgTj/vF5iaYyWS2fszPK+Vq5ZviQ+/JcwT41XXSmJjubXqQ0sOr2vB
-	 95hTtkStlnIiw4JCt06LJCKmA+SmNOQLEY2K2nooU3Py2J5xJBK5dx4ExRVUekLl5
-	 FGu/lDkN0YkiwkrHvNpFPVtKasAFTqjwE94CL8UlVbVy3wiKletNFFECSOOmYnQNn
-	 b05uCoeagsWc9qyzgA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.51.145]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MrhQC-1voNBY3iGy-00epBS; Fri, 05
- Dec 2025 11:32:28 +0100
-Message-ID: <bf69bf02-35f1-493f-84d7-957f25b38b4c@gmx.de>
-Date: Fri, 5 Dec 2025 11:32:27 +0100
+	s=arc-20240116; t=1764937191; c=relaxed/simple;
+	bh=pEX+bLa7nulKt3xh0uUuF7vt+hghow9zmUReq6+oyb8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tkEv/lsIpSDIR4HbgJW2i9z7F4/qJAkFtFa8TRU2jaOiu9uVOt5QETASe9hy57aqPKE4XkV0L5co5oSKr/T7QkTnIx65b1NeuK4NTs9jEJXkRVBcqzUjSyApt5hmNcuXUkF1yCMAqhBu2U6vxUY1CqRFoZ0Yg879nlpCNTi2kfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hvozc79D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8F797C4CEF1;
+	Fri,  5 Dec 2025 12:19:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764937190;
+	bh=pEX+bLa7nulKt3xh0uUuF7vt+hghow9zmUReq6+oyb8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Hvozc79DoqwbB1i0hUVri1O/9bPNsmu9zcUQjkYQwzNBA4T7uM8gYPIj0v4qI75Wj
+	 NJpoYF4Gt4Hkm+yLJ7KmFZgJ24ht+OMa0vU3CTQHX1/qIq1Qj+bjwlYey+rGFxMjPM
+	 RTEligIqtfWK4dWW3xpKyA5wTRNxhS+WD8oywn26czQ2dGkm9ymNGpG63W6nsfaE5r
+	 uVJ0ypvp04wuq4QsVY7Rm+dOwNSqLR3B5xsUqlc7cttvksfvoduTDDEbJoJhlaDcxh
+	 ntsKS2ZKBFU36TBppxF52SUVlHCrg4DSHelqK4g3xUeTnMX7nEUDQTGCRz2Z2Z+rC6
+	 lAg9+TTKGi+Mw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76003D2F7CC;
+	Fri,  5 Dec 2025 12:19:50 +0000 (UTC)
+From: Petri Karhula via B4 Relay <devnull+petri.karhula.novatron.fi@kernel.org>
+Subject: [PATCH v6 0/2] Backlight driver to control backlight behind
+ Congatec Board Controller.
+Date: Fri, 05 Dec 2025 12:19:46 +0000
+Message-Id: <20251205-cgbc-backlight-v6-0-e4175b0bf406@novatron.fi>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fbdev: ssd1307fb: fix potential page leak in
- ssd1307fb_probe()
-To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Cc: niederp@physik.uni-kl.de, tomi.valkeinen@ti.com,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org
-References: <20251203035546.26849-1-nihaal@cse.iitm.ac.in>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
- HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
- r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
- CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
- 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
- dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
- Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
- GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
- aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
- 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
- ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
- FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
- uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
- uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
- REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
- qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
- iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
- gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
- Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
- qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
- 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
- dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
- rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
- UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
- eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
- ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
- dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
- lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
- 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
- xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
- wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
- fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
- Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
- l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
- RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
- BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
- Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
- XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
- MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
- FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
- 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
- ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20251203035546.26849-1-nihaal@cse.iitm.ac.in>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KaBoVDh5Xn0iqqpDH+qYeo9tlflrsYUMIPDSIUEWD3So5NGBDdM
- BcyPfyiWbF+S0h3IgTQtnzoT954XV4pOXs4rK9HoKuNuHF33xD13y24QQMw+6f+nZ7YRCdg
- qqQil3y8cIfLsmGb6thrvVTr7fmko7eXolODY750Vwcxj5oFSdI1pwIUH1i2AzywEwCOAtB
- 24Ttb7haH1ZkvqBfkQBuQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:OOLv9bb5hVM=;Ncml2NB56DeYEv8WBSPLguDBz0E
- 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
- DrnkOELhyiwH1p+8D1D25h+xrE4znaz1LOedNQ
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOLNMmkC/3XMwU7EIBSF4VeZsBbDvcBt68r3MC7gQluiaSe0I
+ ZpJ311mNtYQl/9JzncTW8wpbuLlchM5lrSldalBTxfBs1umKFOoLVChBYBe8uRZescfn2mad6k
+ tA6gheOV7UU/XHMf09QDf3mvPadvX/P3wC9zXf6kCEiQzObZagdLmdVmL2/O6PI9J3LGCZ2BoA
+ JRKmmBiCB07ImwBfQLQNoCuAPQuGqR+MAAtYM5A1wCmAoRkUfsOOh1awP4CqEwD2AogjeAjORp
+ Y/wWO4/gBDZk68bIBAAA=
+X-Change-ID: 20251118-cgbc-backlight-35c1109db0b8
+To: Thomas Richard <thomas.richard@bootlin.com>, Lee Jones <lee@kernel.org>, 
+ Daniel Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, 
+ Helge Deller <deller@gmx.de>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-fbdev@vger.kernel.org, Petri Karhula <petri.karhula@novatron.fi>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764937189; l=1809;
+ i=petri.karhula@novatron.fi; s=20251118; h=from:subject:message-id;
+ bh=pEX+bLa7nulKt3xh0uUuF7vt+hghow9zmUReq6+oyb8=;
+ b=gLn+8Xttcr+Zg9puF6FZ+9bk8zqLhGLVdWk6ot+Av6CVWYP7On+VC7iXeyOPEwiGoy8fPoRdV
+ bu0pi36oTiJAqezsK7Du3RrumqeZOLePNvHMo5HYPTqRAah4Pg5vwT7
+X-Developer-Key: i=petri.karhula@novatron.fi; a=ed25519;
+ pk=LRYJ99jPPsHJwdJEPkqlmzAMqo6oyw7I421aHEfDp7o=
+X-Endpoint-Received: by B4 Relay for petri.karhula@novatron.fi/20251118
+ with auth_id=567
+X-Original-From: Petri Karhula <petri.karhula@novatron.fi>
+Reply-To: petri.karhula@novatron.fi
 
-On 12/3/25 04:55, Abdun Nihaal wrote:
-> The page allocated for vmem using __get_free_pages() is not freed on the
-> error paths after it. Fix that by adding a corresponding __free_pages()
-> call to the error path.
->=20
-> Fixes: facd94bc458a ("fbdev: ssd1307fb: Allocate page aligned video memo=
-ry.")
-> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-> ---
-> Compile tested only. Not tested on hardware.
->=20
-> v1->v2:
-> - Fix incorrect call to __free_pages with uninitialized values as
->    pointed out by Helge Deller. Now, the patch uses vmem and vmem_size
->    which hold valid values at the goto site.
->=20
->    Thanks for catching. I'm sorry I overlooked this in v1.
->=20
-> v1 link: https://lore.kernel.org/all/20251202191225.111661-1-nihaal@cse.=
-iitm.ac.in/
->=20
->   drivers/video/fbdev/ssd1307fb.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-applied.
+This driver provides backlight brightness control through the Linux
+backlight subsystem. It communicates with the board controller to
+adjust LCD backlight using PWM signals. Communication is done
+through Congatec Board Controller core driver.
+    
 
-Thanks!
-Helge
+Signed-off-by: Petri Karhula <petri.karhula@novatron.fi>
+---
+Changes in v6:
+- No code changes, just collected tags.
+- Link to v5: https://lore.kernel.org/r/20251204-cgbc-backlight-v5-0-26f1be6a69c3@novatron.fi
+
+Changes in v5:
+- Added current and requested brightnesses to verification error message.
+- Link to v4: https://lore.kernel.org/r/20251127-cgbc-backlight-v4-0-626523b7173d@novatron.fi
+
+Changes in v4:
+- Factor out brightness read into a helper
+- Set backlight_properties.scale to BACKLIGHT_SCALE_LINEAR
+- Link to v3: https://lore.kernel.org/r/20251125-cgbc-backlight-v3-0-18ae42689411@novatron.fi
+
+Changes in v3:
+- Fixed review comments and simplified the structure of the driver
+- Link to v2: https://lore.kernel.org/r/20251119-cgbc-backlight-v2-0-4d4edd7ca662@novatron.fi
+
+Changes in v2:
+- Separated Board Controller core driver change into its own patch
+- Link to v1: https://lore.kernel.org/r/20251118-cgbc-backlight-v1-1-cc6ac5301034@novatron.fi
+
+---
+Petri Karhula (2):
+      backlight: Add Congatec Board Controller (CGBC) backlight support
+      mfd: cgbc: Add support for backlight
+
+ drivers/mfd/cgbc-core.c           |   1 +
+ drivers/video/backlight/Kconfig   |  11 +++
+ drivers/video/backlight/Makefile  |   1 +
+ drivers/video/backlight/cgbc_bl.c | 180 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 193 insertions(+)
+---
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
+change-id: 20251118-cgbc-backlight-35c1109db0b8
+
+Best regards,
+-- 
+Petri Karhula <petri.karhula@novatron.fi>
+
+
 
