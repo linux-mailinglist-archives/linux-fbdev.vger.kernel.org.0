@@ -1,89 +1,103 @@
-Return-Path: <linux-fbdev+bounces-5515-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5518-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B1FCBB2D8
-	for <lists+linux-fbdev@lfdr.de>; Sat, 13 Dec 2025 20:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37B9CBB6B6
+	for <lists+linux-fbdev@lfdr.de>; Sun, 14 Dec 2025 06:49:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1755930081A6
-	for <lists+linux-fbdev@lfdr.de>; Sat, 13 Dec 2025 19:51:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 589FB30076A2
+	for <lists+linux-fbdev@lfdr.de>; Sun, 14 Dec 2025 05:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA172797B5;
-	Sat, 13 Dec 2025 19:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8C21B142D;
+	Sun, 14 Dec 2025 05:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bMaKPb9X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jJy6q09F"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0143523C51D
-	for <linux-fbdev@vger.kernel.org>; Sat, 13 Dec 2025 19:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1F9A95E
+	for <linux-fbdev@vger.kernel.org>; Sun, 14 Dec 2025 05:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765655481; cv=none; b=oXmMra0g414AI1zEJsRH31gko5Hp+tD1wOaow8jIppatTETWqBbkTEW8nv2xTq2DPOQGEOk8t8oUhMOxAGZJJsiUvIInSPH/5odVtdpn4fa4dPqyWXt7GZK3Y5KoeFaPhVjOrkS6ScsBmTjjURK725YmZa4j+kIWegKnrhKCYus=
+	t=1765691375; cv=none; b=hkaZ40S0UCUUl4lbZRPS75F5CBLMCkLOaOJbF387c5rCpJxNA+mre9uI5PM9Lgr0W3ADrSK5A46zNUoOfOGvVbO2VaoKrzi5SzXxvucrAjlkgEzgh8TlzCqyS766m/us0r89CuqTk9vw3jzVMo7JSgKtXsSxmgJJOoIloJIw3fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765655481; c=relaxed/simple;
-	bh=BwAlneBdYgyxM+NZNn6XPcOW8vAr03luZywi659mMVg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hkUTjr1Vobf0FYydnhxd+nm6wRAeypbkl0FVLu71XviGYnvHZzKevlAEJhSsFiTDmwHEtI5AXT2jkobMBlBb9UXrZylmIWIwh/3gI8Oldcyvw9V9t/MTHvmpQ+gIzaQsvtnbIJuC2OlR5UQBIZomF60x3Eq08U0MaBuGq6iSLmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bMaKPb9X; arc=none smtp.client-ip=209.85.216.42
+	s=arc-20240116; t=1765691375; c=relaxed/simple;
+	bh=/efv7RWjzElgdiVbEJQAtXjJDpHQ3qw31Zwxky6cu8A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fn4d0UyBXB52qbcrPg6eAPpfy6kFLDd0QUMIjL8BcVR5CBb3zVzYm566+qgvQSmhlNW4SWqnWX/Hn++vwTCZQKSSyoRkFJkGy+WU2BY29S/ecoDPTRxqw2tlY/K4HYG3OOJEksFJHjC3xzfQfRGfl9ak0s8yayH795Mr5nb93Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jJy6q09F; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c1d84781bso1319752a91.2
-        for <linux-fbdev@vger.kernel.org>; Sat, 13 Dec 2025 11:51:19 -0800 (PST)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a0ac29fca1so4367745ad.2
+        for <linux-fbdev@vger.kernel.org>; Sat, 13 Dec 2025 21:49:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765655479; x=1766260279; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IsquRE2xz+HwwOQd61l9u2JoVfbUk9ALuRhwzEKiTUI=;
-        b=bMaKPb9XOspYE/uiPYRJDEh2fCIV12WhnM28LPF3KqmAlBgcB7j1Ioqbm0vvyRljEy
-         x8IN/HiUpifvr11XLzka+Mx5pdszdHk4sECMv2w4JXefCpJL4x86Bx1T2lbJNcC8Vc6s
-         UVe7pmU0m+3Mh8HQZqErmEqRfoLbN9Je4LfNW/3HeZV5yKORulqOMbjT22daI+LqFP6L
-         B+Os5wMLEkWHyfZxg1JbQdHOgT3W0tjAIO+L6WmRx7ROrpLxFE5udxBrEDdNmA85eosV
-         ZfJjowmFiyAb1FsrxE8afx7nzagasvXxThMqKeY3o4+lF/2RVIWhJgZITLvbjs6H1qus
-         zwkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765655479; x=1766260279;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1765691374; x=1766296174; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IsquRE2xz+HwwOQd61l9u2JoVfbUk9ALuRhwzEKiTUI=;
-        b=IUur8juyObucE7zhs08gUjrB2vhmoqL1fIcxRZdYvndJIoq4/KS+J3LRYG75G45UAY
-         I2gX37Lzx4BHejOlQNxZ1yMr/34A4QA/rR3bd8/WJ58h8+l0URaai7f1rSJpP2qc5RJQ
-         GbDHFsr9QxPO3mLO/UUJ5VHFwjvfM4s6neYoU9DIgvDEArXRbXVabxh1wMlTQk8kcZD/
-         r7cPYTcmzetXo7FNhkWv18BN3YugPoKRqB5K1HFOCpx7p1AvmO1nvj2uEjbwZtAzXJ6O
-         wUJfMiFmmsL8JHpUKcnXRhrQpS2msIhwYPe8m34OsnZ2uuf3kS6p+mD8HmPI5E54IbaE
-         wzkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxBmUfnofpa+oQVuWa1/iagc2cVWgQUsn0gvkzKXS3WE0kJR1ftEhALIqZp86aY1n+OPNrk8hRTyR95w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxONkdCGkFmOiFX4bLR56ffNiR8xYNqaXTkg2vNl76EmKMnysdQ
-	f3LWWHQ3wqenM2Au8hFli+zi6a0a/0ltdn4kazwQXtvZ43dvJRet8fN0
-X-Gm-Gg: AY/fxX79vRyQhZuTZuZqVYP8jaBennxg43pq4D6vEwNiDTdgCxJiM5T0io7T7EyUr5U
-	xu5e/gCZDhCKzIz9XtuYMLen0ods71YCUP3vIzXiNE7rn3+96PHDZ5k1eisAR/1/x3j7u84TC0V
-	bq/P8Fd5SSpvXWMWJzu0K4PKfr/loUwNrc6S1wIpbU850TOF/D6xz3vAfQxD6eJ/Ua5BUoXJXsr
-	A5eKfhD7TvUmZMbNm+Q8IDxOyMkitqZr2ir7O3HCWQn9wjHLMqCplQdjH9T8VxnCLWbFSDjjrGY
-	ZccLGbHAomT07aTNUCLVyZcGlyH8HWXGnLuUa/IcqftZZkY/DpErLHXQ8aHB1OYwWenLuugRDWE
-	zQdsz/Gi0FitYu9CRnC4HSFfHy3K38VsBjMwSRAyzSjQ5L04SuYPUBi8bybZCsDpdL2iviJCWPJ
-	7wYmaoSCO5QtE7Eblm3Zs=
-X-Google-Smtp-Source: AGHT+IHcREPDF7aTpD+URjYTZa/VwryKmBvbSW4AVWG1PR85eHFFSRycSwlqSkc8yc3qS6yEZ5ct4g==
-X-Received: by 2002:a17:90b:1dce:b0:34a:b4a2:f0bf with SMTP id 98e67ed59e1d1-34abd6e2833mr5665920a91.16.1765655479201;
-        Sat, 13 Dec 2025 11:51:19 -0800 (PST)
+        bh=+hDgRCphZ8iRo09ep5SU5olQTYl13jEHMw2TZJC3PDk=;
+        b=jJy6q09FSju1hG+vgzkvL+v2QF36ZCgmob1DEczqYnp5vMN+njgsPMaSxXgWZIcrVf
+         erhU1iOY1EhdPL+bEBcqP590lmnjn13jfjvMNJM1WPnIpPYc5lam4fMZJvUbnjm9hulM
+         EW2JI0CttRwk97M9uktxxwj+RLtXOHqhKrWxW6n6mTc8fnGHE4sOKtElTVR+9VO1X1D1
+         pkPqR0ZtHXBL8Ok2K3hpuws69/kBPkDXiqxrdekPBkeyTW7nGk+gcjjpT8L5u6aAzr9B
+         NXkGnLlhNY4iOpeJC5xI2N9HLneyH8xXFwhlSfG1t9BTa4l0W2UdBgFd2zrzrN4y9u0j
+         jbdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765691374; x=1766296174;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+hDgRCphZ8iRo09ep5SU5olQTYl13jEHMw2TZJC3PDk=;
+        b=rghMt76oOytrccnISVBIyyA3ZfIAKiI2QiwWNdMY9iazdRcehcfNLTeH7G5TSRccvN
+         nmjLsVXT9VyfqYxhz5bnBw4yMr9cMPIgj+2a56XH1wlwGHpgsdG/KvDkSKDRR7NzCvCW
+         qDJzwaO+455q7vj0wk7Ostnk9qRVS8hRCD1MJxkyhzs4RaDLkTYaKEM7WKyriTIFE9MS
+         cOGEEtOGTZc9JFU5wQMPjh6MAN9m4nkxjqSSQ5BMucvdjJslVfJWDXIqkF9XPxi2cKui
+         Wad+6DbgP8zC+Zs6mxOnf6LhEmbpHfNJwOZecbSkbWghdYr1/X6N/L1XrLVQZEMp41mr
+         d4sA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdY3tLdp0ZTKr+IViV+xJZOLjIQfgXWvHuH0TR7VT3ATMBNyKCcj5lfO904gcS4GqbrpSxIns6bAHWWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8Dz4B6iH/YaEwjttGL1gm4Xa5svizWZfWPrA8Rj0zLA9YEl95
+	meHxr8Yn7nfUprHxfPyHMeWKKyXGk0C/VwSkLaz2eFJiGAENIlsUWCXIuko6A2yX
+X-Gm-Gg: AY/fxX7AoR7IzsooKFSNzLAWdsBCpTfP2U6u9ZOChTynusJvG5eY3ZnHmn3AmdBeRAc
+	HxDPiIvK8aalYaTuwrVNPQxxN05/75JAblKfkAYehOx5bOSdMAt+xv0U4dTKhDWLpAeN3Hks2nI
+	NoxSkE+mmzSmBSXWz0Wrpjvj8KUmran5g0ykHgn4IrMvdkZB0pmbO3fSF4qLZfaqzmAS+O/5zQl
+	r3/7hBqyp/FJ6kJjDsnaKXy+sxW220axvgg0j67ztCcQkZuEzH8/yPlPF2WeK4peNRWPZTC0N0d
+	hTYjdRzRFIpHxFFlLHGxZ/3o7ogbPW47bIA/+u06HRYn+6MS9Uc5WZxwXihN7X8kA8AmDfwtKjd
+	fRX0/q1Y+XH1zvTXxihLmBGFmnd+P+8Lqf9v0GMzNuxtwWaMsxX9MBVo084mBM/yrXZAxNkB5QG
+	4M2rNCVUMr9Ce0bQKL34c=
+X-Google-Smtp-Source: AGHT+IHbBmMzxC9eOq1PBy6WNwWJgWsq6/i6rrCnGtJaL5axAS1lDM+WDsS6C+/2vxsP07EACEoEbg==
+X-Received: by 2002:a17:903:120e:b0:295:24ab:fb06 with SMTP id d9443c01a7336-29f23b7620amr74234765ad.22.1765691373802;
+        Sat, 13 Dec 2025 21:49:33 -0800 (PST)
 Received: from LilGuy ([2409:40c2:105b:dc88:1107:395c:23c0:2b1b])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-34abe3a2623sm5001422a91.2.2025.12.13.11.51.15
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29ee9d38adcsm97224455ad.30.2025.12.13.21.49.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Dec 2025 11:51:18 -0800 (PST)
+        Sat, 13 Dec 2025 21:49:33 -0800 (PST)
 From: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-To: Andres Salomon <dilinger@queued.net>,
-	Helge Deller <deller@gmx.de>,
-	linux-geode@lists.infradead.org (moderated list:AMD GEODE PROCESSOR/CHIPSET SUPPORT),
-	linux-fbdev@vger.kernel.org (open list:FRAMEBUFFER LAYER),
-	dri-devel@lists.freedesktop.org (open list:FRAMEBUFFER LAYER),
-	linux-kernel@vger.kernel.org (open list)
-Cc: skhan@linuxfoundation.org,
+To: sam@ravnborg.org
+Cc: Frank.Li@nxp.com,
+	akpm@linux-foundation.org,
 	david.hunter.linux@gmail.com,
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-Subject: [PATCH] fbdev: geode: lxfb: Use devm_request_mem_region
-Date: Sun, 14 Dec 2025 01:20:59 +0000
-Message-ID: <20251214012059.304043-1-swarajgaikwad1925@gmail.com>
+	deller@gmx.de,
+	donettom@linux.ibm.com,
+	dri-devel@lists.freedesktop.org,
+	hverkuil+cisco@kernel.org,
+	kees@kernel.org,
+	konrad.dybcio@oss.qualcomm.com,
+	linux-fbdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nicolas.dufresne@collabora.com,
+	rongqianfeng@vivo.com,
+	skhan@linuxfoundation.org,
+	swarajgaikwad1925@gmail.com,
+	vivek.kasireddy@intel.com,
+	ydirson@free.fr,
+	ziy@nvidia.com
+Subject: Re: [PATCH v2] fbdev: arkfb: Request legacy VGA I/O region
+Date: Sun, 14 Dec 2025 11:19:14 +0000
+Message-ID: <20251214111914.4976-1-swarajgaikwad1925@gmail.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251213223850.GA419250@ravnborg.org>
+References: <20251213223850.GA419250@ravnborg.org>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -92,107 +106,18 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The lxfb driver currently uses pci_request_region() for memory
-reservation, which requires manual error handling and cleanup using
-pci_release_region().
+Hi Sam,
 
-Simplify the driver by migrating to the managed helper
-devm_request_mem_region(). This ensures that resources are automatically
-released on driver detach, allowing the removal of explicit cleanup code
-in the probe error path and the remove function.
+Thanks for the review.
 
-This addresses the TODO item "Request memory regions in all fbdev
-drivers" in Documentation/gpu/todo.rst.
+You are right that the cast to (void __iomem *) makes it look like memory,
+but the resource is explicitly initialized as I/O ports a few lines earlier:
 
-Signed-off-by: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
----
-Compile-tested only on x86_64.
+    vga_res.flags = IORESOURCE_IO;
 
- drivers/video/fbdev/geode/lxfb_core.c | 36 +++++++++------------------
- 1 file changed, 12 insertions(+), 24 deletions(-)
+Since the resource flag is IORESOURCE_IO (targeting the legacy VGA ports),
+I used devm_request_region() instead of devm_request_mem_region().
 
-diff --git a/drivers/video/fbdev/geode/lxfb_core.c b/drivers/video/fbdev/geode/lxfb_core.c
-index cad99f5b7fe8..8189d6a13c5d 100644
---- a/drivers/video/fbdev/geode/lxfb_core.c
-+++ b/drivers/video/fbdev/geode/lxfb_core.c
-@@ -335,25 +335,21 @@ static int lxfb_map_video_memory(struct fb_info *info, struct pci_dev *dev)
- 	if (ret)
- 		return ret;
-
--	ret = pci_request_region(dev, 0, "lxfb-framebuffer");
-+	if (!devm_request_mem_region(&dev->dev, pci_resource_start(dev, 0),
-+			      pci_resource_len(dev, 0), "lxfb-framebuffer"))
-+		return -EBUSY;
-
--	if (ret)
--		return ret;
--
--	ret = pci_request_region(dev, 1, "lxfb-gp");
--
--	if (ret)
--		return ret;
-+	if (!devm_request_mem_region(&dev->dev, pci_resource_start(dev, 1),
-+			      pci_resource_len(dev, 1), "lxfb-gp"))
-+		return -EBUSY;
-
--	ret = pci_request_region(dev, 2, "lxfb-vg");
-+	if (!devm_request_mem_region(&dev->dev, pci_resource_start(dev, 2),
-+			      pci_resource_len(dev, 2), "lxfb-vg"))
-+		return -EBUSY;
-
--	if (ret)
--		return ret;
--
--	ret = pci_request_region(dev, 3, "lxfb-vp");
--
--	if (ret)
--		return ret;
-+	if (!devm_request_mem_region(&dev->dev, pci_resource_start(dev, 3),
-+			      pci_resource_len(dev, 3), "lxfb-vp"))
-+		return -EBUSY;
-
- 	info->fix.smem_start = pci_resource_start(dev, 0);
- 	info->fix.smem_len = vram ? vram : lx_framebuffer_size();
-@@ -546,19 +542,15 @@ static int lxfb_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- err:
- 	if (info->screen_base) {
- 		iounmap(info->screen_base);
--		pci_release_region(pdev, 0);
- 	}
- 	if (par->gp_regs) {
- 		iounmap(par->gp_regs);
--		pci_release_region(pdev, 1);
- 	}
- 	if (par->dc_regs) {
- 		iounmap(par->dc_regs);
--		pci_release_region(pdev, 2);
- 	}
- 	if (par->vp_regs) {
- 		iounmap(par->vp_regs);
--		pci_release_region(pdev, 3);
- 	}
-
- 	fb_dealloc_cmap(&info->cmap);
-@@ -575,16 +567,12 @@ static void lxfb_remove(struct pci_dev *pdev)
- 	unregister_framebuffer(info);
-
- 	iounmap(info->screen_base);
--	pci_release_region(pdev, 0);
-
- 	iounmap(par->gp_regs);
--	pci_release_region(pdev, 1);
-
- 	iounmap(par->dc_regs);
--	pci_release_region(pdev, 2);
-
- 	iounmap(par->vp_regs);
--	pci_release_region(pdev, 3);
-
- 	fb_dealloc_cmap(&info->cmap);
- 	framebuffer_release(info);
-
-base-commit: a859eca0e4cc96f63ff125dbe5388d961558b0e9
---
-2.52.0
-
+Best regards,
+Swaraj
 
