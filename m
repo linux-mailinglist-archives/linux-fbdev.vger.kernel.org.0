@@ -1,113 +1,197 @@
-Return-Path: <linux-fbdev+bounces-5720-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5722-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155BCD04288
-	for <lists+linux-fbdev@lfdr.de>; Thu, 08 Jan 2026 17:06:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2000D05C12
+	for <lists+linux-fbdev@lfdr.de>; Thu, 08 Jan 2026 20:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8A243043BD7
-	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Jan 2026 15:56:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F85A3094038
+	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Jan 2026 19:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD9C3A4ABE;
-	Thu,  8 Jan 2026 11:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F662326922;
+	Thu,  8 Jan 2026 19:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ThLzjdMe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTqkK0ww"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7893A1A5A;
-	Thu,  8 Jan 2026 11:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4D3322B7F;
+	Thu,  8 Jan 2026 19:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767871698; cv=none; b=Qhm5XRJxs8ttatgo6FdjaJZ92uFrAcNffDCShVXOf4YTVyF7pUg2e2Il77y+sKMgId30fY4i7TETVGAaPpNw++Rde9W9UnQf/RN0PCXLpR9lWZddoxnook0GgQwZhdgmrYDtMsj1VR6UGCdp1GFWMa0CIj/wT9QL7pOTcZKW11U=
+	t=1767899009; cv=none; b=MLzxxkX+xoe8l5KB/L+w6lqQXaGMaqH5aaWMibS72eg6G6/M0gxT/Su18FTAf4727GM+jLrB8FGcG8blv3fppw5mMJHCG7eJaMvt1/wqlRMat6+/GAFI+w4hnndM55UL5PggXsf4VoXGICffg95O8k9DVrSdjR6dzrQsAKfZ76M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767871698; c=relaxed/simple;
-	bh=3Kjhp0b3kwImrDL2L6LwF5n2i36fqNua3dzRnbIjReU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WhlqB5604pFFggRHglCdPuKhj4TUrK5Q6u+IngZiblKyKjq7mgLkae7cdWZ3lxsne/uODK54Oy8a6CKgM8P7we11e8rIo0X5U7Tp4Flyb0bkg9j/6oYGRy/TskdIm0N4Attv6rqzqCQ4i4nqBJNP57fbKowwhG1Rbh/Dk9kAr2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThLzjdMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAC0C16AAE;
-	Thu,  8 Jan 2026 11:28:13 +0000 (UTC)
+	s=arc-20240116; t=1767899009; c=relaxed/simple;
+	bh=EshLODRY/dMwTs1Aorg+jUiM2EDzqs+CcePETEAt+ic=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vERvmNDEMbePCER5Sb8xCdovgDdHStnQwo85doxe3icyadxjEr94O3M0MjZmFvtWjWXmEwJipJJCmOMHzpuj9zmmAIgqilfhQRZgyyh75CQjRriUzXOBvgEyX7O/QgFQGYdUAJzHj1xJLV76XvrGvG8IrvG+p3z9NDPiH6KWPGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTqkK0ww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813FDC116C6;
+	Thu,  8 Jan 2026 19:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767871697;
-	bh=3Kjhp0b3kwImrDL2L6LwF5n2i36fqNua3dzRnbIjReU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ThLzjdMelW930c+ei43cTLAinWpByX4H/unWusBtDJx67SVViBKH2HJp4NN6pfDNJ
-	 S0o7hNKCFpHN/OgGfD6igSGlJ+DPmag7+/e0kTpckOhnpH4/JEH0gfkDq+GHZ7SxYn
-	 sTyyqEFxobiUx11gdTDahJHp0S7VvuoNQkGG/Ur1aZa0Y+nB3xQm4Fkmv34B6GL8QO
-	 Nq7K/rJN9iNmi7PHXBbpiP7k8HzQKFH8gMdUHColDMn4ALEVUyYXDEC8klO5AsygFp
-	 YxojfWXoN1bQ6FS99fp0EAppdIAS45JOYnyHidAfSv8R/GxlvUu1OujF92bEY8vZHy
-	 1hh01tlZp1NfA==
-Date: Thu, 8 Jan 2026 11:28:10 +0000
-From: Daniel Thompson <danielt@kernel.org>
-To: =?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <barnabas.czeman@mainlining.org>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Kiran Gunda <quic_kgunda@quicinc.com>, Helge Deller <deller@gmx.de>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Eugene Lepshy <fekz115@gmail.com>,
-	Gianluca Boiano <morf3089@gmail.com>,
-	Alejandro Tafalla <atafalla@dnyon.com>,
-	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v2 2/7] backlight: qcom-wled: Support ovp values for
- PMI8994
-Message-ID: <aV-UyhP7wllSBpYj@aspen.lan>
-References: <20260108-pmi8950-wled-v2-0-8687f23147d7@mainlining.org>
- <20260108-pmi8950-wled-v2-2-8687f23147d7@mainlining.org>
+	s=k20201202; t=1767899009;
+	bh=EshLODRY/dMwTs1Aorg+jUiM2EDzqs+CcePETEAt+ic=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RTqkK0wwaNCmV2+Bt9l+DRj7ZBtcHHuNln/Dp0Y+KKhYSeecMLE0HKaw3Va93hNCE
+	 IDCFprFV4/bjvkOGbFy54/fi7Chg+JKV9FGRYOV6ds0bFxFYJKSKQOfqc8LhYcFBUU
+	 9AXbSCWF6y3WyY6iE8U5m+afG/oO4ZPQs7ANNVAfDLnblr7s7KUAGrWX87fdpJfvbF
+	 eRO5Sg/5DB6PoqAIYc3zHEXjoEIYmuObhkK2FlhXv38/9l/rV+dWDWC6er6tCFub6i
+	 Z/EJCh1aGHSyYSjCwT5l7hyWHA4WfCRlygh8pGhIGiYkVbPSg8GTRNd8MRsQfrmK2W
+	 lh09rSoRoNS/g==
+Message-ID: <f450c22f-a967-4c83-a7c0-f461fd5f1039@kernel.org>
+Date: Thu, 8 Jan 2026 20:03:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260108-pmi8950-wled-v2-2-8687f23147d7@mainlining.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/6] video/logo: move logo selection logic to Kconfig
+To: Geert Uytterhoeven <geert@linux-m68k.org>, Helge Deller <deller@gmx.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>
+References: <20260101-custom-logo-v2-0-8eec06dfbf85@kernel.org>
+ <20260101-custom-logo-v2-6-8eec06dfbf85@kernel.org>
+ <CAMuHMdVy48F5HAfqfJgbY83KDAztb9YWTqm8mT1ntTfj0311oA@mail.gmail.com>
+ <dda4052e-b843-43fa-850c-a1bb20e4a8e3@kernel.org>
+ <CAMuHMdXz9uKxQ0dH68a+xt4FHqVgdskvO3QRvev1_Wq8h-a1Qg@mail.gmail.com>
+ <487ac672-3a2e-4897-aaba-7ae44bcf341a@gmx.de>
+ <CAMuHMdUqHUrg6XwqXCSwv-3TwiYUOfbBMpMiuS89d1uwChBYaQ@mail.gmail.com>
+From: Vincent Mailhol <mailhol@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=mailhol@kernel.org; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
+ fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
+ F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
+ 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
+ YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
+ dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
+ zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <CAMuHMdUqHUrg6XwqXCSwv-3TwiYUOfbBMpMiuS89d1uwChBYaQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 08, 2026 at 04:43:20AM +0100, Barnabás Czémán wrote:
-> WLED4 found in PMI8994 supports different ovp values.
->
-> Fixes: 6fc632d3e3e0 ("video: backlight: qcom-wled: Add PMI8994 compatible")
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-> ---
->  drivers/video/backlight/qcom-wled.c | 41 +++++++++++++++++++++++++++++++++++--
->  1 file changed, 39 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index a63bb42c8f8b..5decbd39b789 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -1244,6 +1244,15 @@ static const struct wled_var_cfg wled4_ovp_cfg = {
->  	.size = ARRAY_SIZE(wled4_ovp_values),
->  };
->
-> +static const u32 pmi8994_wled_ovp_values[] = {
-> +	31000, 29500, 19400, 17800,
-> +};
-> +
-> +static const struct wled_var_cfg pmi8994_wled_ovp_cfg = {
-> +	.values = pmi8994_wled_ovp_values,
-> +	.size = ARRAY_SIZE(pmi8994_wled_ovp_values),
-> +};
-> +
+On 07/01/2026 at 14:53, Geert Uytterhoeven wrote:
+> Hi Helge,
+> 
+> On Wed, 7 Jan 2026 at 13:21, Helge Deller <deller@gmx.de> wrote:
+>> On 1/7/26 11:36, Geert Uytterhoeven wrote:
+>>> On Tue, 6 Jan 2026 at 21:10, Vincent Mailhol <mailhol@kernel.org> wrote:
+>>>> On 06/01/2026 at 12:48, Geert Uytterhoeven wrote:
+>>>>> Thanks for your patch, which is now commit bd710b3da7308cb1
+>>>>> ("video/logo: move logo selection logic to Kconfig") in fbdev/for-next.
+>>>>>
+>>>>> On Thu, 1 Jan 2026 at 16:26, Vincent Mailhol <mailhol@kernel.org> wrote:
+>>>>>> Now that the path to the logo file can be directly entered in Kbuild,
+>>>>>> there is no more need to handle all the logo file selection in the
+>>>>>> Makefile and the C files.
+>>>>>
+>>>>> This may do the wrong thing when booting a multi-platform kernel.
+>>>>>
+>>>>>>
+>>>>>> The only exception is the logo_spe_clut224 which is only used by the
+>>>>>> Cell processor (found for example in the Playstation 3) [1]. This
+>>>>>> extra logo uses its own different image which shows up on a separate
+>>>>>> line just below the normal logo. Because the extra logo uses a
+>>>>>> different image, it can not be factorized under the custom logo logic.
+>>>>>>
+>>>>>> Move all the logo file selection logic to Kbuild (except from the
+>>>>>> logo_spe_clut224.ppm), this done, clean-up the C code to only leave
+>>>>>> one entry for each logo type (monochrome, 16-colors and 224-colors).
+>>>>>>
+>>>>>> [1] Cell SPE logos
+>>>>>> Link: https://lore.kernel.org/all/20070710122702.765654000@pademelon.sonytel.be/
+>>>>>>
+>>>>>> Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+>>>>>
+>>>>>> --- a/drivers/video/logo/Kconfig
+>>>>>> +++ b/drivers/video/logo/Kconfig
+>>>>>
+>>>>>> @@ -61,6 +63,12 @@ config LOGO_LINUX_CLUT224
+>>>>>>   config LOGO_LINUX_CLUT224_FILE
+>>>>>>          string "224-color logo .ppm file"
+>>>>>>          depends on LOGO_LINUX_CLUT224
+>>>>>> +       default "drivers/video/logo/logo_dec_clut224.ppm" if MACH_DECSTATION || ALPHA
+>>>>>> +       default "drivers/video/logo/logo_mac_clut224.ppm" if MAC
+>>>>>
+>>>>> E.g. an m68k multi-platform kernel including Mac support will scare
+>>>>> non-Mac users into thinking their machine was assimilated by the
+>>>>> Apple Empire...
+> 
+>>>>>> --- a/drivers/video/logo/logo.c
+>>>>>> +++ b/drivers/video/logo/logo.c
+> 
+>>>>>> -#ifdef CONFIG_LOGO_MAC_CLUT224
+>>>>>> -               /* Macintosh Linux logo on m68k */
+>>>>>> -               if (MACH_IS_MAC)
+>>>>>
+>>>>> MACH_IS_MAC can be a runtime check.
+>>>>
+>>>> OK. I missed this.
+>>>>
+>>>> I think there are two options to fix this:
+>>>>
+>>>>    1. Keep CONFIG_LOGO_MAC_CLUT224 untouched
+>>>>    2. Remove logo_mac_clut224.ppm
+>>>>
+>>>> The first option is less controversial but I would like to ask you what
+>>>> you think about removing the logo_mac_clut224 file.
+>>>>
+>>>> Here, we are speaking of the Macintosh 68k which ended sales in 1995,
+>>>> right? So the user base should be rather small, I guess.
+>>>
+>>> Yes, the user base is small.
+>>>
+>>> BTW, the only reason you don't have this issue with MACH_DECSTATION and
+>>> the various SGI_IP* options is that MIPS does not support multi-platform
+>>> kernels.
+>>>
+>>>> And people who still want the custom MAC logo would still be able to add
+>>>>
+>>>>    CONFIG_LOGO_MAC_CLUT224="path/to/logo_mac_clut224.ppm"
+>>>
+>>> LOGO_LINUX_CLUT224_FILE ;-)
 
-Do these *have* to be named after one of the two PMICs that implement
-this OVP range.
+D'oh!
 
-Would something like wled4_alternative_ovp_values[] (and the same
-throughout the patch) be more descriptive?
+>>>> to their config to restore the old behaviour anyway.
+>>>>
+>>>> My choice would go more toward the removal option but what do you think?
+>>>
+>>> I am not too attached to keeping the dynamic behavior for the Mac logo,
+>>> I just wanted to point out the impact.
+>>> I expect most people who care about logos (in products) just have their
+>>> own custom out-of-tree code.  As fb_find_logo() and the underlying
+>>> infrastructure still exists, I don't expect them to have too much
+>>> trouble forward porting that to newer kernels.
+>>>
+>>> What do other people think?
+>>
+>> This is about a small visible icon. It's not some relevant feature.
+>> So, I think it's unfortunate that the patch then drops the specific mac logo.
+>> But adding additional coding and complexity to simply make this logo
+>> visible for such a small user base IMHO does not justify the effort.
+> 
+> This patch does not drop the specific Mac logo.
+> Instead, it prioritizes the Mac logo over the generic logo when Mac
+> support is enabled in a multi-platform kernel.
+
+It seems that there is a consensus between the three of us that we can
+drop the MAC logo.
+
+I will send right away a v3 with will contain one extra patch to drop
+the Macintosh logo with a note in the patch of how to restore it using
+LOGO_LINUX_CLUT224_FILE.
 
 
-Daniel.
+Yours sincerely,
+Vincent Mailhol
+
 
