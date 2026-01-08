@@ -1,89 +1,80 @@
-Return-Path: <linux-fbdev+bounces-5716-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5719-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-fbdev@lfdr.de
 Delivered-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE11D02B5B
-	for <lists+linux-fbdev@lfdr.de>; Thu, 08 Jan 2026 13:44:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67809D02962
+	for <lists+linux-fbdev@lfdr.de>; Thu, 08 Jan 2026 13:21:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E95F30AB1CA
-	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Jan 2026 11:52:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 83EBA300673C
+	for <lists+linux-fbdev@lfdr.de>; Thu,  8 Jan 2026 12:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71AF40B6D4;
-	Thu,  8 Jan 2026 10:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6471C486B63;
+	Thu,  8 Jan 2026 11:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LzZZOBOH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKlzWtGk"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC593F076D;
-	Thu,  8 Jan 2026 10:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D394BDEBA;
+	Thu,  8 Jan 2026 11:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767867003; cv=none; b=UVZaN8EjTXGOSWvBTNV0iXVh1Eui/wGoGzXo1wQE9iQ3pwiKWzT6zdVuL1pdSYd/KtFsQbLzaHWOQADnxeh9bWcv0PL8TMGHK9OzVf4Vxerlf9q0BGjhblNb+5aYMhxZKNnhAg4dQaYORDVaWJZr0y0HDaHNgf+xH4iXZ4eTKGc=
+	t=1767870960; cv=none; b=sLyMWhGMVmtLP6UAyY3Xco532Ouldva5hq0JG7j6GuXqS1+0LPMn0nnvfE3BzfZ9TpJI2ctTYDX8HsqsOxFYiTZ9NC2vHAUNzCwUreqmlb0QDM/hy03UmX3yjNdgL7UN/gRlAei4ZSi1amjAUIW5d/5Yi1ZyOpp+iIk60oZvQys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767867003; c=relaxed/simple;
-	bh=jhGglnHR79yKqzMve8kZuUJdzdwyNEoqDK2d7uLN0qk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qk7cxevvkzZH1t5sRNiG+En9ARtCZJPx1espBui81a60e3NkNOwGSBMf0KeLRDbrln6eQR8L7f+l+6PC8uACmq122EoVd8aYTggiMYORTaIZbkZufh+nRpTcE/aJt1eBsuHc9G6eyphzgwnaXU1YVoFkcBrLhsAOjDZBYh8z4Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LzZZOBOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BF1C116C6;
-	Thu,  8 Jan 2026 10:10:01 +0000 (UTC)
+	s=arc-20240116; t=1767870960; c=relaxed/simple;
+	bh=Be99HMovMR5LQotLB1NQZpI+sg7SVag9SyAOUDgqdX0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=dIuq/SDIJjPnRUwvmM2bdvPpOIRvgGcEW3mnICrqzdgLGCiEcicI7w6pH+k3O5uHEldhitku9yHeOuCJQ7m24B2QZT1YG6e6GXvf64+/LtQUHgyobWJrZER4rZT8AFsQWecSqsTUIqbiD6VPvrfzKxEOocQRatHPVCHWj32SIdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKlzWtGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A89C116C6;
+	Thu,  8 Jan 2026 11:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767867001;
-	bh=jhGglnHR79yKqzMve8kZuUJdzdwyNEoqDK2d7uLN0qk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LzZZOBOHwTd6nrl3/mbpOCHau0gCfmiYTDmWCyoFBGa4zofYuWFQz+EhZZL+46hGX
-	 bKrZAD4dVcQXwVVHAUS9Lf1fclm7MLcc7nuMWEHhn/bWIjO3zb3OBsF9VaWLAA59hz
-	 ioZoAOIPycOm3zpmADzhBEe+cMfNFw+VMNAuZjTxO8vmbhUs4sCuOFNub935V1fHSB
-	 wF/I3/cfExGbzozL6uhKb0aaD9Ou+linoMAj40L4CbOaFNbD6wzEUjz2T0uasVwU0E
-	 v0gqkJFm/Rxa/OR9Eclq2tXEuURfL+HxpFUlIkMpbrRY+rB/zVTlmudeGltnID8pC0
-	 4zlPsVHHIg5EQ==
-Date: Thu, 8 Jan 2026 11:09:59 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
-	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Kiran Gunda <quic_kgunda@quicinc.com>, 
-	Helge Deller <deller@gmx.de>, Luca Weiss <luca@lucaweiss.eu>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Eugene Lepshy <fekz115@gmail.com>, 
-	Gianluca Boiano <morf3089@gmail.com>, Alejandro Tafalla <atafalla@dnyon.com>, 
-	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>, 
-	linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v2 1/7] dt-bindings: backlight: qcom-wled: Document ovp
- values for PMI8994
-Message-ID: <20260108-illustrious-original-harrier-e93aaf@quoll>
-References: <20260108-pmi8950-wled-v2-0-8687f23147d7@mainlining.org>
- <20260108-pmi8950-wled-v2-1-8687f23147d7@mainlining.org>
+	s=k20201202; t=1767870958;
+	bh=Be99HMovMR5LQotLB1NQZpI+sg7SVag9SyAOUDgqdX0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=FKlzWtGkLuwrSAINoC4zB+EmGtmPQu6pgqHGbAEgtQHLNv8yDzMiKG5BbBun6qYty
+	 CzAiAVfUtDc6WbM8+CTm59A6dw9amv3UFdLnNiFY/Rb5fMMQnlA7j6PU7z3dsCn8VA
+	 2hZLZHYbutwNcy2WiKQkTi/4K7r2IDelpL6DJ+o8O/uRfZRDEMmmklu9EozsPh43IJ
+	 F1ziB+yBQC4UN2gwqCOmzluBPyutORqZkp3Xl3RNCM44j3zh2zPnDeRSG4giL0LgCE
+	 0jHOAhovcXF2Y2cJLirMuOGTKUocUDOcNtyVxQzjDjd4EU6V5pSKhzZkhqcW9bBH7D
+	 67S4V4LsZZvrw==
+From: Lee Jones <lee@kernel.org>
+To: Thomas Richard <thomas.richard@bootlin.com>, Lee Jones <lee@kernel.org>, 
+ Daniel Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, 
+ Helge Deller <deller@gmx.de>, Petri Karhula <petri.karhula@novatron.fi>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-fbdev@vger.kernel.org
+In-Reply-To: <20251205-cgbc-backlight-v6-1-e4175b0bf406@novatron.fi>
+References: <20251205-cgbc-backlight-v6-1-e4175b0bf406@novatron.fi>
+Subject: Re: (subset) [PATCH v6 1/2] backlight: Add Congatec Board
+ Controller (CGBC) backlight support
+Message-Id: <176787095661.872999.6388109153430100607.b4-ty@kernel.org>
+Date: Thu, 08 Jan 2026 11:15:56 +0000
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260108-pmi8950-wled-v2-1-8687f23147d7@mainlining.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-52d38
 
-On Thu, Jan 08, 2026 at 04:43:19AM +0100, Barnab=C3=A1s Cz=C3=A9m=C3=A1n wr=
-ote:
-> Document ovp values supported by wled found in PMI8994.
->=20
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <barnabas.czeman@mainlining=
-=2Eorg>
-> ---
->  .../bindings/leds/backlight/qcom-wled.yaml         | 22 ++++++++++++++++=
-++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
+On Fri, 05 Dec 2025 12:19:47 +0000, Petri Karhula wrote:
+> This driver provides backlight brightness control through the Linux
+> backlight subsystem. It communicates with the board controller to
+> adjust LCD backlight using PWM signals. Communication is done
+> through Congatec Board Controller core driver.
+> 
+> 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Applied, thanks!
 
-Best regards,
-Krzysztof
+[1/2] backlight: Add Congatec Board Controller (CGBC) backlight support
+      commit: b516456e9f916070fde6aa50cad5680a689687e6
+
+--
+Lee Jones [李琼斯]
 
 
