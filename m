@@ -1,126 +1,177 @@
-Return-Path: <linux-fbdev+bounces-5851-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5845-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOrrLnDOb2mgMQAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-5851-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Jan 2026 19:50:24 +0100
+	id sM2JIFhvcGktYAAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-5845-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Jan 2026 07:16:56 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D5949CBD
-	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Jan 2026 19:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBEF151F3D
+	for <lists+linux-fbdev@lfdr.de>; Wed, 21 Jan 2026 07:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E98F9EE3FB
-	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Jan 2026 17:07:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EE34C62D28D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 20 Jan 2026 12:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF0034E753;
-	Tue, 20 Jan 2026 17:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09E2429812;
+	Tue, 20 Jan 2026 12:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LwZRQQAT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jsctWo8O"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MYfjS2yy"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8FE34D4CA;
-	Tue, 20 Jan 2026 17:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB74429803
+	for <linux-fbdev@vger.kernel.org>; Tue, 20 Jan 2026 12:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768928812; cv=none; b=A4tcEtC9hva92Wf332BeEKYb3jK3/zbboUKKIb0ncT0MZwdMDJSxjPaQp6X/OvJtJO9V64E3PPXixdy5jad2P35gGli8eAHpYUTij5Aqz0Bh8IIgSnx8vcSFTnVnPhn1cWwPFoqqInExGZL7LH21bQh6QFdCbmjY0WiYDQ++5r4=
+	t=1768913445; cv=none; b=qCaVl+fpFdkAJSax4SPHIfZ4/GIoHLn4Z9Vvnr3+SV49RUPI8Qd+xIzsh1Ei0nR0ltHaUX3S21WB9yN7nBglQxbGy2FJ8bjg2S0bAm3ndB0Zku+tmO+rziLtfYIbNmD3+bxZgWNdjE5qvqR3hROipjFRomWGF6DeFjIgxy8BrPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768928812; c=relaxed/simple;
-	bh=dEvlUtxZI8Xu4sN9v8qOvDFNakR7FMiLucKHsMP/Xtc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nxuErDspfkvlfSGit/WLMdkwXW8Yyu1sZlJ6SB32xDQMhXSPRBZxVfkBD2/+Jb9CPb3ZJKR+LzEyNTeVXyUEB2nhKE2fZsAvyNbxLAB3fotPrcqEKeWqho+ZvKYOB9vl57bIUyXmksOoFn38uC/9ytTrzqasEr6+feak4h03GCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LwZRQQAT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jsctWo8O; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 20 Jan 2026 18:06:42 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768928803;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OH02W9MmnmkSi6OKgfl51Ayf8ukDBvIRUey9mL5wHOc=;
-	b=LwZRQQATLQZs2sJN0C+9ILbGmGcS5IbexcUdCzmz4BvyVvrk1yfuVnebaNJhgt6CWjn5Ra
-	oq5clajxGvYFsd6XXcTH3ShaWNrryeC4Jt5aBZFQmsUyQktbGhhpIJeJT59+4gVwMWsenf
-	y9hg2j75jpYEVsAQxm+TlrvoUWXHULolAMrh0WkD1dDZVXdjRm6Pi1NHLJgeG2r1JnQndw
-	3w7OvlBV7YpCL0+PLBEa5FpOJoAVsmqC6oFKtE+GHK9KOqQpgIk7mA0rpdKasBTjuM/Z3C
-	ZnXuXDeij983iWisYdRdpykFIMkkAQjHRvZ4s3Jv2MznR3MXmHZpZhqcY6d39A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768928803;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OH02W9MmnmkSi6OKgfl51Ayf8ukDBvIRUey9mL5wHOc=;
-	b=jsctWo8ONKzYjeOcRah+UmorTKxAHqeGuVMBb8+/4by29lAJPO3MRt2r7S/rGdyXfEYAt7
-	DrC37KXr8GHxIvCg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-fbdev@vger.kernel.org, Petr Mladek <pmladek@suse.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, Simona Vetter <simona@ffwll.ch>,
-	Helge Deller <deller@gmx.de>
-Subject: Re: printk's threaded legacy console + fbcon => schedule where it
- should not
-Message-ID: <20260120170642.3V-1SE3J@linutronix.de>
-References: <20260114145955.d924Z-zu@linutronix.de>
- <20260120110845.2922a91a@gandalf.local.home>
+	s=arc-20240116; t=1768913445; c=relaxed/simple;
+	bh=6sMqGXnBsWs7Qtna1yPZgI8g0wHllWWzrqehilIX0J4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sYMrrIpievmI+9LHYrd0iO51AeWQ7nryzH9gUdSta/V0F4W3rDtmJbref5Q3f2zAG2npfMSH6clKe02WmLJjKzOjSGI7jHzq1j+D+NiuAYGixhGIVHI4pHO8Wtm4l1p4hpgvMb6M8hNCHlVnH44bC7i8ZEt/KTP7oIgh7PeViDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MYfjS2yy; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a0d6f647e2so52167375ad.1
+        for <linux-fbdev@vger.kernel.org>; Tue, 20 Jan 2026 04:50:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768913444; x=1769518244; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZJYUWQwQhgkeAbC/dM1w7lsNUkVncAvp21VUFc05s9E=;
+        b=MYfjS2yyNT3EgyCloriC6EOaPE4vKXLkAjxfqTCmte2Ls/zCzZKJk9p90e7f1LquGL
+         f2bCEOyOGziLUZuP8Dy7yBoTSV1DQ4AHNrPu5hkd7AeEhpDENNwKS+K8RXQctTUIg32v
+         dKc+0oVX9MIM3ArcRR/EUH62OLEH3Q6H4r0mSJc36usfYJ06Mq6vKbMQUabZA4vrEU/j
+         FqJ90OACA9cE/BAAwXL7d9LXUMBbJYl8W2tD2N9GagMb87LZWFPBgHGRyD0m/dd0/yaK
+         eOl505ERFcC1/eT1VJ0GNBU/wU7TVP4mksc0q3lfd9cBRcG/ste7VDnx68psnBamMbg6
+         7SqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768913444; x=1769518244;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZJYUWQwQhgkeAbC/dM1w7lsNUkVncAvp21VUFc05s9E=;
+        b=wEHks2EctgkdmrXaAvQjqbBXdjOPVxtg74Fm/IlhRXEc+xpHeZdnOKs97i8NN595R3
+         s2qPn3GEePDxOIbGabskftuW8x74b1yIuKCyBaBDMIZ5SzogF346S+JvFlPrw87LjcO9
+         myktiJwZJtn/O+Dtul7pyLoi2/S54Lt2C95A1b+xnYq4qQUIJmp5OGVyFez4F9fibtXo
+         o8FvQhRBdtL/c2CY14ioj+crffdnzMJcPruKZSo3MNmXtLJH7fa1HGs6T8PRUgwaf2gy
+         Fk9osp3uIT4V/msH87alDI2CHw37MBGZxHaKgddLUZXs083NlQJDi/6f9mfMk5SoF5Ig
+         kjcA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZVMjIGNv0PvMosmroZrjQvihYzQ3/NRrq6AxIOam2O7HCSoSsLg34M2IzP56beTUQIJYtNvxOQUESIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOl1fgon8Z/AboYVWliP2fKb9xkIY8D6LVu3glZkdvgUVzyXQq
+	Rm2tjyN94J7zy0jdFz68sCN6S1ETDS9Y8jowdhQxlYrOZqIRgok7eAN2
+X-Gm-Gg: AZuq6aKk9VWHq0DEmQowmvxUX9nUoX+COSAMTdgPGjABoN86abthLEz92z9h0+hL1cB
+	vAHAeWd+FRT/hLP9Bfkg3QaMGJCbsqGYiB5FrGVOgf2F8kIwiA1u041vySrEHLpaLUf2uZIXkT2
+	XidS613ggVVIYTqVCatY3hkHWnIRswFkDUHoPxCvp0FuuWd6DSRSrgLhwOyjpFqW5tvjt3HI+3M
+	X/cbN40RVks2BJII9M0Wy2WBYh5YIitCRfJht6JSNHQ/71awPGgk8ysEiiwis5E00KF9eEqAoUn
+	2AkYxvXBdw5qZHPa+lgjpNW/msxfNJAQMEsr6a/9GTDabq7JKTKoZ5/oCe35so11kEJo6s2WIWO
+	4lnd+r0TyRzMq7/suEaLoKcmb1Nxkf0cTigDgivgym2VaT1MixxOU6Z97/+x4Oi5i7Gs2GWlylA
+	38+wZdyBbB7oqivC0DfXpW3BVa9jMHap1AqYSY
+X-Received: by 2002:a17:903:1447:b0:298:2afa:796d with SMTP id d9443c01a7336-2a76b26ccd2mr17322155ad.61.1768913443613;
+        Tue, 20 Jan 2026 04:50:43 -0800 (PST)
+Received: from test-HP-Desktop-Pro-G3.. ([103.218.174.23])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193dd582sm124973815ad.52.2026.01.20.04.50.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 04:50:43 -0800 (PST)
+From: Sudarshan Shetty <tessolveupstream@gmail.com>
+To: lee@kernel.org,
+	danielt@kernel.org,
+	jingoohan1@gmail.com
+Cc: deller@gmx.de,
+	pavel@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sudarshan Shetty <tessolveupstream@gmail.com>
+Subject: [PATCH v2 0/2] backlight: gpio: add support for multiple GPIOs for backlight control
+Date: Tue, 20 Jan 2026 18:20:34 +0530
+Message-Id: <20260120125036.2203995-1-tessolveupstream@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260120110845.2922a91a@gandalf.local.home>
-X-Spamd-Result: default: False [-1.96 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[linutronix.de,none];
-	FREEMAIL_CC(0.00)[vger.kernel.org,suse.com,linutronix.de,chromium.org,linuxfoundation.org,kernel.org,ffwll.ch,gmx.de];
-	TAGGED_FROM(0.00)[bounces-5851-lists,linux-fbdev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-5845-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,linux-fbdev@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmx.de,kernel.org,lists.freedesktop.org,vger.kernel.org,gmail.com];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[tessolveupstream@gmail.com,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linutronix.de:mid,linutronix.de:dkim]
-X-Rspamd-Queue-Id: 42D5949CBD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: EBEF151F3D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 2026-01-20 11:08:45 [-0500], Steven Rostedt wrote:
-> 
-> I'm assuming this likely isn't needed anymore. I don't know of any reason
-> it needs to stay.
-> 
-> Should we just remove it and see what breaks?
+Hi all,
 
-I would say so.
+This patch extends the gpio-backlight driver and its Device Tree
+bindings to support multiple GPIOs for controlling a single
+backlight device.
 
-> -- Steve
+Some panels require more than one GPIO to enable or disable the
+backlight, and previously the driver only supported a single GPIO.
+With this change:
+ - The driver now handles an array of GPIOs and updates all of them
+   based on brightness state.
+ - The Device Tree binding has been updated to allow specifying one
+   or more GPIOs for a gpio-backlight node.
 
-Sebastian
+This approach avoids describing multiple backlight devices in DT for a
+single panel.
+
+Changes in v2:
+ - Used devm_gpiod_get_array() and struct gpio_descs
+ - Replaced per-index GPIO handling with descriptor array access
+ - Moved the bitmap allocation to probe using devm_kcalloc().
+ - Updated commit messages.
+
+Thanks,
+Anusha
+
+Sudarshan Shetty (2):
+  dt-bindings: backlight: gpio-backlight: allow multiple GPIOs
+  backlight: gpio: add support for multiple GPIOs for backlight control
+
+ .../leds/backlight/gpio-backlight.yaml        | 24 ++++++-
+ drivers/video/backlight/gpio_backlight.c      | 66 +++++++++++++------
+ 2 files changed, 67 insertions(+), 23 deletions(-)
+
+-- 
+2.34.1
+
 
