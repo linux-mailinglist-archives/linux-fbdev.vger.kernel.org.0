@@ -1,55 +1,56 @@
-Return-Path: <linux-fbdev+bounces-5916-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-5918-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA/xGzkjd2mZcgEAu9opvQ
-	(envelope-from <linux-fbdev+bounces-5916-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 26 Jan 2026 09:18:01 +0100
+	id cFVsD3Ijd2mZcgEAu9opvQ
+	(envelope-from <linux-fbdev+bounces-5918-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 26 Jan 2026 09:18:58 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41C98561D
-	for <lists+linux-fbdev@lfdr.de>; Mon, 26 Jan 2026 09:18:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C80E85677
+	for <lists+linux-fbdev@lfdr.de>; Mon, 26 Jan 2026 09:18:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52AF53004C7E
-	for <lists+linux-fbdev@lfdr.de>; Mon, 26 Jan 2026 08:17:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAEAE301993B
+	for <lists+linux-fbdev@lfdr.de>; Mon, 26 Jan 2026 08:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EB52BF3E2;
-	Mon, 26 Jan 2026 08:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8190C29E0F8;
+	Mon, 26 Jan 2026 08:18:00 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B3824113D;
-	Mon, 26 Jan 2026 08:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAA62F9DBB;
+	Mon, 26 Jan 2026 08:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769415477; cv=none; b=GnE0B40EEjpwLJMF+CKAgev3+fAR1POF7lqYyBgQC7blbIU22lV31RPmQxGByuSl7jNuLNNl7DKNaKYxD3OPZKkTDnfMMKhlRJw6chljpx4hnXR7wEI5W+g0DjO4sp5+FDZCyc5Dc6uwM0USCGhLopcH/wz7oq3g28zFdSgmZoc=
+	t=1769415480; cv=none; b=BHJ7wgNWks9GsEJTus9pNSs5A6xb4UiCQFd7vBZC812wanJR2VcTGP5d80ZZrMH+SpqdkFNA45XdkL5xKHu0l6FkLYua4b5CZs9xc0qYNVO+VTReYLHaXayQHyN4gJnTh/yOabFfLbeZhGsRjqdOd+2Nxv/6ZEJOnYFTqr1izlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769415477; c=relaxed/simple;
-	bh=ZV+y3n2UPfl9QAWdzck61V9hDjuyMPdvbMtJe0/JfBE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JX26psO9uc58W/iM4Aj1EsGXjZYw15AdCZPHIvQoJlrliVFMS1z3jcNdH2AW0J3XurONmHWbxhYgJiaPpfGT+GVLKl1TxwB1+/Tm8HKNqEKubxEB1mtx08oO9AJWyN1N2aIOZ44zYj1AXL6dNR6ko4BHKy6jpGhuQ032f4TniPs=
+	s=arc-20240116; t=1769415480; c=relaxed/simple;
+	bh=THLsKxDqzFVMxcykHFDOSQe3pZNn/rUzVn8Q6NDDVX0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MTJPCebs/dtwFiyo2r9EmCVuh2p0eUmgqvwvtQVUu2G7r7MoGzJb1vr4E4q5e3h6AHG/C72oK5sqq27II2996XSbnTeymPrw95K9yhFK/6fyBzWJKS4eovetTHaI7BkX+9p+FrF3yIrUhOZ+r62PRNZr8Aa6GWKOIOiqlc8mF2Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 807a68f2fa8f11f0b0f03b4cfa9209d1-20260126
+X-UUID: 8101bf5afa8f11f0b0f03b4cfa9209d1-20260126
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:8a3c612f-7ffb-4c5a-951e-85a6fec6eb78,IP:0,UR
+X-CID-O-INFO: VERSION:1.3.6,REQID:4c867925-cbf2-4a73-8ad2-5840bbaa4f08,IP:0,UR
 	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
 	elease,TS:0
-X-CID-META: VersionHash:a9d874c,CLOUDID:183c2674dc5f80bf5febbde31a2928b0,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:-
-	3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,A
-	V:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-META: VersionHash:a9d874c,CLOUDID:b4d84fc8c8820325b51a1020498ae6b6,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
+	,EDM:-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
+	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 807a68f2fa8f11f0b0f03b4cfa9209d1-20260126
+X-UUID: 8101bf5afa8f11f0b0f03b4cfa9209d1-20260126
 X-User: pengfuyuan@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <pengfuyuan@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 603079910; Mon, 26 Jan 2026 16:17:49 +0800
+	with ESMTP id 546111531; Mon, 26 Jan 2026 16:17:50 +0800
 From: pengfuyuan <pengfuyuan@kylinos.cn>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
@@ -77,10 +78,12 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	pengfuyuan <pengfuyuan@kylinos.cn>
-Subject: [PATCH v1 v1 0/4] [RUST] Framebuffer driver support
-Date: Mon, 26 Jan 2026 16:17:40 +0800
-Message-Id: <20260126081744.781392-1-pengfuyuan@kylinos.cn>
+Subject: [PATCH v1 v1 1/4] rust: io: mem: add ioremap_wc support
+Date: Mon, 26 Jan 2026 16:17:41 +0800
+Message-Id: <20260126081744.781392-2-pengfuyuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260126081744.781392-1-pengfuyuan@kylinos.cn>
+References: <20260126081744.781392-1-pengfuyuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -98,7 +101,7 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-5916-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-5918-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -113,96 +116,150 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.774];
+	NEURAL_HAM(-0.00)[-0.922];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C41C98561D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:mid,kylinos.cn:email]
+X-Rspamd-Queue-Id: 9C80E85677
 X-Rspamd-Action: no action
 
-This patch series adds Rust bindings and safe abstractions for the Linux
-framebuffer subsystem, enabling framebuffer drivers to be implemented in Rust.
+Add write-combining memory mapping support to the Rust iomem abstraction.
+This extends the existing IoMem and IoRequest abstractions to support
+write-combining cache policy, which is essential for framebuffer memory
+and other memory regions that benefit from write-combining semantics.
 
-The series consists of 4 patches:
+The implementation follows the same pattern as the existing ioremap and
+ioremap_np support:
+- Add rust_helper_ioremap_wc() in rust/helpers/io.c to wrap the C API
+- Add IoMem::ioremap_wc() to perform the actual mapping with write-combining
+- Add IoMem::new_wc() to create IoMem instances with write-combining policy
+- Add IoRequest::iomap_wc_sized() and IoRequest::iomap_wc() methods
+  for compile-time and runtime-sized mappings respectively
 
-1. rust: io: mem: add ioremap_wc support
-   Adds write-combining memory mapping support to the Rust iomem abstraction,
-   which is essential for framebuffer memory regions that benefit from
-   write-combining semantics.
+This enables Rust drivers, such as framebuffer drivers, to properly map
+memory regions with write-combining semantics.
 
-2. rust: device: add platdata accessors
-   Implements generic accessors for platform data, enabling drivers to access
-   platform-provided configuration. This is needed for framebuffer drivers
-   that use platform data for configuration.
+The API design is consistent with the existing iomap() methods, providing
+both sized and unsized variants to match the pattern established by the
+generic iomem abstraction.
 
-3. rust: fb: add framebuffer driver support
-   Adds the core framebuffer framework abstraction, including:
-   - Device abstraction (`fb::Device`) with reference counting via `AlwaysRefCounted`
-   - Driver and Operations traits (`fb::Driver`, `fb::Operations`)
-   - Screen information wrappers (`fb::FixScreenInfo`, `fb::VarScreenInfo`)
-   - I/O operation helpers (`fb_io_read`, `fb_io_write`, `fb_io_mmap`)
-   - Blit operation helpers (`cfb_fillrect`, `cfb_copyarea`, `cfb_imageblit`)
+Signed-off-by: pengfuyuan <pengfuyuan@kylinos.cn>
+---
+ rust/helpers/io.c     |  5 +++
+ rust/kernel/io/mem.rs | 71 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 76 insertions(+)
 
-4. rust: fb: add simplefb test driver
-   Adds a test driver that validates the framebuffer framework by porting
-   the C simplefb driver to Rust. This driver serves as both a validation
-   tool and a reference implementation for future Rust framebuffer drivers.
-
-The implementation follows the same patterns established in the DRM subsystem
-and maintains full compatibility with the existing C framebuffer subsystem.
-All C callbacks are properly bridged to Rust trait methods via the `Operations`
-trait, memory safety is ensured through proper use of `Opaque<fb_info>`, `ARef`,
-and `AlwaysRefCounted` for reference counting, type invariants are documented
-and enforced through the type system, and resource cleanup is handled via RAII
-with proper cleanup order.
-
-Testing:
---------
-This series has been tested on:
-- ARM64 platforms with various display configurations
-- AMD RX550 graphics card
-- Moore Threads S30 graphics card
-- Multiple other graphics cards
-
-All tested configurations show normal display functionality with proper
-framebuffer initialization, rendering operations (including I/O, color register
-management, and blitting), memory mapping, and resource cleanup. The simplefb
-test driver successfully demonstrates the usage of all framebuffer framework
-APIs and validates the abstraction's correctness.
-
-The simplefb test driver serves as both a validation tool and a reference
-implementation for future Rust framebuffer drivers.
-
-
-pengfuyuan (4):
-  rust: io: mem: add ioremap_wc support
-  rust: device: add platdata accessors
-  rust: fb: add framebuffer driver support
-  rust: fb: add simplefb test driver
-
- drivers/video/fbdev/Kconfig          |  21 +
- drivers/video/fbdev/Makefile         |   1 +
- drivers/video/fbdev/simplefb_rust.rs | 653 +++++++++++++++++++++++++++
- rust/bindings/bindings_helper.h      |   2 +
- rust/helpers/device.c                |   5 +
- rust/helpers/io.c                    |   5 +
- rust/kernel/device.rs                |  31 ++
- rust/kernel/fb/blit.rs               | 106 +++++
- rust/kernel/fb/device.rs             | 463 +++++++++++++++++++
- rust/kernel/fb/driver.rs             | 169 +++++++
- rust/kernel/fb/io.rs                 |  76 ++++
- rust/kernel/fb/mod.rs                |  23 +
- rust/kernel/fb/screeninfo.rs         | 318 +++++++++++++
- rust/kernel/io/mem.rs                |  71 +++
- rust/kernel/lib.rs                   |   2 +
- 15 files changed, 1946 insertions(+)
- create mode 100644 drivers/video/fbdev/simplefb_rust.rs
- create mode 100644 rust/kernel/fb/blit.rs
- create mode 100644 rust/kernel/fb/device.rs
- create mode 100644 rust/kernel/fb/driver.rs
- create mode 100644 rust/kernel/fb/io.rs
- create mode 100644 rust/kernel/fb/mod.rs
- create mode 100644 rust/kernel/fb/screeninfo.rs
-
+diff --git a/rust/helpers/io.c b/rust/helpers/io.c
+index c475913c69e6..6c9edf7f2233 100644
+--- a/rust/helpers/io.c
++++ b/rust/helpers/io.c
+@@ -13,6 +13,11 @@ void __iomem *rust_helper_ioremap_np(phys_addr_t offset, size_t size)
+ 	return ioremap_np(offset, size);
+ }
+ 
++void __iomem *rust_helper_ioremap_wc(phys_addr_t offset, size_t size)
++{
++	return ioremap_wc(offset, size);
++}
++
+ void rust_helper_iounmap(void __iomem *addr)
+ {
+ 	iounmap(addr);
+diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+index b03b82cd531b..94403d899bbd 100644
+--- a/rust/kernel/io/mem.rs
++++ b/rust/kernel/io/mem.rs
+@@ -149,6 +149,41 @@ pub fn iomap(self) -> impl PinInit<Devres<IoMem<0>>, Error> + 'a {
+     pub fn iomap_exclusive(self) -> impl PinInit<Devres<ExclusiveIoMem<0>>, Error> + 'a {
+         Self::iomap_exclusive_sized::<0>(self)
+     }
++
++    /// Maps an [`IoRequest`] with write-combining cache policy where the size
++    /// is known at compile time.
++    ///
++    /// This uses the [`ioremap_wc()`] C API, which provides write-combining
++    /// semantics. This is useful for framebuffer memory and other memory
++    /// regions that benefit from write-combining, where multiple writes can
++    /// be combined and reordered for better performance.
++    ///
++    /// Unlike [`Self::iomap`], this method explicitly uses write-combining
++    /// mapping, which is typically needed for video framebuffers.
++    ///
++    /// [`ioremap_wc()`]: https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device
++    pub fn iomap_wc_sized<const SIZE: usize>(
++        self,
++    ) -> impl PinInit<Devres<IoMem<SIZE>>, Error> + 'a {
++        IoMem::new_wc(self)
++    }
++
++    /// Maps an [`IoRequest`] with write-combining cache policy where the size
++    /// is not known at compile time.
++    ///
++    /// This uses the [`ioremap_wc()`] C API, which provides write-combining
++    /// semantics. This is useful for framebuffer memory and other memory
++    /// regions that benefit from write-combining.
++    ///
++    /// Unlike [`Self::iomap_wc_sized`], here the size of the memory region
++    /// is not known at compile time, so only the `try_read*` and `try_write*`
++    /// family of functions should be used, leading to runtime checks on every
++    /// access.
++    ///
++    /// [`ioremap_wc()`]: https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device
++    pub fn iomap_wc(self) -> impl PinInit<Devres<IoMem<0>>, Error> + 'a {
++        Self::iomap_wc_sized::<0>(self)
++    }
+ }
+ 
+ /// An exclusive memory-mapped IO region.
+@@ -261,6 +296,33 @@ fn ioremap(resource: &Resource) -> Result<Self> {
+         Ok(io)
+     }
+ 
++    fn ioremap_wc(resource: &Resource) -> Result<Self> {
++        // Note: Some ioremap() implementations use types that depend on the CPU
++        // word width rather than the bus address width.
++        //
++        // TODO: Properly address this in the C code to avoid this `try_into`.
++        let size = resource.size().try_into()?;
++        if size == 0 {
++            return Err(EINVAL);
++        }
++
++        let res_start = resource.start();
++
++        // SAFETY:
++        // - `res_start` and `size` are read from a presumably valid `struct resource`.
++        // - `size` is known not to be zero at this point.
++        let addr = unsafe { bindings::ioremap_wc(res_start, size) };
++
++        if addr.is_null() {
++            return Err(ENOMEM);
++        }
++
++        let io = IoRaw::new(addr as usize, size)?;
++        let io = IoMem { io };
++
++        Ok(io)
++    }
++
+     /// Creates a new `IoMem` instance from a previously acquired [`IoRequest`].
+     pub fn new<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> + 'a {
+         let dev = io_request.device;
+@@ -268,6 +330,15 @@ pub fn new<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> +
+ 
+         Devres::new(dev, Self::ioremap(res))
+     }
++
++    /// Creates a new `IoMem` instance with write-combining cache policy from
++    /// a previously acquired [`IoRequest`].
++    pub fn new_wc<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> + 'a {
++        let dev = io_request.device;
++        let res = io_request.resource;
++
++        Devres::new(dev, Self::ioremap_wc(res))
++    }
+ }
+ 
+ impl<const SIZE: usize> Drop for IoMem<SIZE> {
 -- 
 2.25.1
 
