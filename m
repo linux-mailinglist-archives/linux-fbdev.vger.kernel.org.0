@@ -1,132 +1,179 @@
-Return-Path: <linux-fbdev+bounces-6141-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6142-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mnquCdiTiGlbrgQAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6141-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sun, 08 Feb 2026 14:47:04 +0100
+	id Zr+DCGLMiGnZwAQAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6142-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sun, 08 Feb 2026 18:48:18 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D807108CEA
-	for <lists+linux-fbdev@lfdr.de>; Sun, 08 Feb 2026 14:47:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B62110996A
+	for <lists+linux-fbdev@lfdr.de>; Sun, 08 Feb 2026 18:48:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C0F6A300AC3E
-	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Feb 2026 13:47:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B54ED30022E0
+	for <lists+linux-fbdev@lfdr.de>; Sun,  8 Feb 2026 17:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEF52561AA;
-	Sun,  8 Feb 2026 13:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE46E2E36F8;
+	Sun,  8 Feb 2026 17:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jmR/N6Og"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AOypTnft"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0526318A6DB;
-	Sun,  8 Feb 2026 13:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6787128CF77
+	for <linux-fbdev@vger.kernel.org>; Sun,  8 Feb 2026 17:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770558420; cv=none; b=Y/GjpoaFpbkj2eCXGMHInlBFazBXGsMZrWEmoaYmGsopQFUK/hxJ8qL/hPcKI4LLyFb5dvqvg2HTpgpVM25o0YDseHXl8jnSA/klaM8IlwotoFLUlfQlWrTN/vKMzRDx5SlWZ+kDrYv0lB5+3xYNS/hvlcZSxm5cJfZwiTtfUSw=
+	t=1770572895; cv=none; b=Jpm7ZxQ0xFIQdZb4vb6NO7BlPPWPlkPcdBFuJSxPB69H2f7xXAHOILgKFEUljKUx87ha1si9vLbdEngiZVEKmQxBb6sCxaAJ8auwNOYEeeSgD/R02EEdKcuvtACtHUtGYxPO23nawbxjsPGazRiZ4WdM/YSR5L8ICC7RSkuUfxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770558420; c=relaxed/simple;
-	bh=IfCx8FuhXcmPUmvEZWLLSa3nIj7MtGEd1V5PX3u5lZM=;
+	s=arc-20240116; t=1770572895; c=relaxed/simple;
+	bh=sUs5p7JMAmpzI2X8Lgr9Uays7xQ3aL3OdYC3dAwrnJQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BqDUE6O5ozYcg1YZIBku3+kz5LqQzBZD6Kmu3Tny/dgJPckY5At6NSR6dgdMHxcrmWFBmMdO4z78MDuPqrrY1Hfw/YtVWVohkyMgepscjInf4cDLJbMKVXzbCZLtK0aGiwTjN0HxaD3Ay7Givcs3FJeyJC3lyna+24LXIF+eWDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jmR/N6Og; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770558420; x=1802094420;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IfCx8FuhXcmPUmvEZWLLSa3nIj7MtGEd1V5PX3u5lZM=;
-  b=jmR/N6OgyXmxRbPI/PLTwTH4UhsifF4j1IQbHGmf3XNPXg07pSmI30C3
-   2qspCKZDbd2HlHgQs8YYnr8bB/KdhPHcjrNLnWkJiDe3VWRpAvYUtttJg
-   VP+eMViLqTItUO8s8tx51yfzeJPUPTsQXbcDrp6c36BUh08t0UEFVUnoS
-   RtQnjy9CtaUciENYf0TRGsUcMWRQZKginjuGTQH90vp+z9hDCJ0H8OHuM
-   MrxgsJnmw65wV1Th9H53DTnMsVwYNFCJOFbPX7QOUiXC7oqbmq/9mc0fP
-   9uZqFtuNuixBP8/pkqcgre/4ZO4uEB3UJRL53k16IITSgeLCOKPSCE1G/
-   A==;
-X-CSE-ConnectionGUID: NmnoE9mdSaSNg887CBxQJA==
-X-CSE-MsgGUID: QzIwzcp+RE2g3kB7oeT3kg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="75311514"
-X-IronPort-AV: E=Sophos;i="6.21,280,1763452800"; 
-   d="scan'208";a="75311514"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 05:47:00 -0800
-X-CSE-ConnectionGUID: U8Xf+RzOT8mH95qaZlMQEg==
-X-CSE-MsgGUID: xz95bUBSTYSkoWwIuVgdUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,280,1763452800"; 
-   d="scan'208";a="211390967"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.245.100])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 05:46:57 -0800
-Date: Sun, 8 Feb 2026 15:46:55 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Artem Lytkin <iprintercanon@gmail.com>
-Cc: Andy Shevchenko <andy@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: fbtft: fix unchecked write return value in
- fb_agm1264k-fl
-Message-ID: <aYiTz5_OUhwJ9Vhs@smile.fi.intel.com>
-References: <20260207220523.3816-1-iprintercanon@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tsohmjW6R2x9ZCLxcPVXbvCxF5SBdec5oT4Q0MXjgeeUJsi1Q2dbWCpBVz6/peV00IgFd/ObuDq7yhneaxADPBu73s+ZazUP2pPB8ID8TBImCLWlz+ebp2qcmXnkrHqfEEb33+MeRggjb0lS5UaZop0bo3QLu8rA+E4PIEEUfZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AOypTnft; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47ee07570deso19263035e9.1
+        for <linux-fbdev@vger.kernel.org>; Sun, 08 Feb 2026 09:48:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770572892; x=1771177692; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qVxkLTNVEDSTdm+aBk1/2i6S8/IHNFf2q2LyNyNYpH4=;
+        b=AOypTnft5ZgfxBYw3JwdMBXRxiwlah1r5hkbuvyF3ZXNIuuF0xSrX7/oPlaNC1h+5A
+         phSiDleBhBPcSxLZar4g6oecSFu1BSpfKUrc9AC1hG7ZzQpW+Wt8IAqWrzcH5ikMUVxC
+         JFjo9F3TvSgTfdP7Qb5FGclOg9gU4na5R3cJu1YZ//4cgAjmH6LlniMXPm1agOTJbdmv
+         Gk2Kq8XhkR82nsNBhwEjBxNhSXb1a5fAn9UtWAFC6PL3tZax26BleQEeyM1OpseejJBi
+         7nKPhKQiv57wzBAVHw2lYAkIsilEkgMaiL1Ev3xeVFtoMbgCCU8AIUT5LgUYnPkKbGod
+         TDxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770572892; x=1771177692;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qVxkLTNVEDSTdm+aBk1/2i6S8/IHNFf2q2LyNyNYpH4=;
+        b=KJbSwsT5IqeJYekpqPofprYUG95C82Zm3LI7E6Cr7JLbC1trSOOKqV9SMgplirkvx7
+         JhQ7swlMwEMCBXnMDs/naxFp6E/Ex5hQEjZdn1GZWFzccyEp0diVde2k0iW6IPWo7Jm/
+         qyuXDWOXGMOFTewlzKctmD/bmd/A8HRcLnp/GiDGcxR+AONSvL34kVmGx8L/nmmPCvSh
+         aCCkZwdZJmaypuOWrt6i9AaTdHwQrIjtPIn5zejVvxaY7wKoKKDTGu8H6kGvY+K0VcNG
+         1Om3JMur2uC9FE+NUT4o5PwAO90mBR2hWQ9WTkxYfqtRYEFjNL873RWnGRoOC04V/6EX
+         FJeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIGz5nut6A/YFg0EtmRAe2Qs26W1nEUkwkL6s2U+QZT6Tm8kXJ4c5R1+ATFjqc2XT1bBC2pFmXGmdnkg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyECnJojDYHZrYJYeTglMJyj7wl2tuLSM7dQy+IjFPCypT+jVmx
+	oyX6ptULoy5eo9JyXlRnCdMUDsFcwvgii1JVSV2wAfaA1lw6vYJssk4c8OvirRM8EjY=
+X-Gm-Gg: AZuq6aJ1MmLSJVKwXHJ2WJWcPBmv/3Ec1yMM0uvaWkAdS+zZSyU5QWPsKVc96cRpPrK
+	czJpoBC0Ub/RpUOXaZuqWhecH5o5nJfSxNP9lcK7zn/3bG5ci7Pmt+DjlKtB+pGNYPBnIueTr6w
+	SZW1iw/gCt7iR6OJ7cTpjO4D5BH615spuqoWbH4+UMUiSg6TKROw+fswc4BnqZ3XzfXsuDOdnae
+	/x3dtuygPuXY6XSvDp20jg9F+NBcMAaBaMTvcCW1WUtAvvX9CV7JFHLnFQfvxF83eVu+YjY34x/
+	vePe94MsNiZwt1GJ7CbTO3Ewki6tqAcdhGd39YJM3zYIgchur1Dnd36BGSs6N3BvkayNB8nqhyg
+	xx8pRlijAm0tiOzEiuSmvF0Bj++FMG7b+Vo0pumDwwb7WH6GUT3oklMajDllW1irlDDssetTTlo
+	/uSKRmN/kcRCCtfEj0
+X-Received: by 2002:a05:600c:8116:b0:480:1c10:5633 with SMTP id 5b1f17b1804b1-4832021c74cmr132509965e9.26.1770572892294;
+        Sun, 08 Feb 2026 09:48:12 -0800 (PST)
+Received: from localhost ([2a02:8071:b783:6940:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4832097e142sm70961185e9.8.2026.02.08.09.48.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Feb 2026 09:48:11 -0800 (PST)
+Date: Sun, 8 Feb 2026 18:48:08 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Helge Deller <deller@gmx.de>
+Cc: Chen Ni <nichen@iscas.ac.cn>, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 1/4] fbdev: au1100fb: Don't store device specific data
+ in global variables
+Message-ID: <aYjLX1uGMkDugm39@monoceros>
+References: <cover.1770483674.git.u.kleine-koenig@baylibre.com>
+ <0e1ecdde447dc32816f1f066812ec8e84b4aad0a.1770483674.git.u.kleine-koenig@baylibre.com>
+ <7334e2a2-d71f-404c-b2b0-170a7117c0c5@gmx.de>
+ <aYevgJ6cfe6JVlJq@monoceros>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="spaogm5g56oxtz74"
 Content-Disposition: inline
-In-Reply-To: <20260207220523.3816-1-iprintercanon@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <aYevgJ6cfe6JVlJq@monoceros>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[baylibre-com.20230601.gappssmtp.com:s=20230601];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6141-lists,linux-fbdev=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de];
+	TAGGED_FROM(0.00)[bounces-6142-lists,linux-fbdev=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[baylibre.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[u.kleine-koenig@baylibre.com,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[baylibre-com.20230601.gappssmtp.com:+];
+	NEURAL_HAM(-0.00)[-0.994];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: 8D807108CEA
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 9B62110996A
 X-Rspamd-Action: no action
 
-On Sat, Feb 07, 2026 at 10:05:23PM +0000, Artem Lytkin wrote:
-> The second call to par->fbtftops.write() does not capture the return
-> value, so the subsequent error check tests a stale value from the
-> first write call. Add the missing assignment so the error check
-> applies to the correct write operation.
 
-Hmm... Sounds about right, but it was like that from the day 1.
-Acked-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+--spaogm5g56oxtz74
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 1/4] fbdev: au1100fb: Don't store device specific data
+ in global variables
+MIME-Version: 1.0
 
--- 
-With Best Regards,
-Andy Shevchenko
+Hello,
 
+On Sat, Feb 07, 2026 at 10:34:21PM +0100, Uwe Kleine-K=F6nig wrote:
+> > > @@ -559,7 +554,7 @@ int au1100fb_drv_suspend(struct platform_device *=
+dev, pm_message_t state)
+> > >   	clk_disable(fbdev->lcdclk);
+> > > -	memcpy(&fbregs, fbdev->regs, sizeof(struct au1100fb_regs));
+> > > +	memcpy(&fbdev->pm_regs, fbdev->regs, sizeof(struct au1100fb_regs));
+> >=20
+> > Although memcpy() was used before, isn't this:
+> > 	fbdev->pm_regs =3D *fbdev->regs;
+> > sufficient and better?
+>=20
+> Probably yes, that's a separate patch then.
 
+Thinking again: this is copying from io memory. So both memcpy and
+struct assignment might be a bad idea. I'll keep it as is, this driver
+already occupies me much longer than I intended.
+
+Best regards
+Uwe
+
+--spaogm5g56oxtz74
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmmIzFYACgkQj4D7WH0S
+/k5S8gf+JqZRaaFc9xKL633QUtFt//Z+4Wyti4iKrtYDkeJAvUA0yAeNksku8Vfh
+PHxP25/AY/5swCHs87aAZ28SOgqmkuc2MsQKJWC3g0Xb7i2cgTA1jzCBbHjWydvf
+A7YLK0JL1phZSLJKS1gbZ7vYj89gnFq+tc3FJypJoTtU9mmeWneB5ewwUanl4/Ul
+wu1+HGhqRUxH3i4iSNAADAG6TyNKn3GI1JYchEV7ANMUrckUOkOmOEHkXTSY1TJx
+lHaWjtbib9QzNH0a4Rg/m/KS9pqRWZ9Fa8jG+FSVoAM3mOttEJG45fGS5Ox0ihej
+f6WoMhxaGR6yusQgM244g2/U046wiA==
+=l4sx
+-----END PGP SIGNATURE-----
+
+--spaogm5g56oxtz74--
 
