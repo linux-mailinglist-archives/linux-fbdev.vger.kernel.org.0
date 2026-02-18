@@ -1,110 +1,89 @@
-Return-Path: <linux-fbdev+bounces-6257-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6259-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4E+kA4l8lWl8RwIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6257-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 09:47:05 +0100
+	id sCnHNggAlmlHYAIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6259-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 19:08:08 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B8DA154425
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 09:47:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D2715888B
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 19:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5EE4A314A99D
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 08:40:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15501301487E
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 18:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487E4330B26;
-	Wed, 18 Feb 2026 08:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2FF30C36D;
+	Wed, 18 Feb 2026 18:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="h8LC+zyL";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6Fnkn6hY";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tOwEDsWU";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Ep9tnNLM"
+	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="lekcxDf+"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from sonic302-21.consmr.mail.ir2.yahoo.com (sonic302-21.consmr.mail.ir2.yahoo.com [87.248.110.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EF632AAB1
-	for <linux-fbdev@vger.kernel.org>; Wed, 18 Feb 2026 08:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC21A2F5A06
+	for <linux-fbdev@vger.kernel.org>; Wed, 18 Feb 2026 18:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.248.110.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771403999; cv=none; b=Pr4y+2q46McMkVS0d1H+ZnL1UglsNRXB3OGVC2B0/jcfGOeaVYYu5jND+X4rdGDzLWjOypAkO/UKL60+xQBg4/Jk2dkdTPbzDrgxmI+/x53yGoUKbMJ771g8urb9ZQ2Li+qhR5M+qoat/oJ21ggfMudiYvF8ILAJVelxt1icjzk=
+	t=1771438086; cv=none; b=sXt4eYeD3mT7RofSvakMTesE/UcIxpwTsqF1AoLs/eI+WCVGTIZea3XhSN/Qq9stZ5enEj98QVvc6tzqgoJirwuyQpub+2JsWh7WqMS9Ft8JxP7DkE0EoRPh+cJOjC8vwI9q4sO1P0H654Pe7ty+55pvI/U2HUKhhjKLHodXO74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771403999; c=relaxed/simple;
-	bh=K9cqzh3t4pfomNP2+voMY7ti5lZrcI1ouF4fKPkDIpw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWe6H98Z0ft+WYd5g98hLdwvENlu9hi6BQnW9KQqjDy8gc4+CtcAloX9Owm/FE486LMwU4utckxemCzw3LtcEt+b3hpu8st7HVj3qt7IXc3VMs/xZS+x6lN3Q2333D37DprRSAddQc7er1/xvdA9SQH9udFe2/TxwIdDD5Vry4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=h8LC+zyL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6Fnkn6hY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tOwEDsWU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Ep9tnNLM; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EF3733E70A;
-	Wed, 18 Feb 2026 08:39:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771403947; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UWbN3XkbHkscdP0E7iQp4kH5azPVaqBQxyqSwFkqhuI=;
-	b=h8LC+zyLSNWM3PdGueV2b4PXOiZHbnwr7Km5zUBIpYSblTaxX87W3fNRgoEjdxbDZkxUM7
-	NfLaZyRAzqHcfkyOlAX/JF8KWv2M+mk3VEZ4OLrf4unCm9hbkwZ0Bjlq4NZ2Jmj5C/aTTr
-	tQRkGZVeVuTD9ZgBAU69y5uM6u5BpEM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771403947;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UWbN3XkbHkscdP0E7iQp4kH5azPVaqBQxyqSwFkqhuI=;
-	b=6Fnkn6hYPmPK+M4tM0lawp20tpx539I6igeC9NyNU8Wt066QX1OAP96oTWhiw630KKW8Qe
-	QfPrRreeAYu3DzCA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771403946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UWbN3XkbHkscdP0E7iQp4kH5azPVaqBQxyqSwFkqhuI=;
-	b=tOwEDsWUZgJasXgDPU55cYYmRV2bRosN213Jws4oZbpdwPckRVr3K+0PYSXIAYBKBsEtTt
-	SZrB6O8h1pGPFtYEjcf/EKOlRz/Jx+NkLx+DyxPBpt93Dncx9ApK9uJipSKWXxHOI1EOQd
-	0rq2/9cTNRQwDORCvmxdH2sGie/qnv4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771403946;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UWbN3XkbHkscdP0E7iQp4kH5azPVaqBQxyqSwFkqhuI=;
-	b=Ep9tnNLMZWtinfnPMYAAC1ZsTbSMQEiXqma496OQrbe10ihvCjYzHU2fvX4WT4P7b+LtfF
-	LxPyZyehrvxkoMBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC2E33EA65;
-	Wed, 18 Feb 2026 08:39:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SI6XKKp6lWn8LwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 18 Feb 2026 08:39:06 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: gregkh@linuxfoundation.org,
-	deller@gmx.de,
-	sam@ravnborg.org
-Cc: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1771438086; c=relaxed/simple;
+	bh=tj3fDLu9j+j/1D3Ns5QM27VBtcvoJcEDv94CX7fnhHs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=kASk+73+WmcYojF/B9ZCjgN+Py+t3P/8FQli33/j8hSdv4png+Wdh9JttwYIqgQylV7DWaRgBzcrKI5r4/aS5vCnnu/Lk/6CyrTvOCdOIsJKZb1fVGBeHOfrZoKsWO75UbXMvb8u+nIiShB2nx9PJFCPNBv3nZ+y8FdrhGDgktw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=lekcxDf+; arc=none smtp.client-ip=87.248.110.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1771438082; bh=5+8LH/ttBDhQzOQTNsiHdkZH9I0ew9FiefVOo+uK+Xs=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=lekcxDf+hxa60iLLYyXKFSMq7SzgYCqfathrTL4BUFzOaL42rfVX+6PECVvy5ESA138a4XCSkvStF4FiZtX/vXbNQwnS0/UlDFQrCJN95e834H3f5O56bjdKLzN1k5jH6YD9ddUDDdQ1jsApH5rWXvbKXWAjmJOn50botVg1BAxjuHNG73c05XQvdT1njWSKrDES33cstiWuj3r2WkiFVkwtX67A6Ch0mJJGTOM0o0ph+PeNHTfXvIN9Phr58XI3s/STNRbBD6H+e8pyF72yDINT9DIyH0dobh6RT35XMzEC3wW44CwnqhhV9L50pCzxBQQr/RhtDlqZAEG4eQbcTw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1771438082; bh=eSEPC5iwR5LBVw3em89sLXMYeWJmq+ZSChr4jbTW7dO=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=lKU6DCJPgrkwSmPd82nmKXAwB6dj+AcY5unreldu2zXv81gr4zi5mqu5DEK8PVj3Da5hYhoqB9+Cwlop4fmz7jcmfI/HT3amPs1yp5aSq2NsT0SMYoqOL4sKORjOrJGIrAuFPocN8lXIB34DG9mZpTj06Z/v3EJA0PEZ2mUyQuuEPddDGUZetIi9dzA5pGM/jx0roTJcH2l/t+H+yiGi1QC7do/ycpd1Jexayk92hNcZ57me8yM1RowI1snUfY+EZdOcjby79VfLetpnvByJbw+mvNZm39VoY7GMX0ARxM1SCK44Pg03JaaI+UjYwIpi6exXfY3KjJ9agbjJPB13Xg==
+X-YMail-OSG: OvZt89oVM1mPoTQrGIR9vJqkCQTriIgDK7pSx5FFBGBejYmvOukNlm7ern5lQI3
+ jivIRjy5djehEf8AymmGgv9Wam1P9LCvUVVF2VmBwRAg8woYImSXk5PCw1ZPYLsEOykXSAsjRj6d
+ XWA1za4ZtAoT8_ZFD9PuySuL1j_BcjVW4bgU0dqSMS519Jb12lIm37Oivady3LtRdR7.vnrSGSFk
+ cHEEgncYxFS.HZRTo6q9Amc2tYZX_nUU.Vtk389suhrrAhqwBZ3u79DU_NPlYCdq6Ow1ad57kFas
+ ob2zLOEWCOL0cpF6Yoc0FebTT9HZwafYwbsNWlEWGdJFxBqH.OsHqTMU.oxMt1kh68DYaZImDN.M
+ vAe6.leZ.oS4.uAtlQAxvbXfJN21s0HIamz9K1Nomx6ryESTgoEpSy1o4Vl.PgryMacDueh5OhR4
+ a948uVVMXYfSrTHxxn7DguU6q85Ld1x4ahe2OLSH.NYymOYVN5SAS.I7m6L1aPcB0fk2vx8T88u1
+ cw8ZvkByFWSvvFUej2qatSeo9KsbyzcSNBBr1YjOf.8iQoHqic3CRfTmIJzIMmKQz0oU5LwV5z6C
+ _Fd23IwVi6juoxiijemPiQeDhmcX_mtgasdr.fOXSHRixhHbJlPWzyocuhWVvXxJetCkrUAdxp.f
+ 4iX3neLoSJiRgsek01jKxD3hRtLEEVctl02YC.x6RUh5Rf4D2ujulDfwC0H4W7XuxhNsICs3X3DY
+ PCy_bIz3nsMFaSx1q_c97Kpxjn8gIj1k8ASODqTiOwVGID_QDtyXxiipB2HvN4HwgOzkUFwWbErd
+ LSwA3gJBXTmGHD1qTfgzlaDxYza81gYN8AOnRPoLbv7yePHDWxkxeRzrRllMV8HmkD8k29qarnr7
+ bSvDgl26g.4Y7onH5TgVq1umbApQWpSeHwRrh7hBp0AVOKvaIVs6rJVVw1DDoQNF_fM6R9u_2dTj
+ ZSjfGk11FOK0.rMKrRzDwdl47Tjgcl3GIBkngRhDAa5NGR95PvyAukOiIYNKe2W_y7Talvilioq9
+ idwufv3sA0Yc4j.29wROiJvMf_.sKq56Yl.EYBPERshwUVLpswdygBFHDhv70qOFrFd2k1YKqrgQ
+ cRJW_kHq1qILgoJBZdDd53eQwpPeTpnhZYrgHYIvGR9a51yMh1RVeZXR6dzgUHyOPnEQKEJMNVab
+ ARpp6U7zBBGS9AzQha_Reb2ckMZtT9mlT410iTT82ce2cNIntbSh9hklhM5wYcwem6K6ARV2EsKi
+ GNoAxH5EttxApPs9jaVwdt.t_0dvZPv7mw4V9xczkvFY6sz5XL5W_tz2YJs2iY16RiGH.VfUS1N6
+ 0ICTLgIikxGmtijK1qDuYSIEit6jWgIpf5ckTt1MaisORxbjHhEfsMOVh1O_mPh1JXa36pSgd1lm
+ 861WtPADJTaGGgxCKrKG9bKDteRhrYxrLb0ZI1BD.yN4aCoGn4evuqwyqqgoadM6LZWTSq2Q1DY5
+ jFskUqNmpnwoByLgXJw5mSzPQ3StkzxbyPZFlyd4C9U9sThabuOnuDTynOM6flQ3SaNHYWEyVz3d
+ jwIzjP1sLm2UAqam15QJQ5fpKz3ue1sQKryPPWI7QV51Sn17rDvmsKGzTIW2zJ8dwTIMMRqzyOxL
+ 638yGK4LXxe8sWfPMLG87x7H.XkxoTvK9E4HSE3Yn7k.yB3seAHok4iV3BACKYARU65K0cQSWYim
+ 145spClqc58yo86jR5C_yqMwlo.KQ5Dj9V9216iHCrgikIZKKiA2rsErhqhXZjNP08Su_r0SxMua
+ 6jJ86dqCK4MqcSdvhfGIGjawDQmE7AVTnc7u3nQws1QXhldLXJDJwxhUCqsd2kCcGorAJrAcj4Ey
+ OZCNKI3HEuP7Ui6KVAys3znMMhMpRgNxtn8ComO9lJDalDu7s_li5r8pQ3pU4_atzl8mbJ.FH4Dz
+ IUECH6Djd.aYu7lhE8870vUj1fQ0VNlvZEPSVpcjHuI8tuP4X0NdB_GMmLUU9Dpr__9e34ltQAA1
+ Bus8dHOIFsliQCi9LBkKZX6_5UABVjrslhlTv4VuH9uA.KoJEoLuCjoN5fmTNNjTXkUo39CcwLlP
+ Zq25pVCllKPLrfTFLPvnt238Mes7DZa8M2cdGyT5XuZtvEhXpM4f4hm5.9Vi9I1FKT0r2_j4EVXU
+ T55iAkPu_LhI1gKzaNlfwBIuojgcJGusvpzxTz9FvshP7QJexkSzdQKOaq3bfooys2ko9BQa1x.E
+ .T6UhtjYy.mRFH_HwC2o6B4LQTc52e_ED4DlCRgtG.4V5qNokEpvJMcuXd6aBFgoaC0wtFlr91Lq
+ llA--
+X-Sonic-MF: <tomasz.unger@yahoo.pl>
+X-Sonic-ID: 457f293a-9a80-45c0-916e-296272d1d882
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Wed, 18 Feb 2026 18:08:02 +0000
+Received: by hermes--production-ir2-bbcfb4457-g6b6v (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID d8b8c0de62b821a074fed8fe833a97ce;
+          Wed, 18 Feb 2026 17:47:42 +0000 (UTC)
+From: tomasz.unger@yahoo.pl
+To: andy@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 13/13] lib/fonts: Remove internal symbols and macros from public header file
-Date: Wed, 18 Feb 2026 09:16:04 +0100
-Message-ID: <20260218083855.10743-14-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260218083855.10743-1-tzimmermann@suse.de>
-References: <20260218083855.10743-1-tzimmermann@suse.de>
+	Tomasz Unger <tomasz.unger@yahoo.pl>
+Subject: [PATCH] staging: fbtft: fb_ra8875: replace udelay with usleep_range
+Date: Wed, 18 Feb 2026 18:47:37 +0100
+Message-ID: <20260218174737.86994-1-tomasz.unger@yahoo.pl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -112,391 +91,70 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Spam-Flag: NO
+References: <20260218174737.86994-1-tomasz.unger.ref@yahoo.pl>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[yahoo.pl,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[yahoo.pl:s=s2048];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6257-lists,linux-fbdev=lfdr.de];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmx.de,ravnborg.org];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,lists.linux.dev,yahoo.pl];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6259-lists,linux-fbdev=lfdr.de];
+	DKIM_TRACE(0.00)[yahoo.pl:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tomasz.unger@yahoo.pl,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	DKIM_TRACE(0.00)[suse.de:+];
+	FREEMAIL_FROM(0.00)[yahoo.pl];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9B8DA154425
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 44D2715888B
 X-Rspamd-Action: no action
 
-Define access macros for font_data_t in fonts.c. Define struct font_data
-and declare most of the font symbols in the internal header font.h, where
-they can only be seen by the font code. Add config guards around font
-symbols.
+From: Tomasz Unger <tomasz.unger@yahoo.pl>
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
 ---
- include/linux/font.h       | 32 +++++------------------
- lib/fonts/font.h           | 52 ++++++++++++++++++++++++++++++++++++++
- lib/fonts/font_10x18.c     |  2 +-
- lib/fonts/font_6x10.c      |  3 ++-
- lib/fonts/font_6x11.c      |  2 +-
- lib/fonts/font_6x8.c       |  3 ++-
- lib/fonts/font_7x14.c      |  2 +-
- lib/fonts/font_8x16.c      |  3 ++-
- lib/fonts/font_8x8.c       |  2 +-
- lib/fonts/font_acorn_8x8.c |  2 +-
- lib/fonts/font_mini_4x6.c  |  2 +-
- lib/fonts/font_pearl_8x8.c |  2 +-
- lib/fonts/font_sun12x22.c  |  3 ++-
- lib/fonts/font_sun8x16.c   |  3 ++-
- lib/fonts/font_ter10x18.c  |  4 ++-
- lib/fonts/font_ter16x32.c  |  4 ++-
- lib/fonts/fonts.c          |  8 +++++-
- 17 files changed, 88 insertions(+), 41 deletions(-)
- create mode 100644 lib/fonts/font.h
+ drivers/staging/fbtft/fb_ra8875.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/font.h b/include/linux/font.h
-index 4ff956a1cd0a..6e9a4c93b47b 100644
---- a/include/linux/font.h
-+++ b/include/linux/font.h
-@@ -92,20 +92,12 @@ struct font_desc {
- #define FONT6x8_IDX	12
- #define TER10x18_IDX	13
+diff --git a/drivers/staging/fbtft/fb_ra8875.c b/drivers/staging/fbtft/fb_ra8875.c
+index 0ab1de6647d0..ec4ce534e409 100644
+--- a/drivers/staging/fbtft/fb_ra8875.c
++++ b/drivers/staging/fbtft/fb_ra8875.c
+@@ -210,7 +210,7 @@ static void write_reg8_bus8(struct fbtft_par *par, int len, ...)
+ 	}
+ 	len--;
  
--extern const struct font_desc	font_vga_8x8,
--			font_vga_8x16,
--			font_pearl_8x8,
--			font_vga_6x11,
--			font_7x14,
--			font_10x18,
--			font_sun_8x16,
--			font_sun_12x22,
--			font_acorn_8x8,
--			font_mini_4x6,
--			font_6x10,
--			font_ter_16x32,
--			font_6x8,
--			font_ter_10x18;
-+#if defined(CONFIG_FONT_8x8)
-+extern const struct font_desc font_vga_8x8;
-+#endif
-+#if defined(CONFIG_FONT_8x16)
-+extern const struct font_desc font_vga_8x16;
-+#endif
+-	udelay(100);
++	usleep_range(100, 110);
  
- /* Find a font with a specific name */
+ 	if (len) {
+ 		buf = (u8 *)par->buf;
+@@ -231,7 +231,7 @@ static void write_reg8_bus8(struct fbtft_par *par, int len, ...)
  
-@@ -120,16 +112,4 @@ extern const struct font_desc *get_default_font(int xres, int yres,
- /* Max. length for the name of a predefined font */
- #define MAX_FONT_NAME	32
+ 	/* restore user spi-speed */
+ 	par->fbtftops.write = fbtft_write_spi;
+-	udelay(100);
++	usleep_range(100, 110);
+ }
  
--/* Extra word getters */
--#define REFCOUNT(fd)	(((int *)(fd))[-1])
--#define FNTSIZE(fd)	(((int *)(fd))[-2])
--#define FNTSUM(fd)	(((int *)(fd))[-4])
--
--#define FONT_EXTRA_WORDS 4
--
--struct font_data {
--	unsigned int extra[FONT_EXTRA_WORDS];
--	unsigned char data[];
--} __packed;
--
- #endif /* _VIDEO_FONT_H */
-diff --git a/lib/fonts/font.h b/lib/fonts/font.h
-new file mode 100644
-index 000000000000..00f65a3da5c2
---- /dev/null
-+++ b/lib/fonts/font.h
-@@ -0,0 +1,52 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef _LIB_FONTS_FONT_H
-+#define _LIB_FONTS_FONT_H
-+
-+#include <linux/font.h>
-+
-+#if defined(CONFIG_FONT_PEARL_8x8)
-+extern const struct font_desc font_pearl_8x8;
-+#endif
-+#if defined(CONFIG_FONT_6x11)
-+extern const struct font_desc font_vga_6x11;
-+#endif
-+#if defined(CONFIG_FONT_7x14)
-+extern const struct font_desc font_7x14;
-+#endif
-+#if defined(CONFIG_FONT_10x18)
-+extern const struct font_desc font_10x18;
-+#endif
-+#if defined(CONFIG_FONT_SUN8x16)
-+extern const struct font_desc font_sun_8x16;
-+#endif
-+#if defined(CONFIG_FONT_SUN12x22)
-+extern const struct font_desc font_sun_12x22;
-+#endif
-+#if defined(CONFIG_FONT_ACORN_8x8)
-+extern const struct font_desc font_acorn_8x8;
-+#endif
-+#if defined(CONFIG_FONT_MINI_4x6)
-+extern const struct font_desc font_mini_4x6;
-+#endif
-+#if defined(CONFIG_FONT_6x10)
-+extern const struct font_desc font_6x10;
-+#endif
-+#if defined(CONFIG_FONT_TER16x32)
-+extern const struct font_desc font_ter_16x32;
-+#endif
-+#if defined(CONFIG_FONT_6x8)
-+extern const struct font_desc font_6x8;
-+#endif
-+#if defined(CONFIG_FONT_TER10x18)
-+extern const struct font_desc font_ter_10x18;
-+#endif
-+
-+#define FONT_EXTRA_WORDS 4
-+
-+struct font_data {
-+	unsigned int extra[FONT_EXTRA_WORDS];
-+	unsigned char data[];
-+} __packed;
-+
-+#endif
-diff --git a/lib/fonts/font_10x18.c b/lib/fonts/font_10x18.c
-index 5d940db626e7..10edebc4bb74 100644
---- a/lib/fonts/font_10x18.c
-+++ b/lib/fonts/font_10x18.c
-@@ -4,7 +4,7 @@
-  * by Jurriaan Kalkman 06-2005  *
-  ********************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 9216
- 
-diff --git a/lib/fonts/font_6x10.c b/lib/fonts/font_6x10.c
-index e65df019e0d2..660d3a371b30 100644
---- a/lib/fonts/font_6x10.c
-+++ b/lib/fonts/font_6x10.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
-+#include "font.h"
- 
- #define FONTDATAMAX 2560
- 
-diff --git a/lib/fonts/font_6x11.c b/lib/fonts/font_6x11.c
-index bd76b3f6b635..671487ccc172 100644
---- a/lib/fonts/font_6x11.c
-+++ b/lib/fonts/font_6x11.c
-@@ -5,7 +5,7 @@
- /*                                            */
- /**********************************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX (11*256)
- 
-diff --git a/lib/fonts/font_6x8.c b/lib/fonts/font_6x8.c
-index 06ace7792521..5811ee07f4d8 100644
---- a/lib/fonts/font_6x8.c
-+++ b/lib/fonts/font_6x8.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
-+#include "font.h"
- 
- #define FONTDATAMAX 2048
- 
-diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
-index a2f561c9fa04..0c7475d643c8 100644
---- a/lib/fonts/font_7x14.c
-+++ b/lib/fonts/font_7x14.c
-@@ -4,7 +4,7 @@
- /* by Jurriaan Kalkman 05-2005        */
- /**************************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 3584
- 
-diff --git a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
-index 06ae14088514..523e95c75569 100644
---- a/lib/fonts/font_8x16.c
-+++ b/lib/fonts/font_8x16.c
-@@ -5,9 +5,10 @@
- /*                                            */
- /**********************************************/
- 
--#include <linux/font.h>
- #include <linux/module.h>
- 
-+#include "font.h"
-+
- #define FONTDATAMAX 4096
- 
- static const struct font_data fontdata_8x16 = {
-diff --git a/lib/fonts/font_8x8.c b/lib/fonts/font_8x8.c
-index 69570b8c31af..e5b697fc9675 100644
---- a/lib/fonts/font_8x8.c
-+++ b/lib/fonts/font_8x8.c
-@@ -5,7 +5,7 @@
- /*                                            */
- /**********************************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 2048
- 
-diff --git a/lib/fonts/font_acorn_8x8.c b/lib/fonts/font_acorn_8x8.c
-index af5fa72aa8b7..36c51016769d 100644
---- a/lib/fonts/font_acorn_8x8.c
-+++ b/lib/fonts/font_acorn_8x8.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Acorn-like font definition, with PC graphics characters */
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 2048
- 
-diff --git a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
-index cc21dc70cfd1..dc919c160dde 100644
---- a/lib/fonts/font_mini_4x6.c
-+++ b/lib/fonts/font_mini_4x6.c
-@@ -39,7 +39,7 @@ __END__;
-    MSBit to LSBit = left to right.
-  */
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 1536
- 
-diff --git a/lib/fonts/font_pearl_8x8.c b/lib/fonts/font_pearl_8x8.c
-index ae98ca17982e..2438b374acea 100644
---- a/lib/fonts/font_pearl_8x8.c
-+++ b/lib/fonts/font_pearl_8x8.c
-@@ -10,7 +10,7 @@
- /*                                            */
- /**********************************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 2048
- 
-diff --git a/lib/fonts/font_sun12x22.c b/lib/fonts/font_sun12x22.c
-index 91daf5ab8b6b..2afbc144bea8 100644
---- a/lib/fonts/font_sun12x22.c
-+++ b/lib/fonts/font_sun12x22.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
-+#include "font.h"
- 
- #define FONTDATAMAX 11264
- 
-diff --git a/lib/fonts/font_sun8x16.c b/lib/fonts/font_sun8x16.c
-index 81bb4eeae04e..2b7b2d8e548a 100644
---- a/lib/fonts/font_sun8x16.c
-+++ b/lib/fonts/font_sun8x16.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
-+#include "font.h"
- 
- #define FONTDATAMAX 4096
- 
-diff --git a/lib/fonts/font_ter10x18.c b/lib/fonts/font_ter10x18.c
-index 80356e9d56c7..3f30b4a211ab 100644
---- a/lib/fonts/font_ter10x18.c
-+++ b/lib/fonts/font_ter10x18.c
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
- #include <linux/module.h>
- 
-+#include "font.h"
-+
- #define FONTDATAMAX 9216
- 
- static const struct font_data fontdata_ter10x18 = {
-diff --git a/lib/fonts/font_ter16x32.c b/lib/fonts/font_ter16x32.c
-index 5baedc573dd6..93616cffe642 100644
---- a/lib/fonts/font_ter16x32.c
-+++ b/lib/fonts/font_ter16x32.c
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
- #include <linux/module.h>
- 
-+#include "font.h"
-+
- #define FONTDATAMAX 16384
- 
- static const struct font_data fontdata_ter16x32 = {
-diff --git a/lib/fonts/fonts.c b/lib/fonts/fonts.c
-index 1830e6ae9c87..198aae869be2 100644
---- a/lib/fonts/fonts.c
-+++ b/lib/fonts/fonts.c
-@@ -13,7 +13,6 @@
-  */
- 
- #include <linux/container_of.h>
--#include <linux/font.h>
- #include <linux/kd.h>
- #include <linux/module.h>
- #include <linux/overflow.h>
-@@ -26,12 +25,19 @@
- #include <asm/setup.h>
- #endif
- 
-+#include "font.h"
-+
- #define console_font_pitch(font) DIV_ROUND_UP((font)->width, 8)
- 
- /*
-  * Helpers for font_data_t
-  */
- 
-+/* Extra word getters */
-+#define REFCOUNT(fd)	(((int *)(fd))[-1])
-+#define FNTSIZE(fd)	(((int *)(fd))[-2])
-+#define FNTSUM(fd)	(((int *)(fd))[-4])
-+
- static struct font_data *to_font_data_struct(font_data_t *fd)
- {
- 	return container_of(fd, struct font_data, data[0]);
+ static int write_vmem16_bus8(struct fbtft_par *par, size_t offset, size_t len)
 -- 
-2.52.0
+2.53.0
 
 
