@@ -1,77 +1,77 @@
-Return-Path: <linux-fbdev+bounces-6258-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6260-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMQWEnX/lWlHYAIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6258-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 19:05:41 +0100
+	id cBtkC0UClmnQYAIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6260-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 19:17:41 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE6F158839
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 19:05:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BEC158A36
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 19:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 50D163011797
-	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 18:05:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34D6F302AE22
+	for <lists+linux-fbdev@lfdr.de>; Wed, 18 Feb 2026 18:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC5F33064C;
-	Wed, 18 Feb 2026 18:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD454342503;
+	Wed, 18 Feb 2026 18:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="NI39DuKb"
+	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="eFI5viiV"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from sonic310-11.consmr.mail.ir2.yahoo.com (sonic310-11.consmr.mail.ir2.yahoo.com [77.238.177.32])
+Received: from sonic311-31.consmr.mail.ir2.yahoo.com (sonic311-31.consmr.mail.ir2.yahoo.com [77.238.176.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E9A248F73
-	for <linux-fbdev@vger.kernel.org>; Wed, 18 Feb 2026 18:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE5718DB0D
+	for <linux-fbdev@vger.kernel.org>; Wed, 18 Feb 2026 18:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.176.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771437935; cv=none; b=DTEbwc8buIN5iQsmC2oATKJfBsZ9UtgMZeEDVSNTUh6+tp1DoqsmNi67KQefa55+V4iM3lj6Vd6q3/d9GarLfDYLF6X5hq8YVSymi6s9UjLNevagqLhnmblzHqlT5NqK0fIlCNB3akuPAzLpdGeyCCDxPd9cKBsJqns3yi6sNnM=
+	t=1771438444; cv=none; b=HEZJrR20dFQJ5KVaj6hN2h6D6PYlCusYf5s+efZUdw6SBPK9nCet/EBoWQMCji48zM50GuR7p/9EZnhazip2WaBiRqYyaWwfmnwl2Xfrcd7iIozUZQDBWy5zwxMJSMBYhj2WfWSLVVom8dmoojdQgC5n5OLshCkUyQD+BzRwp7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771437935; c=relaxed/simple;
-	bh=4OjeIzluLTFXfIPZYQh8T7dB75J9bPfIcpAY9c4NwLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=rksna9ZI+6LAEsvhrFjKFKG52+EbeTd/SXysPqvNYlGFqWifzu5As4xQOj8nuqXlDYCRJKND5xQchLuLMwZxnj6RTDEm3B4VdQMAQd+vQsMzUJdeEbwZ6FhBKOcWt4DLZX/Ohq8QdFmDKNnMtXRimUNQEWORGE5psp9c+q41tYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=NI39DuKb; arc=none smtp.client-ip=77.238.177.32
+	s=arc-20240116; t=1771438444; c=relaxed/simple;
+	bh=INkQpRulNkTxMCLe72JLOUsMP0YZ5eiTxcqv2eDOkYo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=tOdQfanawwFNbXiOgspLB2yAR8ANMvMV2K3qrdMgPMWWO2jR+AtU2za+w5XWTuZAkM/oD4CeRDxtktQI9b5WclrA62dhliAer7TETL1PtwlmL5MGcjaOjccqNKiKvvvWQ+dber0JV+QMH4aFqb7naqVUlehNpmPFkKH5LNSosQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=eFI5viiV; arc=none smtp.client-ip=77.238.176.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1771437932; bh=W+sJ3VNDowmOBUMcqspMoPWR8FdjjCPVp2YqC2j+X9M=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=NI39DuKbYqj0tUNFnGy8YXooTwFjDhh2nDSmu6tJS7H7lXsTwkKjb8FfIoGp5d0ax8B1SZY2M3rg2yiTBIrCDvu6wE3sZR0hnZVA6wKlUYJSEm3zoYh9Iwr2KDsL2wk7O9h+WzcjaKeL+OoIFn1R8m8YOWp7/B1AVegGVG5WGIUPFjukmt/RR+XO+brlANiOGpi1UlaBxViTcpuQCOYk6F4dLNO0obS5N93CCuITqcOojSGmSDfRwxXjnAsuU9o2EkLW2QD+q3xhyjx62epnQq0GJwBOJe6pYcJ6MT77dn85XRtlNo7R5nIvexz6yfkFNAjTzE8S42/miLWCxCAbZQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1771437932; bh=LCHsg8bWQJri9hJ4tvxtPgVcuV04z4CidyZyfDpR1xL=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=ZAlYlq1YN0ZkQWihZMdOCqkpex7RAePG8yO/hY8DsULeS9soCVDo26yJ8C97v1E1CLScAKYng3Cx9cQUdIBSMHnhewzVSO5N4IZPgw3ulkeIa2mPtqEo8vMdsl4/C+YkUPUfcluN2v/8mjVbPtt9qqaO2Y0mkAC8cys9iS/oTvBcNks+k1oQlDdoOr5yQWPJ6OE9kZERE+tN2mPE0BOt/aVmPt0E9WBQOWbVCHoX6Tb2kpCw9pMea/n8Uy6dT/lMycmbZyr5S4Q8Aq3uALrJEz4WyytS/drN8h5Yi8cDcO3RJQz/QFnAyxNCnSxbtASh41NTAiWi/XsZSz1m/e+VxA==
-X-YMail-OSG: 4sEOnZ0VM1mbcZht71G0dFrGEjLDtJmK5ZLiamtq6ezmjcvmGlxK1R6Pe0Gc91C
- 71WLMqd5mQbAyq46rzW2xdMjGhl7ZWhjCAAELhnwyMCWggH6zEeM0VuokELTOd5HWkX2U9eaf4VU
- jP9rQZ8ADmlCdEzoYrv4hQnR1O0dGl0mQsfMITS4iT339S0YKyomc6Moye3UUowLxmN14t0L3lhZ
- rtFgWEOZp50hHd9IBZiavhOcr0LULAHuXde3Xet4ugymrZ85ZY70TTWJHXlYFFFALG8ePG7sxSKm
- prfEeXC9H99PuwZa_Rb2p149khwEGmQv6.KBjND4mDB_LauqUpQbDS783QkCUC_UgNbPDcA5hBNa
- E5SW7hEIj2wMZt07TLMqAxSWnwa_hZWFk1NFF1tfPIoVtzHKdtTPYU2KfyTz0p9rKuFhg7GtECw2
- FBGsrQ9ea80JugojVNRAWLXsAF1dFsv7CmqbRhqToLFMfOE0HtAKZDj1P806tdlA3bKEIeZJvIYi
- a1MKnBhLS0aLSM408pc2U1ALIKx.Xr5nTkyH5ZHkPkeWoBCLZJ5BbYRlyescA.vm4JJut0quO8Nq
- .9L0Tmshz68bdl2zZIMUMuUFnIazNTtsMfr_dQQnSQlFvGFJqTqI6yiripcaBR9iM890nzzAJZ9_
- ktptBrKhgIj5EdDJveFwqqRsdXGu80ppD.sJgmBUvxtSvdWHC_5NS6NcYS8wWfJdsLLUTV9wqmGs
- PF76RjnFhKdRU1qBkHiC.MeCdeLOh1hhxA8zsQH8zsC5.AYn0NXHMQSS41FzPHxi3SOoWrv4p9Gy
- b.ScV_tjEGrlRT2iZ_gOlcQWb1tZtho6rYZpSWFtxSxHMqpAEa7vrbKEnIHJ9Cdu2uRF04Rny57F
- ZTCw9hrPB9W24lpnGxhcTHz3P8VN8Ltz6B1PdkhIt_L7rSUBUT5oKm3Odv3425vPzR3CRQMaOCig
- irwAGsmcBCQNhWw1m_Z10W3xjYdqlfDqQHzVR.PCM8Oo5dPJnMf7HtZ3yCIZN0lM8uzItjm7j2WQ
- zWWcONiSsneBOX8.NvMWq9qTvVjwQtq8ttT0OG8hI2ytVd8uCFdt3_bsC7C1ZMDHSu5.OLejmZVW
- vwHUarc7j2SeUAnAAO8_R795nloFRTgRYcrPw8qBQOtXdSAbvIabEut4jzejPw_mDEVPrRw2ytkq
- rGGZobR3lDX.wOL4QiP320tBqg..0U1kAQ0TeCx.P3ACWiOjAdj3eC3FGhbj9n8kNNaQaAlR36Ku
- YGGgekb7w8kdWqbcrCSpKC4lfPJnnIfC7CMPnJtGZOmvrIo88kSeSveJ.0ziKQ7FUoqvmAlLCxkV
- nf4mizBjZJYcJpyiZwYZYjQwC6tkSlr305WEKbg7053HNw9tVKqqW40z_RFPzXZRoLcMLcHibRf4
- om9DRknk9Yo68mdJvEjwhKPpXTepVDLx12E.PchpTxtjRJLvAMQxGw4UwllsaiHLKiPElRieob7H
- XQF9rCNzMbF7Rn084tVj.Eqo8F4QWIFIjFQCBwDvTkzlJKGMxakVBNWPGoQ1Xrru3n8AUZLFPJYg
- RYA7VXAG0Cbjw4ZAvrNuZ_aO9TrFEwumx0nm6A0TNCHs_KzlYAno9OFSRpUReqAgQFH8O4Zu6B32
- ntUCr6yB2pLG3rF0L9fzoRkRUWKqG2U0jgriE2phi8AI1qAAupPeBNRCzyRhoSS_CUZPmcxU2YOZ
- l.ZslBwgJyLrIe.kG0m1t6sd9n5SePlhDsH65CSRdZYYPwwfJtiNfK6NCE76MBiEpZkF7kIpEn_I
- U.h.eUzmtfWWuDGZTTjFOFRncPB4ORqUJ3ndZ6lnD9JCsG0.tXvhYIxaOt4MhYy_BhmpxuzoEwf7
- lIkRhnMpwjZ3IZlzH.k0vwc5z6U0P4q4_PuyjUvf1F_ZFt0pskF_h.YbX3G9I4sJELXaA13vbNe4
- ckfijTGBM87z7XVMFl6v6Q9lqR4wlhryjv2uuBJaznS08Cj0qLLhvJT0mlNrYDo_MSp3GbjgeYsp
- LfDz_Ur1Gvyo361fpvIDBNSR_GBCWm3ZmTm2CCLn_LLPX2_TMOcXM9D4led70sj0aLyRCXjOSGTb
- Bw.ETulnd3khi49yZmptgRmUkEhzwnkSZ3kRH4xsx9U9nAn7AruGoqyTwXCNyHurcNoEImOkGbN7
- 3tUgHg8Z3Y_LG8iYF.1ARNY9ywF1Fe2I4V8tiuav8vHEvZkdF_Ki48gen_RgL8qTBDz6joAAZTWe
- VpKY3VNrw0h8jzMYAQnnfTeBYwFl3FYsOgsXa5rviruiDLQy88P5QmPdB1K31su.rOQkDhsWIell
- tpcow_ux7pjE-
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1771438441; bh=cbK30hxiRbkNBexcacpbyQUDpOSeiciDJhpo4iehvfc=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=eFI5viiVcf7TpNasa0R/WuuAtwQahCjgvQTAPzOg+Zlr2XLSj0V33sYjXxbxnbrRrzlMarHoQazZinHaQv+PKk84qPQsNh5m9+xYujtcStwwB66esxfRlA3pb13Lgs67gppenH3ent2+6iIu+//F4yTv+DK29l1UMXID0TMEHxagmIqSTUkKJTh+v0IXWZm4L0bE74KDctLSVHmoKLv/+nlY7UEERIqsDN+jZk5zLURfRSal1MhI1VGToNyMms+s3RHqHevCkWGtXJF3L+pWdmMdF728E4WihINlMgRB21YX8FR3Iw3qHl5/HGzUnUlkkqnxLbM82HPQKUBvdoyIHg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1771438441; bh=RRgyZWV6/vy+YXzNGcBxEcO2vy7Ei36WCEOD/S8ahzb=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=lRaZt+E9fmY3Is70u95sq9CK03mmFok5Y2Auf3lGeEnjPN2r9Qh/GpzQm8XfKay0CC3NcHBpekeU9Mbu2qGf0aryLeMkq775JC2pdW+amRH6nJ0g1HvEzj3m3kqyazyEiP2EtSB4HL7An83YBIXcHIJro6dpI9+cghCvajYZdxM3MA+WoduBKsqLxHGfmoImVDdG6QxJwommBLs5qR3aTwtUcyxxRYlhWRMZBou6wER4s2UDxR71KaRwmc+F7kAjT4l6E/dnnVDO4CnayPEcz3lZCQklEbuQvAhvHpxHyT4UIVtcy8GxQSl3Sqdl53+9yXDronNWyhOXuJ7omgDt3g==
+X-YMail-OSG: qXvIDw4VM1mFpUMsULFTrJU4c9cBr__k.Eobri7affEQtx5enCN8jNRnlfon8LN
+ T7Rlipfdg5HQ99BGVgGHAtHkINyN0kf3YGsQILjCBWQnu.ssXKM.wyiIKAyzmRQLf9tU9udG.dHs
+ eB6aW_tuZZAuOJLohl90ITHwNMidOueLglgkniQnGIO1Xo3hsixiG03QNe5eReIlxmMiEJHQbiAY
+ UZRiow.eojaQIVsrPwLuCbOEkwZPMawr9KdUh_jCXzPQtcEDgkO6BnpPdUhcgakhUWIwXRknNYOG
+ ACQ_qEtHTSF_UIfOs91Hdk7_NMiRDK61q4CTUcqw_dS_690WvjJpcXgXHhFiM23J2R8BeesK8PSZ
+ qTF1oHtFaQzME_JoIScrvDT3emMJOYydLhTmVUS3eBzClTFMB6Yh72R3yphq15rqW1Kx71BkPuyQ
+ hmf6tnSwRA8ARrWwU0Ae417Z5BQzAqKPMNizoJz2yPqVD64T7DxQqAj1An0Le6Y0HdoY2mm.__RF
+ eYJAgm0e9LWJcn6TynbQ7W2ZPgspnm1UI98k0fweGlzFM0qUe9rsLWXGwiKsKCGqS_1qSn7fAfOV
+ kT_ZpTDTZamIR4vqQaJgP1DJuj5.KLkJp8efTTboebq4fp.nMn0ZHpThn1nmDqECwP2qYOv_t7uQ
+ wra1RjxcCtYGJgTdCZefQHybtZrGeaG2YCRV3ubO8jsLVzCK_tThgJHT3s4ORtDroPVgaQv6yrXn
+ BTdff3NXBazIKCCmADI5jRMQ9ndAn5oZ9Acbkm6p8fqZ_0_HTGqkuP_T.L3XNtkbMKrVIEXaT9cs
+ gO235qMyK8Zc05q__T9yxCMN73FQ0VOHgogWovtEKLLFp6bAveNXPmIetIEwjlqqIvy6QcnMeAqk
+ cjDfArogm.pj7rtzBsVsVNf0aPuHFSzu6iBwrBoCXUSQXenp5fjCr3gO1BSM8saRlf.ay6Y2DwSl
+ wQqILdovXpLooyC_jQGBE_42l4p1Tn_zExb9solZxlUqRLXDjqPVxyc.k1Adpa3C2VrOfzR4RKdK
+ g3FtIa9yF5q.BLY7rvLRI3RUBW28k.aT3QDKQzVYrraETDxOmqnpnO192Wm8hBhVoBhP9JXHkA1a
+ R2fhZzP5i0jnigqSOtCIe3WjLm3y.6caaOgrlPvDmGEsW6RgsN5vpBqs4RDAvAwA1VbR2gYNVLj6
+ IbiI2l.iO4UINsryzQ00QZpCTqKWQzTgyBMmUFf7tQvrHQlvUno5dsV6ItIRTymGCnBAk8IOO9tP
+ 0OY7PDq8V1lNIrrE0gsROySXD4oFRTmrR_JaQW9q8XCOTfXoZwEjeekwufjI2FevAb_TZ_viIU4V
+ l6kCHqXBmgp0a0mxrmNZndpLamuR8RCYnt5qriOK4p7Y.gMlqvHkcFUaf.JAj8rg5SVdGbmv_7EM
+ msyIHGZs5Tvt_IHfEBdW3np6LDEB7wB9v4HNOLf9u5WSdFlWVMO7vXtIbtCro5k9SWYsjexlJTxq
+ IR0I7Hf_X_oLTzP3Klya5oSccadBR.FPX3e3dLLHa8avyGL.Fn.IWqDmO2WLoGz9AZTxyvuOwEID
+ kYtp2YuoN_eIIIU84ubzxL.cWjRbYh2ZzbBz0RjZWL5Xbk9LcGZR_dpBKYCtE3YflychW0UGwvX9
+ 4LCeT861v5CV_I_4bXdbNY4nvM4ysr_tjZklN7WRfq3aDQuvyP9zn57Z2Fz5YQLhGKQ9.a5j0BBu
+ n.60zwnDJPx2tbIxNgh3F0htkR2ANnE46fjvh2CX7qIwpona28Haav6uoVp6Bd54YCPM8OvadUIx
+ iKWZFudWMi5fhWVWUIHE6jqDQm_jf2KLxiiNxkd4gT202fRfgl8dZw8QmCelKBXkph_W.cz6jd72
+ luydj5e5PoTtB5l2_zcbRTTQUCNmFF3QjSTZME0_s1FQV6_IVQD8DfDHTIixQyCSzdSOEyhveThx
+ wOO3Lznadm7bYMviz1yq_7R6oZ3SOca8LCdki4Nkd7FlrxvXHB8oj0DFO7C_3l15viyhyZsQlAKJ
+ moIXl3r8k5I91ySPcT5iSymB3vG0kUFs0ZK5RYLKXLTfmQUxzuAsKKT_vsYelfs2P96LZB8LfQlS
+ _ypJHlN1zqgB3eiXm2zVLwiLLQi54x50R.X7iWngkN.4YRNePmUs_Q36S1M0zTLGPZ1.Zn0VVBgH
+ srXQCJpeLGl.1pzdUkWATsancW7SBPP4jCqaAKXHSuMooOjcSCaCZZasYalL8CaRJUXSkNL7ZmFl
+ gEb.8pruw91F1zCM_ZgbjEzRWQbWvmSDR8Hqn0pO0cRz8gWZJPNhkbeCcQbiV2D6y_lh5HfdGmUl
+ s0vyHnA2aUDJ13_ywcQ--
 X-Sonic-MF: <tomasz.unger@yahoo.pl>
-X-Sonic-ID: e8bec533-c71c-4e69-84ef-a68bd4914449
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Wed, 18 Feb 2026 18:05:32 +0000
-Received: by hermes--production-ir2-bbcfb4457-jfg7j (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 629fff2e81fd17e3702ad5303f037aa4;
-          Wed, 18 Feb 2026 17:55:22 +0000 (UTC)
+X-Sonic-ID: a14cd034-e18e-4282-9e40-1eb10f74d2c2
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ir2.yahoo.com with HTTP; Wed, 18 Feb 2026 18:14:01 +0000
+Received: by hermes--production-ir2-bbcfb4457-g6b6v (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID fa0dd80118d0af9e03c772f1b03d5629;
+          Wed, 18 Feb 2026 18:03:50 +0000 (UTC)
 From: tomasz.unger@yahoo.pl
 To: andy@kernel.org,
 	gregkh@linuxfoundation.org
@@ -80,9 +80,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Tomasz Unger <tomasz.unger@yahoo.pl>
-Subject: [PATCH] staging: fbtft: fb_tinylcd: replace udelay with usleep_range
-Date: Wed, 18 Feb 2026 18:55:17 +0100
-Message-ID: <20260218175517.87544-1-tomasz.unger@yahoo.pl>
+Subject: [PATCH] staging: fbtft: fb_upd161704: replace udelay with usleep_range
+Date: Wed, 18 Feb 2026 19:03:47 +0100
+Message-ID: <20260218180347.88034-1-tomasz.unger@yahoo.pl>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -91,14 +91,14 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-References: <20260218175517.87544-1-tomasz.unger.ref@yahoo.pl>
+References: <20260218180347.88034-1-tomasz.unger.ref@yahoo.pl>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[yahoo.pl,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[yahoo.pl:s=s2048];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -108,9 +108,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,lists.linux.dev,yahoo.pl];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6258-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6260-lists,linux-fbdev=lfdr.de];
 	DKIM_TRACE(0.00)[yahoo.pl:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NO_DN(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -121,30 +121,66 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	FREEMAIL_FROM(0.00)[yahoo.pl];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ADE6F158839
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yahoo.pl:mid,yahoo.pl:dkim,yahoo.pl:email]
+X-Rspamd-Queue-Id: 77BEC158A36
 X-Rspamd-Action: no action
 
 From: Tomasz Unger <tomasz.unger@yahoo.pl>
 
 Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
 ---
- drivers/staging/fbtft/fb_tinylcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/fbtft/fb_upd161704.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/staging/fbtft/fb_tinylcd.c b/drivers/staging/fbtft/fb_tinylcd.c
-index 9469248f2c50..89ee7b9d621e 100644
---- a/drivers/staging/fbtft/fb_tinylcd.c
-+++ b/drivers/staging/fbtft/fb_tinylcd.c
-@@ -41,7 +41,7 @@ static int init_display(struct fbtft_par *par)
- 		       0x00, 0x35, 0x33, 0x00, 0x00, 0x00);
- 	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, 0x55);
- 	write_reg(par, MIPI_DCS_EXIT_SLEEP_MODE);
--	udelay(250);
-+	usleep_range(250, 275);
- 	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
+diff --git a/drivers/staging/fbtft/fb_upd161704.c b/drivers/staging/fbtft/fb_upd161704.c
+index c680160d6380..62862f021b28 100644
+--- a/drivers/staging/fbtft/fb_upd161704.c
++++ b/drivers/staging/fbtft/fb_upd161704.c
+@@ -32,27 +32,27 @@ static int init_display(struct fbtft_par *par)
  
- 	return 0;
+ 	/* oscillator start */
+ 	write_reg(par, 0x003A, 0x0001);	/*Oscillator 0: stop, 1: operation */
+-	udelay(100);
++	usleep_range(100, 110);
+ 
+ 	/* y-setting */
+ 	write_reg(par, 0x0024, 0x007B);	/* amplitude setting */
+-	udelay(10);
++	usleep_range(10, 12);
+ 	write_reg(par, 0x0025, 0x003B);	/* amplitude setting */
+ 	write_reg(par, 0x0026, 0x0034);	/* amplitude setting */
+-	udelay(10);
++	usleep_range(10, 12);
+ 	write_reg(par, 0x0027, 0x0004);	/* amplitude setting */
+ 	write_reg(par, 0x0052, 0x0025);	/* circuit setting 1 */
+-	udelay(10);
++	usleep_range(10, 12);
+ 	write_reg(par, 0x0053, 0x0033);	/* circuit setting 2 */
+ 	write_reg(par, 0x0061, 0x001C);	/* adjustment V10 positive polarity */
+-	udelay(10);
++	usleep_range(10, 12);
+ 	write_reg(par, 0x0062, 0x002C);	/* adjustment V9 negative polarity */
+ 	write_reg(par, 0x0063, 0x0022);	/* adjustment V34 positive polarity */
+-	udelay(10);
++	usleep_range(10, 12);
+ 	write_reg(par, 0x0064, 0x0027);	/* adjustment V31 negative polarity */
+-	udelay(10);
++	usleep_range(10, 12);
+ 	write_reg(par, 0x0065, 0x0014);	/* adjustment V61 negative polarity */
+-	udelay(10);
++	usleep_range(10, 12);
+ 	write_reg(par, 0x0066, 0x0010);	/* adjustment V61 negative polarity */
+ 
+ 	/* Basical clock for 1 line (BASECOUNT[7:0]) number specified */
+@@ -60,7 +60,7 @@ static int init_display(struct fbtft_par *par)
+ 
+ 	/* Power supply setting */
+ 	write_reg(par, 0x0019, 0x0000);	/* DC/DC output setting */
+-	udelay(200);
++	usleep_range(200, 220);
+ 	write_reg(par, 0x001A, 0x1000);	/* DC/DC frequency setting */
+ 	write_reg(par, 0x001B, 0x0023);	/* DC/DC rising setting */
+ 	write_reg(par, 0x001C, 0x0C01);	/* Regulator voltage setting */
 -- 
 2.53.0
 
