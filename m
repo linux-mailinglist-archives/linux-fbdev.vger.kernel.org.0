@@ -1,155 +1,131 @@
-Return-Path: <linux-fbdev+bounces-6299-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6297-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJ+TAi7xlmlwrQIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6299-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 12:17:02 +0100
+	id iLIpFF/ulmngrAIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6297-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 12:05:03 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC2115E36F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 12:17:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA23E15E262
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 12:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 283CE3016821
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 11:17:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C5E2301C8BD
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 11:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA0D333729;
-	Thu, 19 Feb 2026 11:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBA133D6D2;
+	Thu, 19 Feb 2026 11:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="a4uOlyDC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M07eXCH+"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from sonic312-25.consmr.mail.ir2.yahoo.com (sonic312-25.consmr.mail.ir2.yahoo.com [77.238.178.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF68733DEC0
-	for <linux-fbdev@vger.kernel.org>; Thu, 19 Feb 2026 11:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.178.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEA333D6C0;
+	Thu, 19 Feb 2026 11:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771499817; cv=none; b=OvPJb4bOwVn/vArbZ+jerw+7Ylv54g76ZYSidV6buHmS1Tu4EHYZToFracaFtbuGk3bG/7LMUDR9kjBTKTvWCY6Rh50Dgwydrm2ezEx+zQZBrxq70Pbv2sI5zF3YDC0lIEqEsfZCgHz/uajTQOGYD7OBziU+/aJToBDY/3sAJv8=
+	t=1771499009; cv=none; b=DzDE2sARRzCKVyMZBqDtwdTlQSUB6TYqVG4uS58aglHCiOur6oZ2IhnkotB/BMbpaewdzjnMKjlBpCNOJlVxYtIgVCzqXzOphq+eAxP4yj3rS5M5HNDWCY8kYe4dj/uViPMOw4YEITsvwgXoqjBopOsEYtHCz3CxKHpdpivyY34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771499817; c=relaxed/simple;
-	bh=xNmmdblDxkwNTum5PgTKCfrAGw7aJwB/1saxfGaNuvs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=lqcIG24A6qB3FjNN+aqNmkS7XUBniyIusRNiNaT+Y/T3Vpyx6ca8NtS8liX7gAErexayH2TxASmEEx6HP8VMrR1nn3eJUwU8of5Ym+BS3NQGw9Wl4EtFTV4NzDpYJsxPLcWMJfBKxRW0SpCZvTUgfje4DoIvZczCq/nkNqnp8qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=a4uOlyDC; arc=none smtp.client-ip=77.238.178.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1771499814; bh=rrbTrXlCINoMBfNNXDHwgZw9HDa91yRcD3bSDG+yogE=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=a4uOlyDCTNR+wh+WQAeW542x8GORS55+XZgxf+J3enA9Uuq2d9OuZmfsAV6DLVrinx06nH2OAaq4ExcXfBQCmrX3pwiExo8LVHS0kdGwol/Tes/8Ci6n5hEZC5OgepM6ccJKKkVAn7XnfIE1wbFXpmBC7gBoeplVFWzR/LtdwUGUJ8nyTuxPO+bPLSDt9zIwQO9ENTxtQJV+/vry/iifENB9/443pPTzV0wWXGB5KUycuOKGkVEQC/SAoBzYZXlylRfxOnO30nUuX5IU6j61dgD3C6FbL7wvbhWJYZ7GQCxwDVFbNLIKdc5nwNovk9CGbHahsz+vZrVxu+0Gqau3sw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1771499814; bh=PZMh6mkakLkLbM0yN7xGA3kpnPmHFcASbpa1kV3wDzm=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Q/NvGN64hWcG66WFf8sgCHFNi5gbke+SEJPgNc8uxpGgj0zJEBoKYrbZj/IQXneuLa+CGyxgC/Q0wCFSeSoFN9e+3V6w6XOLyM2t9/g/bCl0JchePkWZFvJ9SounGrXMDfZ/DRa89AtdsWsjICwwVcJty2OEJhxUIkUZ7Czr6Mq5cl4QfdlcrLtBmkXA3D+zGfzAAh0rJrdm8BjyyKIXzpsFy9bCw5TfjSc6Z5fNKsAIDywVn9K6Z0EMp5kOMIVUaVv3wQEXmJT+3pra8YFBFi/fUv4a+r7c5v8ry21PTA3vpAzgKdpsWiVZobyN1qDWY04Q8to1pOtjk5wB0PTwsw==
-X-YMail-OSG: S.ibOWQVM1ko1M8s5z7YGB3Ub6TR9TMSEfj7u3LdG4mopcHKVXBKbKeq7YFvINL
- nyFNRiSfRznd_UEtXRjHm2YkQUqeg5YMyQ_3TTpe2y6FF9WeCFaEv25su9KcdCXcEKVLCr60wbic
- FFWqeqUy9GI.IuYkFzTqd1UBnAFFO64AvqD1Vc7KlTpRkTkifYaGeUJBtn8b.gscvInhGwcizpr6
- arETspksI9bItG4jbe_KvOuyOUt7R8HCFXo7YE7rK2wAqf29bW_y1kec1il5X9FCdRg0BJbonSyA
- dc1QbUjXYpo236.hP7GgWM68eS6DSvhsxy4tnfIkllnadCdDLRhTx39iJyR9msO9OuoFXghtnU1W
- NDSt_d_xkPZygecT0yC0kF5NHaT5QLxducuaf4U23ohoUajJ4ID_.sg2uc.Nvh.narcJYoPVLtX_
- vcIlt9Ob2_NV8FHyPCH0.ER7kPLIio8GBy1I63EXsiPiABS_INl6khZVMVS_fDelXFdtCFuy.KHl
- 5oynLgkIp2IAOWPYZKnIc_etdzvxGav.QmkUSO_XAMrCR30Cxlky2n.AhRL_lnPDbkCoq_T4u7gO
- 1q.lsjdcIMdBV.aRqTF_fgqVsEq5anX3XNB961KOhJDJDUt2X3vtczDSH2lfP_3ThHLSP.6OscD4
- tCe9dbqQqI.73W1EzuyZof3ZP6b71cMwWPUhtI_mwQGT7Lz905ufUhR8iTazZjunlDsD.c7PXSc8
- a52kAjvfuOhp6Nlzu0OH3Wq8XAG9w2xrwdZoWkxGILRHSf05c.eIfbm_W9j7RTYPxAh1MEbQ5UPt
- D3zSaPr5mdvuEhhqugxTkoFK6WD_iT.n3uzsU2aRX7eR_PLLv7hKECygIvl2M.FN1eEEM4KlJSNV
- wtVPjs8D.SSJEHyPKCv1sNInRwigJCCao15_0QVvBEQVAOOiWUe4m9ld.z0cBJmE0tQp6V8LkU.f
- MVqt5mnp1JzUdPzQeg7QRoMjh8RtaWhZR0NGVhaDvd06qC98RogIyoiXsSMK5MJk0_GyyqcR0k3B
- gbCReARBS.5ZNoaJ3GcdCYCZZo4Njwn7pJokBLGS_7u5sNmwNXBPzFcL305lR1YwzeKplhn7g0k7
- EkGWeE3mEJy2TTCUAETnPFGMnhTXu3QUbzMRJCrS.N8i.eLmTKqll9AdZ6_Xv.QfHk1ULVEVVo3s
- iMCrjky8o99HoFUVVKRDX7.6D5D7uMF27cZi4sFFOXqq3bo.IE9uyPXyrHzl3uXx0afgE0EBgtsw
- QoJuN6ZW6B_zTwSEYksMnZt0HXE9c9.aYDOXlaKkZTMzHd0L8Fm06Ya87rXHHxKGKLa6VsvQsP4m
- mbN8z8txDnL5ugOkwsfEfVWmBy06k0GtIMTXnAZ3vDjt5kwj4gTktF290cMH9BWXFqwW71GmWUpU
- yd2NmHpqRs9g2YZ7Kcopf.yWDRPPhDry9ZrPQF.uH735Ai.H0gzxGtRVVRubhaTehTGFWdQQ6510
- jJB7ZFlD0roTyzQgKuUmzS4U4fkatvMN3aCXZlfbZyfCrhq.wkke9LzqAAqBNgBZE.m47Uhb1IjQ
- jnJiPVp7Q4.f3mbGighSY6QKqgtxPFZxE7qP4ZWSjhvtQnRqrrF8xljTVtP8Xk._blXGzRJNvKvV
- R0zTIEypnTsoYGJU7uVxEv9V9JsjGkGDUnqOvCVxOfbYo8LX6OOE_VYggij3x6KPTYV0ToalIDio
- GIjVd._rrLviAYj5o2wzmULh45Y2.07VhIxVhQCtaCZg2KAPiK_8l6Kz27gG0ErILuc950ABZia5
- MqjVw0QFT7nnRET7j8BO5RGIbqekpsE2pXB1x.tMOfoUC9R6Xcfytt2ch7pbGKJtNlE29EaQ4PHg
- _3_4DSCGAKJVUw1DyXTuXSCiAT2MMmWQ6lyitZPaLIkn0wH8qkduPc1rV2Rj.XVbJIkXsTjg6_NV
- wPlZx5.INQ7DIXSZ5sAFo4MLj4KbCI.LVbsdGCdtOkWAhitqvWuifSl5ts57vS4wcoZocEfUJKnF
- BHFEdYPYFDTW_mAqmR1s9H9sFCTnoINy4kwPugbYDrsYc.Ov6vGvKiaWnZkwDcbPoV16_y8z4bvt
- _Na76vQPuFMS1TVoA5LshXgRQGeGQQv5z7osP5cwQuYvoO4JwXdLie1deJLsGfDEqzh1kJg_nvov
- b9wLEmf68n4RH.gbeqQfDhJNaiOgZpIop1DCvbzk6Msaa1K6K1g2LPUQkcPIxlSNafcdcoK.dfm.
- qSBwy.YLY14xDopqksw8uxB7dJRanfjwfc0O_tkGvuMegMvLuVhNJ.ZRfhedPzrb3pVSNkuC6Upz
- wj3DONzhX_Tt2
-X-Sonic-MF: <tomasz.unger@yahoo.pl>
-X-Sonic-ID: 6fcd8d4c-b3d2-49b9-8aa9-98c6bf85263e
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ir2.yahoo.com with HTTP; Thu, 19 Feb 2026 11:16:54 +0000
-Received: by hermes--production-ir2-bbcfb4457-g4h2c (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID d16b53fd9273610de93e18c09654bfdb;
-          Thu, 19 Feb 2026 10:56:33 +0000 (UTC)
-From: tomasz.unger@yahoo.pl
-To: andy@kernel.org,
-	gregkh@linuxfoundation.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Tomasz Unger <tomasz.unger@yahoo.pl>
-Subject: [PATCH] staging: fbtft: fb_tinylcd: replace udelay() with fsleep()
-Date: Thu, 19 Feb 2026 11:56:28 +0100
-Message-ID: <20260219105628.43534-1-tomasz.unger@yahoo.pl>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1771499009; c=relaxed/simple;
+	bh=sC3YFmUgY7TLec065mxzBDAdvfCKpKOL1CUQXl4JrZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0PNEFqm4jSawVa/FDDE7svVzYpmvQbP6Jc296fWYiWekSgPRgjChNvKCsnqeSmzxvvmcsKcmHxt9h9fdeWh2IinHBQ87ANusgC3zyW5AmoLXrFdqS92k6GpUjSU6EQ5biZoJ7ZpD7/gKPpvOlWmtImCumdzLJ6St3lVsHuMivY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M07eXCH+; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771499008; x=1803035008;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sC3YFmUgY7TLec065mxzBDAdvfCKpKOL1CUQXl4JrZA=;
+  b=M07eXCH+5nzkqqT9pqlHd4YZPa6m7E4HjSJKhGNq5gy4ow6aJs9Xn1Yo
+   ywjOn5+cnkKmW2xSKu/IaMKbHhbaTpuPMkGZVoP9v/G7wKeIlDJpwXXLO
+   FBhfiyMqtKKMjtX4qqmH0Y4kMo25OlQmZsX+D3DGa48bFCvhEDImxRCzi
+   FTZY752ssAAfIawpzqTvPMz+SdPvZLM+5tv3O9HQfVxLrOYgs17gDAkxz
+   Q1eXT7YBD+DYruotdCC9VJI1KWc2yaXP/vly12zkvOfEmKHgEWkxWJGBA
+   2BCrSxOXovHPSkX3reIzw3L9vOFU6IZzb41MfIZWqBl6r8uN6UjZXtCVO
+   A==;
+X-CSE-ConnectionGUID: Dq01QZy2RBSNcPnrJJe7LQ==
+X-CSE-MsgGUID: pQUhX+UWSUW0la07YRBhuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11705"; a="84032063"
+X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; 
+   d="scan'208";a="84032063"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 03:03:28 -0800
+X-CSE-ConnectionGUID: Qo5BBQZBS7SpOV2yxX6ElQ==
+X-CSE-MsgGUID: az7nC80uR6+WBQ7yV8LsXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; 
+   d="scan'208";a="214589467"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.114])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 03:03:25 -0800
+Date: Thu, 19 Feb 2026 13:03:23 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: tomasz.unger@yahoo.pl
+Cc: andy@kernel.org, gregkh@linuxfoundation.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: fb_tinylcd: replace udelay() with
+ fsleep()
+Message-ID: <aZbt-8ZHcfXacEl9@smile.fi.intel.com>
+References: <20260219105628.43534-1-tomasz.unger.ref@yahoo.pl>
+ <20260219105628.43534-1-tomasz.unger@yahoo.pl>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20260219105628.43534-1-tomasz.unger.ref@yahoo.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260219105628.43534-1-tomasz.unger@yahoo.pl>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[yahoo.pl,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
-	R_DKIM_ALLOW(-0.20)[yahoo.pl:s=s2048];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,lists.linux.dev,yahoo.pl];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6297-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6299-lists,linux-fbdev=lfdr.de];
-	DKIM_TRACE(0.00)[yahoo.pl:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[yahoo.pl];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tomasz.unger@yahoo.pl,linux-fbdev@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	FREEMAIL_FROM(0.00)[yahoo.pl];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[yahoo.pl:mid,yahoo.pl:dkim,yahoo.pl:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7AC2115E36F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,smile.fi.intel.com:mid,yahoo.pl:email]
+X-Rspamd-Queue-Id: AA23E15E262
 X-Rspamd-Action: no action
 
-From: Tomasz Unger <tomasz.unger@yahoo.pl>
+On Thu, Feb 19, 2026 at 11:56:28AM +0100, tomasz.unger@yahoo.pl wrote:
 
-fsleep() is the preferred modern API for flexible sleeping as it
-automatically selects the best sleep mechanism based on the duration.
-Replace udelay() with fsleep() to improve power efficiency.
+> fsleep() is the preferred modern API for flexible sleeping as it
+> automatically selects the best sleep mechanism based on the duration.
+> Replace udelay() with fsleep() to improve power efficiency.
 
-Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
----
- drivers/staging/fbtft/fb_tinylcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Is this sleeping context?
 
-diff --git a/drivers/staging/fbtft/fb_tinylcd.c b/drivers/staging/fbtft/fb_tinylcd.c
-index 9469248f2c50..3fb15df31592 100644
---- a/drivers/staging/fbtft/fb_tinylcd.c
-+++ b/drivers/staging/fbtft/fb_tinylcd.c
-@@ -41,7 +41,7 @@ static int init_display(struct fbtft_par *par)
- 		       0x00, 0x35, 0x33, 0x00, 0x00, 0x00);
- 	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, 0x55);
- 	write_reg(par, MIPI_DCS_EXIT_SLEEP_MODE);
--	udelay(250);
-+	fsleep(250);
- 	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
- 
- 	return 0;
 -- 
-2.53.0
+With Best Regards,
+Andy Shevchenko
+
 
 
