@@ -1,158 +1,162 @@
-Return-Path: <linux-fbdev+bounces-6298-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6300-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NqiIQLxlmlwrQIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6298-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 12:16:18 +0100
+	id QDh1EsUgl2kJvAIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6300-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 15:40:05 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA76C15E351
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 12:16:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C0215FA6B
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 15:40:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C13B30075CD
-	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 11:16:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 719FC3001FFA
+	for <lists+linux-fbdev@lfdr.de>; Thu, 19 Feb 2026 14:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC578333729;
-	Thu, 19 Feb 2026 11:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A66833F8D2;
+	Thu, 19 Feb 2026 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfpRc3jV"
+	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="IWb68ezF"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic304-22.consmr.mail.ir2.yahoo.com (sonic304-22.consmr.mail.ir2.yahoo.com [77.238.179.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E0E285060;
-	Thu, 19 Feb 2026 11:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E9933F8B4
+	for <linux-fbdev@vger.kernel.org>; Thu, 19 Feb 2026 14:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.179.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771499775; cv=none; b=mP2X8cUetUhv76JOmzzm22jsIRZS0Z7hwODmNVxDJO4G76BzirdaHcZQpHOktVtE5WqtTQjoIsHge+OsyG2btBFbUtSz5MbOL7o0TH1Mkq9i3heAZHQcoFQNCcPDDDtUffCvd7OS/xNVU9BBMeXpL8LJ5xTMmUtlDCGDXTiWqEw=
+	t=1771512001; cv=none; b=m3nwEv41HxtXQYIsZbDNMtSZ36IxyBcs6uX3w21uhaXp9ocf2BAHRA6ic45TSCYXjLg/lVAG8nQExhmcxWeInPlG2g0Q7CdM7/UUgDI+jqaqYLqKZcsOKMXV9wwrX63VjSX5jjBFjqcgXJAF1z6RV8PuJH7f5gW4eBxlu6N45R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771499775; c=relaxed/simple;
-	bh=hKW+A2twJwbGJtXTpMPZ1GvZ9Cz2FltYpqcssNnXmt0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QgapLrKdOnVD7XliXKkwu4rQCGel7ObGBkdIxeHzrieae/O2NRWtltZt6iJtDsBIm9S2q0Y9QiFk843DJnbJ64i6/TopXXlcjADQfPJcb6Xvf/FCTjlm1yH/RIXBsBZwCCnCRQrcWHuB1J29ozZG7DAcxZZGY1NPI93KMLwxhAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfpRc3jV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BFDC19424;
-	Thu, 19 Feb 2026 11:16:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771499775;
-	bh=hKW+A2twJwbGJtXTpMPZ1GvZ9Cz2FltYpqcssNnXmt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NfpRc3jV+ya49TpQvR7zHOHAbWsKl7IsWjF8CE31RJ8MKsHx1AfYlFqYfMcVfxUSw
-	 ePSYN+4K5yFP287eHVrKHhdvSUs0t5t2u9Q0Ht4ioiMZs5hcUHc3EZue8JL0pbPpFY
-	 scC6wtUADKfQD57KbQO9CCE3s4aABpxMWcsMoecY=
-Date: Thu, 19 Feb 2026 12:16:11 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: tomasz.unger@yahoo.pl
-Cc: andy@kernel.org, dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: fbtft: fb_tinylcd: replace udelay() with
- fsleep()
-Message-ID: <2026021937-protector-provolone-9403@gregkh>
-References: <20260219105628.43534-1-tomasz.unger.ref@yahoo.pl>
- <20260219105628.43534-1-tomasz.unger@yahoo.pl>
+	s=arc-20240116; t=1771512001; c=relaxed/simple;
+	bh=BEW5X6eIGVIRyQPrpbMM55g6Dm40Ivw1p74dnBhgBL0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=Doggq3AHeN1zHLD9ppiEX0NE+o5EQJ6lQnP/wY4Cg/N/37HIdbgTfYxr4Y74OeiTdIk3N5t9N4qjyzyehxX0gUUb9n1nOxwAmYLpXTt1RB8NXNuiN0f7l1HgehljEqfhYdDes/62Sh0KSRaXfPEa4CfS4RPJ6TKualraNFoRrhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=IWb68ezF; arc=none smtp.client-ip=77.238.179.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1771511994; bh=VaWBo28dAnDUHCoe27rah1Dd7vMGiZtW4luXFceOsR8=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=IWb68ezFPEgkcdb5ffveVEa5Zv6M2mU7cZrijGC/RXcyTmntn1NWE2EUjg7l/+28KPMOI+AFHlXXnbnJPrEUqMnyL8wC+NzoMaHuFLU7uA/ea1VdC2QUsUW3p0mR5JJwiLVKymyxwDMw43TbX5MjbjZ9y3RoTA0sauQ+xrN2gt10qimJ8CnbfmimZ1iyeiZZFFYErZxsVvw92lJSFIl/YSvCn7RR5A30qm5owlK/8KkDrHnvZF4g0c9ryOmq8uD3myqnne9ipxnC7SB9blwWcBesT9dvrrqc9I9JZcNIrkzav/5oEZHfNQHIKLPzxUCDGfNHFaA68GklVqUhNIiMKQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1771511994; bh=iUgRcycWk47BD8FHe4UWFfeDEDEnP5PTS6MHevYDX01=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=aWdIBssWTAvkJ/gFMwdYkrf/kQQUI5VhsoRpYRzLiKIkI49XltH1REVo1ZzL//sL5Q1LSKECrlmS8f5FDzrfqc/TPOESxH/f4vBlnJ8grmFNrSjcwtcXdAHWIgkJQqpwH0E+aftc7QVzjzGgUxKyPrw2479pl/P5vcQKl3UJhqN7ATXJ0uV4gIgjpA3Pcp8P+CnxyLeHeq0oi+rK/u2e7RTVAmKSAKse9sHIGxh9DRHOLY5x1L2AU8icyt6XmQ4oVcB8akkFPV0XsOTiwskdnkoVMoxf5OlwCuX1JVnQ7jK3VTXV+mRoN6aFq+kQ93jPdUNldL7YSe0V45cU86b6Zw==
+X-YMail-OSG: hKG6g38VM1kjQAph1KGJncCm6PCG1lp6B6am4wmamr1YwcT.tdBGJprRfGCBNG3
+ 9PANml9LdJknnHPQcF8DTt.GndYiyCM_an16l92eF9.6M_8roz.ewiSBfze1czBN7g3wpmkfgKb4
+ nNpiaJYHcL363wMA77.jLnc4Cup3GCYyXevnxGBzBY6GXIKua4WalUAUinPf4WVa3NQJJLKEaWq6
+ DKyL_69mv63BUrwSZwEi50ZxOyd2c8l_96BTiihm6LAkTXxX.8DzThf38q4NogPoXT7stVJ3gtKN
+ MT6mvuOyqP3Cs5UsCsu11ni6POHWULl1d3.3Xx9QIpuJ8D0Wjxn93ZM9uy7yqVRJBxutBKIZNxJw
+ jvzG0ndwcG_BFSEjExI41mylJCBhXPxgFjTVJcczGnqfLNelsW8DJLz8WojgLBQbSTpiALME8bRD
+ Is7sHKBnsca1g5KYIBM12id83uGfN6arzzF.JJY0ReX5YqSEu7LSyK.WmjsiTFMZZ142z9S6qVEz
+ lC_xri6ykOBltN25Y0DD4bSN5bt8xwbizekLMouOR7i6u0mjqsow4fwAAeddqUsxqUccCcegcNlE
+ Vl_OG01r0Gi1m_6_rObZo25Il5eMkXEejaEZjeXUrZBhA1GkvBe1FHqurxmalwFAyGkxL3fba6hx
+ q_izTfiLA5C5JBJMPFcH6Ski4JxfDZsLHQu.uGOHzb5tycEqXPKIkc4uu92oqbJ5iQmMFjiT2bGz
+ QkZdwXJKmHTVSrI54cVba9fY5rmkzuQ20AUAUeSUXdPVxmsSgjvdrglW9ctSDJYQoSdRDoleyVlT
+ LfVsT.rJWFG.Vio9S9t4vHpsMmhN6iN5HZS1yAHS8fIm7xItNYRct2geDznnJr1QW8irMxzAo3ia
+ zrbdWTWbIc9YKTmZ87MDcWZ1v0R4PSYahfW_gnYDejtS6HaBMftZXAaC5uOQFaJtYjxLMtfNafSQ
+ MsU0FyVDLuXF3mM7a5zngRhVCC_AHSC2oOz_PNs79CRzOdqxwcXKUmGgjVZksNHjP7ZFpo9wkxae
+ qPQUqm58W8t4RosTX4JisnhVf6Dqv9.gNsQHpZv.Ngk6xEqB4gePutJkNgkl9qxC2Jtbb4Uj8YcK
+ 15XjA_udd_plYedgxNs807.de_bXU6Nkkmw9eOmQ7M91b.zDNO6cWwMR_GDxfWdLiwnvhxc34gbq
+ DSqKOhAVkgYmgOgkVRzSTgNuUQIiQOAKzX4y4PY0wG6R8jIiPDaMfF5E5KFF7SuuMx6U2rjMZ11N
+ ym5V.U_Q3Zm__ZI7XNhC9dwOGMdEo7T.7FUqx6KOYmDJ017MghmkbfusC7roS7CH_dXG.eWHuIl8
+ q1OHk26c.Ai.D0Vvw55KLv_zURCF6LCHDaD5pLY4y_0WO6mWrNoCbUtudQcSm92RBwqpBq_LjytE
+ YadprEhu0l3xceF1PuaejSPtM6eGDTcFW4zYH1wQOGFWxtRVnfuv5.YnhIeUM4lnCXunknvCJ0WN
+ Kr1byvMfopC1OUV9PTVK4JzdGqzKCHXVUKqGEI.UIHER0TVlDtKl3s5eaVgqL3yc9Zmh_NdKkBVX
+ 9xXM21MPAGfnYjtU.fWBZ8pr8o9N4km5YuO4uO.DrwShUzt_mJq1udmRLmAflKR0Vh1D0Vbc5VNO
+ xsKwm7Aso550jXaPKYACGewXqJLpZrNY3HGerABKV38NWopYm0V1N4Qvvssnl8kcAoqW2TkbH_O2
+ WZuYULyjcZwlCvCsv8QGODLlS4qnW1EeVlrQYGpJGuM.9UWK7EssyxAHJoAWClXNKmt3IX7mTnb9
+ FqAoRBOZ0cLNQL46jLzBEZ9cgpK65UiRPrTXzDTvJ2XYLx77A9UaDioIhmwZrZzi.QkF8l5Jyl5b
+ Ru2DKCEybyp58roZBS.uXab.iViV7ub0qGBTiBY4EqE6TMq2VhYGDyMUShMFRLEu1EP47nzEFd12
+ 10c6GJohQbF5uOsGtLv1uyza_xRSu3MOHGN9gUM1PMxHRlgw.uLIeeSGb.wTiFsA_7nih1KmzbXU
+ 4NvZiQxfjHGpR6.1fddoD4XD005VecAfbU.e2ivJZv2IbN3MB74_33F.PXumUr68rsljxT1zExJC
+ usrxt6WGGtXVIpyS6VjzOD379eCy.OXifobMaM_9KH1X9ZMQzktV6L4iqFm1xCh7lbBj4l5WEyS3
+ coOe2u6fbD4vj6d.kt2t7qMQQwT6FK_.YTVOevSvmg0pJsSozbdbaIj3Z0PE4xNuPN9ag.0RslRS
+ DKlQoxIEk4mowzdb_HU_s3XLAdFmG8_oCKX_UXzUHuXBvyztGJRF9CI.6r2NUV4YlflQExCdmQK7
+ .WvrxQFKARZdp2OhN
+X-Sonic-MF: <tomasz.unger@yahoo.pl>
+X-Sonic-ID: 1fb9b03f-ec83-47e9-91c1-112ee54bd454
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Thu, 19 Feb 2026 14:39:54 +0000
+Received: by hermes--production-ir2-bbcfb4457-wbfpp (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 986b859eb286868e95113c044e92cb9f;
+          Thu, 19 Feb 2026 14:29:46 +0000 (UTC)
+From: tomasz.unger@yahoo.pl
+To: andy@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Tomasz Unger <tomasz.unger@yahoo.pl>
+Subject: [PATCH v2] staging: fbtft: fb_tinylcd: replace udelay() with fsleep()
+Date: Thu, 19 Feb 2026 15:29:42 +0100
+Message-ID: <20260219142942.74087-1-tomasz.unger@yahoo.pl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260219105628.43534-1-tomasz.unger@yahoo.pl>
+Content-Transfer-Encoding: 8bit
+References: <20260219142942.74087-1-tomasz.unger.ref@yahoo.pl>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[yahoo.pl,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[yahoo.pl:s=s2048];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6298-lists,linux-fbdev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[yahoo.pl];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,lists.linux.dev,yahoo.pl];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6300-lists,linux-fbdev=lfdr.de];
+	DKIM_TRACE(0.00)[yahoo.pl:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tomasz.unger@yahoo.pl,linux-fbdev@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yahoo.pl:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EA76C15E351
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[yahoo.pl];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,yahoo.pl:mid,yahoo.pl:dkim,yahoo.pl:email]
+X-Rspamd-Queue-Id: 33C0215FA6B
 X-Rspamd-Action: no action
 
-On Thu, Feb 19, 2026 at 11:56:28AM +0100, tomasz.unger@yahoo.pl wrote:
-> From: Tomasz Unger <tomasz.unger@yahoo.pl>
-> 
-> fsleep() is the preferred modern API for flexible sleeping as it
-> automatically selects the best sleep mechanism based on the duration.
-> Replace udelay() with fsleep() to improve power efficiency.
-> 
-> Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
-> ---
->  drivers/staging/fbtft/fb_tinylcd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/fbtft/fb_tinylcd.c b/drivers/staging/fbtft/fb_tinylcd.c
-> index 9469248f2c50..3fb15df31592 100644
-> --- a/drivers/staging/fbtft/fb_tinylcd.c
-> +++ b/drivers/staging/fbtft/fb_tinylcd.c
-> @@ -41,7 +41,7 @@ static int init_display(struct fbtft_par *par)
->  		       0x00, 0x35, 0x33, 0x00, 0x00, 0x00);
->  	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, 0x55);
->  	write_reg(par, MIPI_DCS_EXIT_SLEEP_MODE);
-> -	udelay(250);
-> +	fsleep(250);
->  	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
->  
->  	return 0;
-> -- 
-> 2.53.0
-> 
+From: Tomasz Unger <tomasz.unger@yahoo.pl>
 
-Hi,
+fsleep() is the preferred modern API for flexible sleeping as it
+automatically selects the best sleep mechanism based on the duration.
+Replace udelay() with fsleep() to improve power efficiency.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+init_display() is a driver initialization callback which runs in
+sleeping context, so fsleep() is safe to use here.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
+---
+Changes in v2:
+- Added sleeping context justification to commit message
+- Replaced usleep_range() with fsleep() as suggested by Andy Shevchenko 
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+ drivers/staging/fbtft/fb_tinylcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- You sent a patch that has been sent multiple times in the past, and is
-  identical to ones that have been rejected.  Please always look at the
-  mailing list traffic to determine if you are duplicating other
-  people's work.
+diff --git a/drivers/staging/fbtft/fb_tinylcd.c b/drivers/staging/fbtft/fb_tinylcd.c
+index 9469248f2c50..3fb15df31592 100644
+--- a/drivers/staging/fbtft/fb_tinylcd.c
++++ b/drivers/staging/fbtft/fb_tinylcd.c
+@@ -41,7 +41,7 @@ static int init_display(struct fbtft_par *par)
+ 		       0x00, 0x35, 0x33, 0x00, 0x00, 0x00);
+ 	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, 0x55);
+ 	write_reg(par, MIPI_DCS_EXIT_SLEEP_MODE);
+-	udelay(250);
++	fsleep(250);
+ 	write_reg(par, MIPI_DCS_SET_DISPLAY_ON);
+ 
+ 	return 0;
+-- 
+2.53.0
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
 
