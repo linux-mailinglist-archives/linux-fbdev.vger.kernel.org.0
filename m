@@ -1,58 +1,56 @@
-Return-Path: <linux-fbdev+bounces-6312-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6313-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAmPF8hhnGkoFgQAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6312-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 23 Feb 2026 15:18:48 +0100
+	id QAI1M39mnGmsFwQAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6313-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 23 Feb 2026 15:38:55 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1D1177EAB
-	for <lists+linux-fbdev@lfdr.de>; Mon, 23 Feb 2026 15:18:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EFC8178243
+	for <lists+linux-fbdev@lfdr.de>; Mon, 23 Feb 2026 15:38:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12889300B46A
-	for <lists+linux-fbdev@lfdr.de>; Mon, 23 Feb 2026 14:16:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C96C3071F20
+	for <lists+linux-fbdev@lfdr.de>; Mon, 23 Feb 2026 14:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BB223EAB8;
-	Mon, 23 Feb 2026 14:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F0434D4FA;
+	Mon, 23 Feb 2026 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naWM1Sgy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJnDGGv9"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AA4142E83;
-	Mon, 23 Feb 2026 14:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C353834A765;
+	Mon, 23 Feb 2026 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771856162; cv=none; b=SYZ09klEllqS6/yoAi10mF+6Gv6SP185Hqzm5cPixlTTi+uJFxNKYEyGFLy09hiL62CUt5wmnL7sRx0DqHL0jsslegNYPA9/RBYAjKGo/5eX76Uwrxb2nKIZuVhXX8PQvvhv5yfipVwcCKoULHiK2jhPoKMVeISV+XFo6lZgRr8=
+	t=1771857510; cv=none; b=S5Wr+9KGCo6oaCD3CE85DO8X0s4+4d3+0Sdlv2L4oiHp2wcFrAB4w2eTvFMJ2V67FbuPN/uacVZMJBC9aayJZQOoMhCC8stOsQCJ+d5BNjhT0nQ67qdqI5Huho8Zt9sHj/SSk37W2y3JvVn+YDD8Vmh+flPE52TExnOZijHLmwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771856162; c=relaxed/simple;
-	bh=WHLPgsZ3iTR06FdZfStKSAY8kzbHFKWMuFf6f3gy5VE=;
+	s=arc-20240116; t=1771857510; c=relaxed/simple;
+	bh=fLM72wLZK4elHl13l4dGIUdFQyhFlTDlFSWNfvZu/A8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVD5kK0v6It+cSlizVElGoaCeT1St2oBoAmLc39a2nTrGpRyZkoWLOxJA6YtT0SoAAko/QcIJ3UfSnPLWOEAErSZCqYjodHoPglISAPOlA9h5FZsIeQnp28Lsp/IIujFBkXFCI/xmi+uETd/v4Zjp/YI9YGV6MpEzbjmrVzw2o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naWM1Sgy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3B8C116C6;
-	Mon, 23 Feb 2026 14:15:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=F6qACboYzY0nz5GuwxkU00UShA0DduX7BFULqvQCKr+TlaptR/V25HqGUs/Vruy5RsGOrdJXEWz9UhuzupZFzIfU0G0oOW6XeNaIrW4Nw364uIe8Y0503aXRyjphA7GlCjOXeGv+yHMGJNKxuLVrG5ykfyr6SZY7UzZ8hF2S9aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJnDGGv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A19C116C6;
+	Mon, 23 Feb 2026 14:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1771856161;
-	bh=WHLPgsZ3iTR06FdZfStKSAY8kzbHFKWMuFf6f3gy5VE=;
+	s=korg; t=1771857510;
+	bh=fLM72wLZK4elHl13l4dGIUdFQyhFlTDlFSWNfvZu/A8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=naWM1SgyqPjr3OWon7WQly9YM8zA0FzEyWlDMSU+nr1vKqYPR//8mpxAKAisyJSMc
-	 TQG+xnUxiFJFeQElflaKc69BVJGT/GR8ivWZVcjFcV4mDX2cZkwZAQzHZC8HNlP/iw
-	 pSkGX9+S1iJKtEwp/5+wN1695PzGccGP3jARwWGY=
-Date: Mon, 23 Feb 2026 15:13:35 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shreyas Ravi <shreyasravi320@gmail.com>
-Cc: sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
+	b=iJnDGGv9+aHmIwNVq/+T7dLGRDOL7Iaxa0iz4GlkNpMSRgfAcXG+c2xWTKHufhixv
+	 kqlw4IDzH/zul+syOYdmbKqiTyKfGtepGCoWxb+jaWT/6gifMxfQLv+yHLhBNHOfaj
+	 NrORvrq1WAQyrcB2PpvdsiN6MmdNMdfyokZQyNQE=
+Date: Mon, 23 Feb 2026 15:36:03 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Artem Lytkin <iprintercanon@gmail.com>
+Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Teddy Wang <teddy.wang@siliconmotion.com>,
 	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] staging: sm750fb: remove Hungarian notation
- prefixes
-Message-ID: <2026022316-subtype-hurdle-8b18@gregkh>
-References: <2026020842-litigator-flatworm-65d0@gregkh>
- <20260208184344.657617-1-shreyasravi320@gmail.com>
- <20260208184344.657617-2-shreyasravi320@gmail.com>
+Subject: Re: [PATCH v4 0/3] staging: sm750fb: clean up logging
+Message-ID: <2026022356-valley-anemia-aeaf@gregkh>
+References: <20260207153703.2049-1-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -61,7 +59,7 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260208184344.657617-2-shreyasravi320@gmail.com>
+In-Reply-To: <20260207153703.2049-1-iprintercanon@gmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -70,12 +68,12 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6312-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6313-lists,linux-fbdev=lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -89,54 +87,45 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
 	FREEMAIL_CC(0.00)[gmail.com,siliconmotion.com,vger.kernel.org,lists.linux.dev];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CB1D1177EAB
+X-Rspamd-Queue-Id: 1EFC8178243
 X-Rspamd-Action: no action
 
-On Sun, Feb 08, 2026 at 10:43:44AM -0800, Shreyas Ravi wrote:
-> Remove Hungarian notation prefixes from variable names to comply
-> with kernel coding style.
+On Sat, Feb 07, 2026 at 03:37:00PM +0000, Artem Lytkin wrote:
+> This series cleans up the logging in the sm750fb driver.
 > 
-> No functional changes.
+> Changes since v3:
+>   - Dropped the strcat and strncmp patches as requested by Greg KH
+>   - Consistently removed all pr_info/pr_debug/pr_warn diagnostic prints
+>     in one patch (previously some fb_find_mode prints were kept)
+>   - Split dev_err conversions into two patches: one for sm750.c
+>     and one for sm750_hw.c
 > 
-> Signed-off-by: Shreyas Ravi <shreyasravi320@gmail.com>
-> ---
-> Changes in v4:
-> - Fix merge conflicts (forgot to do in v3)
+> Patch 1 removes all pr_info/pr_debug/pr_warn diagnostic prints
+> from both sm750.c and sm750_hw.c. These include address dumps,
+> debug variable prints, fb_find_mode result logging, and CH7301
+> DVI chip status messages.
 > 
-> Changes in v3:
-> - Added changelog (was missing in v2)
+> Patches 2-3 convert the remaining pr_err() calls to dev_err()
+> for proper device context.
 > 
-> Changes in v2:
-> - Split original patch into two patches per Greg's feedback
-> - This patch addresses Hungarian prefix removal
-> ---
->  drivers/staging/sm750fb/sm750.c       | 22 ++++++------
->  drivers/staging/sm750fb/sm750.h       |  6 ++--
->  drivers/staging/sm750fb/sm750_accel.c | 48 +++++++++++++--------------
->  drivers/staging/sm750fb/sm750_accel.h |  2 +-
->  drivers/staging/sm750fb/sm750_hw.c    | 20 +++++------
->  5 files changed, 49 insertions(+), 49 deletions(-)
+> Artem Lytkin (3):
+>   staging: sm750fb: remove debug and diagnostic prints
+>   staging: sm750fb: convert logging to device-based in sm750.c
+>   staging: sm750fb: convert logging to device-based in sm750_hw.c
 > 
-> diff --git a/drivers/staging/sm750fb/sm750.c b/drivers/staging/sm750fb/sm750.c
-> index 1ed7ff57c142..afcfc9e6c207 100644
-> --- a/drivers/staging/sm750fb/sm750.c
-> +++ b/drivers/staging/sm750fb/sm750.c
-> @@ -624,27 +624,27 @@ static int sm750fb_set_drv(struct lynxfb_par *par)
->  		output->paths = sm750_pnc;
->  		crtc->channel = sm750_primary;
->  		crtc->o_screen = 0;
-> -		crtc->v_screen = sm750_dev->p_v_mem;
-> +		crtc->v_screen = sm750_dev->v_mem;
+>  drivers/staging/sm750fb/sm750.c    | 88 +++---------------------------
+>  drivers/staging/sm750fb/sm750_hw.c | 26 ++-------
+>  2 files changed, 14 insertions(+), 100 deletions(-)
+> 
+> -- 
+> 2.43.0
+> 
+> 
 
-You are fixing up your patch 1 of this series, why not just do it
-properly the first time?
-
-thanks,
-
-greg k-h
+Does not apply to 7.0-rc1 :(
 
