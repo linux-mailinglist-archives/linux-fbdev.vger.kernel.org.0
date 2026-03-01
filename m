@@ -1,58 +1,57 @@
-Return-Path: <linux-fbdev+bounces-6405-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6406-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JDCCUyeo2k3IQUAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6405-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sun, 01 Mar 2026 03:02:52 +0100
+	id 2BoRM3eto2kmJwUAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6406-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sun, 01 Mar 2026 04:07:35 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7D11CCB4D
-	for <lists+linux-fbdev@lfdr.de>; Sun, 01 Mar 2026 03:02:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E0B1CE3C3
+	for <lists+linux-fbdev@lfdr.de>; Sun, 01 Mar 2026 04:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B07343014FDD
-	for <lists+linux-fbdev@lfdr.de>; Sun,  1 Mar 2026 01:58:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B34E305F667
+	for <lists+linux-fbdev@lfdr.de>; Sun,  1 Mar 2026 01:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D9F2773EC;
-	Sun,  1 Mar 2026 01:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CBA29B795;
+	Sun,  1 Mar 2026 01:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrEMMNke"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8lfwlvX"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8597A1E4AF;
-	Sun,  1 Mar 2026 01:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C7321ABB9;
+	Sun,  1 Mar 2026 01:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330293; cv=none; b=jdZ2qTKr9MlVkSPLJBm4fPwIXY06LIBH1DUtuwwfbVK13TC2fbkMMyEdiL7QaHR6ASONA6C6ZlL1TC1wszEmr+3vlTWt54dhJcSdKXiQBlX8/spuo4ITOQKaXqrFsYQ0XzXx7vapw530LHzQge+XI+iPNl+XfhtfRfA28g60LBM=
+	t=1772330295; cv=none; b=uZWviga7hW2fg71dB9FKYzNZi6IY1hSka3kw9ejgn7GnMiBaI00uCQ8zUHo1OVSPIYZ2kFZ29BYGS8/OqYEUSsIMVBzFIBz7uq1zAub2EbVMSI+YCsawo5RVsRgV+02k1x6H3OGkY4hA/ZAaD/Hy/qHBgD2NF+rAPGCA0VRCCZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330293; c=relaxed/simple;
-	bh=FwMN8wkS7r66nHonUOtpzcdNeY1TZLlQ/khHZEWSn18=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sRJO0qq2xxq043k/udYzK9RvHdd0VUQ5Vv46Dlesl5eW5IDlwyqWWY+6sD40undiCigLZ8Hjh1bCB4eR276YMMyVIh+RjTbQs35ZgzfxAR3H1UfXR0VeDHA83SE80G3l/PkRRyLHnG21STEln1Dg6/RZVIk0T0dPLigq0KuS5rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrEMMNke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC98C19421;
-	Sun,  1 Mar 2026 01:58:12 +0000 (UTC)
+	s=arc-20240116; t=1772330295; c=relaxed/simple;
+	bh=wADx3ny5QdlcZD9mcMNhL5YrsN7Yc6RWZlAnpVzDePs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lRGINQYtUwcq7uAWGGrdwHLVbSUpDFL5OLKPharNtH2TX3O7AKEHBJ+/03Iw78AG0QZ+EhaohN1mjyHwJOhGI29WHrm4sxuhX2ER/C+jmIw2t59asmsuFEQ55N1tdBZuXdHKgF5lPswwHzE9kBWgTkdfrpH82LcVnKafg2TE4f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8lfwlvX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD368C19421;
+	Sun,  1 Mar 2026 01:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330293;
-	bh=FwMN8wkS7r66nHonUOtpzcdNeY1TZLlQ/khHZEWSn18=;
+	s=k20201202; t=1772330295;
+	bh=wADx3ny5QdlcZD9mcMNhL5YrsN7Yc6RWZlAnpVzDePs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BrEMMNkekFwS0OnT6BmKpfxjcah2va1qrS5vcM+hZErxuvdatiB1inFw3TCohXGnQ
-	 zsAuPUAkVa+ZBmcLAUnb2JGY3dSwqLQRjYn8nXFDJVfPIIzeFYYDmzzs3uKLlD3jqk
-	 up3hAv7pls9xnP3dWri74igINVsk9ZjYs/VTCwSJyKXavBfCV5o5j2RZhd4PV58GTn
-	 oLo6Z2ol7H7LDaUqNeBkAYRmu/fg6BY6OKNKtsbmVAruQhlwPqbNtzf5prLeTcurVw
-	 eYKgAKb7JC3ML9wV/lKFU4/lgX1Ru+aTW070yBQtf1pIf0DHKnOE35XxKWBdTO7Mqi
-	 bmsrdUD3NJrnQ==
+	b=L8lfwlvXKdlRtb1jVn/s34JJfbLK2S2cFGhi+H6u0hPVOefDTimj2TP0pEUDfmYmc
+	 zz4gb9P5cKMUvInmvf8swFYCgy6y/NcvIpsEmv9pcCj7NkBgrbYF4urXdmC1wkI/hY
+	 R1VwDwW9iRekEd2ogFi2X2FeHGlJG1LiOmgO/kOLjGPTsdjPx/nb0H2BjPunL8cp2m
+	 jSZ4deH6Xp6v1fdXw7VlIa+M8TjlxMsaz0VbyFAT3TdZJK/5Rb9bcfKMepylau5wZT
+	 WMzqO8F+dYVked0cd/xAJPMHc4Sl+DYsUKlxOTYd9k39xdxk2RPLEP+XLgCYQ+lNiA
+	 XpwDU57EZXPDg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	rene@exactco.de
-Cc: stable@kernel.org,
-	Helge Deller <deller@gmx.de>,
+	tzimmermann@suse.de
+Cc: Helge Deller <deller@gmx.de>,
 	linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org
-Subject: FAILED: Patch "fbdev: ffb: fix corrupted video output on Sun FFB1" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:55:48 -0500
-Message-ID: <20260301015811.1723144-1-sashal@kernel.org>
+Subject: FAILED: Patch "fbcon: Remove struct fbcon_display.inverse" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:58:13 -0500
+Message-ID: <20260301015813.1723622-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -62,37 +61,37 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmx.de,vger.kernel.org,lists.freedesktop.org];
-	TAGGED_FROM(0.00)[bounces-6405-lists,linux-fbdev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmx.de,vger.kernel.org,lists.freedesktop.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-6406-lists,linux-fbdev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[exactco.de:email,chaos.social:url,1e:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email,instagram.com:url]
-X-Rspamd-Queue-Id: AE7D11CCB4D
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
+X-Rspamd-Queue-Id: 04E0B1CE3C3
 X-Rspamd-Action: no action
 
 The patch below does not apply to the 5.15-stable tree.
@@ -105,73 +104,32 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b28da0d092461ac239ff034a8ac3129320177ba3 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>
-Date: Thu, 5 Feb 2026 16:49:58 +0100
-Subject: [PATCH] fbdev: ffb: fix corrupted video output on Sun FFB1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 30baedeeeab524172abc0b58cb101e8df86b5be8 Mon Sep 17 00:00:00 2001
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Date: Mon, 9 Feb 2026 17:15:43 +0100
+Subject: [PATCH] fbcon: Remove struct fbcon_display.inverse
 
-Fix Sun FFB1 corrupted video out ([1] and [2]) by disabling overlay and
-initializing window mode to a known state. The issue never appeared on
-my FFB2+/vertical nor Elite3D/M6. It could also depend on the PROM
-version.
+The field inverse in struct fbcon_display is unused. Remove it.
 
-/SUNW,ffb@1e,0: FFB at 000001fc00000000, type 11, DAC pnum[236c] rev[10] manuf_rev[4]
-X (II) /dev/fb0: Detected FFB1, Z-buffer, Single-buffered.
-X (II) /dev/fb0: BT9068 (PAC1) ramdac detected (with normal cursor control)
-X (II) /dev/fb0: Detected Creator/Creator3D
-
-[1] https://www.instagram.com/p/DUTcSmSjSem/
-[2] https://chaos.social/@ReneRebe/116023241660154102
-
-Signed-off-by: René Rebe <rene@exactco.de>
-Cc: stable@kernel.org
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- drivers/video/fbdev/ffb.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/ffb.c b/drivers/video/fbdev/ffb.c
-index 34b6abff9493e..da531b4cb4513 100644
---- a/drivers/video/fbdev/ffb.c
-+++ b/drivers/video/fbdev/ffb.c
-@@ -335,6 +335,9 @@ struct ffb_dac {
- };
- 
- #define FFB_DAC_UCTRL		0x1001 /* User Control */
-+#define FFB_DAC_UCTRL_OVENAB	0x00000008 /* Overlay Enable */
-+#define FFB_DAC_UCTRL_WMODE	0x00000030 /* Window Mode */
-+#define FFB_DAC_UCTRL_WM_COMB	0x00000000 /* Window Mode = Combined */
- #define FFB_DAC_UCTRL_MANREV	0x00000f00 /* 4-bit Manufacturing Revision */
- #define FFB_DAC_UCTRL_MANREV_SHIFT 8
- #define FFB_DAC_TGEN		0x6000 /* Timing Generator */
-@@ -425,7 +428,7 @@ static void ffb_switch_from_graph(struct ffb_par *par)
- {
- 	struct ffb_fbc __iomem *fbc = par->fbc;
- 	struct ffb_dac __iomem *dac = par->dac;
--	unsigned long flags;
-+	unsigned long flags, uctrl;
- 
- 	spin_lock_irqsave(&par->lock, flags);
- 	FFBWait(par);
-@@ -450,6 +453,15 @@ static void ffb_switch_from_graph(struct ffb_par *par)
- 		upa_writel((FFB_DAC_CUR_CTRL_P0 |
- 			    FFB_DAC_CUR_CTRL_P1), &dac->value2);
- 
-+	/* Disable overlay and window modes. */
-+	upa_writel(FFB_DAC_UCTRL, &dac->type);
-+	uctrl = upa_readl(&dac->value);
-+	uctrl &= ~FFB_DAC_UCTRL_WMODE;
-+	uctrl |= FFB_DAC_UCTRL_WM_COMB;
-+	uctrl &= ~FFB_DAC_UCTRL_OVENAB;
-+	upa_writel(FFB_DAC_UCTRL, &dac->type);
-+	upa_writel(uctrl, &dac->value);
-+
- 	spin_unlock_irqrestore(&par->lock, flags);
- }
- 
+diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+index 1cd10a7faab0f..fca14e9b729b9 100644
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
+@@ -30,7 +30,6 @@ struct fbcon_display {
+ #ifdef CONFIG_FRAMEBUFFER_CONSOLE_LEGACY_ACCELERATION
+     u_short scrollmode;             /* Scroll Method, use fb_scrollmode() */
+ #endif
+-    u_short inverse;                /* != 0 text black on white as default */
+     short yscroll;                  /* Hardware scrolling */
+     int vrows;                      /* number of virtual rows */
+     int cursor_shape;
 -- 
 2.51.0
 
