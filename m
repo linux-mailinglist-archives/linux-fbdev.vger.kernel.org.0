@@ -1,96 +1,95 @@
-Return-Path: <linux-fbdev+bounces-6435-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6432-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EsdVOnecpWk+FwYAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6435-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 02 Mar 2026 15:19:35 +0100
+	id cBVLOSCcpWmfEwYAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6432-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 02 Mar 2026 15:18:08 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE211DA931
-	for <lists+linux-fbdev@lfdr.de>; Mon, 02 Mar 2026 15:19:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC411DA8B1
+	for <lists+linux-fbdev@lfdr.de>; Mon, 02 Mar 2026 15:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 806AF30B0476
-	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Mar 2026 14:13:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9C4830659D1
+	for <lists+linux-fbdev@lfdr.de>; Mon,  2 Mar 2026 14:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09617383C6B;
-	Mon,  2 Mar 2026 14:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626153FD136;
+	Mon,  2 Mar 2026 14:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oa5qRlxH";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rkHs28dS";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oa5qRlxH";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rkHs28dS"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TqKJdKsr";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="CAIj6N61";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TqKJdKsr";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="CAIj6N61"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954643FFAA6
-	for <linux-fbdev@vger.kernel.org>; Mon,  2 Mar 2026 14:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250AC3FD132
+	for <linux-fbdev@vger.kernel.org>; Mon,  2 Mar 2026 14:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772460789; cv=none; b=cB1iAXi/iHVOS7YCU6xKcUVVe90rr0xu9xD8qAiSoSagziIIKTgjarTiPSd6QIWq552DQMsbAh2ihvT51ov6VgcRIYXDKHyZX5SlLJ8UUDc98JzEfblJhq4A1rdr0Kql59sI4dwY9xF9CbOkxQgvdismrZ4sgVFAMUorkR/hzzQ=
+	t=1772460783; cv=none; b=nTdoP/rsSfBvZOkc7IGKtV3A8PCRpffR7c+mUBiSXU6Y0ecF7GoCskDttTP1ZTcmBPWIlH391eVW/SrJ5YXG+mImpU5UuBFucYC5Erfcsps72/6wU/7zjxLFXV/1ezqxAtFG7wokfoqBAh5vHIHjFHjx/kZcL92hC4oOs5vRSBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772460789; c=relaxed/simple;
-	bh=U5t7FfpI8bDIXdRv4UUiGN9veQB5PuFRipOiFyXYXrQ=;
+	s=arc-20240116; t=1772460783; c=relaxed/simple;
+	bh=X7ZXt/Tvldpttx1rTGbhAfIensbsUVb6ys+73i6I5kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pTC7pTuUW1rJ1TdubZZtvXkN7bP8LF1X6uaSpSY56vObNoMuy0pXOchmvN49ZX1lEXSV4R5UHzwEEOIBE2w2xjDeajMCSSSjrp0DEk31DOhxVb4YDxKADrQtx14pcrxpc2EBYjx8dHAStwkdLcc09bB3gjI4lWSjyCrwhNRK6+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oa5qRlxH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rkHs28dS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oa5qRlxH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rkHs28dS; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=TOprjavFRUMLYckvJb3FEMk7BMwHdKJ0VUptN5095mWOkXI8D+DIhVNrz3OfqxnvgyT/TzjFWDMlNQZpcYFbnBQMZY8mb/yo95mwnQdIshOWNSJqc8+2392rK6pYbjBpHtYiKGp6Y9kvCSHOtpPMhGmE/hUW3H+/iIP2S2IeaN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TqKJdKsr; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=CAIj6N61; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TqKJdKsr; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=CAIj6N61; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6C5785BD76;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9A3673F7F6;
 	Mon,  2 Mar 2026 14:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1772460780; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hgO/vBjxEvbCUOOxusElmoEUhXTpiDO+udaq2KN88TI=;
-	b=oa5qRlxHVdI+XFsogszLlCt9iE/0JRwf+IRGRQjnnPx6oQpCHZwpDMR64DUQ6q1b+kQuYo
-	KvdAa/v3qnX8+gafO+4eUKHH4smWUrQRKohQYgAD4W2gKmD4680wI0OYqf9cXLM2TgyqCH
-	x46be/WuJJCQvQBahKeZ8z46Qgc/S8k=
+	bh=jDdFaZ33ivCVSgFIvrCH2YTfOSd7wSVCMvjOyrWj3aI=;
+	b=TqKJdKsryS2kvryXltCj3gTsn1zKaSMK+EYuhzjIBxqHxXJFRvkCN8TFeBIld9EFO9pZqM
+	j2tjLSfNNfk0dJRyKqGqSwJKUsFCOQJXwnl3iu/pKXLZf2RLLt8wsdivIR7vJUlztjTbVx
+	SeJTiFtzfwa6OGHSjx8X2FwEciAWhj4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1772460780;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hgO/vBjxEvbCUOOxusElmoEUhXTpiDO+udaq2KN88TI=;
-	b=rkHs28dStU/jRLUQp3RdCh0YaU3vDJ49ttgk1Hz5/ltmmCe9J1CArABfAMHg1IcpPi02sA
-	xy8conT13eIBmxAw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oa5qRlxH;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rkHs28dS
+	bh=jDdFaZ33ivCVSgFIvrCH2YTfOSd7wSVCMvjOyrWj3aI=;
+	b=CAIj6N61HBD01Q10TBuDiZAnFicZGP9g1Kt5V4a5CWYRACTvsW+EHkRI57W8Srkk4oTEM+
+	/iOB8r/sbP6XE0DA==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1772460780; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hgO/vBjxEvbCUOOxusElmoEUhXTpiDO+udaq2KN88TI=;
-	b=oa5qRlxHVdI+XFsogszLlCt9iE/0JRwf+IRGRQjnnPx6oQpCHZwpDMR64DUQ6q1b+kQuYo
-	KvdAa/v3qnX8+gafO+4eUKHH4smWUrQRKohQYgAD4W2gKmD4680wI0OYqf9cXLM2TgyqCH
-	x46be/WuJJCQvQBahKeZ8z46Qgc/S8k=
+	bh=jDdFaZ33ivCVSgFIvrCH2YTfOSd7wSVCMvjOyrWj3aI=;
+	b=TqKJdKsryS2kvryXltCj3gTsn1zKaSMK+EYuhzjIBxqHxXJFRvkCN8TFeBIld9EFO9pZqM
+	j2tjLSfNNfk0dJRyKqGqSwJKUsFCOQJXwnl3iu/pKXLZf2RLLt8wsdivIR7vJUlztjTbVx
+	SeJTiFtzfwa6OGHSjx8X2FwEciAWhj4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1772460780;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hgO/vBjxEvbCUOOxusElmoEUhXTpiDO+udaq2KN88TI=;
-	b=rkHs28dStU/jRLUQp3RdCh0YaU3vDJ49ttgk1Hz5/ltmmCe9J1CArABfAMHg1IcpPi02sA
-	xy8conT13eIBmxAw==
+	bh=jDdFaZ33ivCVSgFIvrCH2YTfOSd7wSVCMvjOyrWj3aI=;
+	b=CAIj6N61HBD01Q10TBuDiZAnFicZGP9g1Kt5V4a5CWYRACTvsW+EHkRI57W8Srkk4oTEM+
+	/iOB8r/sbP6XE0DA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2FD243EA6C;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6974F3EA69;
 	Mon,  2 Mar 2026 14:13:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sD8BCuyapWleKQAAD6G6ig
+	id gOxNGOyapWleKQAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Mon, 02 Mar 2026 14:13:00 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: gregkh@linuxfoundation.org,
@@ -100,9 +99,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 01/13] fbdev: Declare src parameter of fb_pad_ helpers as constant
-Date: Mon,  2 Mar 2026 15:08:35 +0100
-Message-ID: <20260302141255.518657-2-tzimmermann@suse.de>
+Subject: [PATCH v2 02/13] vt: Remove trailing whitespaces
+Date: Mon,  2 Mar 2026 15:08:36 +0100
+Message-ID: <20260302141255.518657-3-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260302141255.518657-1-tzimmermann@suse.de>
 References: <20260302141255.518657-1-tzimmermann@suse.de>
@@ -113,22 +112,23 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
+X-Spam-Score: -2.80
 X-Spam-Level: 
+X-Spam-Flag: NO
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6435-lists,linux-fbdev=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[suse.de:server fail,sea.lore.kernel.org:server fail];
+	TAGGED_FROM(0.00)[bounces-6432-lists,linux-fbdev=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FREEMAIL_TO(0.00)[linuxfoundation.org,gmx.de,ravnborg.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -143,77 +143,31 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9EE211DA931
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3DC411DA8B1
 X-Rspamd-Action: no action
 
-Fbdev's padding helpers do not modify the source buffer. Declare the
-parameter as 'const'.
-
-Fbcon's font-rendering code calls these helpers with the font data.
-Declaring src as const will allow for making the font data constant
-as well.
-
-While at it, also remove the extern qualifier from the function
-declarations in the header file.
+Fix coding style. No functional changes.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/video/fbdev/core/fbmem.c |  6 +++---
- include/linux/fb.h               | 10 +++++-----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ include/linux/console_struct.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index cf199038f069..30f2b59c47bf 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -91,14 +91,14 @@ EXPORT_SYMBOL(fb_get_color_depth);
- /*
-  * Data padding functions.
-  */
--void fb_pad_aligned_buffer(u8 *dst, u32 d_pitch, u8 *src, u32 s_pitch, u32 height)
-+void fb_pad_aligned_buffer(u8 *dst, u32 d_pitch, const u8 *src, u32 s_pitch, u32 height)
- {
- 	__fb_pad_aligned_buffer(dst, d_pitch, src, s_pitch, height);
- }
- EXPORT_SYMBOL(fb_pad_aligned_buffer);
- 
--void fb_pad_unaligned_buffer(u8 *dst, u32 d_pitch, u8 *src, u32 idx, u32 height,
--				u32 shift_high, u32 shift_low, u32 mod)
-+void fb_pad_unaligned_buffer(u8 *dst, u32 d_pitch, const u8 *src, u32 idx, u32 height,
-+			     u32 shift_high, u32 shift_low, u32 mod)
- {
- 	u8 mask = (u8) (0xff << shift_high), tmp;
- 	int i, j;
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 6d4a58084fd5..324b0fd5f617 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -605,9 +605,9 @@ extern int register_framebuffer(struct fb_info *fb_info);
- extern void unregister_framebuffer(struct fb_info *fb_info);
- extern int devm_register_framebuffer(struct device *dev, struct fb_info *fb_info);
- extern char* fb_get_buffer_offset(struct fb_info *info, struct fb_pixmap *buf, u32 size);
--extern void fb_pad_unaligned_buffer(u8 *dst, u32 d_pitch, u8 *src, u32 idx,
--				u32 height, u32 shift_high, u32 shift_low, u32 mod);
--extern void fb_pad_aligned_buffer(u8 *dst, u32 d_pitch, u8 *src, u32 s_pitch, u32 height);
-+void fb_pad_unaligned_buffer(u8 *dst, u32 d_pitch, const u8 *src, u32 idx, u32 height,
-+			     u32 shift_high, u32 shift_low, u32 mod);
-+void fb_pad_aligned_buffer(u8 *dst, u32 d_pitch, const u8 *src, u32 s_pitch, u32 height);
- extern void fb_set_suspend(struct fb_info *info, int state);
- extern int fb_get_color_depth(struct fb_var_screeninfo *var,
- 			      struct fb_fix_screeninfo *fix);
-@@ -633,8 +633,8 @@ static inline struct device *dev_of_fbinfo(const struct fb_info *info)
- #endif
- }
- 
--static inline void __fb_pad_aligned_buffer(u8 *dst, u32 d_pitch,
--					   u8 *src, u32 s_pitch, u32 height)
-+static inline void __fb_pad_aligned_buffer(u8 *dst, u32 d_pitch, const u8 *src, u32 s_pitch,
-+					   u32 height)
- {
- 	u32 i, j;
- 
+diff --git a/include/linux/console_struct.h b/include/linux/console_struct.h
+index 13b35637bd5a..ebdb9750d348 100644
+--- a/include/linux/console_struct.h
++++ b/include/linux/console_struct.h
+@@ -120,7 +120,7 @@ struct vc_data {
+ 	unsigned short	vc_complement_mask;	/* [#] Xor mask for mouse pointer */
+ 	unsigned short	vc_s_complement_mask;	/* Saved mouse pointer mask */
+ 	unsigned long	vc_pos;			/* Cursor address */
+-	/* fonts */	
++	/* fonts */
+ 	unsigned short	vc_hi_font_mask;	/* [#] Attribute set for upper 256 chars of font or 0 if not supported */
+ 	struct console_font vc_font;		/* Current VC font set */
+ 	unsigned short	vc_video_erase_char;	/* Background erase character */
 -- 
 2.53.0
 
