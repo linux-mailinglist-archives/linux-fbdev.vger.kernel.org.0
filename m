@@ -1,526 +1,324 @@
-Return-Path: <linux-fbdev+bounces-6529-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6532-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDHgAf3XrmlhJAIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6529-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 09 Mar 2026 15:23:57 +0100
+	id mA5TJFbermm/JQIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6532-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 09 Mar 2026 15:51:02 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7774823A77C
-	for <lists+linux-fbdev@lfdr.de>; Mon, 09 Mar 2026 15:23:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F6B23AE86
+	for <lists+linux-fbdev@lfdr.de>; Mon, 09 Mar 2026 15:51:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27B0A3068EE6
-	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Mar 2026 14:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55EE93074574
+	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Mar 2026 14:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB2B3D3499;
-	Mon,  9 Mar 2026 14:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F63E3D5231;
+	Mon,  9 Mar 2026 14:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1pRIythK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UdWw7tGy";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uNDjDGrq";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zPDSsS6T"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="kUlivjJ0"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17783D3485
-	for <linux-fbdev@vger.kernel.org>; Mon,  9 Mar 2026 14:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79D1345757;
+	Mon,  9 Mar 2026 14:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773065889; cv=none; b=heeq3XSjq6+FILWKsgXiqU/tquiWJyRt6AD8J6i4MgM5QmfiWVQ3MaHWo6IWdfczXUWA4W+MkCXw9ZW/fJ6NevSYRKmrZy2RkmGz/j2jJALOjCrAG9sUjCshLJJa98V+6w/fCglPOH7znwntJZhdmgiEPy5/jso4jmfRfTQfSqw=
+	t=1773067734; cv=none; b=fDS2tUjMpAWR1fdLMs7zP3BzSQEPCXY7Xr37Q74k9N5OdX60w/hPW0cb9suFNWkMXLbvwMpbf787dax11T3/zKD7NOW6979IfJeDgCmdvM87jSntA1iTRx4Nqi2jR1P/pbF+MTLoh1vIrXAnbKpwOY7pMWJkDw06HSpGmQxuwhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773065889; c=relaxed/simple;
-	bh=BVXc+0rxoH8qMxVFvqoXSuv4kay4n72quDCpBBAaxyE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C00wDPTJ4cIeWwu0K3VYUNoQYap/9YNv+yQSgn9yjV0tWKWE339oZcAcIdV1uvJnIMvsWuSBMW6h0H5qJZka4rgUSAXe9eXRu3PoBDWDD2MroCKqayudZNiu7yzDR7kS0cALBvZ2DbK453vxVZ+cqnQG5fSJUH025d2MuCmel/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1pRIythK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UdWw7tGy; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uNDjDGrq; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zPDSsS6T; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0326B5BE4D;
-	Mon,  9 Mar 2026 14:17:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773065854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4w5uwEVSlmlGBAJYoqlWi7ELW6wprbGKGlE9Ql1y72I=;
-	b=1pRIythKvWFSVdxDakfWRVJbDSncEOdW6GvZ40m1WjgcirPJi1sJgrKbv8VWEHmw7+Aq+h
-	7bJ+VC0TXwQH6jN66F172bWA24sbyd5owpkgK6pInKmBpr0jD3GI3LK8DVzSEpKYmenyOV
-	X9zA/tNH3w2GG3kyp9UAF8xaA2dBjRA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773065854;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4w5uwEVSlmlGBAJYoqlWi7ELW6wprbGKGlE9Ql1y72I=;
-	b=UdWw7tGy6vpBhkwlgpeP6kFw2yezd+2fOU0vX1axaAubsxzRiSPFnhwDa4qxkFcVIRUw+X
-	OR760zUqFCKJzQCw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uNDjDGrq;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zPDSsS6T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773065853; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4w5uwEVSlmlGBAJYoqlWi7ELW6wprbGKGlE9Ql1y72I=;
-	b=uNDjDGrqcilQXlIHYd7M53hm9ykSd4xnx3IBXp7QbKDkpjic24/PnPFP0AvkeUyM8TtSBv
-	NCZCVbmrMP4fiNiMQq5tQCFPMYC7JqKLLTzp3Xf6qxxRp3cuFjAYu4+5QOmfTOHW4iR3fO
-	mQiTlEpwyXf9IeN7fQjlLdpO8/j+cZ8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773065853;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4w5uwEVSlmlGBAJYoqlWi7ELW6wprbGKGlE9Ql1y72I=;
-	b=zPDSsS6TVo9qPWp8RMGERynwsSKbeemn71kuHayeAuIoTS91bFDEKQEkH23kEvyvqOMHSR
-	qMsNzE5MLaB4G+DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BB1763EF3C;
-	Mon,  9 Mar 2026 14:17:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aPc8LHzWrmldPAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 09 Mar 2026 14:17:32 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: gregkh@linuxfoundation.org,
-	deller@gmx.de,
-	sam@ravnborg.org
-Cc: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 13/13] lib/fonts: Remove internal symbols and macros from public header file
-Date: Mon,  9 Mar 2026 15:14:55 +0100
-Message-ID: <20260309141723.137364-14-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260309141723.137364-1-tzimmermann@suse.de>
-References: <20260309141723.137364-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1773067734; c=relaxed/simple;
+	bh=W+elNm7OAd42lQ96y/LW8JngTqSS7v4kZbWl5UMmMWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JcuJcxnjCDwcbc/a2ljxMcuO/TJ4Mi6Uxxg7aXWMDYamX25n6umDq2O+OJY/pw99Tp8fH1V9+6OSikXZBbozws0iJbz/jHb5z18/pdyzvy6jNvHAR8O6VbD0Y4zLO/g7cCXncXqPoJpy7DP2gM7utyyGhLbZHsLJSbGJNUg/LyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=kUlivjJ0; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1773067725; x=1773672525; i=deller@gmx.de;
+	bh=A63ZvSBxO/GDoAZedfYLHSEU40rKdo4lIlgKNVgVAOY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=kUlivjJ0Y5+sBlLaJ9Yn9uGYA6GJ8dXqaqDwPK9PHSlf5F3ZaPtbEA2EzrdtuLlM
+	 yW3jp05Ag4uCzKHem++4JOmx7l1hz2ICPMGN2K9z07hKBNAC+iu7McSYf+gqrQIwR
+	 GXQs5LfwxdsvWV6nHIfF3w4rIS9zQ8ubBMAkv5PNlznI+NfISm841aYVVH1rCMI/Z
+	 rFmOw2d7VVUSnDiCpZf+nC0hGgefIkiQOUlvy1PDpeHtpTaNmOT0zlrayPEYk0OlJ
+	 UQO/Lz2+qk2iZg3bn+Iwihw7QWx+SSnEICqGURnx4Zf+H2aJciOF+ixBsMLkgyAtv
+	 6+mSOI/lGUexSjGOvA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4hvb-1vXf4c17v5-00yhdN; Mon, 09
+ Mar 2026 15:48:45 +0100
+Message-ID: <a90221f6-4c5f-4223-a594-c2d67f0524b8@gmx.de>
+Date: Mon, 9 Mar 2026 15:48:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/13] vc,fbcon,fonts: Proper handling of font data
+To: Thomas Zimmermann <tzimmermann@suse.de>, gregkh@linuxfoundation.org,
+ sam@ravnborg.org
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org
+References: <20260309141723.137364-1-tzimmermann@suse.de>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20260309141723.137364-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rqbX5OIrJRtOzRszwI9kd3b9pq7dhBgUtL1UjM1dg8tscfcvfeQ
+ H+X9/b8oLv4VQPQrbEH8fLwx/6iifTOKxrcp/vWhRwB6DQi9ZOPPjuJcOe6pqJHLrW0c/rp
+ Hbmxi8EtjvupPHkM2kGyj/HxCggyDOBx5yx+kj07ItHgk/e4x7UFHSuZZIgeyUMZOM/sp3I
+ ZCuTxyNeklg0kPovM+f3g==
 X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 7774823A77C
+UI-OutboundReport: notjunk:1;M01:P0:mIyUTP7kSoM=;Os3KftWKb7vhfNZaMDXQaoNuJAF
+ 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
+ X6qXq9ImMlbv7Dp/QJOh/nQkV9B/ETeAQfpjPJ
+X-Rspamd-Queue-Id: E5F6B23AE86
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6529-lists,linux-fbdev=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmx.de,ravnborg.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.979];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TAGGED_RCPT(0.00)[linux-fbdev];
+	TAGGED_FROM(0.00)[bounces-6532-lists,linux-fbdev=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmx.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.877];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[deller@gmx.de,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmx.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[linux-fbdev];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:dkim,gmx.de:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,man7.org:url]
 X-Rspamd-Action: no action
 
-Define access macros for font_data_t in fonts.c. Define struct font_data
-and declare most of the font symbols in the internal header font.h, where
-they can only be seen by the font code.
+On 3/9/26 15:14, Thomas Zimmermann wrote:
+> Provide helpers for handling console font data. Update consoles and VT.
+>=20
+> VT's vc_state stores font data as a plain byte array of glphys. Fbcon,
+> newport_con and the kernel's internal fonts store the glyph data as an
+> array of plain bytes plus a hidden header for reference counting, check
+> sums and buffer sizes. The reference counting only works for user-space
+> fonts but not for internal fonts. Font-data handling is duplicated in
+> several places. Most of the font handling is open-coded and mixed up wit=
+h
+> VT's plain glyph arrays.
+>=20
+> To address these issues, add proper handling of font data to all involve=
+d
+> components: struct vc_font for font state in VC; a font data type for th=
+e
+> consoles. Then implement interfaces for handling font data one by one.
+>=20
+> Patch 1 prepares the fbdev interface.
+>=20
+> Patches 2 to 4 prepare VT's font handling.
+>=20
+> Patches 5 to 13 refactor fbcon and newport_con to use clean interfaces f=
+or
+> their fonts.
+>=20
+> Fbcon has long been a source of problems and bug reports. [1] With its
+> confusing implementation, it is hard to find the cause of these bugs.
+> Cleaning up the fbcon code will hopefully help with resolving bug report=
+s
+> in the future.
+>=20
+> The series has been tested with fbcon under DRM's bochs driver by changi=
+ng
+> fonts at runtime using the setfont utility. [2] The changes to newport_c=
+on
+> have only been tested to compile.
+>=20
+> v3:
+> - fix module font linking (Nathan, Arnd)
+> - fix typos (Helge)
+> - clarify return value of font_data_put()
+> v2:
+> - keep declaring the internal fonts in the public header file (Helge)
+> - rebase and clean up
+>=20
+> [1] https://lore.kernel.org/all/6992c84c.a70a0220.2c38d7.00e8.GAE@google=
+.com/
+> [2] https://www.man7.org/linux/man-pages/man8/setfont.8.html
+>=20
+> Thomas Zimmermann (13):
+>    fbdev: Declare src parameter of fb_pad_ helpers as constant
+>    vt: Remove trailing whitespaces
+>    vt: Store font in struct vc_font
+>    vt: Calculate font-buffer size with vc_font_size()
+>    lib/fonts: Remove trailing whitespaces
+>    lib/fonts: Remove FNTCHARCNT()
+>    lib/fonts: Store font data as font_data_t; update consoles
+>    lib/fonts: Read font size with font_data_size()
+>    lib/fonts: Manage font-data lifetime with font_data_get/_put()
+>    lib/fonts: Compare font data for equality with font_data_is_equal()
+>    lib/fonts: Create font_data_t from struct console_font with
+>      font_data_import()
+>    lib/fonts: Store font data for user space with font_data_export()
+>    lib/fonts: Remove internal symbols and macros from public header file
+>=20
+>   drivers/video/console/newport_con.c |  61 +++-----
+>   drivers/video/fbdev/core/bitblit.c  |  11 +-
+>   drivers/video/fbdev/core/fbcon.c    | 194 +++++++----------------
+>   drivers/video/fbdev/core/fbcon.h    |   8 +-
+>   drivers/video/fbdev/core/fbmem.c    |   6 +-
+>   include/linux/console_struct.h      |  59 ++++++-
+>   include/linux/fb.h                  |  10 +-
+>   include/linux/font.h                | 115 +++++++++-----
+>   lib/fonts/font.h                    |  38 +++++
+>   lib/fonts/font_10x18.c              |   2 +-
+>   lib/fonts/font_6x10.c               |   3 +-
+>   lib/fonts/font_6x11.c               |   2 +-
+>   lib/fonts/font_6x8.c                |   3 +-
+>   lib/fonts/font_7x14.c               |   2 +-
+>   lib/fonts/font_8x16.c               |   3 +-
+>   lib/fonts/font_8x8.c                |   2 +-
+>   lib/fonts/font_acorn_8x8.c          |   4 +-
+>   lib/fonts/font_mini_4x6.c           |  10 +-
+>   lib/fonts/font_pearl_8x8.c          |   2 +-
+>   lib/fonts/font_sun12x22.c           |   3 +-
+>   lib/fonts/font_sun8x16.c            |   3 +-
+>   lib/fonts/font_ter10x18.c           |   4 +-
+>   lib/fonts/font_ter16x32.c           |   4 +-
+>   lib/fonts/fonts.c                   | 232 +++++++++++++++++++++++++++-
+>   24 files changed, 514 insertions(+), 267 deletions(-)
+>   create mode 100644 lib/fonts/font.h
 
-Also move font indices into internal font.h. They appear to be unused
-though. There is m86k assembly code that operates on the idx field, so
-leave them in place for now.
+series applied to fbdev git tree.
 
-List all built-in fonts in a separate section in the public header file.
-
-v2:
-- do not add config guards around font symbols (Helge)
-- keep declaration of built-in fonts in public header
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- include/linux/font.h       | 57 ++++++++++++--------------------------
- lib/fonts/font.h           | 38 +++++++++++++++++++++++++
- lib/fonts/font_10x18.c     |  2 +-
- lib/fonts/font_6x10.c      |  3 +-
- lib/fonts/font_6x11.c      |  2 +-
- lib/fonts/font_6x8.c       |  3 +-
- lib/fonts/font_7x14.c      |  2 +-
- lib/fonts/font_8x16.c      |  3 +-
- lib/fonts/font_8x8.c       |  2 +-
- lib/fonts/font_acorn_8x8.c |  2 +-
- lib/fonts/font_mini_4x6.c  |  2 +-
- lib/fonts/font_pearl_8x8.c |  2 +-
- lib/fonts/font_sun12x22.c  |  3 +-
- lib/fonts/font_sun8x16.c   |  3 +-
- lib/fonts/font_ter10x18.c  |  4 ++-
- lib/fonts/font_ter16x32.c  |  4 ++-
- lib/fonts/fonts.c          |  8 +++++-
- 17 files changed, 85 insertions(+), 55 deletions(-)
- create mode 100644 lib/fonts/font.h
-
-diff --git a/include/linux/font.h b/include/linux/font.h
-index d80db66a5c17..5401f07dd6ce 100644
---- a/include/linux/font.h
-+++ b/include/linux/font.h
-@@ -77,36 +77,6 @@ struct font_desc {
-     int pref;
- };
- 
--#define VGA8x8_IDX	0
--#define VGA8x16_IDX	1
--#define PEARL8x8_IDX	2
--#define VGA6x11_IDX	3
--#define FONT7x14_IDX	4
--#define	FONT10x18_IDX	5
--#define SUN8x16_IDX	6
--#define SUN12x22_IDX	7
--#define ACORN8x8_IDX	8
--#define	MINI4x6_IDX	9
--#define FONT6x10_IDX	10
--#define TER16x32_IDX	11
--#define FONT6x8_IDX	12
--#define TER10x18_IDX	13
--
--extern const struct font_desc	font_vga_8x8,
--			font_vga_8x16,
--			font_pearl_8x8,
--			font_vga_6x11,
--			font_7x14,
--			font_10x18,
--			font_sun_8x16,
--			font_sun_12x22,
--			font_acorn_8x8,
--			font_mini_4x6,
--			font_6x10,
--			font_ter_16x32,
--			font_6x8,
--			font_ter_10x18;
--
- /* Find a font with a specific name */
- 
- extern const struct font_desc *find_font(const char *name);
-@@ -120,16 +90,23 @@ extern const struct font_desc *get_default_font(int xres, int yres,
- /* Max. length for the name of a predefined font */
- #define MAX_FONT_NAME	32
- 
--/* Extra word getters */
--#define REFCOUNT(fd)	(((int *)(fd))[-1])
--#define FNTSIZE(fd)	(((int *)(fd))[-2])
--#define FNTSUM(fd)	(((int *)(fd))[-4])
--
--#define FONT_EXTRA_WORDS 4
-+/*
-+ * Built-in fonts
-+ */
- 
--struct font_data {
--	unsigned int extra[FONT_EXTRA_WORDS];
--	unsigned char data[];
--} __packed;
-+extern const struct font_desc font_10x18;
-+extern const struct font_desc font_6x10;
-+extern const struct font_desc font_6x8;
-+extern const struct font_desc font_7x14;
-+extern const struct font_desc font_acorn_8x8;
-+extern const struct font_desc font_mini_4x6;
-+extern const struct font_desc font_pearl_8x8;
-+extern const struct font_desc font_sun_12x22;
-+extern const struct font_desc font_sun_8x16;
-+extern const struct font_desc font_ter_10x18;
-+extern const struct font_desc font_ter_16x32;
-+extern const struct font_desc font_vga_6x11;
-+extern const struct font_desc font_vga_8x16;
-+extern const struct font_desc font_vga_8x8;
- 
- #endif /* _VIDEO_FONT_H */
-diff --git a/lib/fonts/font.h b/lib/fonts/font.h
-new file mode 100644
-index 000000000000..4f1adf0b6b54
---- /dev/null
-+++ b/lib/fonts/font.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef _LIB_FONTS_FONT_H
-+#define _LIB_FONTS_FONT_H
-+
-+#include <linux/font.h>
-+
-+/*
-+ * Font data
-+ */
-+
-+#define FONT_EXTRA_WORDS 4
-+
-+struct font_data {
-+	unsigned int extra[FONT_EXTRA_WORDS];
-+	unsigned char data[];
-+} __packed;
-+
-+/*
-+ * Built-in fonts
-+ */
-+
-+#define VGA8x8_IDX	0
-+#define VGA8x16_IDX	1
-+#define PEARL8x8_IDX	2
-+#define VGA6x11_IDX	3
-+#define FONT7x14_IDX	4
-+#define	FONT10x18_IDX	5
-+#define SUN8x16_IDX	6
-+#define SUN12x22_IDX	7
-+#define ACORN8x8_IDX	8
-+#define	MINI4x6_IDX	9
-+#define FONT6x10_IDX	10
-+#define TER16x32_IDX	11
-+#define FONT6x8_IDX	12
-+#define TER10x18_IDX	13
-+
-+#endif
-diff --git a/lib/fonts/font_10x18.c b/lib/fonts/font_10x18.c
-index 5d940db626e7..10edebc4bb74 100644
---- a/lib/fonts/font_10x18.c
-+++ b/lib/fonts/font_10x18.c
-@@ -4,7 +4,7 @@
-  * by Jurriaan Kalkman 06-2005  *
-  ********************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 9216
- 
-diff --git a/lib/fonts/font_6x10.c b/lib/fonts/font_6x10.c
-index e65df019e0d2..660d3a371b30 100644
---- a/lib/fonts/font_6x10.c
-+++ b/lib/fonts/font_6x10.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
-+#include "font.h"
- 
- #define FONTDATAMAX 2560
- 
-diff --git a/lib/fonts/font_6x11.c b/lib/fonts/font_6x11.c
-index bd76b3f6b635..671487ccc172 100644
---- a/lib/fonts/font_6x11.c
-+++ b/lib/fonts/font_6x11.c
-@@ -5,7 +5,7 @@
- /*                                            */
- /**********************************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX (11*256)
- 
-diff --git a/lib/fonts/font_6x8.c b/lib/fonts/font_6x8.c
-index 06ace7792521..5811ee07f4d8 100644
---- a/lib/fonts/font_6x8.c
-+++ b/lib/fonts/font_6x8.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
-+#include "font.h"
- 
- #define FONTDATAMAX 2048
- 
-diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
-index a2f561c9fa04..0c7475d643c8 100644
---- a/lib/fonts/font_7x14.c
-+++ b/lib/fonts/font_7x14.c
-@@ -4,7 +4,7 @@
- /* by Jurriaan Kalkman 05-2005        */
- /**************************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 3584
- 
-diff --git a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
-index 06ae14088514..523e95c75569 100644
---- a/lib/fonts/font_8x16.c
-+++ b/lib/fonts/font_8x16.c
-@@ -5,9 +5,10 @@
- /*                                            */
- /**********************************************/
- 
--#include <linux/font.h>
- #include <linux/module.h>
- 
-+#include "font.h"
-+
- #define FONTDATAMAX 4096
- 
- static const struct font_data fontdata_8x16 = {
-diff --git a/lib/fonts/font_8x8.c b/lib/fonts/font_8x8.c
-index 69570b8c31af..e5b697fc9675 100644
---- a/lib/fonts/font_8x8.c
-+++ b/lib/fonts/font_8x8.c
-@@ -5,7 +5,7 @@
- /*                                            */
- /**********************************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 2048
- 
-diff --git a/lib/fonts/font_acorn_8x8.c b/lib/fonts/font_acorn_8x8.c
-index af5fa72aa8b7..36c51016769d 100644
---- a/lib/fonts/font_acorn_8x8.c
-+++ b/lib/fonts/font_acorn_8x8.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Acorn-like font definition, with PC graphics characters */
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 2048
- 
-diff --git a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
-index cc21dc70cfd1..dc919c160dde 100644
---- a/lib/fonts/font_mini_4x6.c
-+++ b/lib/fonts/font_mini_4x6.c
-@@ -39,7 +39,7 @@ __END__;
-    MSBit to LSBit = left to right.
-  */
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 1536
- 
-diff --git a/lib/fonts/font_pearl_8x8.c b/lib/fonts/font_pearl_8x8.c
-index ae98ca17982e..2438b374acea 100644
---- a/lib/fonts/font_pearl_8x8.c
-+++ b/lib/fonts/font_pearl_8x8.c
-@@ -10,7 +10,7 @@
- /*                                            */
- /**********************************************/
- 
--#include <linux/font.h>
-+#include "font.h"
- 
- #define FONTDATAMAX 2048
- 
-diff --git a/lib/fonts/font_sun12x22.c b/lib/fonts/font_sun12x22.c
-index 91daf5ab8b6b..2afbc144bea8 100644
---- a/lib/fonts/font_sun12x22.c
-+++ b/lib/fonts/font_sun12x22.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
-+#include "font.h"
- 
- #define FONTDATAMAX 11264
- 
-diff --git a/lib/fonts/font_sun8x16.c b/lib/fonts/font_sun8x16.c
-index 81bb4eeae04e..2b7b2d8e548a 100644
---- a/lib/fonts/font_sun8x16.c
-+++ b/lib/fonts/font_sun8x16.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
-+#include "font.h"
- 
- #define FONTDATAMAX 4096
- 
-diff --git a/lib/fonts/font_ter10x18.c b/lib/fonts/font_ter10x18.c
-index 80356e9d56c7..3f30b4a211ab 100644
---- a/lib/fonts/font_ter10x18.c
-+++ b/lib/fonts/font_ter10x18.c
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
- #include <linux/module.h>
- 
-+#include "font.h"
-+
- #define FONTDATAMAX 9216
- 
- static const struct font_data fontdata_ter10x18 = {
-diff --git a/lib/fonts/font_ter16x32.c b/lib/fonts/font_ter16x32.c
-index 5baedc573dd6..93616cffe642 100644
---- a/lib/fonts/font_ter16x32.c
-+++ b/lib/fonts/font_ter16x32.c
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
--#include <linux/font.h>
-+
- #include <linux/module.h>
- 
-+#include "font.h"
-+
- #define FONTDATAMAX 16384
- 
- static const struct font_data fontdata_ter16x32 = {
-diff --git a/lib/fonts/fonts.c b/lib/fonts/fonts.c
-index a861b375e35d..5938f542906b 100644
---- a/lib/fonts/fonts.c
-+++ b/lib/fonts/fonts.c
-@@ -13,7 +13,6 @@
-  */
- 
- #include <linux/container_of.h>
--#include <linux/font.h>
- #include <linux/kd.h>
- #include <linux/module.h>
- #include <linux/overflow.h>
-@@ -25,12 +24,19 @@
- #include <asm/setup.h>
- #endif
- 
-+#include "font.h"
-+
- #define console_font_pitch(font) DIV_ROUND_UP((font)->width, 8)
- 
- /*
-  * Helpers for font_data_t
-  */
- 
-+/* Extra word getters */
-+#define REFCOUNT(fd)	(((int *)(fd))[-1])
-+#define FNTSIZE(fd)	(((int *)(fd))[-2])
-+#define FNTSUM(fd)	(((int *)(fd))[-4])
-+
- static struct font_data *to_font_data_struct(font_data_t *fd)
- {
- 	return container_of(fd, struct font_data, data[0]);
--- 
-2.53.0
-
+Thanks!
+Helge
 
