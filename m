@@ -1,111 +1,148 @@
-Return-Path: <linux-fbdev+bounces-6535-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6536-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMMgKcH4rmnZKgIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6535-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 09 Mar 2026 17:43:45 +0100
+	id 2E1UHA9xr2m6YQIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6536-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Mar 2026 02:17:03 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC8A23CEBE
-	for <lists+linux-fbdev@lfdr.de>; Mon, 09 Mar 2026 17:43:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E284F243729
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Mar 2026 02:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 381B73029882
-	for <lists+linux-fbdev@lfdr.de>; Mon,  9 Mar 2026 16:39:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9FE003048EF1
+	for <lists+linux-fbdev@lfdr.de>; Tue, 10 Mar 2026 01:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C785B3B8BB8;
-	Mon,  9 Mar 2026 16:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD39F2BE034;
+	Tue, 10 Mar 2026 01:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLCry9I9"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="anzuCJid"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FC63ACF17;
-	Mon,  9 Mar 2026 16:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EBC269CE6;
+	Tue, 10 Mar 2026 01:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773074380; cv=none; b=ZtD4nWqLHhsIozJHCRkDPyDKOkNDk4S0Hw0coy82p3eQCYo7SgrmNNMUgntrfCH0L+k/MKazK+4ptiHTi2VGqPn77VEj//sNRrmKGMsx8fD+WB4TtsIrg/ia/VPxaMiMlCOxQLPaZlzy9C4D673r54CY/t7h6oi9aV2Q3LM5bUM=
+	t=1773105280; cv=none; b=NNdzfKclWeGZDQtvKec3IcrV/0T6CfxkJznlTGSZSh0TqMajW0Qoq9OUoakMvKK1MIiEf2k+zPtsrXxJJC6U9/k/ww2NGhAyztnBH0+H9SO+Sv01S+LsIEfIBr/6kC0W8rtT0Clh1woiW0azsI5dYtw8UJfjwJgQ93MLcpwEPHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773074380; c=relaxed/simple;
-	bh=1xfjIqDEkQZEleSzaHtcg9LZ76mWLmVjfAaua14bNR0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OkDQkj48KDKxgT/5HmCeMHIojtFqrJf+CKU+rGYfq2gx8vh9DhHoqpaSFZ9DuFlD3qnEDjAlyI2758wjdVjIaNs0+BxekgaFZDnyxgGGCnRnu4rkVWNeTB7C5YTZuLgSUO0UvyUc4DDksBALCSaw6IDI7P4PGvqELC5igmzgEMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLCry9I9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4306C2BCB3;
-	Mon,  9 Mar 2026 16:39:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773074380;
-	bh=1xfjIqDEkQZEleSzaHtcg9LZ76mWLmVjfAaua14bNR0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sLCry9I9DiU/qS6eoG/Ma7qXRqvOQx2VI3WRSmGHWZ5xfxlO9VxJCMUGC5+jY/8bR
-	 ECIyB0S6sVqAsRvq5+IwVA4gcAolah+sCqwSv1ZlX7J9KpaF7Jrw+Z3IXSiCIdNyFP
-	 lHfIcCcdE5T3aSYCQL1odNBuXITqu8LkiU4zeAkQ=
-Date: Mon, 9 Mar 2026 17:39:37 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Gabriel Windlin <gawindlin@gmail.com>
-Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-	Teddy Wang <teddy.wang@siliconmotion.com>,
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/8] staging: sm750fb: remove unused GPIO_MUX bit field
- definitions
-Message-ID: <2026030913-deliverer-scorpion-d940@gregkh>
-References: <20260303232434.1850583-1-gawindlin@gmail.com>
+	s=arc-20240116; t=1773105280; c=relaxed/simple;
+	bh=ikLWKLR9UX5av66TuqbzzvZKNipcLCat+JFN0c79Wfg=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=V9Q6/L563CcsOqLMkrQU8rZDePMuAvlGyzXZTWTWpX2BV/vqinC4+aKhaqB3B3ldyyO2RG+VLOg9uWj1sIdlebGPGJXEvI2Qp/s1fDROCDufk1aTUW8ElcWZaMnSOsqgL0Q2SW+LimmXMha+PeLLS86FtxVWPdhXbDqcK69JoP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=anzuCJid; arc=none smtp.client-ip=43.163.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1773105267; bh=fKN1B1R1uGOi7aCqLWWpClnJb3rwC+frVI631Jx0TJc=;
+	h=From:To:Cc:Subject:Date;
+	b=anzuCJid6yDMmyFsOKTuVozL6DimfPA9GnwVTGWDTY+G+DOI+X/CjLaM7vpn8VPUZ
+	 3U2OL660sETDZ2KmVwCgf12dAuur1hIBVmV4hS3kSpLtz1JXwIHgaKdsSI87oPC8jy
+	 qPcNYCGFvTDPHqnXOOvaSItfVKGse1ZJIt19ticE=
+Received: from June.localdomain ([123.121.145.35])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id 3983A430; Tue, 10 Mar 2026 09:14:24 +0800
+X-QQ-mid: xmsmtpt1773105264t57xncli5
+Message-ID: <tencent_5706A404B952870FEAC83A04EEFC8348A305@qq.com>
+X-QQ-XMAILINFO: OOyEews/EdUgX9pLo+jdYMbZkVK9uYEzTviH8Ko+bNNQ+MB8HFe4XY5qCSRAIM
+	 x8byOBC326ooghxICe+EEUk53Dui3B6oQJ3/ffLPWfglQ6leLBzHFmN0+vuqXZyxPe4nXg0ZuP2S
+	 bO22nYdBgCHCkX3oB0/wYf/3C69fa/1E6ugW91Cdx0otogiW7UvSZQyFI8gsMyToVVHEGWqGz7Lo
+	 79osq9nPFoeC8Mauib+kwEQxEZRIPX7TljqWcNFFNKqWmxtXLDfoXP2wz904l1RsosrYOcsuE/Xa
+	 s95Nqkn5f9HvXFYXAXNtaxgvc+KuEEkIVaOL4ytLsLDVHDHb4VdROc2WVyLn25b8Jt0jUxLyP9hy
+	 RP5RUKhwegfHqJQxmFM4ogqHoWGD6dE7vl3JLv9SxvSI+3KIQzrCtAFgkDZYNYDNPKQkoNx8ChIF
+	 Crz9KIee26pYXlsOQRUl7UByegoXac9bCxwaFex0BqMpQPSfd0NiOnO2LCpyx9HrPixVQJJ3gJnl
+	 FTNzOBQsCiOt+YEqlkueuiMT/Mf//g9Pub7j4h0jrQgCJIjByIjoOvn5CFwVd0Z8cwsIPOjiIeSp
+	 P68iFDijxB/INICb89Kz3d55J8HabKOP1v/KUjreUnxmun2trDVuJdYPaDVMolfqGcx6yjGQ2yNM
+	 zj5ynMEIVSZ48WXF69Gi/6qJjqyRwOfHggh9KK7JMM84q+LghMcXhdeKKJ/GKEe8cEEiSR1fHKfL
+	 NjzJiY2/HrIehHGpIP1CkdmYK3YelLkNg5RN72YlfD/WaDfnEYJr2v6VdpA1KRXjBTQShEPVizpe
+	 QywQBYjNk5jfLjrKd24mP5CAwWT9TFEuny54GW1DSnxpIivmLRZii83k+5uOf9nddxZZ0QFLZxAx
+	 0RlZbQKXw1O2YEv/pdAFYb7HH3UsbNB3Ta4PwipsALA/xr/j7ca2b//RtpMl4uijMv6voySqrC6X
+	 hJx9gah7krHYP4APJINYv6JumOuiNkmLk4iBLIQsjKf3hJuhkSluKEmH8yE+COIhb9ST/a16vf7u
+	 pVxIyS0/G+7r3WdSq9pGLC24rNj+I=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+From: Wang Jun <1742789905@qq.com>
+To: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
+	Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	gszhai@bjtu.edu.cn,
+	25125332@bjtu.edu.cn,
+	25125283@bjtu.edu.cn,
+	23120469@bjtu.edu.cn,
+	Wang Jun <1742789905@qq.com>
+Subject: [PATCH] video/fbdev/via: check ioremap return value in viafb_lcd_get_mobile_state
+Date: Tue, 10 Mar 2026 09:14:20 +0800
+X-OQ-MSGID: <20260310011420.8844-1-1742789905@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303232434.1850583-1-gawindlin@gmail.com>
-X-Rspamd-Queue-Id: 0DC8A23CEBE
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E284F243729
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6536-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6535-lists,linux-fbdev=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,bjtu.edu.cn,qq.com];
+	FREEMAIL_TO(0.00)[gmx.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.533];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,siliconmotion.com,vger.kernel.org,lists.linux.dev];
+	FROM_NEQ_ENVFROM(0.00)[1742789905@qq.com,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qq.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_FROM(0.00)[qq.com];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qq.com:dkim,qq.com:email,qq.com:mid]
 X-Rspamd-Action: no action
 
-On Wed, Mar 04, 2026 at 12:24:22AM +0100, Gabriel Windlin wrote:
-> The GPIO_MUX_0 through GPIO_MUX_31 bit field macros defined in
-> ddk750_reg.h are not referenced anywhere in the driver. The register
-> address GPIO_MUX itself is still used by ddk750_swi2c.c. Remove the
-> unused bit definitions to reduce dead code as noted in the TODO file.
+The function viafb_lcd_get_mobile_state() calls ioremap() without
+checking the return value. If ioremap() fails (returns NULL), the
+subsequent readw() will cause a NULL pointer dereference.
 
-As Dan says, it's good to keep hardware documentation like this around,
-as it's not taking any runtime space.
+This patch adds a proper NULL check after ioremap() and returns
+-ENOMEM in case of failure.
 
-thanks,
+Signed-off-by: Wang Jun <1742789905@qq.com>
+---
+ drivers/video/fbdev/via/lcd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-greg k-h
+diff --git a/drivers/video/fbdev/via/lcd.c b/drivers/video/fbdev/via/lcd.c
+index 8673fced8749..91359d2b64fb 100644
+--- a/drivers/video/fbdev/via/lcd.c
++++ b/drivers/video/fbdev/via/lcd.c
+@@ -954,6 +954,10 @@ bool viafb_lcd_get_mobile_state(bool *mobile)
+ 	u16 start_pattern;
+ 
+ 	biosptr = ioremap(romaddr, 0x10000);
++	if (!biosptr) {
++		DEBUG_MSG(KERN_ERR " Failed to remap BIOS memory\n");
++		return false;
++	}
+ 	start_pattern = readw(biosptr);
+ 
+ 	/* Compare pattern */
+-- 
+2.43.0
+
 
