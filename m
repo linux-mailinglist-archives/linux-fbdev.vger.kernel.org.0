@@ -1,59 +1,59 @@
-Return-Path: <linux-fbdev+bounces-6725-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6724-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGYiLCHfxmm7PgUAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6725-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 20:48:49 +0100
+	id 2CiCBCjexmkoPQUAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6724-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 20:44:40 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DCF34A6C3
-	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 20:48:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E8F34A55A
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 20:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B3CB3015E29
+	by sin.lore.kernel.org (Postfix) with ESMTP id ED5DD3010936
 	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 19:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2F638E5D7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2342D38F247;
 	Fri, 27 Mar 2026 19:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Qegvgyu1"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eVdnPTcZ"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D8E37EFEE
-	for <linux-fbdev@vger.kernel.org>; Fri, 27 Mar 2026 19:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B205B386579
+	for <linux-fbdev@vger.kernel.org>; Fri, 27 Mar 2026 19:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774640387; cv=none; b=OAITiMfy3ZKXDYLBJiCwzi3GD7d6Y0uAqzidOmCfN6FH77Cth2nHjHq2z0+VH/MtFxnc++4qxbX6hZgdoqid1vnXu5o2UZQCgugI6W7EHjSbYX5eUzxNdVVgzHBrrQO4h97zaTeX8VClmGKpsGQeE3rESvGdUm69tRCDtrZ7Cug=
+	t=1774640386; cv=none; b=RTOoCJ8oNiR8gbSd/u/BPSer4ZonsAMjNf7RBk9wp5MYRNSc+XfnldaFKh8bOuhy2aH7TgMvUSf+d4BcY6HFeQqUu4xbb7F7Wek0x2IzPH+6pAhTPveCeYW8iXIuqpcgeH4uM77sbIqa1/aKwIUBgjLkBme9cSYzoGdM/rBLep4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774640387; c=relaxed/simple;
-	bh=Ag7ohZyx7WzGrgeovVjTIG+wTFQaqlSfy2RCg9SR32o=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KhqeOy8aSCyOXqlqUWMRimarnj4qjZiwEdLNm/ivCBSKsS9rRb39FX1wDsJRYPSeRLURQGYnBOHDJb5hFWHz/p6gSJfFvPOmTiNVzGhSIbFtL6VxaU8v3RMnAbHeIiGsFG5pG9u+ZKdvLaIAaaLd/BwmvIWTetnpL3atljJ02Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Qegvgyu1; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1774640386; c=relaxed/simple;
+	bh=8gLWs++EdOUBSlrPiLW6GRenO1dTS0Abli6P3iqQshc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=f5n85GV4P/Vi9lru72Ak4KD3nQc1Da4FPOk599907KkDPkJ7rDvhMe5lTYtuIqhqx/1mSrmhbM93Axfmi2fWcgg9mCcEkCeDG/o0z5kx0iEZ6iFlJiScHAu0vtv14JNdfcAtEB4CQ7lcOudGnxRbS7iKovlzqNnp8q1pV9hUSQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eVdnPTcZ; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E361B4E42820;
-	Fri, 27 Mar 2026 19:39:38 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id F40E41A3027;
+	Fri, 27 Mar 2026 19:39:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B152A60268;
-	Fri, 27 Mar 2026 19:39:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A27E410451AEF;
-	Fri, 27 Mar 2026 20:39:36 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CB4C560268;
+	Fri, 27 Mar 2026 19:39:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CC9510451AF7;
+	Fri, 27 Mar 2026 20:39:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774640378; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=mLE15DOQB0f7iSKKawPwRv0wOdSj7ZQm/qNs4WZOIds=;
-	b=Qegvgyu1W8JnJYMq4q9eLQ444VFl4KFsHeFAnV54fbrX2TAkOZxHY/fEN63h9NFnixVQvx
-	BPY/SR8goeDPamS3FT1mO1Ce0618hYAv+dH8A+AxV0cRVVFUd1R0qNtaBW3nq3Sw0aFFos
-	j1tPyWHNrjgyXimpl2t8zTKnF4DiGeLYw6A0jHKfuktcNada3ozpQV5Nlwahpj65Mv9yiE
-	fgaW96uHlfFTAFs10oVGbYOxUCaS8Lp/BLFwVdZJyImUq5bYwaDNDWoxuVOjGiaToehGxP
-	piTwwHLfBZKZXCTAqh7bn1/1Rh4vKwWrq3E7EasJ1PwmEfHtrajiw6TSUKhc8g==
+	t=1774640379; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=iPhjjyjp+Si4/Cjy/AMZxhHDxGFBbRdehdgcpegxNhA=;
+	b=eVdnPTcZkj+yEj+kOYZQgIHDfPsyXxufKYE1hut4TMxt3NM+syBTvsnfHfki5xAxKw0TYb
+	pVaA6k0MroVQJVzX0yRelI6abyD6qY3OjvYbO5GsqYvZpTG17++BNyNQyKk6/aFY38K6tV
+	2BLr+iunWEjVQVERH1tpYO94ymvlmf70n7oWSk9v1XsNvh6HNjwHrvZrWi8pONRqKklNQv
+	yo7OfLK//TMbEHuu3FoYVTLM7aL9BWjAqNrrzYn/bPDdkaXaX4gRPcOBcjE8lWgCOUflWl
+	bFeENandoV7derxAKoG2gBclILlBXx/ysw4Z1QEPROSpjUFxo42TdS1hP2mnkg==
 From: Thomas Richard <thomas.richard@bootlin.com>
-Subject: [PATCH 0/2] Remove redundant X86 dependency for the cgbc backlight
- driver
-Date: Fri, 27 Mar 2026 20:39:31 +0100
-Message-Id: <20260327-backlight-cgbc-remove-x86-dependency-v1-0-4851c9e95371@bootlin.com>
+Date: Fri, 27 Mar 2026 20:39:32 +0100
+Subject: [PATCH 1/2] backlight: cgbc: Remove redundant X86 dependency
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -62,10 +62,9 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPPcxmkC/x3NQQ6CMBBG4auQWTtJQajiVYiLMv0tE7WQ1hAM4
- e42Lr/NeztlJEWmW7VTwqpZ51hQnyqSycUAVl9MjWmsOZueRyfPl4bpwxJG4YT3vIK3q2WPBdE
- jypdb4y7Sd7Vtu55Kakl46PbfDPfj+AGmm8yidgAAAA==
-X-Change-ID: 20260309-backlight-cgbc-remove-x86-dependency-40a7c9516459
+Message-Id: <20260327-backlight-cgbc-remove-x86-dependency-v1-1-4851c9e95371@bootlin.com>
+References: <20260327-backlight-cgbc-remove-x86-dependency-v1-0-4851c9e95371@bootlin.com>
+In-Reply-To: <20260327-backlight-cgbc-remove-x86-dependency-v1-0-4851c9e95371@bootlin.com>
 To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
  Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
@@ -76,12 +75,12 @@ X-Last-TLS-Session-Version: TLSv1.3
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6725-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6724-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FREEMAIL_TO(0.00)[kernel.org,gmail.com,gmx.de];
@@ -94,35 +93,41 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[thomas.richard@bootlin.com,linux-fbdev@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:email,bootlin.com:mid]
-X-Rspamd-Queue-Id: 31DCF34A6C3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:email,bootlin.com:mid]
+X-Rspamd-Queue-Id: 08E8F34A55A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Remove redundant X86 dependency for the cgbc backlight driver. Additionally
-the driver is added to MAINTAINERS file.
+The backlight driver depends on the MFD cgbc-core driver, which already
+depends on X86. The explicit X86 dependency for the backlight driver is
+redundant and can be safely removed.
 
 Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
 ---
-Thomas Richard (2):
-      backlight: cgbc: Remove redundant X86 dependency
-      MAINTAINERS: Add cgbc backlight driver
-
- MAINTAINERS                     | 1 +
  drivers/video/backlight/Kconfig | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
----
-base-commit: c369299895a591d96745d6492d4888259b004a9e
-change-id: 20260309-backlight-cgbc-remove-x86-dependency-40a7c9516459
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards,
+diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+index a7a3fbaf7c29..07905d2ba01a 100644
+--- a/drivers/video/backlight/Kconfig
++++ b/drivers/video/backlight/Kconfig
+@@ -260,7 +260,7 @@ config BACKLIGHT_PWM
+ 
+ config BACKLIGHT_CGBC
+ 	tristate "Congatec Board Controller (CGBC) backlight support"
+-	depends on MFD_CGBC && X86
++	depends on MFD_CGBC
+ 	help
+ 	  Say Y here to enable support for LCD backlight control on Congatec
+ 	  x86-based boards via the CGBC (Congatec Board Controller).
+
 -- 
-Thomas Richard <thomas.richard@bootlin.com>
+2.53.0
 
 
