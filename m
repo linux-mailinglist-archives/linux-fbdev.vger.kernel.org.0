@@ -1,54 +1,95 @@
-Return-Path: <linux-fbdev+bounces-6715-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6717-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UF2HFkSBxmnQLAUAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6715-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 14:08:20 +0100
+	id KM3REG+BxmnQLAUAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6717-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 14:09:03 +0100
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB929344C80
-	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 14:08:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B49344CC4
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 14:09:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 51FBB30B3AD1
-	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 13:04:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EFE2030CAD96
+	for <lists+linux-fbdev@lfdr.de>; Fri, 27 Mar 2026 13:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C7F3E716B;
-	Fri, 27 Mar 2026 13:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254193E9596;
+	Fri, 27 Mar 2026 13:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0Cs3+3U8";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="csVaRRQS";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0Cs3+3U8";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="csVaRRQS"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC533E9F8A
-	for <linux-fbdev@vger.kernel.org>; Fri, 27 Mar 2026 13:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C012F3E8C79
+	for <linux-fbdev@vger.kernel.org>; Fri, 27 Mar 2026 13:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774616687; cv=none; b=LgaAp8l7/+bchLKFHzdjHtkld9hmH/zvYd8cq9xedJbx4NgGNzFJ1e/6JGKR/SZcoa0h9Yi9F13uCk69iHaDhTdKXbHQ2/jFzQ82uPjzWXv08h3hhIPMqP84HhF5am5XVRgBTa4JS7kQ4L0BUBHoA24Dhfy+Wlfl5ZrvFhQnnO8=
+	t=1774616694; cv=none; b=LRItWDngtZ3R6Y3PkKF8CUFoRzcMuMaNe3jhmc+pvJ6YxyTtBHJmfTBzXDnaydMzzcb3lkPTeHs8bR8jaBPv6rAIL325gv0I4Z+bK4dyW8H4gaEO6tdWqelKUcx7Wg7IDHOyey5Z2m7S2jWfbacz61c/NT46Ij8/0sFUOfIgy8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774616687; c=relaxed/simple;
-	bh=bEeVkLLDZ7r9bPa02ZXAwIpFbTAvlYuoLbgETZyDsxI=;
+	s=arc-20240116; t=1774616694; c=relaxed/simple;
+	bh=Olc3nRBtwIXKASdckSPHhCbwBLHg8+YGP/umsNIqLxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKn0sJxxEodPHeqk1xoVqiK8ASXeDMvLyLWQwM17vKvAl/ufHN2X8CJM9S3Rm0BuUj9w8sS9RhIwAwux3q+ShJMbCR66fpHt8n6MrBYK2briH92N31bFADdugT6WMTe31UZHywS/RIX50JbUlCZSg1xyYj/oMGIe0mSZWz/jCOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=nRy9UZhmAFDrFSDhsGJBuGN/DRJBBIgeQd9lSMtuqHlCqAUwRQyioslf3tV2h+tXoO8byOUvRI8kqkTH02TppgI6Xyy7YYAoHATALkTN0SSKkAEXGMPTS5TRv+wxDZAvzkdAspfC72tRSF5nMsk7g3Q99r0xV/IZCvL+mK7oMcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0Cs3+3U8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=csVaRRQS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0Cs3+3U8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=csVaRRQS; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C6A1B4D34D;
-	Fri, 27 Mar 2026 13:04:36 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1C8D04D38E;
+	Fri, 27 Mar 2026 13:04:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774616677; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3fVGtzGvjoY/rs1Dx30cKvv6gx94IsqDKYHw12bNUsA=;
+	b=0Cs3+3U8x3pLxINPh1x0/3anTyofn2dKKIn55y8+S2jEN89hI0oNIcTo73hvQdWy1m6R9W
+	Pp+qqYbkhxs4QK0zRJ6ivjItkJV7FFaGg4Kgz9obHDANTnceNN12UT2ikUIIFwHAOZ+Uyd
+	lyWXr3Q52yUqC6rNP8aZSWmd+aSqtzg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774616677;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3fVGtzGvjoY/rs1Dx30cKvv6gx94IsqDKYHw12bNUsA=;
+	b=csVaRRQSKjW6wkRagZWHKOHETOYnvVJvtC/KqKkmOj2JJq9eAjXpM85C+Ixd2tBqRoD8az
+	QGKH1DjrWWIjlhDQ==
 Authentication-Results: smtp-out1.suse.de;
 	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1774616677; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3fVGtzGvjoY/rs1Dx30cKvv6gx94IsqDKYHw12bNUsA=;
+	b=0Cs3+3U8x3pLxINPh1x0/3anTyofn2dKKIn55y8+S2jEN89hI0oNIcTo73hvQdWy1m6R9W
+	Pp+qqYbkhxs4QK0zRJ6ivjItkJV7FFaGg4Kgz9obHDANTnceNN12UT2ikUIIFwHAOZ+Uyd
+	lyWXr3Q52yUqC6rNP8aZSWmd+aSqtzg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1774616677;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3fVGtzGvjoY/rs1Dx30cKvv6gx94IsqDKYHw12bNUsA=;
+	b=csVaRRQSKjW6wkRagZWHKOHETOYnvVJvtC/KqKkmOj2JJq9eAjXpM85C+Ixd2tBqRoD8az
+	QGKH1DjrWWIjlhDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8661F4A0B1;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CDB534A0A2;
 	Fri, 27 Mar 2026 13:04:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cOSGH2SAxmmweQAAD6G6ig
+	id WHgDMWSAxmmweQAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Fri, 27 Mar 2026 13:04:36 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
@@ -61,9 +102,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-serial@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 03/10] lib/fonts: Provide helpers for calculating glyph pitch and size
-Date: Fri, 27 Mar 2026 13:49:36 +0100
-Message-ID: <20260327130431.59481-4-tzimmermann@suse.de>
+Subject: [PATCH 04/10] lib/fonts: Clean up Makefile
+Date: Fri, 27 Mar 2026 13:49:37 +0100
+Message-ID: <20260327130431.59481-5-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260327130431.59481-1-tzimmermann@suse.de>
 References: <20260327130431.59481-1-tzimmermann@suse.de>
@@ -74,315 +115,94 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Score: -4.00
-X-Spam-Level: 
 X-Spam-Flag: NO
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-Spam-Score: -6.80
+X-Spam-Level: 
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6715-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6717-lists,linux-fbdev=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[6];
+	FREEMAIL_TO(0.00)[gmx.de,linuxfoundation.org,kernel.org,ffwll.ch,ravnborg.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,linuxfoundation.org,kernel.org,ffwll.ch,ravnborg.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.de:+];
 	TAGGED_RCPT(0.00)[linux-fbdev];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pg.gda.pl:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,suse.de:mid]
-X-Rspamd-Queue-Id: DB929344C80
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F2B49344CC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Implement pitch and size calculation for a single font glyph in the
-new helpers font_glyph_pitch() and font_glyph_size(). Replace the
-instances where the calculations are opencoded.
-
-Note that in the case of fbcon console rotation, the parameters for
-a glyph's width and height might be reversed. This is intentionally.
+Simplify the Makefile. Drop font-obj-y and sort the fonts by dictionary
+order. Done in preparation for supporting optional font rotation.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/tty/vt/vt.c                     |  5 ++--
- drivers/video/fbdev/core/fbcon_ccw.c    | 11 +++----
- drivers/video/fbdev/core/fbcon_cw.c     | 11 +++----
- drivers/video/fbdev/core/fbcon_rotate.c |  6 ++--
- drivers/video/fbdev/core/fbcon_ud.c     |  7 +++--
- include/linux/font.h                    | 40 +++++++++++++++++++++++++
- lib/fonts/fonts.c                       |  2 +-
- 7 files changed, 61 insertions(+), 21 deletions(-)
+ lib/fonts/Makefile | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 3d89d30c9596..23b9683b52a5 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -71,7 +71,6 @@
-  * by Adam Tla/lka <atlka@pg.gda.pl>, Aug 2006
-  */
+diff --git a/lib/fonts/Makefile b/lib/fonts/Makefile
+index 30a85a4292fa..3268d344c0a1 100644
+--- a/lib/fonts/Makefile
++++ b/lib/fonts/Makefile
+@@ -1,23 +1,22 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Font handling
  
--#include <linux/math.h>
- #include <linux/module.h>
- #include <linux/types.h>
- #include <linux/sched/signal.h>
-@@ -244,7 +243,7 @@ enum {
-  */
- unsigned int vc_font_pitch(const struct vc_font *font)
- {
--	return DIV_ROUND_UP(font->width, 8);
-+	return font_glyph_pitch(font->width);
- }
- EXPORT_SYMBOL_GPL(vc_font_pitch);
+-font-objs := fonts.o
++font-y := fonts.o
  
-@@ -261,7 +260,7 @@ EXPORT_SYMBOL_GPL(vc_font_pitch);
-  */
- unsigned int vc_font_size(const struct vc_font *font)
- {
--	return font->height * vc_font_pitch(font) * font->charcount;
-+	return font_glyph_size(font->width, font->height) * font->charcount;
- }
- EXPORT_SYMBOL_GPL(vc_font_size);
+-font-objs-$(CONFIG_FONT_SUN8x16)   += font_sun8x16.o
+-font-objs-$(CONFIG_FONT_SUN12x22)  += font_sun12x22.o
+-font-objs-$(CONFIG_FONT_8x8)       += font_8x8.o
+-font-objs-$(CONFIG_FONT_8x16)      += font_8x16.o
+-font-objs-$(CONFIG_FONT_6x11)      += font_6x11.o
+-font-objs-$(CONFIG_FONT_7x14)      += font_7x14.o
+-font-objs-$(CONFIG_FONT_10x18)     += font_10x18.o
+-font-objs-$(CONFIG_FONT_PEARL_8x8) += font_pearl_8x8.o
+-font-objs-$(CONFIG_FONT_ACORN_8x8) += font_acorn_8x8.o
+-font-objs-$(CONFIG_FONT_MINI_4x6)  += font_mini_4x6.o
+-font-objs-$(CONFIG_FONT_6x10)      += font_6x10.o
+-font-objs-$(CONFIG_FONT_TER10x18)  += font_ter10x18.o
+-font-objs-$(CONFIG_FONT_TER16x32)  += font_ter16x32.o
+-font-objs-$(CONFIG_FONT_6x8)       += font_6x8.o
++# Built-in fonts
++font-$(CONFIG_FONT_10x18)     += font_10x18.o
++font-$(CONFIG_FONT_6x10)      += font_6x10.o
++font-$(CONFIG_FONT_6x11)      += font_6x11.o
++font-$(CONFIG_FONT_6x8)       += font_6x8.o
++font-$(CONFIG_FONT_7x14)      += font_7x14.o
++font-$(CONFIG_FONT_8x16)      += font_8x16.o
++font-$(CONFIG_FONT_8x8)       += font_8x8.o
++font-$(CONFIG_FONT_ACORN_8x8) += font_acorn_8x8.o
++font-$(CONFIG_FONT_MINI_4x6)  += font_mini_4x6.o
++font-$(CONFIG_FONT_PEARL_8x8) += font_pearl_8x8.o
++font-$(CONFIG_FONT_SUN12x22)  += font_sun12x22.o
++font-$(CONFIG_FONT_SUN8x16)   += font_sun8x16.o
++font-$(CONFIG_FONT_TER10x18)  += font_ter10x18.o
++font-$(CONFIG_FONT_TER16x32)  += font_ter16x32.o
  
-diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
-index 2f394b5a17f7..96ef449ee6ac 100644
---- a/drivers/video/fbdev/core/fbcon_ccw.c
-+++ b/drivers/video/fbdev/core/fbcon_ccw.c
-@@ -26,7 +26,7 @@ static void ccw_update_attr(u8 *dst, u8 *src, int attribute,
- 				  struct vc_data *vc)
- {
- 	int i, j, offset = (vc->vc_font.height < 10) ? 1 : 2;
--	int width = (vc->vc_font.height + 7) >> 3;
-+	int width = font_glyph_pitch(vc->vc_font.height);
- 	int mod = vc->vc_font.height % 8;
- 	u8 c, msk = ~(0xff << offset), msk1 = 0;
- 
-@@ -101,7 +101,7 @@ static inline void ccw_putcs_aligned(struct vc_data *vc, struct fb_info *info,
- {
- 	struct fbcon_par *par = info->fbcon_par;
- 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
--	u32 idx = (vc->vc_font.height + 7) >> 3;
-+	u32 idx = font_glyph_pitch(vc->vc_font.height);
- 	u8 *src;
- 
- 	while (cnt--) {
-@@ -131,7 +131,7 @@ static void ccw_putcs(struct vc_data *vc, struct fb_info *info,
- {
- 	struct fb_image image;
- 	struct fbcon_par *par = info->fbcon_par;
--	u32 width = (vc->vc_font.height + 7)/8;
-+	u32 width = font_glyph_pitch(vc->vc_font.height);
- 	u32 cellsize = width * vc->vc_font.width;
- 	u32 maxcnt = info->pixmap.size/cellsize;
- 	u32 scan_align = info->pixmap.scan_align - 1;
-@@ -223,7 +223,8 @@ static void ccw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
- 	struct fb_cursor cursor;
- 	struct fbcon_par *par = info->fbcon_par;
- 	unsigned short charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
--	int w = (vc->vc_font.height + 7) >> 3, c;
-+	int w = font_glyph_pitch(vc->vc_font.height);
-+	int c;
- 	int y = real_y(par->p, vc->state.y);
- 	int attribute, use_sw = vc->vc_cursor_type & CUR_SW;
- 	int err = 1, dx, dy;
-@@ -297,7 +298,7 @@ static void ccw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
- 		char *tmp, *mask = kmalloc_array(w, vc->vc_font.width,
- 						 GFP_ATOMIC);
- 		int cur_height, size, i = 0;
--		int width = (vc->vc_font.width + 7)/8;
-+		int width = font_glyph_pitch(vc->vc_font.width);
- 
- 		if (!mask)
- 			return;
-diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
-index 3c3ad3471ec4..ea712654edae 100644
---- a/drivers/video/fbdev/core/fbcon_cw.c
-+++ b/drivers/video/fbdev/core/fbcon_cw.c
-@@ -26,7 +26,7 @@ static void cw_update_attr(u8 *dst, u8 *src, int attribute,
- 				  struct vc_data *vc)
- {
- 	int i, j, offset = (vc->vc_font.height < 10) ? 1 : 2;
--	int width = (vc->vc_font.height + 7) >> 3;
-+	int width = font_glyph_pitch(vc->vc_font.height);
- 	u8 c, msk = ~(0xff >> offset);
- 
- 	for (i = 0; i < vc->vc_font.width; i++) {
-@@ -86,7 +86,7 @@ static inline void cw_putcs_aligned(struct vc_data *vc, struct fb_info *info,
- {
- 	struct fbcon_par *par = info->fbcon_par;
- 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
--	u32 idx = (vc->vc_font.height + 7) >> 3;
-+	u32 idx = font_glyph_pitch(vc->vc_font.height);
- 	u8 *src;
- 
- 	while (cnt--) {
-@@ -116,7 +116,7 @@ static void cw_putcs(struct vc_data *vc, struct fb_info *info,
- {
- 	struct fb_image image;
- 	struct fbcon_par *par = info->fbcon_par;
--	u32 width = (vc->vc_font.height + 7)/8;
-+	u32 width = font_glyph_pitch(vc->vc_font.height);
- 	u32 cellsize = width * vc->vc_font.width;
- 	u32 maxcnt = info->pixmap.size/cellsize;
- 	u32 scan_align = info->pixmap.scan_align - 1;
-@@ -206,7 +206,8 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
- 	struct fb_cursor cursor;
- 	struct fbcon_par *par = info->fbcon_par;
- 	unsigned short charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
--	int w = (vc->vc_font.height + 7) >> 3, c;
-+	int w = font_glyph_pitch(vc->vc_font.height);
-+	int c;
- 	int y = real_y(par->p, vc->state.y);
- 	int attribute, use_sw = vc->vc_cursor_type & CUR_SW;
- 	int err = 1, dx, dy;
-@@ -280,7 +281,7 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
- 		char *tmp, *mask = kmalloc_array(w, vc->vc_font.width,
- 						 GFP_ATOMIC);
- 		int cur_height, size, i = 0;
--		int width = (vc->vc_font.width + 7)/8;
-+		int width = font_glyph_pitch(vc->vc_font.width);
- 
- 		if (!mask)
- 			return;
-diff --git a/drivers/video/fbdev/core/fbcon_rotate.c b/drivers/video/fbdev/core/fbcon_rotate.c
-index 5348f6c6f57c..18575c5182db 100644
---- a/drivers/video/fbdev/core/fbcon_rotate.c
-+++ b/drivers/video/fbdev/core/fbcon_rotate.c
-@@ -33,14 +33,12 @@ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc)
- 	src = par->fontdata = vc->vc_font.data;
- 	par->cur_rotate = par->p->con_rotate;
- 	len = vc->vc_font.charcount;
--	s_cellsize = ((vc->vc_font.width + 7)/8) *
--		vc->vc_font.height;
-+	s_cellsize = font_glyph_size(vc->vc_font.width, vc->vc_font.height);
- 	d_cellsize = s_cellsize;
- 
- 	if (par->rotate == FB_ROTATE_CW ||
- 	    par->rotate == FB_ROTATE_CCW)
--		d_cellsize = ((vc->vc_font.height + 7)/8) *
--			vc->vc_font.width;
-+		d_cellsize = font_glyph_size(vc->vc_font.height, vc->vc_font.width);
- 
- 	if (info->fbops->fb_sync)
- 		info->fbops->fb_sync(info);
-diff --git a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
-index 6fc30cad5b19..f7cd89c42b01 100644
---- a/drivers/video/fbdev/core/fbcon_ud.c
-+++ b/drivers/video/fbdev/core/fbcon_ud.c
-@@ -26,7 +26,7 @@ static void ud_update_attr(u8 *dst, u8 *src, int attribute,
- 				  struct vc_data *vc)
- {
- 	int i, offset = (vc->vc_font.height < 10) ? 1 : 2;
--	int width = (vc->vc_font.width + 7) >> 3;
-+	int width = font_glyph_pitch(vc->vc_font.width);
- 	unsigned int cellsize = vc->vc_font.height * width;
- 	u8 c;
- 
-@@ -153,7 +153,7 @@ static void ud_putcs(struct vc_data *vc, struct fb_info *info,
- {
- 	struct fb_image image;
- 	struct fbcon_par *par = info->fbcon_par;
--	u32 width = (vc->vc_font.width + 7)/8;
-+	u32 width = font_glyph_pitch(vc->vc_font.width);
- 	u32 cellsize = width * vc->vc_font.height;
- 	u32 maxcnt = info->pixmap.size/cellsize;
- 	u32 scan_align = info->pixmap.scan_align - 1;
-@@ -253,7 +253,8 @@ static void ud_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
- 	struct fb_cursor cursor;
- 	struct fbcon_par *par = info->fbcon_par;
- 	unsigned short charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
--	int w = (vc->vc_font.width + 7) >> 3, c;
-+	int w = font_glyph_pitch(vc->vc_font.width);
-+	int c;
- 	int y = real_y(par->p, vc->state.y);
- 	int attribute, use_sw = vc->vc_cursor_type & CUR_SW;
- 	int err = 1, dx, dy;
-diff --git a/include/linux/font.h b/include/linux/font.h
-index 5401f07dd6ce..3bd49d914b22 100644
---- a/include/linux/font.h
-+++ b/include/linux/font.h
-@@ -11,10 +11,50 @@
- #ifndef _VIDEO_FONT_H
- #define _VIDEO_FONT_H
- 
-+#include <linux/math.h>
- #include <linux/types.h>
- 
- struct console_font;
- 
-+/*
-+ * Glyphs
-+ */
-+
-+/**
-+ * font_glyph_pitch - Calculates the number of bytes per scanline
-+ * @width: The glyph width in bits per scanline
-+ *
-+ * A glyph's pitch is the number of bytes in a single scanline, rounded
-+ * up to the next full byte. The parameter @width receives the number
-+ * of visible bits per scanline. For example, if width is 14 bytes per
-+ * scanline, the pitch is 2 bytes per scanline. If width is 8 bits per
-+ * scanline, the pitch is 1 byte per scanline.
-+ *
-+ * Returns:
-+ * The number of bytes in a single scanline of the glyph
-+ */
-+static inline unsigned int font_glyph_pitch(unsigned int width)
-+{
-+	return DIV_ROUND_UP(width, 8);
-+}
-+
-+/**
-+ * font_glyph_size - Calculates the number of bytes per glyph
-+ * @width: The glyph width in bits per scanline
-+ * @vpitch: The number of scanlines in the glyph
-+ *
-+ * The number of bytes in a glyph depends on the pitch and the number
-+ * of scanlines. font_glyph_size automatically calculates the pitch
-+ * from the given width. The parameter @vpitch gives the number of
-+ * scanlines, which is usually the glyph's height in scanlines. Fonts
-+ * coming from user space can sometimes have a different vertical pitch
-+ * with empty scanlines between two adjacent glyphs.
-+ */
-+static inline unsigned int font_glyph_size(unsigned int width, unsigned int vpitch)
-+{
-+	return font_glyph_pitch(width) * vpitch;
-+}
-+
- /*
-  * font_data_t and helpers
-  */
-diff --git a/lib/fonts/fonts.c b/lib/fonts/fonts.c
-index 5938f542906b..f5d5333450a0 100644
---- a/lib/fonts/fonts.c
-+++ b/lib/fonts/fonts.c
-@@ -26,7 +26,7 @@
- 
- #include "font.h"
- 
--#define console_font_pitch(font) DIV_ROUND_UP((font)->width, 8)
-+#define console_font_pitch(font) font_glyph_pitch((font)->width)
- 
- /*
-  * Helpers for font_data_t
+-font-objs += $(font-objs-y)
+-
+-obj-$(CONFIG_FONT_SUPPORT)         += font.o
++obj-$(CONFIG_FONT_SUPPORT) += font.o
 -- 
 2.53.0
 
