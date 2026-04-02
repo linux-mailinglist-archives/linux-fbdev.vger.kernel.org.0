@@ -1,86 +1,68 @@
-Return-Path: <linux-fbdev+bounces-6800-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6802-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMj8I/U2zmmAmAYAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6800-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Apr 2026 11:29:25 +0200
+	id 4BDmGbc6zmmAmAYAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6802-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Apr 2026 11:45:27 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDA5386EFE
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Apr 2026 11:29:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C82387238
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Apr 2026 11:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D3D330AA187
-	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Apr 2026 09:23:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02E673147B4B
+	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Apr 2026 09:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C7E38F24C;
-	Thu,  2 Apr 2026 09:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9798B3B27FC;
+	Thu,  2 Apr 2026 09:34:24 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0394E38F630
-	for <linux-fbdev@vger.kernel.org>; Thu,  2 Apr 2026 09:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E369238737B;
+	Thu,  2 Apr 2026 09:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775121831; cv=none; b=QP6U5wLQkmnkKcjs3LfM/vn54OnLhdmDi+sNv4u8GQKhMliiv5DwUXTI16cGLKr82+YiRqiOXhzIjzMWd9Hqtg50Wq4Smxvlyakmse3Ao5KmY5JTJjRrqUj2hDI4TNxOUIu+ryQD4drleL3vRlmH6kFM3RE+B2DO224VMsBYmio=
+	t=1775122463; cv=none; b=lsis+SSSe1OpAjmwljOxFGe7JJxJRrf7q6q4010KQLk6MhSzb4X3gdxkA8WGPMBEwrLs+f38lkmNrz1W9fg4U/jBkPVG2YiBEw7FhwkcrmjkmEHa41f6zHTv/4hU43JXWvNVUQKY1qKSu6JOlPslbluQbuOx1A8qsOovxSxtoPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775121831; c=relaxed/simple;
-	bh=+Nz4+367ERAXaJqDOSnA3deCZDRPDfPJ+Ksy9zSVM0s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPqHluHl8448dSoLz4ipukz53Xaw7utJns1v1VTYCW3gaVPTItgYB3lz+gl8OVquc6XdeJMvCndeAD4n0WSNuGZ4i2NW27rsOfu2VUB7GiVbADaK4eNU3TidKeeFQnaP2jd+yQJyuBM53m+sGafGiVKFVUqDcTT59+EIwLYZz7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 831024D322;
-	Thu,  2 Apr 2026 09:23:15 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE2D64A0B0;
-	Thu,  2 Apr 2026 09:23:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wEq8OII1zmlVYAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 02 Apr 2026 09:23:14 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	arnd@arndb.de,
-	ardb@kernel.org,
-	ilias.apalodimas@linaro.org,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	deller@gmx.de
-Cc: linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linux-efi@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	dri-devel@lists.freedesktop.org,
-	linux-hyperv@vger.kernel.org,
+	s=arc-20240116; t=1775122463; c=relaxed/simple;
+	bh=fLgaCf5V+rXqmc2NSUTQo0avZ432LIA+F18nt6bc2nU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZMz3j2oQl2M3HMr/XXDuj1pXVOvzVPb8Qjh4KHDXtPEJVwprBOT0eqosW0ykTygKBfyx2hZZ2RXYETfiGWqkTdLZeb+jxTatyz2zgOBHL94rgZIXBS+WVyCiHzkpBN3CEhzfMH2BgSVAaGPRyRQdP6oPMg/RFHcdZn9hlPJCrVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 18eafac82e7711f1aa26b74ffac11d73-20260402
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:a05d23e2-2eb9-47a7-b4cc-1429f8bb3322,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:9fb7aec0872f907d0fbbfd1c23c62e2e,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:-
+	3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,A
+	V:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 18eafac82e7711f1aa26b74ffac11d73-20260402
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1783636459; Thu, 02 Apr 2026 17:34:07 +0800
+From: zenghongling <zenghongling@kylinos.cn>
+To: deller@gmx.de,
+	linux-omap@vger.kernel.org,
 	linux-fbdev@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 8/8] firmware: sysfb: Move CONFIG_FIRMWARE_EDID to firmware options
-Date: Thu,  2 Apr 2026 11:09:22 +0200
-Message-ID: <20260402092305.208728-9-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260402092305.208728-1-tzimmermann@suse.de>
-References: <20260402092305.208728-1-tzimmermann@suse.de>
+	dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	zenghongling <zenghongling@kylinos.cn>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] fbdev: omap2: fix inconsistent lock returns in omapfb_mmap
+Date: Thu,  2 Apr 2026 17:34:03 +0800
+Message-Id: <20260402093403.12173-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -88,163 +70,65 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,arndb.de,kernel.org,linaro.org,xen0n.name,linux.intel.com,gmail.com,ffwll.ch,microsoft.com,gmx.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-6800-lists,linux-fbdev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DMARC_NA(0.00)[kylinos.cn];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.915];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmx.de,vger.kernel.org,lists.freedesktop.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6802-lists,linux-fbdev=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,126.com,kylinos.cn,intel.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev];
+	FROM_NEQ_ENVFROM(0.00)[zenghongling@kylinos.cn,linux-fbdev@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.836];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4CDA5386EFE
+	TAGGED_RCPT(0.00)[linux-fbdev];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,kylinos.cn:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: D3C82387238
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Move the Kconfig option for CONFIG_FIRMWARE_EDID to the firmware
-subsystem. The option controls architecture and firmware code, so
-it fits here better than in video.
+Fix the warning about inconsistent returns for '&rg->lock' in
+omapfb_mmap() function. The warning arises because the error path
+uses 'ofbi->region' while the normal path uses 'rg'.
 
-Also make it depend on CONFIG_SYSFB. The EDID data is stored in
-sysfb_primary_display and only useful with a sysfb framebuffer. This
-further allows for removing an explicit test for CONFIG_FIRMWARE_EDID
-from the EFI init code. For loongson, select CONFIG_SYSFB in the
-defconfig files.
+smatch warnings:
+drivers/video/fbdev/omap2/omapfb/omapfb-main.c:1126 omapfb_mmap()
+warn: inconsistent returns '&rg->lock'.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: zenghongling <zenghongling@kylinos.cn>
 ---
- arch/loongarch/configs/loongson32_defconfig |  1 +
- arch/loongarch/configs/loongson64_defconfig |  1 +
- drivers/firmware/Kconfig                    | 20 ++++++++++++++++++++
- drivers/firmware/efi/efi-init.c             |  2 +-
- drivers/video/Kconfig                       | 19 -------------------
- 5 files changed, 23 insertions(+), 20 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/omapfb-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/configs/loongson32_defconfig b/arch/loongarch/configs/loongson32_defconfig
-index 276b1577e0be..1c0897723247 100644
---- a/arch/loongarch/configs/loongson32_defconfig
-+++ b/arch/loongarch/configs/loongson32_defconfig
-@@ -786,6 +786,7 @@ CONFIG_DRM_VIRTIO_GPU=m
- CONFIG_DRM_LOONGSON=y
- CONFIG_FB=y
- CONFIG_FB_RADEON=y
-+CONFIG_SYSFB=y
- CONFIG_FIRMWARE_EDID=y
- CONFIG_LCD_CLASS_DEVICE=y
- CONFIG_LCD_PLATFORM=m
-diff --git a/arch/loongarch/configs/loongson64_defconfig b/arch/loongarch/configs/loongson64_defconfig
-index a14db1a95e7e..38340537dfd4 100644
---- a/arch/loongarch/configs/loongson64_defconfig
-+++ b/arch/loongarch/configs/loongson64_defconfig
-@@ -816,6 +816,7 @@ CONFIG_DRM_VIRTIO_GPU=m
- CONFIG_DRM_LOONGSON=y
- CONFIG_FB=y
- CONFIG_FB_RADEON=y
-+CONFIG_SYSFB=y
- CONFIG_FIRMWARE_EDID=y
- CONFIG_LCD_CLASS_DEVICE=y
- CONFIG_LCD_PLATFORM=m
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index 52f8253a46b1..edfb171d9eab 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -225,6 +225,26 @@ config SYSFB_SIMPLEFB
+diff --git a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+index a8b2930290e1..d70deb6a9150 100644
+--- a/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
++++ b/drivers/video/fbdev/omap2/omapfb/omapfb-main.c
+@@ -1121,7 +1121,7 @@ static int omapfb_mmap(struct fb_info *fbi, struct vm_area_struct *vma)
+ 	return 0;
  
- 	  If unsure, say Y.
+ error:
+-	omapfb_put_mem_region(ofbi->region);
++	omapfb_put_mem_region(rg);
  
-+config FIRMWARE_EDID
-+	bool "Enable firmware EDID"
-+	depends on SYSFB
-+	depends on EFI_GENERIC_STUB || X86
-+	help
-+	  This enables access to the EDID transferred from the firmware.
-+	  On EFI systems, the EDID comes from the same device as the
-+	  primary GOP. On x86 with BIOS, it comes from the VESA BIOS.
-+	  DRM display drivers will be able to export the information
-+	  to userspace.
-+
-+	  Also enable this if DDC/I2C transfers do not work for your driver
-+	  and if you are using nvidiafb, i810fb or savagefb.
-+
-+	  In general, choosing Y for this option is safe.  If you
-+	  experience extremely long delays while booting before you get
-+	  something on your display, try setting this to N.  Matrox cards in
-+	  combination with certain motherboards and monitors are known to
-+	  suffer from this problem.
-+
- config TH1520_AON_PROTOCOL
- 	tristate "Always-On firmware protocol"
- 	depends on ARCH_THEAD || COMPILE_TEST
-diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
-index 002518b642ed..c4088fb8482b 100644
---- a/drivers/firmware/efi/efi-init.c
-+++ b/drivers/firmware/efi/efi-init.c
-@@ -60,7 +60,7 @@ extern __weak const efi_config_table_type_t efi_arch_tables[];
-  * x86 defines its own instance of sysfb_primary_display and uses
-  * it even without EFI, everything else can get them from here.
-  */
--#if !defined(CONFIG_X86) && (defined(CONFIG_SYSFB) || defined(CONFIG_FIRMWARE_EDID))
-+#if !defined(CONFIG_X86) && defined(CONFIG_SYSFB)
- struct sysfb_display_info sysfb_primary_display __section(".data");
- EXPORT_SYMBOL_GPL(sysfb_primary_display);
- #endif
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index a7144d275f54..1c9ac3b029a7 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -62,25 +62,6 @@ config HDMI
- 
- endif # HAS_IOMEM
- 
--config FIRMWARE_EDID
--	bool "Enable firmware EDID"
--	depends on EFI_GENERIC_STUB || X86
--	help
--	  This enables access to the EDID transferred from the firmware.
--	  On EFI systems, the EDID comes from the same device as the
--	  primary GOP. On x86 with BIOS, it comes from the VESA BIOS.
--	  DRM display drivers will be able to export the information
--	  to userspace.
--
--	  Also enable this if DDC/I2C transfers do not work for your driver
--	  and if you are using nvidiafb, i810fb or savagefb.
--
--	  In general, choosing Y for this option is safe.  If you
--	  experience extremely long delays while booting before you get
--	  something on your display, try setting this to N.  Matrox cards in
--	  combination with certain motherboards and monitors are known to
--	  suffer from this problem.
--
- if VT
- 	source "drivers/video/console/Kconfig"
- endif
+ 	return r;
+ }
 -- 
-2.53.0
+2.25.1
 
 
