@@ -1,55 +1,96 @@
-Return-Path: <linux-fbdev+bounces-6799-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6794-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QI0cG+k4zmmAmAYAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6799-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Apr 2026 11:37:45 +0200
+	id CJq8Mp04zmmAmAYAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6794-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Apr 2026 11:36:29 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0189387085
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Apr 2026 11:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E0D387025
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Apr 2026 11:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA8D830B8300
-	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Apr 2026 09:23:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E260B30ACABB
+	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Apr 2026 09:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4483E38AC9A;
-	Thu,  2 Apr 2026 09:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA0638F622;
+	Thu,  2 Apr 2026 09:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jJMW85L6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TmSta8Q9";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jJMW85L6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TmSta8Q9"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CA238CFE9
-	for <linux-fbdev@vger.kernel.org>; Thu,  2 Apr 2026 09:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B2E386C3E
+	for <linux-fbdev@vger.kernel.org>; Thu,  2 Apr 2026 09:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775121824; cv=none; b=T5s3O2vlxAozR2UgX3ojNYP7qmbXhtjRuRPxzZ3nhrk4L6FI4pNC6lanR/d7HSsvkcWTA2cIcmNEacJyI6q3d5ykSYX+jF8rAiU1t6MrMJlORE7NOiAuCjVGUK67Uq+Z48pDhzKsewuVr0r/BSpU7bjfRF4DL2B1m4JNWyVBKCU=
+	t=1775121804; cv=none; b=I//TsNK/RdkCXkDrMyv+BQm/GlXQB74p5Ma20pDjgYD/bXGiYlrOdGL7n6yqjd2KbdzZpO8VyORWAQLVO/ngxGqzDjIOJqEUPhMguOmeouKWr1ece7RyPRbnracWAxawOTb1NXrkLYsBQfxeZPUuGcKiMvxCYKfIDYAGMiWhut0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775121824; c=relaxed/simple;
-	bh=CiP0OdZqOpeWaimweMzVRCCuHLI9ZqRCyAIc8yp0WbM=;
+	s=arc-20240116; t=1775121804; c=relaxed/simple;
+	bh=X9slnzcAfbmHpf44HJPK4D517gYRCEaACDmliytblX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OI23sQ1al3cRNQt83/jCNb6zX3vuRPs9w2TTcjUPN7iFdx3gdrxV94I6iRHw6oDjJtorn0ojZesMguHBZ4h+j5pKiIhAfJJDEyAJoLJKJhkVl4AnXjd06a8N52Pj9hVveqyVqeYX0O4EwbTGyy3vKzJf9DZuu/gJ8ab3waH93bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=VbE79qWCdSs7xtSjOTKHHQMrkaD67qsdFgvJQL9CTyvjQWDdoV9dhDalAeq4xddVyQhhsedb0/rg6pAAsbGMVpY363SXwMzmLIet6LoFTtqJ8xa1jQ5xsM/es/MNOb8/oOl63i9dToX7AHA5gqf+0gViGwubmM8DzjAaweC9nyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jJMW85L6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TmSta8Q9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jJMW85L6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TmSta8Q9; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 84A0D5BD9A;
-	Thu,  2 Apr 2026 09:23:12 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 23A704D31F;
+	Thu,  2 Apr 2026 09:23:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775121793; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9WG64BCLvFHglN0cMHjpmGzzECnyUWzkUCDahFxcSys=;
+	b=jJMW85L6Zuev5Ku6PqiWCelDmdhUYO1E19/unEgBVimu5XJ11w3MdDUdyY8w3T4zHgVybb
+	wQHFXo2TsJMhAcXylgduml4BV2q3d9AnhKURc/ogQI8rL4Db2Z2TU224mxAoYVFhrQAr8u
+	kemRvFL/7JlHR55b/CeShRGrjlkpc4I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775121793;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9WG64BCLvFHglN0cMHjpmGzzECnyUWzkUCDahFxcSys=;
+	b=TmSta8Q9xFYRLxcUqOfGPQsjzsshXJq66lZI0DIuTTlaNZJoqfkZ5RaKeKx7GoW8ZgBNmT
+	jcX9EUthHQzfltBg==
+Authentication-Results: smtp-out1.suse.de;
 	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1775121793; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9WG64BCLvFHglN0cMHjpmGzzECnyUWzkUCDahFxcSys=;
+	b=jJMW85L6Zuev5Ku6PqiWCelDmdhUYO1E19/unEgBVimu5XJ11w3MdDUdyY8w3T4zHgVybb
+	wQHFXo2TsJMhAcXylgduml4BV2q3d9AnhKURc/ogQI8rL4Db2Z2TU224mxAoYVFhrQAr8u
+	kemRvFL/7JlHR55b/CeShRGrjlkpc4I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1775121793;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9WG64BCLvFHglN0cMHjpmGzzECnyUWzkUCDahFxcSys=;
+	b=TmSta8Q9xFYRLxcUqOfGPQsjzsshXJq66lZI0DIuTTlaNZJoqfkZ5RaKeKx7GoW8ZgBNmT
+	jcX9EUthHQzfltBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EC1F84A0B1;
-	Thu,  2 Apr 2026 09:23:11 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8A79E4A0B0;
+	Thu,  2 Apr 2026 09:23:12 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UGM3OH81zmlVYAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 02 Apr 2026 09:23:11 +0000
+	id +B+kIIA1zmlVYAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 02 Apr 2026 09:23:12 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com,
 	arnd@arndb.de,
@@ -75,9 +116,9 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-hyperv@vger.kernel.org,
 	linux-fbdev@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 3/8] firmware: sysfb: Make CONFIG_SYSFB a user-selectable option
-Date: Thu,  2 Apr 2026 11:09:17 +0200
-Message-ID: <20260402092305.208728-4-tzimmermann@suse.de>
+Subject: [PATCH 4/8] firmware: sysfb: Split sysfb.c into sysfb_primary.c and sysfb_pci.c
+Date: Thu,  2 Apr 2026 11:09:18 +0200
+Message-ID: <20260402092305.208728-5-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260402092305.208728-1-tzimmermann@suse.de>
 References: <20260402092305.208728-1-tzimmermann@suse.de>
@@ -88,178 +129,176 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
 X-Spam-Flag: NO
-X-Spam-Score: -4.00
+X-Spam-Score: -6.80
 X-Spam-Level: 
-X-Spamd-Result: default: False [0.14 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6794-lists,linux-fbdev=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[redhat.com,arndb.de,kernel.org,linaro.org,xen0n.name,linux.intel.com,gmail.com,ffwll.ch,microsoft.com,gmx.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-6799-lists,linux-fbdev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.911];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.de:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A0189387085
+X-Rspamd-Queue-Id: D1E0D387025
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add a descriptive string and help text to CONFIG_SYSFB, so that users
-can modify it. Flip all implicit selects in the Kconfig options into
-dependencies. This avoids cyclic dependencies in the config.
-
-Enabling CONFIG_SYSFB makes the kernel provide a device for the firmware
-framebuffer. As this can (slightly) affect system behavior, having a
-user-facing option seems preferable. Some users might also want to set
-every detail of their kernel config.
+Move the init code for the primary graphics device and the PCI-helpers
+into separate source files. Only build the PCI helpers if CONFIG_PCI is
+set. Prepares sysfb for additional PCI helpers.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/firmware/Kconfig      | 18 ++++++++++++++++--
- drivers/gpu/drm/sysfb/Kconfig |  4 ++--
- drivers/hv/Kconfig            |  2 +-
- drivers/video/fbdev/Kconfig   |  5 +++--
- 4 files changed, 22 insertions(+), 7 deletions(-)
+ drivers/firmware/Makefile                     |  7 ++++--
+ drivers/firmware/sysfb.h                      | 19 ++++++++++++++
+ drivers/firmware/sysfb_pci.c                  | 21 ++++++++++++++++
+ drivers/firmware/{sysfb.c => sysfb_primary.c} | 25 ++-----------------
+ 4 files changed, 47 insertions(+), 25 deletions(-)
+ create mode 100644 drivers/firmware/sysfb.h
+ create mode 100644 drivers/firmware/sysfb_pci.c
+ rename drivers/firmware/{sysfb.c => sysfb_primary.c} (92%)
 
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index bbd2155d8483..52f8253a46b1 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -179,14 +179,28 @@ config MTK_ADSP_IPC
- 	  Client might use shared memory to exchange information with ADSP.
+diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+index 4ddec2820c96..5b0592c078df 100644
+--- a/drivers/firmware/Makefile
++++ b/drivers/firmware/Makefile
+@@ -16,13 +16,16 @@ obj-$(CONFIG_FIRMWARE_MEMMAP)	+= memmap.o
+ obj-$(CONFIG_MTK_ADSP_IPC)	+= mtk-adsp-ipc.o
+ obj-$(CONFIG_RASPBERRYPI_FIRMWARE) += raspberrypi.o
+ obj-$(CONFIG_FW_CFG_SYSFS)	+= qemu_fw_cfg.o
+-obj-$(CONFIG_SYSFB)		+= sysfb.o
+-obj-$(CONFIG_SYSFB_SIMPLEFB)	+= sysfb_simplefb.o
+ obj-$(CONFIG_TH1520_AON_PROTOCOL) += thead,th1520-aon.o
+ obj-$(CONFIG_TI_SCI_PROTOCOL)	+= ti_sci.o
+ obj-$(CONFIG_TRUSTED_FOUNDATIONS) += trusted_foundations.o
+ obj-$(CONFIG_TURRIS_MOX_RWTM)	+= turris-mox-rwtm.o
  
- config SYSFB
--	bool
-+	bool "Enable system framebuffer provided by boot loader"
- 	select BOOT_VESA_SUPPORT
- 	select SCREEN_INFO
-+	help
-+	  Use the system framebuffer provided by the boot loader. This will
-+	  create a device representing the framebuffer. The output depends on
-+	  EFI, VESA, VGA, or some other firmware-based interface.
++sysfb-y				:= sysfb_primary.o
++sysfb-$(CONFIG_PCI)		+= sysfb_pci.o
++sysfb-$(CONFIG_SYSFB_SIMPLEFB)	+= sysfb_simplefb.o
++obj-$(CONFIG_SYSFB)		+= sysfb.o
 +
-+	  The firmware or boot loader sets the display resolution and color
-+	  mode. See your boot loader's documentation on how to do this. On
-+	  some systems the display can also be configured during boot with
-+	  the kernel's video= or vga= parameters.
+ obj-y				+= arm_ffa/
+ obj-y				+= arm_scmi/
+ obj-y				+= broadcom/
+diff --git a/drivers/firmware/sysfb.h b/drivers/firmware/sysfb.h
+new file mode 100644
+index 000000000000..9f7fe2e03f68
+--- /dev/null
++++ b/drivers/firmware/sysfb.h
+@@ -0,0 +1,19 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
-+	  Besides this option, you also have to enable a compatible graphics
-+	  driver, such as efidrm or vesadrm.
++#ifndef FIRMWARE_SYSFB_H
++#define FIRMWARE_SYSFB_H
 +
-+	  If unsure, say Y.
++#include <linux/types.h>
++
++struct pci_dev;
++
++#ifdef CONFIG_PCI
++bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev);
++#else
++static inline bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
++{
++	return false;
++}
++#endif
++
++#endif
+diff --git a/drivers/firmware/sysfb_pci.c b/drivers/firmware/sysfb_pci.c
+new file mode 100644
+index 000000000000..8f3adeef4fb1
+--- /dev/null
++++ b/drivers/firmware/sysfb_pci.c
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++
++#include <linux/pci.h>
++
++#include "sysfb.h"
++
++bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
++{
++	/*
++	 * TODO: Try to integrate this code into the PCI subsystem
++	 */
++	int ret;
++	u16 command;
++
++	ret = pci_read_config_word(pdev, PCI_COMMAND, &command);
++	if (ret != PCIBIOS_SUCCESSFUL)
++		return false;
++	if (!(command & PCI_COMMAND_MEMORY))
++		return false;
++	return true;
++}
+diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb_primary.c
+similarity index 92%
+rename from drivers/firmware/sysfb.c
+rename to drivers/firmware/sysfb_primary.c
+index 8833582c1883..ab8d7fc468bb 100644
+--- a/drivers/firmware/sysfb.c
++++ b/drivers/firmware/sysfb_primary.c
+@@ -35,6 +35,8 @@
+ #include <linux/screen_info.h>
+ #include <linux/sysfb.h>
  
- config SYSFB_SIMPLEFB
- 	bool "Mark VGA/VBE/EFI FB as generic system framebuffer"
-+	depends on SYSFB
- 	depends on X86 || EFI
--	select SYSFB
- 	help
- 	  Firmwares often provide initial graphics framebuffers so the BIOS,
- 	  bootloader or kernel can show basic video-output during boot for
-diff --git a/drivers/gpu/drm/sysfb/Kconfig b/drivers/gpu/drm/sysfb/Kconfig
-index 2559ead6cf1f..74be3c8e6657 100644
---- a/drivers/gpu/drm/sysfb/Kconfig
-+++ b/drivers/gpu/drm/sysfb/Kconfig
-@@ -26,12 +26,12 @@ config DRM_COREBOOTDRM
- config DRM_EFIDRM
- 	tristate "EFI framebuffer driver"
- 	depends on DRM && MMU && EFI && (!SYSFB_SIMPLEFB || COMPILE_TEST)
-+	depends on SYSFB
- 	select APERTURE_HELPERS
- 	select DRM_CLIENT_SELECTION
- 	select DRM_GEM_SHMEM_HELPER
- 	select DRM_KMS_HELPER
- 	select DRM_SYSFB_HELPER
--	select SYSFB
- 	help
- 	  DRM driver for EFI framebuffers.
++#include "sysfb.h"
++
+ static struct platform_device *pd;
+ static DEFINE_MUTEX(disable_lock);
+ static bool disabled;
+@@ -98,29 +100,6 @@ bool sysfb_handles_screen_info(void)
+ }
+ EXPORT_SYMBOL_GPL(sysfb_handles_screen_info);
  
-@@ -76,12 +76,12 @@ config DRM_SIMPLEDRM
- config DRM_VESADRM
- 	tristate "VESA framebuffer driver"
- 	depends on DRM && MMU && X86 && (!SYSFB_SIMPLEFB || COMPILE_TEST)
-+	depends on SYSFB
- 	select APERTURE_HELPERS
- 	select DRM_CLIENT_SELECTION
- 	select DRM_GEM_SHMEM_HELPER
- 	select DRM_KMS_HELPER
- 	select DRM_SYSFB_HELPER
--	select SYSFB
- 	help
- 	  DRM driver for VESA framebuffers.
- 
-diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
-index 2d0b3fcb0ff8..af0ac6516159 100644
---- a/drivers/hv/Kconfig
-+++ b/drivers/hv/Kconfig
-@@ -60,8 +60,8 @@ config HYPERV_BALLOON
- config HYPERV_VMBUS
- 	tristate "Microsoft Hyper-V VMBus driver"
- 	depends on HYPERV
-+	depends on SYSFB if EFI && !HYPERV_VTL_MODE
- 	default HYPERV
--	select SYSFB if EFI && !HYPERV_VTL_MODE
- 	help
- 	  Select this option to enable Hyper-V Vmbus driver.
- 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index ac9ac4287c6a..6f55bec8c207 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -333,6 +333,7 @@ config FB_IMSTT
- config FB_VGA16
- 	tristate "VGA 16-color graphics support"
- 	depends on FB && X86
-+	depends on SYSFB
- 	select APERTURE_HELPERS
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
-@@ -424,9 +425,9 @@ config FB_UVESA
- config FB_VESA
- 	bool "VESA VGA graphics support"
- 	depends on (FB = y) && X86
-+	depends on SYSFB
- 	select APERTURE_HELPERS
- 	select FB_IOMEM_HELPERS
--	select SYSFB
- 	help
- 	  This is the frame buffer device driver for generic VESA 2.0
- 	  compliant graphic cards. The older VESA 1.2 cards are not supported.
-@@ -436,10 +437,10 @@ config FB_VESA
- config FB_EFI
- 	bool "EFI-based Framebuffer Support"
- 	depends on (FB = y) && EFI
-+	depends on SYSFB
- 	select APERTURE_HELPERS
- 	select DRM_PANEL_ORIENTATION_QUIRKS
- 	select FB_IOMEM_HELPERS
--	select SYSFB
- 	help
- 	  This is the EFI frame buffer device driver. If the firmware on
- 	  your platform is EFI 1.10 or UEFI 2.0, select Y to add support for
+-#if defined(CONFIG_PCI)
+-static bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
+-{
+-	/*
+-	 * TODO: Try to integrate this code into the PCI subsystem
+-	 */
+-	int ret;
+-	u16 command;
+-
+-	ret = pci_read_config_word(pdev, PCI_COMMAND, &command);
+-	if (ret != PCIBIOS_SUCCESSFUL)
+-		return false;
+-	if (!(command & PCI_COMMAND_MEMORY))
+-		return false;
+-	return true;
+-}
+-#else
+-static bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
+-{
+-	return false;
+-}
+-#endif
+-
+ static struct device *sysfb_parent_dev(const struct screen_info *si)
+ {
+ 	struct pci_dev *pdev;
 -- 
 2.53.0
 
