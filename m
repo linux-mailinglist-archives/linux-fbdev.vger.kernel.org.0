@@ -1,90 +1,54 @@
-Return-Path: <linux-fbdev+bounces-6824-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6826-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJEvDK7N1GmtxgcAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6824-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:26:06 +0200
+	id cPx8IEzO1GmtxgcAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6826-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:28:44 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B930E3ABE72
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:26:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F158D3ABF99
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0EBDA3005ABD
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2026 09:26:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45372302BDFF
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2026 09:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948153A1E92;
-	Tue,  7 Apr 2026 09:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="H+41Ete4";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Az44Td5M";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="H+41Ete4";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Az44Td5M"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A1D3A3E62;
+	Tue,  7 Apr 2026 09:26:08 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4583921C2
-	for <linux-fbdev@vger.kernel.org>; Tue,  7 Apr 2026 09:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C1739B49C
+	for <linux-fbdev@vger.kernel.org>; Tue,  7 Apr 2026 09:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775553963; cv=none; b=U2AyeYXZf91QaynffFQ7Vl0Ly3Pv3KMOrlch5HC+35roE8shJrVMl4qPNI3I3Tbl1BoxneYTxgU3wWis/l1aqEXOQKjTWkstwM30oI7IfPOrTpCdkk6K67iHKNMgM5B9MixgbfRQOlbMjsALVErd5sVlQQtIPnG4xpO01ROydaE=
+	t=1775553968; cv=none; b=Q+EyK5NjCaUe9UzHSqi6THYRM0O2LCqeOaIRIcIzFjP8U62hwwSNSLCoGpgcq5xyVO56xJu3Y0MElNFtHknbBNRbawMjljTdJMDUvuQwjVnOw2ohFvGx8OfABBX4OuYPK80GfW4lwCZSh6LYZTx3XNQIEg7cFhlZzXLYyQA4MtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775553963; c=relaxed/simple;
-	bh=Tupz15X62z9wMWLvPlc7XFJflAo7Ct6U9BlMg/oUkQY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P868zPz4bnOH4zfccGKs24qqHoVrfo1pmCTub9KHJOSsIKWZOKTIR6e7b0G1chHMNoTwQYqVkfddYiubaHY35bCA2XcUHWSv0KjE/X1Avu21XVVRhvoVHuvSXOGNq1vquSnFmmnv70VIIwtrxgb/pRMDh6FS3OnRE5LbC36QIwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=H+41Ete4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Az44Td5M; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=H+41Ete4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Az44Td5M; arc=none smtp.client-ip=195.135.223.130
+	s=arc-20240116; t=1775553968; c=relaxed/simple;
+	bh=C6KphocZRHFRAttLmSlYzWqlwctq5zeMTmcMQK+27A4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZnMn+/hpIr699FBZVN42RQ/KZzcKr0M0PfBK3sngp2+g+LE7STwGis0Xv3JN7MBku34PeeoLNVfw6rRUFImBrkH1zYv8EVfe+PaWA+/64XQxhscAO49Cm1FuaHZqqf5u0fyrLPtUT2WxfGGBt0zcv0cAh9D4aydRo4wxI+HTJGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 78CB14E39F;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D04704E3A2;
 	Tue,  7 Apr 2026 09:26:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775553960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UZZh6m9eAmL3QEIgOTi7qJiHlPvHfejMaPcq+0us21c=;
-	b=H+41Ete45hQJlmJqNyrQlRqqqEFoWT765dcABGv7TKU5VSh5DkSKKd44ggwbOTGQ7SwVtj
-	yKfA/IsmQk/1XDafv7q5uokNcQNvULd9lQXlqhFuNKq+YGVY6RkzVT+omlQ9ZfAhlBYBRE
-	DvZ7Gyfq8bpfv9I8sAo0rGgbumSGsaw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775553960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UZZh6m9eAmL3QEIgOTi7qJiHlPvHfejMaPcq+0us21c=;
-	b=Az44Td5M68XkHubthspa98uLBONNf8XXp86rsd3Q7mfUMhQUbouo3qnoctX1zQxO6q56+7
-	gKIBRqSBcI7WeQAQ==
 Authentication-Results: smtp-out1.suse.de;
 	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1775553960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UZZh6m9eAmL3QEIgOTi7qJiHlPvHfejMaPcq+0us21c=;
-	b=H+41Ete45hQJlmJqNyrQlRqqqEFoWT765dcABGv7TKU5VSh5DkSKKd44ggwbOTGQ7SwVtj
-	yKfA/IsmQk/1XDafv7q5uokNcQNvULd9lQXlqhFuNKq+YGVY6RkzVT+omlQ9ZfAhlBYBRE
-	DvZ7Gyfq8bpfv9I8sAo0rGgbumSGsaw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1775553960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UZZh6m9eAmL3QEIgOTi7qJiHlPvHfejMaPcq+0us21c=;
-	b=Az44Td5M68XkHubthspa98uLBONNf8XXp86rsd3Q7mfUMhQUbouo3qnoctX1zQxO6q56+7
-	gKIBRqSBcI7WeQAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 319974A0B1;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7FABD4A0B2;
 	Tue,  7 Apr 2026 09:26:00 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hHTrCqjN1GmDVwAAD6G6ig
+	id yBL4HajN1GmDVwAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Tue, 07 Apr 2026 09:26:00 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
@@ -97,118 +61,103 @@ Cc: linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	linux-serial@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 00/10] fbcon,fonts: Refactor framebuffer console rotation
-Date: Tue,  7 Apr 2026 11:23:11 +0200
-Message-ID: <20260407092555.58816-1-tzimmermann@suse.de>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 01/10] fbcon: Avoid OOB font access if console rotation fails
+Date: Tue,  7 Apr 2026 11:23:12 +0200
+Message-ID: <20260407092555.58816-2-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260407092555.58816-1-tzimmermann@suse.de>
+References: <20260407092555.58816-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.30
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
 X-Spam-Level: 
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmx.de,linuxfoundation.org,kernel.org,linux-m68k.org,ffwll.ch,ravnborg.org];
-	TAGGED_FROM(0.00)[bounces-6824-lists,linux-fbdev=lfdr.de];
-	DKIM_TRACE(0.00)[suse.de:+];
+	TAGGED_FROM(0.00)[bounces-6826-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de,linuxfoundation.org,kernel.org,linux-m68k.org,ffwll.ch,ravnborg.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.984];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B930E3ABE72
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:url]
+X-Rspamd-Queue-Id: F158D3ABF99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Refactor the framebuffer console rotation into individual components
-for glyphs, fonts and the overall fbcon state. Right now this is mixed
-up in fbcon_rotate.{c,h}. Also build cursor rotation on top of the new
-interfaces.
+Clear the font buffer if the reallocation during console rotation fails
+in fbcon_rotate_font(). The putcs implementations for the rotated buffer
+will return early in this case. See [1] for an example.
 
-Start with an OOB fix in patch 1. If buffer allocation fails, fbcon
-currently uses a too-small glyph buffer for output. Avoid that.
-
-Patches 2 to 4 make a number of small improvements to the font library
-and its callers.
-
-Patches 5 to 8 refactor the font rotation. Fbcon rotation rotates each
-individual glyph in a font buffer and uses the rotated buffer's glyphs
-for output. The result looks like the console buffer has been rotated
-as a whole. Split this into helpers that rotate individual glyphs and
-a helper that rotates the font buffer of these. Then reimplement fbcon
-rotation on top. Document the public font helpers.
-
-Patch 9 rebuilds cursor rotation on top of the new glyph helpers. The
-fbcon cursor is itself a glyph that has to be rotated in sync with the
-font.
-
-Patch 10 moves all state of fbcon rotation into a single place and makes
-it a build-time conditional.
-
-Tested with fbcon under bochs on Qemu.
-
-Built upon the fbcon changes at [1].
+Currently, fbcon_rotate_font() keeps the old buffer, which is too small
+for the rotated font. Printing to the rotated console with a high-enough
+character code will overflow the font buffer.
 
 v2:
-- fix sparse truncated-bits warning
-- improve font sorting in Makefile
-- fix typos
+- fix typos in commit message
 
-[1] https://lore.kernel.org/linux-fbdev/20260309141723.137364-1-tzimmermann@suse.de/
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 6cc50e1c5b57 ("[PATCH] fbcon: Console Rotation - Add support to rotate font bitmap")
+Cc: <stable@vger.kernel.org> # v2.6.15+
+Link: https://elixir.bootlin.com/linux/v6.19/source/drivers/video/fbdev/core/fbcon_ccw.c#L144 # [1]
+---
+ drivers/video/fbdev/core/fbcon_rotate.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Thomas Zimmermann (10):
-  fbcon: Avoid OOB font access if console rotation fails
-  vt: Implement helpers for struct vc_font in source file
-  lib/fonts: Provide helpers for calculating glyph pitch and size
-  lib/fonts: Clean up Makefile
-  lib/fonts: Implement glyph rotation
-  lib/fonts: Refactor glyph-pattern helpers
-  lib/fonts: Refactor glyph-rotation helpers
-  lib/fonts: Implement font rotation
-  fbcon: Fill cursor mask in helper function
-  fbcon: Put font-rotation state into separate struct
-
- drivers/tty/vt/vt.c                     |  34 +++
- drivers/video/fbdev/core/bitblit.c      |  35 +--
- drivers/video/fbdev/core/fbcon.c        |  48 ++++-
- drivers/video/fbdev/core/fbcon.h        |  14 +-
- drivers/video/fbdev/core/fbcon_ccw.c    |  70 ++----
- drivers/video/fbdev/core/fbcon_cw.c     |  70 ++----
- drivers/video/fbdev/core/fbcon_rotate.c |  88 ++------
- drivers/video/fbdev/core/fbcon_rotate.h |  71 ------
- drivers/video/fbdev/core/fbcon_ud.c     |  67 ++----
- include/linux/console_struct.h          |  30 +--
- include/linux/font.h                    |  51 +++++
- lib/fonts/Makefile                      |  36 ++--
- lib/fonts/font_rotate.c                 | 275 ++++++++++++++++++++++++
- lib/fonts/fonts.c                       |   2 +-
- 14 files changed, 525 insertions(+), 366 deletions(-)
- create mode 100644 lib/fonts/font_rotate.c
-
+diff --git a/drivers/video/fbdev/core/fbcon_rotate.c b/drivers/video/fbdev/core/fbcon_rotate.c
+index 1562a8f20b4f..5348f6c6f57c 100644
+--- a/drivers/video/fbdev/core/fbcon_rotate.c
++++ b/drivers/video/fbdev/core/fbcon_rotate.c
+@@ -46,6 +46,10 @@ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc)
+ 		info->fbops->fb_sync(info);
+ 
+ 	if (par->fd_size < d_cellsize * len) {
++		kfree(par->fontbuffer);
++		par->fontbuffer = NULL;
++		par->fd_size = 0;
++
+ 		dst = kmalloc_array(len, d_cellsize, GFP_KERNEL);
+ 
+ 		if (dst == NULL) {
+@@ -54,7 +58,6 @@ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc)
+ 		}
+ 
+ 		par->fd_size = d_cellsize * len;
+-		kfree(par->fontbuffer);
+ 		par->fontbuffer = dst;
+ 	}
+ 
 -- 
 2.53.0
 
