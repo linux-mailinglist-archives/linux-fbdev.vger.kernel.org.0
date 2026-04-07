@@ -1,95 +1,95 @@
-Return-Path: <linux-fbdev+bounces-6827-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6833-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAQ0LnHO1GmtxgcAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6827-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:29:21 +0200
+	id WDlCCSLO1GkOxwcAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6833-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:28:02 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1555C3ABFB1
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:29:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5DE03ABF73
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:28:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90F383035D67
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2026 09:26:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B80E303A9DC
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2026 09:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6233A382D;
-	Tue,  7 Apr 2026 09:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17853A6EFB;
+	Tue,  7 Apr 2026 09:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tQ6A63eE";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="x3nBAkET";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tQ6A63eE";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="x3nBAkET"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VRUh9Pu4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="f2PBLy9Q";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VRUh9Pu4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="f2PBLy9Q"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809AE302767
-	for <linux-fbdev@vger.kernel.org>; Tue,  7 Apr 2026 09:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B0F3A6EF8
+	for <linux-fbdev@vger.kernel.org>; Tue,  7 Apr 2026 09:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775553973; cv=none; b=A1b6aE+ytQOYQhpj5yLxg9t/xWZxHc0e48iIRM9naDpmakPsweA6C9xvowtcCWqmTDyW/5qHeGQv4rYnPumqt2qk4Wu0u9Q4acOIM5FD6qPr+8DbYPYxW8tz/1W9Dk1CRcDIgVB0WwHtAG3ETvFNYfv0lLIUUDTfZ3qmp0qvdeU=
+	t=1775554002; cv=none; b=RtaPaVnTalFneYdWbIHYSKPkG0+eYZoRszboS6FYGZNuEr8ESIeO0x7+NC+n3YBZiQ7gbd1Uzk7QFebI/eL/ppbNmupYHIDpG4kWK2Em/SyczKkYOaesL9+qlFuUArTWr3PpQ238m6PpI4MsN79VF5eGNBDHBPKBNaVaJKCW8S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775553973; c=relaxed/simple;
-	bh=Q0YrM80+9BR2rwh+XvdR+CvuMQx5eZDfzTCekUhR9H0=;
+	s=arc-20240116; t=1775554002; c=relaxed/simple;
+	bh=sofMrLVaRJmHnvOi/WZ5dFviNY/Uz7j8i1kFmDfvWb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rU3HDEWRShmw1bQxHWKjzebKCtfju0wlbYQfhycJ5uYlXAtF1rhP4YAwnIHjD6LSFEWomMoFOyRW/wysFsyqwtVMvvfFfBWec+8hD9snh8cK7H1d0Ddlwo1AYoX4nSqIHlO22aYfrTxX+vxgGGUJoq7BXhH6nG0RHdcQopVp0DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tQ6A63eE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=x3nBAkET; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tQ6A63eE; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=x3nBAkET; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=NwwJk3mkfvrVNc8ZXJTynEHfpUN2lcw8sPo4IG7V3ECRI1LjDl9UVkyxqrCJpGzcdHGiKb4Z6ZVy/E4XolttXVjP1i963QEROb4rb29WPardWMh5IYnMPOVW3iVouuJG987Rv7+7Gkfsqo0Qx9lCvDN0C9F3ZM44d3L51vXyz8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VRUh9Pu4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=f2PBLy9Q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VRUh9Pu4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=f2PBLy9Q; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 701F55BDC9;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BEE1F4E3A7;
 	Tue,  7 Apr 2026 09:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1775553962; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ApLXYBVZV9e6jW5EshZorOekllfCvuYRwCb90bprZVY=;
-	b=tQ6A63eEoC84swYshVJMmcr7LIW2kTKTia6aL6LTdqOdXf7Z9juplY3E05eqVCIbjlImll
-	puZukf4P1RXgTitaSWoADmZm+A6nhPXWSsC0L655wCIEuD9DiFTyJEJf7RkJoM3pfeEVpY
-	i7q61PNn6fXweFCgU0lN5eLVu0SxF/Q=
+	bh=DCDCXBTApxJH1hMKkIqxFlk34L2bDMI+B4Yn1SPG6x8=;
+	b=VRUh9Pu4nPuT0+fqL7252IVmy/67zz8WbsIjC0T/lHmerDDqlEq0LTrhghsfE9HDukxNPd
+	XrKkR7oBkWg8wOSf6CtWClCQhzkzuGh6hbwam8CjS2lXklwwMWelHIcBvC2mejSXJZaQi8
+	x8iqwa1m0IpML/K5fs0QJpORJMj+884=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1775553962;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ApLXYBVZV9e6jW5EshZorOekllfCvuYRwCb90bprZVY=;
-	b=x3nBAkETuy+6PfyrzScueCR7vnQv7FHcAbghRSTJ9FSDA37ua6gXj/fsRm4IafRYxmXvn6
-	5s8tte4E4m+hDyAg==
-Authentication-Results: smtp-out2.suse.de;
+	bh=DCDCXBTApxJH1hMKkIqxFlk34L2bDMI+B4Yn1SPG6x8=;
+	b=f2PBLy9QFyHaNXvGyoFOmZqiztopXPastvaMT95Ki9u/8a4opgT7g9m1A+A5MONLgrp/6V
+	vImn70S5btaeF4AQ==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1775553962; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ApLXYBVZV9e6jW5EshZorOekllfCvuYRwCb90bprZVY=;
-	b=tQ6A63eEoC84swYshVJMmcr7LIW2kTKTia6aL6LTdqOdXf7Z9juplY3E05eqVCIbjlImll
-	puZukf4P1RXgTitaSWoADmZm+A6nhPXWSsC0L655wCIEuD9DiFTyJEJf7RkJoM3pfeEVpY
-	i7q61PNn6fXweFCgU0lN5eLVu0SxF/Q=
+	bh=DCDCXBTApxJH1hMKkIqxFlk34L2bDMI+B4Yn1SPG6x8=;
+	b=VRUh9Pu4nPuT0+fqL7252IVmy/67zz8WbsIjC0T/lHmerDDqlEq0LTrhghsfE9HDukxNPd
+	XrKkR7oBkWg8wOSf6CtWClCQhzkzuGh6hbwam8CjS2lXklwwMWelHIcBvC2mejSXJZaQi8
+	x8iqwa1m0IpML/K5fs0QJpORJMj+884=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1775553962;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ApLXYBVZV9e6jW5EshZorOekllfCvuYRwCb90bprZVY=;
-	b=x3nBAkETuy+6PfyrzScueCR7vnQv7FHcAbghRSTJ9FSDA37ua6gXj/fsRm4IafRYxmXvn6
-	5s8tte4E4m+hDyAg==
+	bh=DCDCXBTApxJH1hMKkIqxFlk34L2bDMI+B4Yn1SPG6x8=;
+	b=f2PBLy9QFyHaNXvGyoFOmZqiztopXPastvaMT95Ki9u/8a4opgT7g9m1A+A5MONLgrp/6V
+	vImn70S5btaeF4AQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 28B2D4A0B2;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 75DB04A0B1;
 	Tue,  7 Apr 2026 09:26:02 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +Om/CKrN1GmDVwAAD6G6ig
+	id 8OeTG6rN1GmDVwAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Tue, 07 Apr 2026 09:26:02 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
@@ -103,9 +103,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-serial@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 06/10] lib/fonts: Refactor glyph-pattern helpers
-Date: Tue,  7 Apr 2026 11:23:17 +0200
-Message-ID: <20260407092555.58816-7-tzimmermann@suse.de>
+Subject: [PATCH v2 07/10] lib/fonts: Refactor glyph-rotation helpers
+Date: Tue,  7 Apr 2026 11:23:18 +0200
+Message-ID: <20260407092555.58816-8-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260407092555.58816-1-tzimmermann@suse.de>
 References: <20260407092555.58816-1-tzimmermann@suse.de>
@@ -116,21 +116,21 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
 X-Spam-Score: -6.80
 X-Spam-Level: 
+X-Spam-Flag: NO
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6827-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6833-lists,linux-fbdev=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FREEMAIL_TO(0.00)[gmx.de,linuxfoundation.org,kernel.org,linux-m68k.org,ffwll.ch,ravnborg.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -145,115 +145,158 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1555C3ABFB1
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D5DE03ABF73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Change the signatures of the pattern helpers to align them with other
-font-glyph helpers: use the font_glyph_ prefix and pass the glyph
-buffer first.
+Change the signatures of the glyph-rotation helpers to match their
+public interfaces. Drop the inline qualifier.
 
-Calculating the position of the involved bit is somewhat obfuscated
-in the original implementation. Move it into the new helper
-__font_glyph_pos() and use the result as array index and bit position.
-
-Note that these bit helpers use a bit pitch, while other code uses a
-byte pitch. This is intentional and required here.
-
-v2:
-- fix typos in commit message
+Rename several variables to better match their meaning. Especially
+rename variables to bit_pitch (or a variant thereof) if they store
+a pitch value in bits per scanline. The original code is fairly
+confusing about this. Move the calculation of the bit pitch into the
+new helper font_glyph_bit_pitch().
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- lib/fonts/font_rotate.c | 45 ++++++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 18 deletions(-)
+ lib/fonts/font_rotate.c | 85 ++++++++++++++++++++++++-----------------
+ 1 file changed, 49 insertions(+), 36 deletions(-)
 
 diff --git a/lib/fonts/font_rotate.c b/lib/fonts/font_rotate.c
-index d107a8d0a2b0..d79ec5eef712 100644
+index d79ec5eef712..09f6218e036f 100644
 --- a/lib/fonts/font_rotate.c
 +++ b/lib/fonts/font_rotate.c
-@@ -15,21 +15,33 @@
+@@ -15,6 +15,12 @@
  
  #include "font.h"
  
--static inline int pattern_test_bit(u32 x, u32 y, u32 pitch, const char *pat)
-+static unsigned int __font_glyph_pos(unsigned int x, unsigned int y, unsigned int bit_pitch,
-+				     unsigned int *bit)
- {
--	u32 tmp = (y * pitch) + x, index = tmp / 8,  bit = tmp % 8;
-+	unsigned int off = y * bit_pitch + x;
-+	unsigned int bit_shift = off % 8;
- 
--	pat += index;
--	return (*pat) & (0x80 >> bit);
-+	*bit = 0x80 >> bit_shift; /* MSB has position 0, LSB has position 7 */
-+
-+	return off / 8;
- }
- 
--static inline void pattern_set_bit(u32 x, u32 y, u32 pitch, char *pat)
-+static bool font_glyph_test_bit(const unsigned char *glyph, unsigned int x, unsigned int y,
-+				unsigned int bit_pitch)
- {
--	u32 tmp = (y * pitch) + x, index = tmp / 8, bit = tmp % 8;
-+	unsigned int bit;
-+	unsigned int i = __font_glyph_pos(x, y, bit_pitch, &bit);
-+
-+	return glyph[i] & bit;
-+}
- 
--	pat += index;
-+static void font_glyph_set_bit(unsigned char *glyph, unsigned int x, unsigned int y,
-+			       unsigned int bit_pitch)
++/* number of bits per line */
++static unsigned int font_glyph_bit_pitch(unsigned int width)
 +{
-+	unsigned int bit;
-+	unsigned int i = __font_glyph_pos(x, y, bit_pitch, &bit);
- 
--	(*pat) |= 0x80 >> bit;
-+	glyph[i] |= bit;
++	return round_up(width, 8);
++}
++
+ static unsigned int __font_glyph_pos(unsigned int x, unsigned int y, unsigned int bit_pitch,
+ 				     unsigned int *bit)
+ {
+@@ -44,18 +50,21 @@ static void font_glyph_set_bit(unsigned char *glyph, unsigned int x, unsigned in
+ 	glyph[i] |= bit;
  }
  
- static inline void rotate_cw(const char *in, char *out, u32 width, u32 height)
-@@ -42,9 +54,8 @@ static inline void rotate_cw(const char *in, char *out, u32 width, u32 height)
- 
- 	for (i = 0; i < h; i++) {
- 		for (j = 0; j < w; j++) {
--			if (pattern_test_bit(j, i, width, in))
--				pattern_set_bit(height - 1 - i - shift, j,
--						height, out);
-+			if (font_glyph_test_bit(in, j, i, width))
-+				font_glyph_set_bit(out, height - 1 - i - shift, j, height);
+-static inline void rotate_cw(const char *in, char *out, u32 width, u32 height)
++static void __font_glyph_rotate_90(const unsigned char *glyph,
++				   unsigned int width, unsigned int height,
++				   unsigned char *out)
+ {
+-	int i, j, h = height, w = width;
+-	int shift = (8 - (height % 8)) & 7;
+-
+-	width = (width + 7) & ~7;
+-	height = (height + 7) & ~7;
+-
+-	for (i = 0; i < h; i++) {
+-		for (j = 0; j < w; j++) {
+-			if (font_glyph_test_bit(in, j, i, width))
+-				font_glyph_set_bit(out, height - 1 - i - shift, j, height);
++	unsigned int x, y;
++	unsigned int shift = (8 - (height % 8)) & 7;
++	unsigned int bit_pitch = font_glyph_bit_pitch(width);
++	unsigned int out_bit_pitch = font_glyph_bit_pitch(height);
++
++	for (y = 0; y < height; y++) {
++		for (x = 0; x < width; x++) {
++			if (font_glyph_test_bit(glyph, x, y, bit_pitch)) {
++				font_glyph_set_bit(out, out_bit_pitch - 1 - y - shift, x,
++						   out_bit_pitch);
++			}
  		}
  	}
  }
-@@ -81,10 +92,9 @@ static inline void rotate_ud(const char *in, char *out, u32 width, u32 height)
+@@ -79,22 +88,24 @@ void font_glyph_rotate_90(const unsigned char *glyph, unsigned int width, unsign
+ {
+ 	memset(out, 0, font_glyph_size(height, width)); /* flip width/height */
  
- 	for (i = 0; i < height; i++) {
- 		for (j = 0; j < width - shift; j++) {
--			if (pattern_test_bit(j, i, width, in))
--				pattern_set_bit(width - (1 + j + shift),
--						height - (1 + i),
--						width, out);
-+			if (font_glyph_test_bit(in, j, i, width))
-+				font_glyph_set_bit(out, width - (1 + j + shift),
-+						   height - (1 + i), width);
+-	rotate_cw(glyph, out, width, height);
++	__font_glyph_rotate_90(glyph, width, height, out);
+ }
+ EXPORT_SYMBOL_GPL(font_glyph_rotate_90);
+ 
+-static inline void rotate_ud(const char *in, char *out, u32 width, u32 height)
++static void __font_glyph_rotate_180(const unsigned char *glyph,
++				    unsigned int width, unsigned int height,
++				    unsigned char *out)
+ {
+-	int i, j;
+-	int shift = (8 - (width % 8)) & 7;
+-
+-	width = (width + 7) & ~7;
+-
+-	for (i = 0; i < height; i++) {
+-		for (j = 0; j < width - shift; j++) {
+-			if (font_glyph_test_bit(in, j, i, width))
+-				font_glyph_set_bit(out, width - (1 + j + shift),
+-						   height - (1 + i), width);
++	unsigned int x, y;
++	unsigned int shift = (8 - (width % 8)) & 7;
++	unsigned int bit_pitch = font_glyph_bit_pitch(width);
++
++	for (y = 0; y < height; y++) {
++		for (x = 0; x < width; x++) {
++			if (font_glyph_test_bit(glyph, x, y, bit_pitch)) {
++				font_glyph_set_bit(out, width - (1 + x + shift), height - (1 + y),
++						   bit_pitch);
++			}
  		}
  	}
  }
-@@ -119,9 +129,8 @@ static inline void rotate_ccw(const char *in, char *out, u32 width, u32 height)
+@@ -115,22 +126,24 @@ void font_glyph_rotate_180(const unsigned char *glyph, unsigned int width, unsig
+ {
+ 	memset(out, 0, font_glyph_size(width, height));
  
- 	for (i = 0; i < h; i++) {
- 		for (j = 0; j < w; j++) {
--			if (pattern_test_bit(j, i, width, in))
--				pattern_set_bit(i, width - 1 - j - shift,
--						height, out);
-+			if (font_glyph_test_bit(in, j, i, width))
-+				font_glyph_set_bit(out, i, width - 1 - j - shift, height);
+-	rotate_ud(glyph, out, width, height);
++	__font_glyph_rotate_180(glyph, width, height, out);
+ }
+ EXPORT_SYMBOL_GPL(font_glyph_rotate_180);
+ 
+-static inline void rotate_ccw(const char *in, char *out, u32 width, u32 height)
++static void __font_glyph_rotate_270(const unsigned char *glyph,
++				    unsigned int width, unsigned int height,
++				    unsigned char *out)
+ {
+-	int i, j, h = height, w = width;
+-	int shift = (8 - (width % 8)) & 7;
+-
+-	width = (width + 7) & ~7;
+-	height = (height + 7) & ~7;
+-
+-	for (i = 0; i < h; i++) {
+-		for (j = 0; j < w; j++) {
+-			if (font_glyph_test_bit(in, j, i, width))
+-				font_glyph_set_bit(out, i, width - 1 - j - shift, height);
++	unsigned int x, y;
++	unsigned int shift = (8 - (width % 8)) & 7;
++	unsigned int bit_pitch = font_glyph_bit_pitch(width);
++	unsigned int out_bit_pitch = font_glyph_bit_pitch(height);
++
++	for (y = 0; y < height; y++) {
++		for (x = 0; x < width; x++) {
++			if (font_glyph_test_bit(glyph, x, y, bit_pitch))
++				font_glyph_set_bit(out, y, bit_pitch - 1 - x - shift,
++						   out_bit_pitch);
  		}
  	}
  }
+@@ -154,6 +167,6 @@ void font_glyph_rotate_270(const unsigned char *glyph, unsigned int width, unsig
+ {
+ 	memset(out, 0, font_glyph_size(height, width)); /* flip width/height */
+ 
+-	rotate_ccw(glyph, out, width, height);
++	__font_glyph_rotate_270(glyph, width, height, out);
+ }
+ EXPORT_SYMBOL_GPL(font_glyph_rotate_270);
 -- 
 2.53.0
 
