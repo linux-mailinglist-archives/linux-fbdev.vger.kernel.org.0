@@ -1,54 +1,54 @@
-Return-Path: <linux-fbdev+bounces-6832-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6825-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JOkNPrO1GmtxgcAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6832-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:31:38 +0200
+	id 6EsKJrPN1GmtxgcAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6825-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:26:11 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382E53AC022
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:31:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A9F3ABEA8
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 11:26:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD3243080C31
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2026 09:26:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 31494300B9F7
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2026 09:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858DE3A640C;
-	Tue,  7 Apr 2026 09:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E883A3E87;
+	Tue,  7 Apr 2026 09:26:07 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6117439B49C
-	for <linux-fbdev@vger.kernel.org>; Tue,  7 Apr 2026 09:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B6C3A3803
+	for <linux-fbdev@vger.kernel.org>; Tue,  7 Apr 2026 09:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775553992; cv=none; b=ZHLMbKK07BSd8QqxooH/o+GXxN7+GLzyG1zcGzHINeLIKKp/qmp+a7nq03YWZDzWaJA32Oaetx7yI4iB2eAr2zjKA9oBhbvcTO2g+ZqZUDn57+OdIqYOouhQi28yhSQCgdhL7eQ/DsqTx/MbJRfk6l6W8tWGUszPFg4wTdLDAl4=
+	t=1775553967; cv=none; b=NbcZIwGp1FVkOjw+AMZx9RxF8zLz1T+xirOffW3b5lYv6E6oROWyPxfeaJQCEgJSkNonPSHfZGCh3ByCEEz41m3TO13o8pA+nCIHHDuTgYhWataHwqF2smdnLMtO0quABNjce3W7/Lw1/ayUvG+bDiRCq0G5FPRJkWGFpqVqR3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775553992; c=relaxed/simple;
-	bh=Qioa5y+ETd9nP6o0/bt9KzMuqtj3j4mO/QsaeV4d6ls=;
+	s=arc-20240116; t=1775553967; c=relaxed/simple;
+	bh=KCnv/j7/fFrmaCWDV5Ma//ZWy6S231YiLGUCG74mNh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcJj5o+D9OXMqPnxfSq76Sze/yHSez/ynajCy1iB/PRvjVmXJFJ/ob0dJ8+2vAw7DDH/LLj5shxmPh39oks8+LVjTsJH1wHOcRqsj9LIKz+hzRhM6PfPPSQkue2NYPfQZtKmnXYxFpCmljyvfOi7GdFQ8W4IByT16NALm6wWVsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version:Content-Type; b=g80pfhMBeFGhLus+xRdJxuQWQZwlHNdTS4h3uaCA0qnMtDcHcYnSY1rMyX2OWpXw7xN28jUOMlF1+zRXqFSg9P+myJtCbRJcgGLQspCbStBgvhcY47WobMv16/fktkHXfB8TJVYnAvPE++hS5HBpdwwNsWZsY8PZodxguDtwflI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C7A124E3A6;
-	Tue,  7 Apr 2026 09:26:01 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2284F5BD7F;
+	Tue,  7 Apr 2026 09:26:02 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
 	none
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7FA5B4A0B1;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CEBBB4A0B1;
 	Tue,  7 Apr 2026 09:26:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SOb0HanN1GmDVwAAD6G6ig
+	id OIZHManN1GmDVwAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Tue, 07 Apr 2026 09:26:01 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
@@ -62,9 +62,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-serial@vger.kernel.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 04/10] lib/fonts: Clean up Makefile
-Date: Tue,  7 Apr 2026 11:23:15 +0200
-Message-ID: <20260407092555.58816-5-tzimmermann@suse.de>
+Subject: [PATCH v2 05/10] lib/fonts: Implement glyph rotation
+Date: Tue,  7 Apr 2026 11:23:16 +0200
+Message-ID: <20260407092555.58816-6-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260407092555.58816-1-tzimmermann@suse.de>
 References: <20260407092555.58816-1-tzimmermann@suse.de>
@@ -74,6 +74,7 @@ List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
@@ -81,96 +82,432 @@ X-Rspamd-Pre-Result: action=no action;
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
+X-Spam-Flag: NO
 X-Spam-Score: -4.00
 X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [0.14 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6832-lists,linux-fbdev=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-6825-lists,linux-fbdev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[gmx.de,linuxfoundation.org,kernel.org,linux-m68k.org,ffwll.ch,ravnborg.org];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 382E53AC022
+	TAGGED_RCPT(0.00)[linux-fbdev];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.983];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 33A9F3ABEA8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Simplify the Makefile. Drop font-obj-y and sort the fonts by dictionary
-order. Done in preparation for supporting optional font rotation.
+Move the glyph rotation helpers from fbcon to the font library. Wrap them
+behind clean interfaces. Also clear the output memory to zero. Previously,
+the implementation relied on the caller to do that.
+
+Go through the fbcon code and callers of the glyph-rotation helpers. In
+addition to the font rotation, there's also the cursor code, which uses
+the rotation helpers.
+
+The font-rotation relied on a single memset to zero for the whole font.
+This is now multiple memsets on each glyph. This will be sorted out when
+the font library also implements font rotation.
+
+Building glyph rotation in the font library still depends on
+CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y. If we get more users of the code,
+we can still add a dedicated Kconfig symbol to the font library.
+
+No changes have been made to the actual implementation of the rotate_*()
+and pattern_*() functions. These will be refactored as separate changes.
 
 v2:
-- sort Makefile font entries by Family/Size in ascending order (Geert, Jiri)
+- fix typos
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- lib/fonts/Makefile | 35 +++++++++++++++++------------------
- 1 file changed, 17 insertions(+), 18 deletions(-)
+ drivers/video/fbdev/core/fbcon_ccw.c    |   4 +-
+ drivers/video/fbdev/core/fbcon_cw.c     |   4 +-
+ drivers/video/fbdev/core/fbcon_rotate.c |  12 +-
+ drivers/video/fbdev/core/fbcon_rotate.h |  71 -----------
+ include/linux/font.h                    |   8 ++
+ lib/fonts/Makefile                      |   1 +
+ lib/fonts/font_rotate.c                 | 150 ++++++++++++++++++++++++
+ 7 files changed, 167 insertions(+), 83 deletions(-)
+ create mode 100644 lib/fonts/font_rotate.c
 
+diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
+index 96ef449ee6ac..72453a2aaca8 100644
+--- a/drivers/video/fbdev/core/fbcon_ccw.c
++++ b/drivers/video/fbdev/core/fbcon_ccw.c
+@@ -12,6 +12,7 @@
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/fb.h>
++#include <linux/font.h>
+ #include <linux/vt_kern.h>
+ #include <linux/console.h>
+ #include <asm/types.h>
+@@ -344,8 +345,7 @@ static void ccw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
+ 		size = cur_height * width;
+ 		while (size--)
+ 			tmp[i++] = 0xff;
+-		memset(mask, 0, w * vc->vc_font.width);
+-		rotate_ccw(tmp, mask, vc->vc_font.width, vc->vc_font.height);
++		font_glyph_rotate_270(tmp, vc->vc_font.width, vc->vc_font.height, mask);
+ 		kfree(tmp);
+ 	}
+ 
+diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
+index ea712654edae..5690fc1d7854 100644
+--- a/drivers/video/fbdev/core/fbcon_cw.c
++++ b/drivers/video/fbdev/core/fbcon_cw.c
+@@ -12,6 +12,7 @@
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/fb.h>
++#include <linux/font.h>
+ #include <linux/vt_kern.h>
+ #include <linux/console.h>
+ #include <asm/types.h>
+@@ -327,8 +328,7 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
+ 		size = cur_height * width;
+ 		while (size--)
+ 			tmp[i++] = 0xff;
+-		memset(mask, 0, w * vc->vc_font.width);
+-		rotate_cw(tmp, mask, vc->vc_font.width, vc->vc_font.height);
++		font_glyph_rotate_90(tmp, vc->vc_font.width, vc->vc_font.height, mask);
+ 		kfree(tmp);
+ 	}
+ 
+diff --git a/drivers/video/fbdev/core/fbcon_rotate.c b/drivers/video/fbdev/core/fbcon_rotate.c
+index 18575c5182db..588dc9d6758a 100644
+--- a/drivers/video/fbdev/core/fbcon_rotate.c
++++ b/drivers/video/fbdev/core/fbcon_rotate.c
+@@ -12,6 +12,7 @@
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/fb.h>
++#include <linux/font.h>
+ #include <linux/vt_kern.h>
+ #include <linux/console.h>
+ #include <asm/types.h>
+@@ -60,30 +61,25 @@ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc)
+ 	}
+ 
+ 	dst = par->fontbuffer;
+-	memset(dst, 0, par->fd_size);
+ 
+ 	switch (par->rotate) {
+ 	case FB_ROTATE_UD:
+ 		for (i = len; i--; ) {
+-			rotate_ud(src, dst, vc->vc_font.width,
+-				  vc->vc_font.height);
+-
++			font_glyph_rotate_180(src, vc->vc_font.width, vc->vc_font.height, dst);
+ 			src += s_cellsize;
+ 			dst += d_cellsize;
+ 		}
+ 		break;
+ 	case FB_ROTATE_CW:
+ 		for (i = len; i--; ) {
+-			rotate_cw(src, dst, vc->vc_font.width,
+-				  vc->vc_font.height);
++			font_glyph_rotate_90(src, vc->vc_font.width, vc->vc_font.height, dst);
+ 			src += s_cellsize;
+ 			dst += d_cellsize;
+ 		}
+ 		break;
+ 	case FB_ROTATE_CCW:
+ 		for (i = len; i--; ) {
+-			rotate_ccw(src, dst, vc->vc_font.width,
+-				   vc->vc_font.height);
++			font_glyph_rotate_270(src, vc->vc_font.width, vc->vc_font.height, dst);
+ 			src += s_cellsize;
+ 			dst += d_cellsize;
+ 		}
+diff --git a/drivers/video/fbdev/core/fbcon_rotate.h b/drivers/video/fbdev/core/fbcon_rotate.h
+index 8cb019e8a9c0..725bcae2df61 100644
+--- a/drivers/video/fbdev/core/fbcon_rotate.h
++++ b/drivers/video/fbdev/core/fbcon_rotate.h
+@@ -19,77 +19,6 @@
+         (fb_scrollmode(s) == SCROLL_REDRAW || fb_scrollmode(s) == SCROLL_MOVE || !(i)->fix.xpanstep) ? \
+         (i)->var.xres : (i)->var.xres_virtual; })
+ 
+-
+-static inline int pattern_test_bit(u32 x, u32 y, u32 pitch, const char *pat)
+-{
+-	u32 tmp = (y * pitch) + x, index = tmp / 8,  bit = tmp % 8;
+-
+-	pat +=index;
+-	return (*pat) & (0x80 >> bit);
+-}
+-
+-static inline void pattern_set_bit(u32 x, u32 y, u32 pitch, char *pat)
+-{
+-	u32 tmp = (y * pitch) + x, index = tmp / 8, bit = tmp % 8;
+-
+-	pat += index;
+-
+-	(*pat) |= 0x80 >> bit;
+-}
+-
+-static inline void rotate_ud(const char *in, char *out, u32 width, u32 height)
+-{
+-	int i, j;
+-	int shift = (8 - (width % 8)) & 7;
+-
+-	width = (width + 7) & ~7;
+-
+-	for (i = 0; i < height; i++) {
+-		for (j = 0; j < width - shift; j++) {
+-			if (pattern_test_bit(j, i, width, in))
+-				pattern_set_bit(width - (1 + j + shift),
+-						height - (1 + i),
+-						width, out);
+-		}
+-
+-	}
+-}
+-
+-static inline void rotate_cw(const char *in, char *out, u32 width, u32 height)
+-{
+-	int i, j, h = height, w = width;
+-	int shift = (8 - (height % 8)) & 7;
+-
+-	width = (width + 7) & ~7;
+-	height = (height + 7) & ~7;
+-
+-	for (i = 0; i < h; i++) {
+-		for (j = 0; j < w; j++) {
+-			if (pattern_test_bit(j, i, width, in))
+-				pattern_set_bit(height - 1 - i - shift, j,
+-						height, out);
+-
+-		}
+-	}
+-}
+-
+-static inline void rotate_ccw(const char *in, char *out, u32 width, u32 height)
+-{
+-	int i, j, h = height, w = width;
+-	int shift = (8 - (width % 8)) & 7;
+-
+-	width = (width + 7) & ~7;
+-	height = (height + 7) & ~7;
+-
+-	for (i = 0; i < h; i++) {
+-		for (j = 0; j < w; j++) {
+-			if (pattern_test_bit(j, i, width, in))
+-				pattern_set_bit(i, width - 1 - j - shift,
+-						height, out);
+-		}
+-	}
+-}
+-
+ int fbcon_rotate_font(struct fb_info *info, struct vc_data *vc);
+ 
+ #if defined(CONFIG_FRAMEBUFFER_CONSOLE_ROTATION)
+diff --git a/include/linux/font.h b/include/linux/font.h
+index 3bd49d914b22..0a240dd70422 100644
+--- a/include/linux/font.h
++++ b/include/linux/font.h
+@@ -104,6 +104,14 @@ unsigned int font_data_size(font_data_t *fd);
+ bool font_data_is_equal(font_data_t *lhs, font_data_t *rhs);
+ int font_data_export(font_data_t *fd, struct console_font *font, unsigned int vpitch);
+ 
++/* font_rotate.c */
++void font_glyph_rotate_90(const unsigned char *glyph, unsigned int width, unsigned int height,
++			  unsigned char *out);
++void font_glyph_rotate_180(const unsigned char *glyph, unsigned int width, unsigned int height,
++			   unsigned char *out);
++void font_glyph_rotate_270(const unsigned char *glyph, unsigned int width, unsigned int height,
++			   unsigned char *out);
++
+ /*
+  * Font description
+  */
 diff --git a/lib/fonts/Makefile b/lib/fonts/Makefile
-index 30a85a4292fa..b176af53d53e 100644
+index b176af53d53e..7202a70a56ef 100644
 --- a/lib/fonts/Makefile
 +++ b/lib/fonts/Makefile
-@@ -1,23 +1,22 @@
- # SPDX-License-Identifier: GPL-2.0
+@@ -2,6 +2,7 @@
  # Font handling
  
--font-objs := fonts.o
-+font-y := fonts.o
+ font-y := fonts.o
++font-$(CONFIG_FRAMEBUFFER_CONSOLE_ROTATION) += font_rotate.o
  
--font-objs-$(CONFIG_FONT_SUN8x16)   += font_sun8x16.o
--font-objs-$(CONFIG_FONT_SUN12x22)  += font_sun12x22.o
--font-objs-$(CONFIG_FONT_8x8)       += font_8x8.o
--font-objs-$(CONFIG_FONT_8x16)      += font_8x16.o
--font-objs-$(CONFIG_FONT_6x11)      += font_6x11.o
--font-objs-$(CONFIG_FONT_7x14)      += font_7x14.o
--font-objs-$(CONFIG_FONT_10x18)     += font_10x18.o
--font-objs-$(CONFIG_FONT_PEARL_8x8) += font_pearl_8x8.o
--font-objs-$(CONFIG_FONT_ACORN_8x8) += font_acorn_8x8.o
--font-objs-$(CONFIG_FONT_MINI_4x6)  += font_mini_4x6.o
--font-objs-$(CONFIG_FONT_6x10)      += font_6x10.o
--font-objs-$(CONFIG_FONT_TER10x18)  += font_ter10x18.o
--font-objs-$(CONFIG_FONT_TER16x32)  += font_ter16x32.o
--font-objs-$(CONFIG_FONT_6x8)       += font_6x8.o
-+# Built-in fonts; sorted by Family-Size in ascending order
-+font-$(CONFIG_FONT_6x8)       += font_6x8.o
-+font-$(CONFIG_FONT_6x10)      += font_6x10.o
-+font-$(CONFIG_FONT_6x11)      += font_6x11.o
-+font-$(CONFIG_FONT_7x14)      += font_7x14.o
-+font-$(CONFIG_FONT_8x8)       += font_8x8.o
-+font-$(CONFIG_FONT_8x16)      += font_8x16.o
-+font-$(CONFIG_FONT_10x18)     += font_10x18.o
-+font-$(CONFIG_FONT_ACORN_8x8) += font_acorn_8x8.o
-+font-$(CONFIG_FONT_MINI_4x6)  += font_mini_4x6.o
-+font-$(CONFIG_FONT_PEARL_8x8) += font_pearl_8x8.o
-+font-$(CONFIG_FONT_SUN8x16)   += font_sun8x16.o
-+font-$(CONFIG_FONT_SUN12x22)  += font_sun12x22.o
-+font-$(CONFIG_FONT_TER10x18)  += font_ter10x18.o
-+font-$(CONFIG_FONT_TER16x32)  += font_ter16x32.o
- 
--font-objs += $(font-objs-y)
--
--obj-$(CONFIG_FONT_SUPPORT)         += font.o
-+obj-$(CONFIG_FONT_SUPPORT) += font.o
+ # Built-in fonts; sorted by Family-Size in ascending order
+ font-$(CONFIG_FONT_6x8)       += font_6x8.o
+diff --git a/lib/fonts/font_rotate.c b/lib/fonts/font_rotate.c
+new file mode 100644
+index 000000000000..d107a8d0a2b0
+--- /dev/null
++++ b/lib/fonts/font_rotate.c
+@@ -0,0 +1,150 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Font rotation
++ *
++ *    Copyright (C) 2005 Antonino Daplas <adaplas @pol.net>
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file COPYING in the main directory of this archive for
++ * more details.
++ */
++
++#include <linux/export.h>
++#include <linux/math.h>
++#include <linux/string.h>
++
++#include "font.h"
++
++static inline int pattern_test_bit(u32 x, u32 y, u32 pitch, const char *pat)
++{
++	u32 tmp = (y * pitch) + x, index = tmp / 8,  bit = tmp % 8;
++
++	pat += index;
++	return (*pat) & (0x80 >> bit);
++}
++
++static inline void pattern_set_bit(u32 x, u32 y, u32 pitch, char *pat)
++{
++	u32 tmp = (y * pitch) + x, index = tmp / 8, bit = tmp % 8;
++
++	pat += index;
++
++	(*pat) |= 0x80 >> bit;
++}
++
++static inline void rotate_cw(const char *in, char *out, u32 width, u32 height)
++{
++	int i, j, h = height, w = width;
++	int shift = (8 - (height % 8)) & 7;
++
++	width = (width + 7) & ~7;
++	height = (height + 7) & ~7;
++
++	for (i = 0; i < h; i++) {
++		for (j = 0; j < w; j++) {
++			if (pattern_test_bit(j, i, width, in))
++				pattern_set_bit(height - 1 - i - shift, j,
++						height, out);
++		}
++	}
++}
++
++/**
++ * font_glyph_rotate_90 - Rotate a glyph pattern by 90° in clockwise direction
++ * @glyph: The glyph to rotate
++ * @width: The glyph width in bits per scanline
++ * @height: The number of scanlines in the glyph
++ * @out: The rotated glyph bitmap
++ *
++ * The parameters @width and @height refer to the input glyph given in @glyph.
++ * The caller has to provide the output buffer @out of sufficient size to hold
++ * the rotated glyph. Rotating by 90° flips the width and height for the output
++ * glyph. Depending on the glyph pitch, the size of the output glyph can be
++ * different than the size of the input. Callers have to take this into account
++ * when allocating the output memory.
++ */
++void font_glyph_rotate_90(const unsigned char *glyph, unsigned int width, unsigned int height,
++			  unsigned char *out)
++{
++	memset(out, 0, font_glyph_size(height, width)); /* flip width/height */
++
++	rotate_cw(glyph, out, width, height);
++}
++EXPORT_SYMBOL_GPL(font_glyph_rotate_90);
++
++static inline void rotate_ud(const char *in, char *out, u32 width, u32 height)
++{
++	int i, j;
++	int shift = (8 - (width % 8)) & 7;
++
++	width = (width + 7) & ~7;
++
++	for (i = 0; i < height; i++) {
++		for (j = 0; j < width - shift; j++) {
++			if (pattern_test_bit(j, i, width, in))
++				pattern_set_bit(width - (1 + j + shift),
++						height - (1 + i),
++						width, out);
++		}
++	}
++}
++
++/**
++ * font_glyph_rotate_180 - Rotate a glyph pattern by 180°
++ * @glyph: The glyph to rotate
++ * @width: The glyph width in bits per scanline
++ * @height: The number of scanlines in the glyph
++ * @out: The rotated glyph bitmap
++ *
++ * The parameters @width and @height refer to the input glyph given in @glyph.
++ * The caller has to provide the output buffer @out of sufficient size to hold
++ * the rotated glyph.
++ */
++void font_glyph_rotate_180(const unsigned char *glyph, unsigned int width, unsigned int height,
++			   unsigned char *out)
++{
++	memset(out, 0, font_glyph_size(width, height));
++
++	rotate_ud(glyph, out, width, height);
++}
++EXPORT_SYMBOL_GPL(font_glyph_rotate_180);
++
++static inline void rotate_ccw(const char *in, char *out, u32 width, u32 height)
++{
++	int i, j, h = height, w = width;
++	int shift = (8 - (width % 8)) & 7;
++
++	width = (width + 7) & ~7;
++	height = (height + 7) & ~7;
++
++	for (i = 0; i < h; i++) {
++		for (j = 0; j < w; j++) {
++			if (pattern_test_bit(j, i, width, in))
++				pattern_set_bit(i, width - 1 - j - shift,
++						height, out);
++		}
++	}
++}
++
++/**
++ * font_glyph_rotate_270 - Rotate a glyph pattern by 270° in clockwise direction
++ * @glyph: The glyph to rotate
++ * @width: The glyph width in bits per scanline
++ * @height: The number of scanlines in the glyph
++ * @out: The rotated glyph bitmap
++ *
++ * The parameters @width and @height refer to the input glyph given in @glyph.
++ * The caller has to provide the output buffer @out of sufficient size to hold
++ * the rotated glyph. Rotating by 270° flips the width and height for the output
++ * glyph. Depending on the glyph pitch, the size of the output glyph can be
++ * different than the size of the input. Callers have to take this into account
++ * when allocating the output memory.
++ */
++void font_glyph_rotate_270(const unsigned char *glyph, unsigned int width, unsigned int height,
++			   unsigned char *out)
++{
++	memset(out, 0, font_glyph_size(height, width)); /* flip width/height */
++
++	rotate_ccw(glyph, out, width, height);
++}
++EXPORT_SYMBOL_GPL(font_glyph_rotate_270);
 -- 
 2.53.0
 
