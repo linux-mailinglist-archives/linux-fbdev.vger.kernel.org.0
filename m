@@ -1,308 +1,242 @@
-Return-Path: <linux-fbdev+bounces-6836-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6839-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIAzJGAP1Wl20AcAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6836-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 16:06:24 +0200
+	id kMbDA8oY1Wm30AcAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6839-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 16:46:34 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079293AFB28
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 16:06:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28F93B04E9
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Apr 2026 16:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE8183072A86
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2026 13:59:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DED643030D41
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Apr 2026 14:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D7D3B8BBB;
-	Tue,  7 Apr 2026 13:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5A228488D;
+	Tue,  7 Apr 2026 14:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tZUwi2vy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oek19lf5"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010004.outbound.protection.outlook.com [52.101.193.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34273B8BB9;
-	Tue,  7 Apr 2026 13:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775570387; cv=fail; b=QR1LwJw7uG2iVzLSnpMPoaggvjoAptU2YinSVEHeJmRrnKDNJvqIwrV4Me2trXp7plK1zj/L2jqLPi1u21IyDnGyy7AredaQtotkVq5Xxg2EAiI+LfhzsrUiFXR21jeeaccwxzZhGnH8KRBhwO4Dm7Mzk43cqJ/It0p773PbE7g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775570387; c=relaxed/simple;
-	bh=H4KsQzcxfxMCYA3SjkMbw6hnolf3CQoxc+y82yaBk6c=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=sE8oM1EOqHZug2Ls460shY+oi1kvomD0jGAstItjZZ4qJ5zkDTJI9V8DtUwVaMSZfip2eVTakI0AJtVp9YfI+TvtSTEFNEj5DyGWJNA8ax8ncSyblubfBGS+2wLqhMEWaBFXl+hXIJqyBXzJ8R+8xlwoTlVrD3Em6wMUsLXVDcA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tZUwi2vy; arc=fail smtp.client-ip=52.101.193.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wgcD8aC2FUS/FCfxZnhL8byBX19xyN6Ja9VwQE6uAhsO22n9GsDDEP0sLv4gGzZ3irwdx0KHLI1cBzQFjfXLKsKX//fmPk6k/uWkoWV1K8Wfn3AMv67NDXrGBZ/CVXE64jogZjA7IqhYl4XR/aeoLRGmG0kXHtN02bxb6/6hVcyKdeEY5Mnh/+Uy4ej+vI3eo5vf3vLONADhf6XjEhYXpuUdt45wcvleRzeyU/MfaVF4YDUoaaz3r1piUAb1ZTTJFGKM0CbtYFxu6QB8wIKPyhd26E7SYUAImyQ8n6Ph6wTYrIZmyqmXX9S7vcqOOV0ie62xycdBXXn5QsxTBGYJrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3eH2JDB1JX6x28garGCS3KJ+I8MCzO4obhIxG9UYDm0=;
- b=mbmc84lRuyDs4Nsh2BYFS9pgD3HgAD7gKsgcvmxWJibWSCAN/2xGK7/MPXT+cOgPhz4z0BvLss9kUeiYTgKl+lJnEOUSWsur9rjbjEayg9Xz5BGj3NlKcVTrGFGLr6oW/V/GqX/JZqxGpQOVSYIx/FBQFhOrkB16jM/eK6HywMDUMF20qBD5Y0RnVb683LiM9djH7O1bIAjb+jxax8lQJlM+DOpxuKt/nonkB6v92nYUoZ4s7wHE/1p4JnOCAjNMIsH5mvsgeHebX2JGyqP1js7AQ5wcWuiThAbX2jOiOPakteoJDXT1a7VkqB3ORXZ8n+/LZtIKln6ibhoXyH0Cyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3eH2JDB1JX6x28garGCS3KJ+I8MCzO4obhIxG9UYDm0=;
- b=tZUwi2vyqDl24AqqCgOHKFryQs3tS38vyQSzeHquUvmZZTjpwL7r92pAXv/IjUF5MMQFmfpThZYRg6W9SsVSV4hevCSuMvC4Mk+VlTVD0spydYTTtzUyHvkbLl/siviZKf/hqO05dgZ3vpKARYtTixalxmk0WjeQwILtBWtzX94dd8dBP1+Uw7FPBjO4KaYxj/6SyTAK9VD+/JU6eAFCjCk02K4g9RSnvYwlNCG0GUVWMZk7ZMW6BqaygzfV+CNWB8HzLDpce82PihJKZITU4TFbvgKTTyiHv+PNgM2p9NoZKYjlqIKaJwHGvEWhtJTo+7yHNqro2qopxUWS4ivkYw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
- CH3PR12MB7524.namprd12.prod.outlook.com (2603:10b6:610:146::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.20; Tue, 7 Apr
- 2026 13:59:22 +0000
-Received: from DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
- ([fe80::88a9:f314:c95f:8b33%4]) with mapi id 15.20.9769.014; Tue, 7 Apr 2026
- 13:59:22 +0000
-Message-ID: <537a8c5a-3885-4c47-99f6-963b48ddf87d@nvidia.com>
-Date: Tue, 7 Apr 2026 09:59:15 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 12/21] gpu: nova-core: mm: Add unified page table
- entry wrapper enums
-To: Eliot Courtney <ecourtney@nvidia.com>, linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@redhat.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Koen Koning <koen.koning@linux.intel.com>, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, Nikola Djukic <ndjukic@nvidia.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jonathan Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
- Helge Deller <deller@gmx.de>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, John Hubbard <jhubbard@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Edwin Peer <epeer@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
- Andrea Righi <arighi@nvidia.com>, Andy Ritger <aritger@nvidia.com>,
- Zhi Wang <zhiw@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
- Philipp Stanner <phasta@kernel.org>, Elle Rhumsaa
- <elle@weathered-steel.dev>, alexeyi@nvidia.com, joel@joelfernandes.org,
- linux-doc@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org
-References: <20260311004008.2208806-1-joelagnelf@nvidia.com>
- <20260331212048.2229260-1-joelagnelf@nvidia.com>
- <20260331212048.2229260-13-joelagnelf@nvidia.com>
- <DHIFF98P1YQ3.1IXUT02E3TF20@nvidia.com>
- <5db2aab1-4b65-486e-ad9b-27a108bdb0d6@nvidia.com>
- <DHMYSTLVHIFJ.A2BDMPVNZNLS@nvidia.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <DHMYSTLVHIFJ.A2BDMPVNZNLS@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CYZPR05CA0046.namprd05.prod.outlook.com
- (2603:10b6:930:a3::6) To DS0PR12MB6486.namprd12.prod.outlook.com
- (2603:10b6:8:c5::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F65B23EA83;
+	Tue,  7 Apr 2026 14:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775572906; cv=none; b=tl5MEQWhQrar26PKdBxbaU1tEF2x6G+wjB79G5DLCbIJtPSVyPozXpuh7pnk75S6qkjt3g0EeazvAgwsUfoOhn2o4wS6uEwwu6rMRmiwhoOXOiKKSPU+agJ2hVzoYJBEMCr941OtJeVIU/Ji0n1hEh5NTZVuap/mfG+BIl1/m5s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775572906; c=relaxed/simple;
+	bh=J1I/2EOKwZVbytZkVaMR4iXsx/7J4F1JU+XT5ySnbp0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=r55r94FzIK1ySpL5YrlPv8LyYQ5QrNg6ruxBmpASeTRlsnTXSJKh4t7fLH6hpRi2T813zaMaLp/ur2pOnAVJutSN6o69vkhZDi5fcvnyZDLVNSXH5mky6f/b3cHYIAsxRCmUzA+HPFaIFtqwjHF3YnxIeYbJxt8uETRiI7J2mfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oek19lf5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 15E62C116C6;
+	Tue,  7 Apr 2026 14:41:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775572906;
+	bh=J1I/2EOKwZVbytZkVaMR4iXsx/7J4F1JU+XT5ySnbp0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=oek19lf5sQOYXEuG7R6jzbTUO8yVV9V51qQ09nlC/LdeYdXfNGVSQIXPdJfJ6okkW
+	 5xf0VSz4LEmSDC92rt97UsZjZ0KrH6sGJpYwOBGil6821Z7PMg4Jxx9vMsOjs6XoiD
+	 VQbB5cdlUF5NfGZCjMv31Mzi/uYtDwjClujpg/DJrmbxkqTNqZ8dNl7Xxap5d+zH+/
+	 4XBVdfw4hB6yEtJnC0GAZ0l/VNGKnBYwn8z0xfb+9PshUwEMhrhntVBryFCLPpKV+t
+	 +LqS6qCBqsAP9u1d8zZqlz+eVybBZWgOWRcTVPsnwYU1+V/CQy7bK5RluTRzjFKoKK
+	 Pa49VPpxPsV7Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09363FEEF2D;
+	Tue,  7 Apr 2026 14:41:46 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Subject: [PATCH v8 0/4] backlight: add new max25014 backlight driver
+Date: Tue, 07 Apr 2026 16:41:41 +0200
+Message-Id: <20260407-max25014-v8-0-14eac7ed673a@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|CH3PR12MB7524:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc126b69-fb05-44dc-b8c7-08de94addec7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Ykyzn6StvSylvMFlzyvaccXJw1M0UZ6hwQO/kfMvIIOxrsv9Eyt2lSL464zIH2o39ajCnlqXOGx/57rGaX/xVAmTW8n2d1eVu5QGubTTZtGWGWITf9M6M/8uPHgLIuJpYQ01XqdDoi4I0DeUG4dIWk2FAfwQRGCR1fGB5C238Ul5aZwX3cam61AQ8XOkANYOt39O7JI2EquLJN/iTuG7vvNdJY1Gd2u5BhXwwHPEheIFJpkZcr4LDHyVN+ILez0JNc7+Gh4vvw8FuTIz5d19rO4067hcJWLBuSHufD+/nWxuXriIFp+2+wTJEc+fXEecrH9NOVash2rvzGn0+R7/S3cgcEwDXamm2Dg+m08FJhdYz0YRDNDEYW8nfo66jznuyJIsOVFjWwsoOgazqNf9z17I4+4mv25rIrLBxLIpcjO8ym+4GZUh5Ju/2BC+8sRAoTPl2m/ONYYSULXkhs0TSI6vFI3e3c8bHbaDcxVugVUI7tQg5SFaEyrIYWZxBjBm3AbBu8VDnPEgD4h9y0yJxiCrwe/ZvqHglWymL5C9gouxsk8piFrnyslmIbkm4bk11nzgnhnh9672EGeb6E/6AFcPa/JhNp2Et91e+jbbYmDJ2ZjgqF9J8Ke8txP0Fhh/hGmSSk7dPuWjetOwYhp0CJTCt3zgWgBDE5McaRVeJh3tXdMTVFW4dnQ8CKwVsIxp/xrTstyMBK/1Er/tqJRN0b+UaV48NmRvuPtr8y0+Q4Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a1hyV1NOMnpsSjh1YnFUMXJ0L3Q1ODB0S2pFQ0pxaUV0bzhvaUV6bHhiZld0?=
- =?utf-8?B?eWR4enBkNXZDMFArL1RlSHNiSUxPdHlJc3g3NEozOXlTUVVra3lGQ1JVNGFX?=
- =?utf-8?B?ZGxrRmtiQVV4aUhMclpjaHBlMWRXSjZGbUxYZTA5eStOcFJpK1JEdW1zZ0kx?=
- =?utf-8?B?WHQxVmtyQkpsa0xnSU1VTHdWMExrS3k3YmcvSTA1ZWd1Wm9IWnVpVTlWdThO?=
- =?utf-8?B?R0NzUWZ6ZXJCRDFlYnVjTTFta3BWb1hZMThZL2FFWHp6bVpOTm1udEVXZWxP?=
- =?utf-8?B?QmRwTllEdzdjbjNFSlVFOGg1WmxmbVlaS1RVQTI1dElqa2dUTmNZM0VseU9I?=
- =?utf-8?B?TDE1VEZEbWFmRW8rN3RxakhjYXg4K3kzUUlCNCtiOGpBK3NweDUwTm83ODdK?=
- =?utf-8?B?VDdraytyMzdNbDJ1NjJGWFFLL2VRbFdyczduTlEvQzJnOUVTZ3pXTUtITkdp?=
- =?utf-8?B?bmtrYlYrZHp2ZXNaVG53ZndPVldISjB2OHJLT0xVT3hIWHBwMlk4RlNQM3Uv?=
- =?utf-8?B?S1pTaE1GT04yYnJtbWFKK1Nra25PeXFUNkZheWNGYXZiVC96cUpTSEZjWDR0?=
- =?utf-8?B?UCtoWTBia0RPbTU4OHFsL3ZYelBWak9MUVdKK01OZjV3aStublhPdWRqOWhX?=
- =?utf-8?B?UjVuQkExNXowQVo0Q0ZkQTg4S28xbE9JcFIzb3QycWlnWW9sL1FlQ1ZUdjZB?=
- =?utf-8?B?Z2VmVG5nV3RoTTNsOUQvcXpWTHNLUXNYeVI4Mmp1N3Flclc0TGprZWRaMVRJ?=
- =?utf-8?B?eTRIbHdGeGFMWXNaNmlUVEdqVDZBejdTejRkbm9lckpJb3ZIa0RiTTZJK2Zv?=
- =?utf-8?B?Lzk2YnlQN1llU2h5NzYxYzdveHZxY2RuZkZOREF2aCtvZko3VnBZNzMyd1Vj?=
- =?utf-8?B?SmlWVUw2YlJ1V3VaZ3VVYWVWYzJZRldLMVBYYkMrNzFnRWpZVUFjWHRlTmJs?=
- =?utf-8?B?ZzBaSHBZcGJsNE9PamRwa0ZKVWlQak1CMzJoYVdNZnljMzhZa0ZFRlVyMkxZ?=
- =?utf-8?B?djhoSjhOeTJuaG9hOEZ6cUpCMmRwenhWR3J0QithVmJVRzRvVWp4VGQybXFL?=
- =?utf-8?B?ZHg2M1kzbkRmdTZydURkQ0VxNW92VzZyQlo1aE8vQkRDOGdvZzJJQ3FrMjAr?=
- =?utf-8?B?ZS9TTFJHUDF5dDVpOWdPcEozMTlvU3pIeklicVA4c091eVpFVi8xT0VoU0RL?=
- =?utf-8?B?U21ra3p0eE9kSE9FV1RuS2NEald1UHpKNG9RNXBjZHNOU3RWMTFaT3hBWk5X?=
- =?utf-8?B?ZG11VHlzMmNwN2htMjY0Ky9xRjFTZXhGMFAyVU1xTjJvRlRvL1l5Uyt1Mi9T?=
- =?utf-8?B?aE8yblYzTHJQdHBtYllkWHM3am5qY0N0aW9meituOUV6alpIWUJkaHRpekJU?=
- =?utf-8?B?NWxRWjBhd3B4cEJkMzlZVzdhRS94TjBHZnFlZXNyL0pCWFJDRGQvUEExbVZa?=
- =?utf-8?B?ckpoT1hOamw4cHk5VHptdWdyaUpUREtQU2plRm5XMng3VXlkMGJaV3ZwbGd2?=
- =?utf-8?B?ZGFrV1E3VllMMUJkcUZMZVRrVjlGRytxS3RHL0E2OW1UMHVzMnI0bFdmOERX?=
- =?utf-8?B?WHBIMWp3a1B5dlU2TlhaVE8wRTBLRDdtZ05kamRmZnYvRFdJQXFXc3FtaUgy?=
- =?utf-8?B?d3dMTzdkSkRNSEJQMWdwTEFRZXRGS2pMaE92RHlwcHBGVitXT3YrL2ErVmdu?=
- =?utf-8?B?WFlnQnJ4d2xZeEttOGZyZXFYS0xneGdKUlBlUm5BYTUrVFlwVEJ2ZmQ2aFBJ?=
- =?utf-8?B?YW1MMUZTY0F4SmZFb1JQcFFFbzZWam10QkJlUlZBRkQ2bm9SMUUvVFFEaVNR?=
- =?utf-8?B?MFJWZTFGK1hERm9EQlNyUmJmc29xRkhHWFRiMEs3cnlFN3lDTi92UkRqQ2VG?=
- =?utf-8?B?d3ZLajVHY3MwUVE5TVl0RkprRkVQczhsclZvZnJBV3NMZ3I1UkZsdnZsdFJq?=
- =?utf-8?B?MDV5UDBHdjhZQWRlbUppSEtlSzFOUmVpWk1TQ3YxcEI1eG1NN25jWVJ0V3Bl?=
- =?utf-8?B?U0ZrUXdUeFJiTDVNMmtwUEcvSWs2SHY0TS9lTWVkczlpUkVEVUR5VmtKalZ3?=
- =?utf-8?B?VStoMHFTRmxyeXAxMVRMYmpKMWxDbHVocEZkWFdvdzhlRnBQOFR5ZWRnTHR3?=
- =?utf-8?B?UTdoR0FpL3NNV2lwUnB3YVNSTUgybjJ2ZkFGOXlqM1R3cDZMTFlWbk8wbHl5?=
- =?utf-8?B?L1ZHYndXd1lOY0QrZjBqenIrNXNpc0E4a1FvMXd0NUI0VHMycStVSEVrK25S?=
- =?utf-8?B?V21yZzlqQ2RrdTRBMXMvVTd6R1MwclVxUjZtVWZUZVBLRkR0UXJ3dmdyN3ZY?=
- =?utf-8?B?cG51WTc3bSs0SzRPbjQrRVZuS1F3bUV4dzVFVGgvK2pwWEV0c0RXQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc126b69-fb05-44dc-b8c7-08de94addec7
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2026 13:59:22.3879
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LBI7pWFN86Fx5T4xnmUmkB80PqqoQoEdl5iUorHFTvwVSOyClCVLO9ferefXqr586uYaIlpr1W3NMk94smplKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7524
-X-Spamd-Result: default: False [1.34 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23OS2rDMBCA4asEresyo7e66j1KF2N5lAiSKNjBp
+ ATfvUpKa0G90wh9/+guJh4zT+Jtdxcjz3nK5VwH/7IT8UDnPXd5qLOQIA1YabsT3eoJdaclOBO
+ QkZIR9fll5JRvz9THZ50PebqW8etZnvFx+xNx0qyRGTvogH2MHGrP8/u+xHK+juV4fI3lJB6lW
+ a7aY2i0rNqkwRH3qJFpU6tVB8RGq6oHUElzT8qZ7d36TyNAu1tXbWnoJQGRMmlTm1UjuEabqgN
+ ZIuMU2H5b21VLaH9uq/aeFUWPKNO2dr/aAkrVaFc1Gjag+0Axun96WZZvBG2W5xkCAAA=
+X-Change-ID: 20250626-max25014-4207591e1af5
+To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fbdev@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775572904; l=5325;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=J1I/2EOKwZVbytZkVaMR4iXsx/7J4F1JU+XT5ySnbp0=;
+ b=p2hDxSqIgqxC9d1BFxg57HCSFAyqjj18dU4K/5XRBHtJvUONwpApN2xyYpYFsaKvIKUwT+EXN
+ 8/kLvdncznPCJLpxpgDs7Ydqk82Vjgom6VvmfQ1XsZ01J+ZatazMhpM
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,redhat.com,collabora.com,linux.intel.com,lists.freedesktop.org,vger.kernel.org,nvidia.com,suse.de,gmail.com,ffwll.ch,lwn.net,amd.com,intel.com,ursulin.net,gmx.de,weathered-steel.dev,joelfernandes.org];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-6836-lists,linux-fbdev=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-6839-lists,linux-fbdev=lfdr.de,maudspierings.gocontroll.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,gmx.de,pengutronix.de,nxp.com];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joelagnelf@nvidia.com,linux-fbdev@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,linux-fbdev@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	HAS_REPLYTO(0.00)[maudspierings@gocontroll.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[55];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,Nvidia.com:dkim,pagetable.rs:url]
-X-Rspamd-Queue-Id: 079293AFB28
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,0.0.0.0:email,gocontroll.com:email,gocontroll.com:replyto,gocontroll.com:mid,analog.com:url]
+X-Rspamd-Queue-Id: C28F93B04E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Eliot,
+The Maxim MAX25014 is an automotive grade backlight driver IC. Its
+datasheet can be found at [1].
 
-On 4/7/2026 9:42 AM, Eliot Courtney wrote:
-> On Tue Apr 7, 2026 at 6:55 AM JST, Joel Fernandes wrote:
->>>> +    /// Compute upper bound on page table pages needed for `num_virt_pages`.
->>>> +    ///
->>>> +    /// Walks from PTE level up through PDE levels, accumulating the tree.
->>>> +    pub(crate) fn pt_pages_upper_bound(&self, num_virt_pages: usize) -> usize {
->>>> +        let mut total = 0;
->>>> +
->>>> +        // PTE pages at the leaf level.
->>>> +        let pte_epp = self.entries_per_page(self.pte_level());
->>>> +        let mut pages_at_level = num_virt_pages.div_ceil(pte_epp);
->>>> +        total += pages_at_level;
->>>> +
->>>> +        // Walk PDE levels bottom-up (reverse of pde_levels()).
->>>> +        for &level in self.pde_levels().iter().rev() {
->>>> +            let epp = self.entries_per_page(level);
->>>> +
->>>> +            // How many pages at this level do we need to point to
->>>> +            // the previous pages_at_level?
->>>> +            pages_at_level = pages_at_level.div_ceil(epp);
->>>> +            total += pages_at_level;
->>>> +        }
->>>> +
->>>> +        total
->>>> +    }
->>>> +}
->>>> +
->>>
->>> We have a lot of matches on the MMU version here (and below in Pte, Pde,
->>> DualPde). What about making MmuVersion into a trait (e.g. Mmu) with
->>> associated types for Pte, Pde, DualPde which can implement traits
->>> defining their common operations too?
->>
->> I coded this up and it did not look pretty, there's not much LOC savings and the
->> code becomes harder to read because of parametrization of several functions. Also:
-> 
-> Thanks for looking into it. Sorry to be a bother, but would you have a
-> branch around with the code? I'm curious what didn't look good about it.
+With its integrated boost controller, it can power 4 channels (led
+strings) and has a number of different modes using pwm and or i2c.
+Currently implemented is only i2c control.
 
-Sorry but I already mentioned that above, the parameterizing of dozens of
-function call sites, 3-4 new traits (because each struct like
-Pte/Pde/DualPde etc each need their own trait which different MMU versions
-implement) etc. The code because hard to read and readability is the top
-critical criteria for me - I am personally strictly against "Lets use shiny
-features in language at the cost of making code unreadable". Because that
-translates into bugs and nightmare for maintainability.
+link: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX25014.pdf [1]
 
-I don't have the code at the moment, but if you still want to spend on time
-on this direction, feel free to share a tree. I am happy to take a look.
->>> Then you can parameterise Vmm/PtWalk on this type.
->>
->> The match still to be done somewhere, so you end up matching on chipset to call
->> the correct parametrized functions versus just passing in the parameter or
->> chipset down, in some cases.
->>
->> For now I am inclined to leave it as is. Also there's a Rust pitfall we all
->> learnt during the turing and other patch reviews, sometimes doing a bunch of
->> matches is good especially if the number of variants are expected to be fixed
->> (in the mm case, version 2 and version 3). Traits have some disadvantages too,
->> example dyn traits have to heap-allocated, parametrizing can increase code size
->> (due to monomorphization) etc.
-> 
-> Yeah, it's just this is a lot of matches in a lot of places. And we have
-> ver2 / ver3 specific code leaking into the general pagetable.rs file. So
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+Changes in v8:
+- Clean up some leftovers from the led subnodes, address/size-cells (Rob)
+- Add Robs rb tag
+- Add Daniels rb tag
+- Bring the Kconfig option in line text wise with other drivers
+- Rebase on the latest next
+- Link to v7: https://lore.kernel.org/r/20260123-max25014-v7-0-15e504b9acc7@gocontroll.com
 
-That's not a leak, that's by design. pagetable.rs is where the matches are
-centralized, most of the code changes here on out should happen outside of
-this file.
+Changes in v7:
+- remove the led subnodes
+- always enable the regulator by using devm_regulator_get_enable()
+- remove the no longer required gotos and simplify early returns
+- fix the name of the SHORTED_LED error field
+- fix the name of the SHORTGND error field
+- use the proper backlight helper functions for setting/getting
+  brightness
+- Link to v6: https://lore.kernel.org/r/20251201-max25014-v6-0-88e3ac8112ff@gocontroll.com
 
-31 out of 42 matches in the mm code are in pagetable.rs, so it is already
-centralized.
+Changes in v6:
+- fixup changes in v4 where default brightness handling was changed but
+  not noted
+- remove leftover comment about initializing brightness
+- use BIT definitions for fields in the DIAG register
+- apply reverse christmas tree initialization of local variables
+- remove !=0 from checks, just check if (ret)
+- remove > 0 from checks, just check if (val)
+- use dev_err_probe() more
+- set enable gpio high in the get() instead of seperately calling set()
+- change usleep_range() to fsleep()
+- remove null checks when setting gpio value
+- get regular regulator, not optional to avoid further NULL checks in
+  case none is provided
+- introduce max25014_initial_power_state() to check if the bootloader
+  has already initialized the backlight and to correctly set props.power
+- squash max25014_register_control() into max25014_update_status()
+- in max25014_configure() perform extra checking on the DISABLE register
+  now that the state from the bootloader is taken into account
+- Link to v5: https://lore.kernel.org/r/20251107-max25014-v5-0-9a6aa57306bf@gocontroll.com
 
-> it would be really nice if we could find a way to improve this specific
-> aspect. We can reduce the match to happening in just one file. 
+Changes in v5:
+- moved comment about current functions of the driver to the actual
+  comment section of the commit
+- fixed the led@0 property, regex patternProperty is not needed as of
+  now
+- added extra clarification about the ISET field/register
+- moved #address-cells and #size-cells to the correct location
+- remove leftover default-brightness in backlight nodes
+- Link to v4: https://lore.kernel.org/r/20251009-max25014-v4-0-6adb2a0aa35f@gocontroll.com
 
-Assuming we know what we're improving. ;-)
+Changes in v4:
+- remove setting default brightness, let backlight core take care of it
+- use a led node to describe the backlight
+- use led-sources to enable specific channels
+- also wait 2ms when there is a supply but no enable
+- change dev_warn() to dev_err() in error path in max25014_check_errors()
+- set backlight_properties.scale to BACKLIGHT_SCALE_LINEAR
+- rebase latest next
+- add address-cells and size-cells to i2c4 in av101hdt-a10.dtso
+- Link to v3: https://lore.kernel.org/r/20250911-max25014-v3-0-d03f4eba375e@gocontroll.com
 
-> You can> avoid heap allocation if you would like by making Vmm an enum,
-> for example, and doing the match based dispatch there at the top of the
-> API tree, rather than at the bottom where it fans out into a lot more
-> locations.
+Changes in v3:
+- fixed commit message type intgrated -> integrated
+- added maximum and description to maxim,iset-property
+- dropped unused labels and pinctrl in bindings example
+- put the compatible first in the bindings example and dts
+- removed brackets around defines
+- removed the leftover pdata struct field
+- removed the initial_brightness struct field
+- Link to v2: https://lore.kernel.org/r/20250819-max25014-v2-0-5fd7aeb141ea@gocontroll.com
 
-heap allocation is not always free, this code sensitive to dynamic
-allocations in the kernel, due to MM reclaim and locking. I would like to
-keep it simple.
+Changes in v2:
+- Remove leftover unused property from the bindings example
+- Complete the bindings example with all properties
+- Remove some double info from the maxim,iset property
+- Remove platform_data header, fold its data into the max25014 struct
+- Don't force defines to be unsigned
+- Remove stray struct max25014 declaration
+- Remove chipname and device from the max25014 struct
+- Inline the max25014_backlight_register() and strings_mask() functions
+- Remove CONFIG_OF ifdef
+- Link to v1: https://lore.kernel.org/r/20250725-max25014-v1-0-0e8cce92078e@gocontroll.com
 
-thanks,
+---
+Maud Spierings (4):
+      dt-bindings: backlight: Add max25014 support
+      backlight: add max25014atg backlight
+      arm64: dts: freescale: moduline-display-av101hdt-a10: add backlight
+      arm64: dts: freescale: moduline-display-av123z7m-n17: add backlight
 
---
-Joel Fernandes
+ .../bindings/leds/backlight/maxim,max25014.yaml    |  83 +++++
+ MAINTAINERS                                        |   6 +
+ ...x8p-ml81-moduline-display-106-av101hdt-a10.dtso |  24 ++
+ ...x8p-ml81-moduline-display-106-av123z7m-n17.dtso |  19 +-
+ drivers/video/backlight/Kconfig                    |   7 +
+ drivers/video/backlight/Makefile                   |   1 +
+ drivers/video/backlight/max25014.c                 | 377 +++++++++++++++++++++
+ 7 files changed, 516 insertions(+), 1 deletion(-)
+---
+base-commit: f3e6330d7fe42b204af05a2dbc68b379e0ad179e
+change-id: 20250626-max25014-4207591e1af5
+
+Best regards,
+--  
+Maud Spierings <maudspierings@gocontroll.com>
+
 
 
