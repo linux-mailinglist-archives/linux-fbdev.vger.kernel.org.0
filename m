@@ -1,78 +1,80 @@
-Return-Path: <linux-fbdev+bounces-6865-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6866-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEeFNbS612l0SAgAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6865-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 09 Apr 2026 16:41:56 +0200
+	id qOzCArC712l0SAgAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6866-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 09 Apr 2026 16:46:08 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580163CC23F
-	for <lists+linux-fbdev@lfdr.de>; Thu, 09 Apr 2026 16:41:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CBB3CC2B9
+	for <lists+linux-fbdev@lfdr.de>; Thu, 09 Apr 2026 16:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1AD3C300B56C
-	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Apr 2026 14:41:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAE8F307284F
+	for <lists+linux-fbdev@lfdr.de>; Thu,  9 Apr 2026 14:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0E03DDDC7;
-	Thu,  9 Apr 2026 14:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874123DE428;
+	Thu,  9 Apr 2026 14:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ex9dsFRT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ptaV7+lV"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
+Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289123DBD49
-	for <linux-fbdev@vger.kernel.org>; Thu,  9 Apr 2026 14:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3148A3DD53B
+	for <linux-fbdev@vger.kernel.org>; Thu,  9 Apr 2026 14:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775745714; cv=none; b=Zin69NrToksueTiJv/PtqdV1F0uWgj/AJ6wuuevR3lf4Fn6q61Bby8Y8bQi/83jMuzBNKCS6XhZmhsp50QbucNwSha7Wis0U2u49ATOP0nduRPZO5A9VV2YODyDYn9zXWcySR+cngpLA2pVRjrs+alqa5jkquJPlFqDVjB5hcgk=
+	t=1775745716; cv=none; b=A7Sod460++MlgfWJcDMIcKOhih5/yx3DddvVOB4RdqG68g1tWQbFmFCZ6M1xVaHBmrmxGV095aJ634KGjljB9htQsYAy0GMs/4alvQy8c3CEH2FmXnEgWfh/sucdawJk24HQbGggBXvRungOilI4/At0rE6qq3VEAMzPwrmyfEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775745714; c=relaxed/simple;
-	bh=6p4QF9QphcGSUD4l+uqrzYbIS6kc3jd9F/UtB26ySvY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EPu6xNsIFtiJul8zNWRIuAMVA0jBYUrPUGvTLtN3cLrxl4aqZroQlSOxiMiWBmLQyOgJqgkOqJ/KD+yRtdCtZ8TaQEyS/RgtZpC/aPyMcdT2aoli27+n6Keh2kpmpoY6WPm13nNYyLjYMHoHxolU4qDWvh7bWjmHtqoo9ik0psM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ex9dsFRT; arc=none smtp.client-ip=74.125.82.66
+	s=arc-20240116; t=1775745716; c=relaxed/simple;
+	bh=+vHcx9lI7yya0W7s1XmjAsO9BEU7Hgjmcx7FM3fwsWw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=h6xZFXkX1Bgc9pYtfDEmLQp5slg4ENpCXBIlTXeA8WubedNZqPpjvuA2wxPkj6aMQPupT+hCfMp/EBQD+hNNhhy4Ch1KZzNmW9Hm2ZPs5m7HdtUDtZLPkbPLo1UT4GMvph+38fCOk+uvGPDi4rhJCZ6I1TuRdBzQOwzwmvYwQIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ptaV7+lV; arc=none smtp.client-ip=74.125.82.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-12713e56abdso590173c88.1
-        for <linux-fbdev@vger.kernel.org>; Thu, 09 Apr 2026 07:41:53 -0700 (PDT)
+Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-2b4520f6b32so841932eec.0
+        for <linux-fbdev@vger.kernel.org>; Thu, 09 Apr 2026 07:41:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775745712; x=1776350512; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WHoVRK6G7QNLQuMnHul4V6G7GtbprndlSqKrNeZpyuo=;
-        b=Ex9dsFRTI+7sbSul48pc5XlK/Di6OvkNvZtl3RhNf3qMZr/ZSLZQH+vthbdqDkglyj
-         AFD+zOQIWp3Vbnfhm1OArRfmn1z1vOWBYILrTNh3tgCZAQLEFcLK52tBHfA8Tj1bMGp+
-         OYvOXWrvtpq98bzqnRpinV2HqT8OCqG1t2wj5GQY48E4C45lMJdK3cwoa/T31LWmYjIj
-         YSNETlqxfr2QROxYWHwWk8iWsW8pIgWGuItOa3pwFFGkleAYo7gFFCw+InleurffILtJ
-         CvwIf/kQw5x5jJj9Ggs7xWR05Lb4LD2rJ8tlgb7NZ4xXQCYb/BPNPgbbAdNaKP3q+TS2
-         GJog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775745712; x=1776350512;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1775745714; x=1776350514; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WHoVRK6G7QNLQuMnHul4V6G7GtbprndlSqKrNeZpyuo=;
-        b=V+/DApapCNL5umw80jZuvEZxVg8ft+DmrMMYZxunC3VIKovu+4vOwFziRX2/ExlUju
-         mwO8ICph3nAxeQViTZLE8mw1NlvbH3qj/j52cmyU+1GDm20owVAGGvn4tIAUDj7Gxj8R
-         U4MOsin3AATC3EACyYfs5Wd+YNrjsxvCfErH1jxwUbZsY0V1RQnKMNvFYcAxS4PISQV7
-         iwv4+AgaeGftJhRBlIqnfHwiXXf0aPkvswI7LGyNELVnnl8x1vkh6Vry9Ll/N8pPduFF
-         BA9OeJgeeEFsZRi4wIezyvhwoAghBBOMadQFSrm6dRogvIeQ41Rt4WYyZQ0XFkb0dkby
-         HoHQ==
-X-Gm-Message-State: AOJu0YwNMlD7TP9fGD9rEMCue0Qeg0uKTKrgnpaAKgpl04wZhXH5epUI
-	hrnWQKO3syKqAPk+o2KTwBsNwJqt79lGxhPnlE8jNg0cT8ZisRd4hX7g
-X-Gm-Gg: AeBDievRqjZtsc4WPyfotAyTlkHbJ8E23QkC6CjTz/bKEHmGlZBhdaGi3qcRJqzy9cm
-	oM98El993sn7UcBWH0sGAKdwc86V8UPl4gbAI38UFES7eEgKeBTM6coj0mQRnA2L9qZczUkLnoj
-	N4TFug3/sRGdwSiGXjfj+3EPXi1QrgBvloYhWOVw65XeoF4GIDKFK0Gl27kQ8oD3VwHqnhAOJqa
-	GO66JPns4LjgfOVSj9zqEWqV/jaOLEXBc2KwewZ/Tz10tDhIngfifu6WMYnpy306F/RI57Z8ERN
-	QotR3U1c4xBPjH6w/8DgqoTO8ycnsQtyW4Gqe7w/zpXGy5C9FmYU+uP40tvr4OPdHIpd7fHDp1X
-	v5IWXQW7HYvmh3IArF6mumiVoaKImOJKjVbnvygD83XYkAznPItB93DwBZSV9uqkxASzWV7ECOQ
-	yiXL1uo+VrUe41GzLWS8qfFxsKSPW/HbQo/vLoBLCXiFQ6XD4j8U43igg=
-X-Received: by 2002:a05:7022:118:b0:119:e569:f874 with SMTP id a92af1059eb24-12c28c2f6cbmr1557835c88.17.1775745712202;
-        Thu, 09 Apr 2026 07:41:52 -0700 (PDT)
+        bh=ynn/Tv7vt536YLRzFScHBlkRRyfwxHMbDNUUOzExOGQ=;
+        b=ptaV7+lVaOPFrmQlgWW2RICSmM+Hj2KIMdQ2kcVUjed9FSiIGY/Jt+L0fc9/XrgHa+
+         emLpFncsasZT/BCNNrVlGRgH8g5BFHLJ25Ku44H/22oSHQA09oRhzpOfGecGpT3M97TL
+         pk2UzNqwqvwxSlwh3Aww1fLdPzBxY4LPewoAab8lfIwEcqHPiudftHegQMCG2iFXqdLz
+         p41+hfsWgW/ooFlAknPYouWXaE4PgDHoMJOpAMYLTPnzIOumOd/WAumcdA6nF9Ki2aap
+         qtvrtSZ7NqlkTLIWjsykojQnWw/1r8z7olJ+ccqzy0FypLUjIlc5GwgH0BcpSmTimwg9
+         9PnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775745714; x=1776350514;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ynn/Tv7vt536YLRzFScHBlkRRyfwxHMbDNUUOzExOGQ=;
+        b=cJl4EwQeAxKTukKrgOAuPjghSw+Xdadj95aYxbl7rSwaAeGE9TQbtMq+2JGl2kDjXg
+         QoQKaa1Pp+IIUqb9Hkb2vZTjFo7qyr/7bTfuL499/WqCXOmt8E8Fim5XzzYKMgIxariP
+         6IbpK9o6iUbFRDM7yUOfvk3z7UMCoU2W+F4yNYwqrp4PYsKzR3rAx7hZpa4EgLmNDPjD
+         U7/IlGPMcf0SjEhUxnpn3m0P1+LsdO+8s8sOBlYwh2inO965o+EpIMrbsWIHy64ux0+N
+         9A72nILR2yB8rid/OZUGPWqU3Rkx3dtF8Kj771OK2wy1NLPr+DF+QGUJXwPVY8D51xYH
+         0kSg==
+X-Gm-Message-State: AOJu0YypkThYNF0ljDdbdS0F2/IAMpUwSTKRkJjiUawKbvo318uz9t4Z
+	xDYQ7dFUjj6jE8U44LsX3eSCIz+2UTWwAQxojbflcsjN15hKoImtNTbv
+X-Gm-Gg: AeBDieu9ebrQd0eX5ixUz88EgaMk7ul1SswhY3Z894/33cVN2j2B6MXH0sNcqVgdVIU
+	hpUdTqWvUDLIYX6mXXwb9gGY4kw0qadRoWXv4oaedG678jas4VIJ1b8KAaYy6mb9eZoW3ioDjlY
+	BmGrGiAGPEPew0zFq0y0xCqTg8MH6uSzqxm2oD9RovYVJ0bO8YKuCafAmqNb5NDhaoUV5ZTgiNX
+	ecManecLR/1wCnxatQPd/PZGp7vJvqpqvwf6EctNO/SsS0GgVpF3WV9X7h4G11ibV+04uwCkBp+
+	lZbiXTq+GBg3dr2+GLvP5vaHMSg8g/pmUUWt+bI1DzQsAWOn1C6wQVIzl1eIlwiCE2AvOcXzXZL
+	SYzydi7R5hzTImsSYVlX3XGLD2BYXXqoM390ywnvSmew1GRM0ZkUOSTAdVh38OMIMPQa20QzLtt
+	xHyXk2uJQn4x6Wxb87v0W26PNcdg5NvdgQWE5zXR9sRmZ4YKoVRFXfegXg/v4ZrojQ4w==
+X-Received: by 2002:a05:7022:ec17:b0:128:ccb7:7fa3 with SMTP id a92af1059eb24-12bfb76edb5mr13072445c88.34.1775745713994;
+        Thu, 09 Apr 2026 07:41:53 -0700 (PDT)
 Received: from localhost.localdomain ([76.32.119.210])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c07a8703esm20363284c88.8.2026.04.09.07.41.51
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c07a8703esm20363284c88.8.2026.04.09.07.41.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Apr 2026 07:41:51 -0700 (PDT)
+        Thu, 09 Apr 2026 07:41:52 -0700 (PDT)
 From: Hungyu Lin <dennylin0707@gmail.com>
 To: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
 	Teddy Wang <teddy.wang@siliconmotion.com>,
@@ -81,10 +83,12 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Hungyu Lin <dennylin0707@gmail.com>
-Subject: [PATCH 0/2] staging: sm750fb: improve error handling in de_wait path
-Date: Thu,  9 Apr 2026 14:41:17 +0000
-Message-Id: <20260409144119.21500-1-dennylin0707@gmail.com>
+Subject: [PATCH 1/2] staging: sm750fb: return -ETIMEDOUT on timeout in de_wait functions
+Date: Thu,  9 Apr 2026 14:41:18 +0000
+Message-Id: <20260409144119.21500-2-dennylin0707@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260409144119.21500-1-dennylin0707@gmail.com>
+References: <20260409144119.21500-1-dennylin0707@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -94,57 +98,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[gmail.com,siliconmotion.com,linuxfoundation.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-6865-lists,linux-fbdev=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-6866-lists,linux-fbdev=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,siliconmotion.com,linuxfoundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[dennylin0707@gmail.com,linux-fbdev@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 580163CC23F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 64CBB3CC2B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This series improves error handling in the sm750fb driver.
+The hw_sm750le_de_wait() and hw_sm750_de_wait() functions return -1
+when a timeout occurs. Replace these with -ETIMEDOUT to use a proper
+errno value and better describe the error condition.
 
-The de_wait() helpers currently return -1 on timeout and callers
-discard error codes by always returning -1. This series replaces
--1 with -ETIMEDOUT and propagates the error code to improve
-error reporting.
+All callers check the return value as non-zero, so this change does
+not alter existing behavior.
 
-Patch 1 replaces -1 with -ETIMEDOUT in de_wait() helpers.
-Patch 2 propagates error codes in callers instead of returning -1.
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+---
+ drivers/staging/sm750fb/sm750_hw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Hungyu Lin (2):
-  staging: sm750fb: return -ETIMEDOUT on timeout in de_wait functions
-  staging: sm750fb: propagate error codes from de_wait()
-
- drivers/staging/sm750fb/sm750_accel.c | 22 ++++++++++++----------
- drivers/staging/sm750fb/sm750_hw.c    |  4 ++--
- 2 files changed, 14 insertions(+), 12 deletions(-)
-
+diff --git a/drivers/staging/sm750fb/sm750_hw.c b/drivers/staging/sm750fb/sm750_hw.c
+index a2798d428663..3809401baa3a 100644
+--- a/drivers/staging/sm750fb/sm750_hw.c
++++ b/drivers/staging/sm750fb/sm750_hw.c
+@@ -502,7 +502,7 @@ int hw_sm750le_de_wait(void)
+ 			return 0;
+ 	}
+ 	/* timeout error */
+-	return -1;
++	return -ETIMEDOUT;
+ }
+ 
+ int hw_sm750_de_wait(void)
+@@ -520,7 +520,7 @@ int hw_sm750_de_wait(void)
+ 			return 0;
+ 	}
+ 	/* timeout error */
+-	return -1;
++	return -ETIMEDOUT;
+ }
+ 
+ int hw_sm750_pan_display(struct lynxfb_crtc *crtc,
 -- 
 2.34.1
 
