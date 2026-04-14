@@ -1,50 +1,50 @@
-Return-Path: <linux-fbdev+bounces-6963-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-6964-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IO6/NtZq3mmxDgAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-6963-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Apr 2026 18:27:02 +0200
+	id WK3mIhxr3mm5EAAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-6964-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Apr 2026 18:28:12 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C5B3FC8D3
-	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Apr 2026 18:27:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DF83FC916
+	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Apr 2026 18:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1359D3020A5E
-	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Apr 2026 16:22:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34EDE308499A
+	for <lists+linux-fbdev@lfdr.de>; Tue, 14 Apr 2026 16:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA63C3ECBCF;
-	Tue, 14 Apr 2026 16:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5793E8C72;
+	Tue, 14 Apr 2026 16:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t4JKrsQW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLO5NtAY"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9762C3B7760;
-	Tue, 14 Apr 2026 16:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03EA386451;
+	Tue, 14 Apr 2026 16:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776183723; cv=none; b=O9C3UScipq8bFP0Y9uf52fdF5D9rwLQl4c5npU9l3ummmZvblhMrl1A8PeD7BRsM0A+5aNjpGEbeg1ZMSb5J1lbGnE/GTqCYwVwnnzhdTga10o97568JiqcVmpwM+ZlfIemfP2Yju4PBKJbIW0kONj3A8dvYcOw26u8hzxBF91M=
+	t=1776183743; cv=none; b=YGzV15BrqIXDq504dxbUKDwhCXZ5bNYmnehYMzk9zmJo1Lbp4T+HfVWx2bluuATPwtEPF2yHA+Gokn7DvtAQ8dr5UqBzRD+keHv2mHwrbjb0SjPbIst8/4WsUqOMou3qUxt8eHAYPuVH3+CEgg9++SjxvS60AW4ydxIZTDPPkfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776183723; c=relaxed/simple;
-	bh=3LdZ7+x9wtSvMucKYNzrVg39qnVbee3MxWzoH/d3IlM=;
+	s=arc-20240116; t=1776183743; c=relaxed/simple;
+	bh=7QPQx98w0vfSRTmQEZsX9ZnLp6xe+L/O04W9VIyKjf8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IvZt6N9ShOhxt69cHJertReOZddT/2zjWgk7UvZeacHWFVJDM933pg3IUh0bE1DCzWEp5ZbA3efToBAG2BL0qXiZQvHF0zI+QNt9MFeDZMeq58Hlsy7EKhR4jvuRyUvbxrjfIlVkPVWYhaHTbEFisaxJ3c0nVMKI30tIZCcgVKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t4JKrsQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601E2C19425;
-	Tue, 14 Apr 2026 16:22:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=txvxGsociFOnzMpd2zuYsAjLlSrNSYzEbh4Ggfyqs21d304kczUxS0cWgn+qQP6Lzq6LpK0IC1MPSiIzjmUkC0aXps2TmtK/Tk3sNukqUx7gY9WW7R24fvAUmg5Ylxd/fpxTGx1rrGNV1pBobWI9UdNvPNsYpdW0yloBM2aFT3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLO5NtAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7005C19425;
+	Tue, 14 Apr 2026 16:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776183723;
-	bh=3LdZ7+x9wtSvMucKYNzrVg39qnVbee3MxWzoH/d3IlM=;
+	s=k20201202; t=1776183743;
+	bh=7QPQx98w0vfSRTmQEZsX9ZnLp6xe+L/O04W9VIyKjf8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t4JKrsQWDLSfwgCk1aZThCGMyvzBcPnFXmm/+d6xC5T13xiigZ8n2EcjS2T3uFsTS
-	 GELD4hmhQAEZ7A4ISnlxj4EuXQ9tMra6oBiBP+aO5bjfrM1RKhH/81lsFL1tFGxaD4
-	 pPq14pgjoBPqehu/WOtjAnhiCU28IJBDEzi4U6FnJp2rjBuSzBjYeLc1U1wHb8nRy5
-	 5O5qv7DrO7REGF/6XgooC/TamwPXaWBxt8Z8WrE8v4A4ZcNIq1oGMMqolmKIcZDtS4
-	 oA20t+10Ei0VK9ygfJ0XcYBcEr1wRwppPdVVqcEyAR/jvnXw8i+ec7p9Rm14LbXgpt
-	 uYMIPPk8P5TZQ==
-Date: Tue, 14 Apr 2026 17:21:58 +0100
+	b=bLO5NtAYQ3osx0vyOtFP1RnfpoGlWrjRR97Mxf9XLnThmWAGOO9tg2Hqqa+qIwRgt
+	 2mfYUWa9PhPht7lmX60IpLZNfYxuhAHNl/OuMIkc4H0Zixl9Md1gCoAJbhAnKBBBmf
+	 CbPqa1Sjm2covRdFAdBBPhw8mtkvgSsnCIX27tSgBjQMX6+bInyYGfwaMmvewPaEqy
+	 Q+Z1ftzFyrxsXjO0yf7jCFHjZVw66+3KGQPvFNh9Lwd9DWLhyJ+dkgVEh0dmN0Ij01
+	 W90XDZ26CR7ri4yB5oJcuAapKP8AZY+aC0Qdbyw9FERiZzjgYyB2kdeKoxaSXHH9k+
+	 GwFhCLAn5YbhA==
+Date: Tue, 14 Apr 2026 17:22:18 +0100
 From: Daniel Thompson <danielt@kernel.org>
 To: Thomas Richard <thomas.richard@bootlin.com>
 Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
@@ -52,10 +52,10 @@ Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] backlight: cgbc: Remove redundant X86 dependency
-Message-ID: <ad5pplCLAdvohy04@aspen.lan>
+Subject: Re: [PATCH 2/2] MAINTAINERS: Add cgbc backlight driver
+Message-ID: <ad5purZ0jef5a1KR@aspen.lan>
 References: <20260327-backlight-cgbc-remove-x86-dependency-v1-0-4851c9e95371@bootlin.com>
- <20260327-backlight-cgbc-remove-x86-dependency-v1-1-4851c9e95371@bootlin.com>
+ <20260327-backlight-cgbc-remove-x86-dependency-v1-2-4851c9e95371@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -64,16 +64,16 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260327-backlight-cgbc-remove-x86-dependency-v1-1-4851c9e95371@bootlin.com>
+In-Reply-To: <20260327-backlight-cgbc-remove-x86-dependency-v1-2-4851c9e95371@bootlin.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-6963-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-6964-lists,linux-fbdev=lfdr.de];
 	FREEMAIL_CC(0.00)[kernel.org,gmail.com,gmx.de,bootlin.com,lists.freedesktop.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -91,15 +91,13 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,aspen.lan:mid]
-X-Rspamd-Queue-Id: 64C5B3FC8D3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email,aspen.lan:mid]
+X-Rspamd-Queue-Id: 25DF83FC916
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 27, 2026 at 08:39:32PM +0100, Thomas Richard wrote:
-> The backlight driver depends on the MFD cgbc-core driver, which already
-> depends on X86. The explicit X86 dependency for the backlight driver is
-> redundant and can be safely removed.
+On Fri, Mar 27, 2026 at 08:39:33PM +0100, Thomas Richard wrote:
+> Add missing backlight driver in CONGATEC BOARD CONTROLLER entry.
 >
 > Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
 
