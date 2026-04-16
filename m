@@ -1,99 +1,98 @@
-Return-Path: <linux-fbdev+bounces-7000-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7003-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uK99M++64GmIlAAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7000-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Apr 2026 12:33:19 +0200
+	id 0DrVJO/H4GnjlwAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7003-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Apr 2026 13:28:47 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4006540CF43
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Apr 2026 12:33:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992A840D66D
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Apr 2026 13:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFF2D3095BCA
-	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Apr 2026 10:30:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97075300C387
+	for <lists+linux-fbdev@lfdr.de>; Thu, 16 Apr 2026 11:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A0C3793B0;
-	Thu, 16 Apr 2026 10:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1A23A7F47;
+	Thu, 16 Apr 2026 11:28:40 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E00367F40
-	for <linux-fbdev@vger.kernel.org>; Thu, 16 Apr 2026 10:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0DC3A7F48
+	for <linux-fbdev@vger.kernel.org>; Thu, 16 Apr 2026 11:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776335455; cv=none; b=iaNCfN7jqfT6TC7aAE+Oq/KpS7UTafjOR8JI2aEYG3R3FtEAZM3BFM0es/w1pWg/UfEqMBWiqFSHC1ukp+pnoKauC3AjQHA8Vjyz3XDArFPj4jy7lGePpw0Hind73FJ3I9EWG8LPJocn5xbBf+PAy7zztl/z1fuQ78HgXsFW8Xw=
+	t=1776338920; cv=none; b=n3gSaUNkAr4nybyD4e2jpyeR2/zVB1rSgxlJQAqgGDoCw/rAa59d5C1fNfB4UpHLwRQV8EUvGyheBPqw3A8tozyApnm8yOo4X03eZAb4UYrXcsGjIp7JnUuzakJkjUP4T2wfyE4xLQYewuSWLwmp1nzE2Q1Aw5H3528FHrokfew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776335455; c=relaxed/simple;
-	bh=Il5EilNKbQmVM1qv4XgxLAe02Z9+zxydkwUqJc2BPRU=;
+	s=arc-20240116; t=1776338920; c=relaxed/simple;
+	bh=FSgVIzpnraycKQsxAztrNgNSM9On/XU1ftEj+pCL/gg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oqqph4ik5Ovdnpv+u0+dQ04VjIGeGDrzkoNhZl1fyq26OrCjevuZQyIKY56uOEXbeFnSlUwdN3ZTaHBz8YofNYft2wTjSqTKDYBRXsg5wolAUXe4xMcFZjyLMO/vYZsMGsLUAzy/aUw9Luzs37SO7Shc2F2Ex1YuMQr0VHChlf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.52
+	 To:Cc:Content-Type; b=cBpMo+CNFEWcREKJIV+ifbGgVhTWyTltQXu/S2Mfm6v/OenDcAflwXAIzk0o7B0D6UxKF1luOFWqkPWbZ+NvhtjT8OuPrxvQkJ0Fur/izDHFouL/Z0J4CZ+EUaU6RCq8IRThLYYgmPubyKJ0DSnOIE4uyXjUO8UP6FOe6IplHus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7dbdcb85067so6554399a34.1
-        for <linux-fbdev@vger.kernel.org>; Thu, 16 Apr 2026 03:30:53 -0700 (PDT)
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d4c12ff3d5so6984318a34.2
+        for <linux-fbdev@vger.kernel.org>; Thu, 16 Apr 2026 04:28:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776335453; x=1776940253;
+        d=1e100.net; s=20251104; t=1776338918; x=1776943718;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z9HEDsaws+1AaPEcUyrGjtCss1Kv3jZQFAB8Oib7mmY=;
-        b=FPeRoA4GynROqUGSizaUz7BO7z074S5kiAUUK/1sUmxIBwu63v1l0oGNryrB8/RJef
-         8mhscsSyaKyn0AidgWVlJHsk0SEci5bMSVZmC5BQeedOuzUI0AbjqQcTwnweDWB5YV+y
-         xCww0KSyHkIzKwZWuBpjl1CHNvuqyH+jdbZWSD/UvfUga6gdtUmMAVDz6xjki3do5onz
-         U8SwsRuXMVRo4gvFGpnWrIpN3WXDDGzSMHNMf7O2oCsosRkHo4v09d6oGfRuT9p8v5+o
-         Xe/3n/asl/AH8Ihdqea/4eXe3i+qwzKjBissu9PB9AQjDomXx0mEaS99M1VFu95WNGOp
-         05nA==
-X-Forwarded-Encrypted: i=1; AFNElJ+r9SiWn/2EXuGUNWss8YUnV/kxHmGU97YGQTt+rDh5+cGK9C3TNb+KDB9WeVz4i3TwbFWgIEzaY50/HA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPK339AB+wEAd/i4NMSWi/DPG/IkpliNx5JVpTtHMHmwODa5s0
-	tPwM9SDKYlkKIHg/JK48FJ+2uiOSl5YbHT8O/mJZ7Cf2WJxVZyv7DKAIj/glD+xo
-X-Gm-Gg: AeBDievLODGLh3Lt4BVVbdj5eKTosOQ9d7kb590TkNghDdyUqy+8P3oTyri0IPhtdUX
-	MKFa7ZPanZB8mJUcUvWrD6J28J32rj8WeEBlR92P+pahPNt0NzbJuM4jwocRMTlLQqOE2kbWh76
-	ohHn6YMNCtXXGFt373jO2sdEiGmkRySUkeiAFt2cXrDpN5wBRm4d40KTbYU6iaPBaTnIXMGUw8h
-	1EwfDYCs5AC+sf083uCDVIuL7ZuLd2lNySuV7R6v5vIy2xMZWPwiwFBhuvWrQXPZA8++yx8PV86
-	LrdRc9x17RQAAwBfILYkk1v2TF+VFlvwe3soYqksDLP2hgmdlCAyNGE+noiAj435FFzdqoEjPRs
-	CW0wxVWonzjwUibheLwUl/SuJcguy3PmUrw70KybdzHG8tZeqOycZNrmP49WUjDms1oWipCQYf4
-	yIJ3JyU3kopCJHBRYnx7gb8xQhTffSaTcBTd9t3I6rgeDWBkvmORV/JDobUND+5GfvoaeljFyt8
-	Ig=
-X-Received: by 2002:a05:6830:25d5:b0:7d7:57c4:367b with SMTP id 46e09a7af769-7dc27fe671emr16375258a34.28.1776335452668;
-        Thu, 16 Apr 2026 03:30:52 -0700 (PDT)
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com. [209.85.167.178])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc76a123f9sm3185408a34.2.2026.04.16.03.30.52
+        bh=AptjVPQ97g683jPGYCmYUacoTRTAG/3/TQY5t1TSdkk=;
+        b=K/CL+hC0QaZAcxNz/kDnY8GmZjrmTV1X9Hb0Qo8/mPX4yxHEzSpm3XQbKeOP3dQSyV
+         M+/qxElm/fPH69rmNsMo2hB/zaDvG7kwT/vCnvHCsobgbUi21Zsiw4tnNizWjvVzPv63
+         v9cMfL27PqQVvruQI9tmZhEHy4hsJPC1wtvgoxyluGhzsx4tbXZHPxxjO388/RiQXhes
+         On7vNDBhzy+oXORr5UPVnwnsBtfWGPArVR9r6pDBqK1XSP/fTyX21opeU+R1KfWAUOGa
+         vqpy4nRoK9Nuibl9lcXMFBANO0qJhizjYfHk9oeqVGZwCfOJSvHg8DtUUvLPomRZiArj
+         OJzg==
+X-Forwarded-Encrypted: i=1; AFNElJ+OydwH8m+J14D7tjwqYsQBr26ZBmsf6EFH71CMf6qUzqsMcUdnxx0bJG3p+rofvWPgXJeqGmsmIRlKhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHGE5a+1X9DKp7pUs354jim5OlgkJKQxyg2yycmoN+G6j5V/7X
+	XlcmLdl8BfoC8RoGmgTSTCHu4ve10ETkjGf43Xu+O3H77hx5JQnF186uTeb4BuBj
+X-Gm-Gg: AeBDietnAvvVTrrsKtWW7CPQbWp8U8qgVGUgFvQ3+NjrRTQuY4prRK42wCAusfWEdE3
+	ZdP6REGPvS26YaIkuRj2mfeqRSYDBW2r4o2DFKcAPDzvY4JyzsD92GhoK1OFVQvUxRnbYtukBd1
+	6BNCIEpM4xWUyzGwHMisBYFBZaysSDqphhhziIHlkSQNfvLnA/vVXEWw73oHymtytWa47ytYPC1
+	YxRP+CoHImQVEf+dgT4ukYu4+F3SGmy6vhS7O5DCb/+v0iyQXH5kKqSUdY129OHCXBtu4Nmllzn
+	rloDk2HpxsvXFYv00vSLKv07zF7XnrlJMMlUT7nITgZbwrAHNWPa8FyRd1JDTyvLI/q3Ik3p8Hs
+	IzKQdZEf/lT7QJ8gIjLwDvYjcwHiMtk3niaLvplDhCF3GXPXPSttAAEKT/BBrbl1aSpCsC1Du4u
+	nSOUoVYl9PgDb7jDJTD556ZQqHTJT8moiWSr/xBDEhTchknKql32LMbdTnT/87cfykJtDiKgg=
+X-Received: by 2002:a05:6820:168d:b0:682:4005:5f0e with SMTP id 006d021491bc7-68be8fccc73mr12853121eaf.59.1776338917786;
+        Thu, 16 Apr 2026 04:28:37 -0700 (PDT)
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com. [209.85.161.52])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-426896e953csm3856710fac.18.2026.04.16.04.28.37
         for <linux-fbdev@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Apr 2026 03:30:52 -0700 (PDT)
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-471618e20a5so4028502b6e.1
-        for <linux-fbdev@vger.kernel.org>; Thu, 16 Apr 2026 03:30:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+vqtcZ4HSVHqrgVaWDq0mVDPXSitL3TTGmPjEdM+enJpm97ifNVb0UwGbZE8bKJEhYfKUd6hi/KOqfCg==@vger.kernel.org
-X-Received: by 2002:a05:6102:c48:b0:608:cd24:354c with SMTP id
- ada2fe7eead31-609fe9b0d22mr11966750137.3.1776335071251; Thu, 16 Apr 2026
- 03:24:31 -0700 (PDT)
+        Thu, 16 Apr 2026 04:28:37 -0700 (PDT)
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-679b072ed3aso3595567eaf.1
+        for <linux-fbdev@vger.kernel.org>; Thu, 16 Apr 2026 04:28:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8QZ1WOb2BrAgk/cbWtzDkW/IlckBEmR8tjk4W7ycbyW3QmpO3wL06xX+sDNA9mOsDTXXKM61OXjf60aw==@vger.kernel.org
+X-Received: by 2002:a05:6122:788:b0:56f:1ed6:1d29 with SMTP id
+ 71dfb90a1353d-56f3bca6059mr11244615e0c.9.1776338533353; Thu, 16 Apr 2026
+ 04:22:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260410120044.031381086@kernel.org> <20260410120318.794680738@kernel.org>
-In-Reply-To: <20260410120318.794680738@kernel.org>
+References: <20260410120044.031381086@kernel.org> <20260410120317.910770161@kernel.org>
+In-Reply-To: <20260410120317.910770161@kernel.org>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 Apr 2026 12:24:18 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
-X-Gm-Features: AQROBzDRGGELVSySTko37h6zEj8YoV3p6pwZDCVQUlUW6sZbw_W5mbJzFIh35nQ
-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
-Subject: Re: [patch 18/38] lib/tests: Replace get_cycles() with ktime_get()
+Date: Thu, 16 Apr 2026 13:22:02 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdX1aShz8esbYzJ7T-0Na6++_Yi315aCiUx0Cnsgod5uUg@mail.gmail.com>
+X-Gm-Features: AQROBzBwwjc8yd10cT00Tu5Dl2qrCYQStWr3Lcobhh8coMrpPeCH9vhBSNokYJk
+Message-ID: <CAMuHMdX1aShz8esbYzJ7T-0Na6++_Yi315aCiUx0Cnsgod5uUg@mail.gmail.com>
+Subject: Re: [patch 05/38] treewide: Remove CLOCK_TICK_RATE
 To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
+Cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
 	Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
 	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
+	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
 	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
-	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
 	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
 	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
 	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
@@ -110,12 +109,12 @@ Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux-foundation.org,gmail.com,kvack.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,infradead.org,plugable.com,mit.edu,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
-	TAGGED_FROM(0.00)[bounces-7000-lists,linux-fbdev=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,arndb.de,kernel.org,linux.intel.com,lists.linux.dev,pengutronix.de,gondor.apana.org.au,kvack.org,infradead.org,plugable.com,mit.edu,linux-foundation.org,gmail.com,google.com,googlegroups.com,alumni.ethz.ch,zx2c4.com,linaro.org,armlinux.org.uk,lists.infradead.org,arm.com,lists.linux-m68k.org,southpole.se,gmx.de,ellerman.id.au,lists.ozlabs.org,linux.ibm.com,davemloft.net];
+	TAGGED_FROM(0.00)[bounces-7003-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[linux-m68k.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -128,89 +127,34 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,linux-fbdev@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.992];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-m68k.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 4006540CF43
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,linux-m68k.org:email]
+X-Rspamd-Queue-Id: 992A840D66D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Thomas,
-
-On Fri, 10 Apr 2026 at 14:20, Thomas Gleixner <tglx@kernel.org> wrote:
-> get_cycles() is the historical access to a fine grained time source, but it
-> is a suboptimal choice for two reasons:
+On Fri, 10 Apr 2026 at 14:18, Thomas Gleixner <tglx@kernel.org> wrote:
+> This has been scheduled for removal more than a decade ago and the comments
+> related to it have been dutifully ignored. The last dependencies are gone.
 >
->    - get_cycles() is not guaranteed to be supported and functional on all
->      systems/platforms. If not supported or not functional it returns 0,
->      which makes benchmarking moot.
->
->    - get_cycles() returns the raw counter value of whatever the
->      architecture platform provides. The original x86 Time Stamp Counter
->      (TSC) was despite its name tied to the actual CPU core frequency.
->      That's not longer the case. So the counter value is only meaningful
->      when the CPU operates at the same frequency as the TSC or the value is
->      adjusted to the actual CPU frequency. Other architectures and
->      platforms provide similar disjunct counters via get_cycles(), so the
->      result is operations per BOGO-cycles, which is not really meaningful.
->
-> Use ktime_get() instead which provides nanosecond timestamps with the
-> granularity of the underlying hardware counter, which is not different to
-> the variety of get_cycles() implementations.
->
-> This provides at least understandable metrics, i.e. operations/nanoseconds,
-> and is available on all platforms. As with get_cycles() the result might
-> have to be put into relation with the CPU operating frequency, but that's
-> not any different.
->
-> This is part of a larger effort to remove get_cycles() usage from
-> non-architecture code.
+> Remove it along with various now empty asm/timex.h files.
 >
 > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 
-Thanks for your patch!
+>  arch/m68k/include/asm/timex.h       |   15 ---------------
 
-> --- a/lib/interval_tree_test.c
-> +++ b/lib/interval_tree_test.c
-> @@ -65,13 +65,13 @@ static void init(void)
->  static int basic_check(void)
->  {
->         int i, j;
-> -       cycles_t time1, time2, time;
-> +       ktime_t time1, time2, time;
->
->         printk(KERN_ALERT "interval tree insert/remove");
->
->         init();
->
-> -       time1 = get_cycles();
-> +       time1 = ktime_get();
->
->         for (i = 0; i < perf_loops; i++) {
->                 for (j = 0; j < nnodes; j++)
-> @@ -80,11 +80,11 @@ static int basic_check(void)
->                         interval_tree_remove(nodes + j, &root);
->         }
->
-> -       time2 = get_cycles();
-> +       time2 = ktime_get();
->         time = time2 - time1;
->
->         time = div_u64(time, perf_loops);
-> -       printk(" -> %llu cycles\n", (unsigned long long)time);
-> +       printk(" -> %llu nsecs\n", (unsigned long long)time);
-
-While cycles_t was unsigned long or long long, ktime_t is always s64,
-so "%lld", and the cast can be dropped (everywhere).
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 
 Gr{oetje,eeting}s,
 
                         Geert
 
--- 
+
+--
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
