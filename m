@@ -1,206 +1,213 @@
-Return-Path: <linux-fbdev+bounces-7066-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7086-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id NvspKDmZ62l9PAAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7066-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Fri, 24 Apr 2026 18:24:25 +0200
+	id WCmFIbto7Gk6YgAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7086-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:09:47 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5B8461473
-	for <lists+linux-fbdev@lfdr.de>; Fri, 24 Apr 2026 18:24:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3077B46564A
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E11823003BE2
-	for <lists+linux-fbdev@lfdr.de>; Fri, 24 Apr 2026 16:24:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D48DE301D065
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 07:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7992E3E1224;
-	Fri, 24 Apr 2026 16:24:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eZl25zDn";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="TjhB1qik"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A7734B661;
+	Sat, 25 Apr 2026 07:04:43 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FCE3DF00B
-	for <linux-fbdev@vger.kernel.org>; Fri, 24 Apr 2026 16:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4987345CA3;
+	Sat, 25 Apr 2026 07:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777047860; cv=none; b=CEsjGKJzDE1ifhxV9WCU+9x8VXv0UWR7BcdEtySufkWcDtqtNZLGSl9SQWZEmsJX0gVgJ4zYk8KylYNzsDnRT/d78j5Wd98X765muhK6kc7rtsWkta3C61i6g/1aW7Q5ZyBqGHFwuzuH8HzpM5xukSorRLhL5IAoceNyMTw7Zhc=
+	t=1777100683; cv=none; b=RWi3cCrEIjhxEdWXU6JLAbicEq8TYHXoj9M42ABi2HBZcJGKUcW/5R3IHtIyCM1aFzhfo+tdz0hb47wczOYwe8WLOuGbdCsoDwqP3CHvlVYfQc4l1kGynzv+kCAUM7xVbW9wX+ZjwgKFx3O4WgYjx3zjV3e5smVjyG6pBCXz2Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777047860; c=relaxed/simple;
-	bh=WGeiHUHtLNR3bIDnkcA7YuMVHwYC8v+r8hhmRXVRhBU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=b4ablRFhjp9ETJ+CPZC2V1Tg6gf65pr1nYoWV8/FP5h+W/eiOjh971sXVTwVFx0H411eTiHFk+7XBXZqv0cOXRcDNSOhYEB/UJ6xP+6LSEGUCF2n/9KQWp41g7zyQ+vjP4A9fNGFM8rxghFAtxnSxoW8XmXxAEQQ4T/HRQbvvHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eZl25zDn; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TjhB1qik; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777047858;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bkHBfOVa4bz/wCbZfmwZYYdZCO/tCYPxae+JQxak4Yg=;
-	b=eZl25zDnldI79cy46T99uOTd673DqSE3j2FysmQbJamPpWT1+bYhnhXu0ciAPPgimA2OcG
-	Lwjqbk1m/+Fj2iobSg00wB8ywT39ue32rH3MCPB5qWPhjYtAyDBWfS9dESKDAbPzROkNcc
-	HyPxpHf9CxQ494ziriMuyR2fcay6u+w=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-IG1ReJlFMB6tl_ZXGmSW4A-1; Fri, 24 Apr 2026 12:24:16 -0400
-X-MC-Unique: IG1ReJlFMB6tl_ZXGmSW4A-1
-X-Mimecast-MFC-AGG-ID: IG1ReJlFMB6tl_ZXGmSW4A_1777047855
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48906aa28cbso46684245e9.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 24 Apr 2026 09:24:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777047855; x=1777652655; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bkHBfOVa4bz/wCbZfmwZYYdZCO/tCYPxae+JQxak4Yg=;
-        b=TjhB1qikvLEcnqjXCwD9cE1ujvN1189GKCrwEeB4sgmLF8KAH8D6TmEoLMN7dJux3v
-         A2yuZGVh20ptA7sQ2ybgSy7VByjAwjS8meyUvV57Dfne7jR1B97RNIgyKf7b9djnt2UE
-         G2Xanq46025fXRBDqC/hXnwbJqKk6++F50GpdPIRG/SWBfJdyED6SHgSVjrWPrpuEMpT
-         SnmtDOafnA1RVxFsTdLEzIc5k1W2+ht4itb40ylzR2DuV69UUefG+nzhuToL0SqIF9AJ
-         CZryrEOHzLyx79bGxKsJiK4fFnJpu4AYuTfMVhqcBcaLn0vBnaU8BXGb2yzkHKe6HY8w
-         wtKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777047855; x=1777652655;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bkHBfOVa4bz/wCbZfmwZYYdZCO/tCYPxae+JQxak4Yg=;
-        b=tOVnqkggQEJ9v9BHV8wnhWYJA8uBlJo5MGzpqoRvqTT/Ru1kWompTZmSLUrP30FVJa
-         NjMP0hONIz4fAcUeqF8sHa/HHLTQyeDwkM0ARwVf3QDOvESlr3Rn3p0k1bYfZxP0RhIG
-         G7gstotuuv7H0bVo7jeixHfG7v91zBAwgnPw3ZgrcYKctxrKatz8SRy7mO53B3ZE9Jct
-         pCJkD0nmbg3I4mpdSTLHGXbm2ahEBIBJrDjc0TBaQD88yOmTKxDoh8FZHOwsLuYM+AhL
-         kSJjufOgOtzNknFcIeILTS+s8Yj6R8A2/1kyjzCsxFxluhjwFutnI2ygsRtEeM6MDrsL
-         jsog==
-X-Forwarded-Encrypted: i=1; AFNElJ8K+JaJGXfoW7vLJbmRaRydg5HLIACAIDgu8bwwxY7JMVQ5iobBRJmNKOD3LB5xPeLFv91BH2WlG4Cmmw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxA3KgBtBvHXb4wgcwmVOwgxgkrgdHbzS7d1GCWaVv5sWprIUfr
-	kqhEfH1pHXPjkcrutxODEFwnzqrJVja/VKkmQkRuSks/Hap73xllxaOk0usMyfeAnZ1FKPWvPZt
-	O0PaxgQQUlZUcND4XudGbPtQVB2+2eVhy3uCFuUgchSjlaYky+mrSBuGAyBeBgHod
-X-Gm-Gg: AeBDievMdbF1Apur+TWtQMosUWc5Spq7jJUjTQrsBKOrGUh3H1qvHLoTPY+hGODRcNC
-	y17Gbe6efWCNgQ84oedJeFSZttvyb5xOGWB4FAKgITsmnwiDT+Igk3Ba2NjMvM1GDgdRP5Jq576
-	aTGXlbjiAWFH1VCDPdzITTS3tUxfXD5bhtQWXjcO1P7TcUojUGV28WiY5pSe6eFo0Op1IAjCIOc
-	to369Xp0dAUeZMsvHidIsUEZfw99N6O9B2wU0wPkdjHntYsNG17UaKl1fQCfyOpIjjA206IiTkP
-	09TzdYwhx4SPoydyJO3m8UMFA6zAT1ukkl8BHYcv2bz6fjw2/Srun1GJ0NxavugF+zOON9wuPQO
-	0XxPpXLW7OLv1ZjKJN9pm4yHBPNsMrmGbzQEoDov4jVZRpBiwnfDnWj283aTO7BkfON9JZOHmB+
-	S6k8VshFAAwkTu2nQ=
-X-Received: by 2002:a05:600c:8b6b:b0:485:3c2e:60d5 with SMTP id 5b1f17b1804b1-488fb8859ddmr427762155e9.2.1777047855238;
-        Fri, 24 Apr 2026 09:24:15 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b6b:b0:485:3c2e:60d5 with SMTP id 5b1f17b1804b1-488fb8859ddmr427761525e9.2.1777047854742;
-        Fri, 24 Apr 2026 09:24:14 -0700 (PDT)
-Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a682588f8sm6272915e9.10.2026.04.24.09.24.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 09:24:13 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>, Arnd Bergmann <arnd@arndb.de>,
- Ard Biesheuvel <ardb@kernel.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, Huacai Chen <chenhuacai@kernel.org>, WANG
- Xuerui <kernel@xen0n.name>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Dave Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, "K. Y.
- Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- longli@microsoft.com, Helge Deller <deller@gmx.de>
-Cc: linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linux-efi@vger.kernel.org, linux-riscv@lists.infradead.org,
- dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
- linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH 3/8] firmware: sysfb: Make CONFIG_SYSFB a
- user-selectable option
-In-Reply-To: <0156562f-5fcf-47ce-8fea-03345f2c3fe6@suse.de>
-References: <20260402092305.208728-1-tzimmermann@suse.de>
- <20260402092305.208728-4-tzimmermann@suse.de>
- <78f76717-8f1e-41d6-92f7-261df96b84b6@app.fastmail.com>
- <3e466158-c2e5-4e23-934f-dcdbb71ad41f@suse.de>
- <d3d7c545-3b07-4881-a16d-45b6f039de19@app.fastmail.com>
- <001efe27-9cbb-4a89-8d2d-a1f3ae15e505@suse.de>
- <295a43ce-92fb-435d-a82f-d1cfa8f4f28d@app.fastmail.com>
- <0156562f-5fcf-47ce-8fea-03345f2c3fe6@suse.de>
-Date: Fri, 24 Apr 2026 18:24:07 +0200
-Message-ID: <87se8kjpi0.fsf@ocarina.mail-host-address-is-not-set>
+	s=arc-20240116; t=1777100683; c=relaxed/simple;
+	bh=mVqVp6AlElvGHkDDOsLTMJRwAA1tP+Hq576wUOW0wp0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LcQpN61sAEa9BEQqx4GzRuPvsya93AQroNFB5bN9xdK7A2xhp0udA6JoDFLTJtw4kuVN/7ekOFul+NpU+9jnXeeg+1QTQoBG19KsneMU29OhKHlEABGSI/r9VCFUwg2gFQ9RiHzWcE2ANpjxzMc3HezjrmmbwZQkXKHQJK9yrc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 5018db82407411f1aa26b74ffac11d73-20260425
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:796fe8ce-2424-43df-837a-5824a8ff87b6,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:69e31420f7444c0bcb2c92291f08c449,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|898,TC:nil,Content:0|15|50,EDM:-3,IP
+	:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
+	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 5018db82407411f1aa26b74ffac11d73-20260425
+X-User: aichao@kylinos.cn
+Received: from thinksys.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <aichao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1869557384; Sat, 25 Apr 2026 14:59:32 +0800
+From: Ai Chao <aichao@kylinos.cn>
+To: deller@gmx.de,
+	nicolas.ferre@microchip.com,
+	alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev,
+	linux@armlinux.org.uk,
+	dilinger@queued.net,
+	adaplas@gmail.com,
+	James.Bottomley@HansenPartnership.com,
+	FlorianSchandinat@gmx.de,
+	alchark@gmail.com,
+	krzk@kernel.org,
+	kees@kernel.org,
+	rene@exactco.de,
+	tzimmermann@suse.de,
+	rongqianfeng@vivo.com,
+	thorsten.blum@linux.dev,
+	chelsyratnawat2001@gmail.com,
+	soci@c64.rulez.org,
+	gregkh@linuxfoundation.org,
+	daniel@thingy.jp,
+	linmq006@gmail.com,
+	fourier.thomas@gmail.com
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-geode@lists.infradead.org,
+	linux-parisc@vger.kernel.org,
+	Ai Chao <aichao@kylinos.cn>
+Subject: [PATCH 00/35] Use safer strscpy() instead of strcpy()
+Date: Sat, 25 Apr 2026 14:58:51 +0800
+Message-Id: <20260425065926.1091168-1-aichao@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: BF5B8461473
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3077B46564A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7066-lists,linux-fbdev=lfdr.de];
-	FREEMAIL_TO(0.00)[suse.de,arndb.de,kernel.org,linaro.org,xen0n.name,linux.intel.com,gmail.com,ffwll.ch,microsoft.com,gmx.de];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	TAGGED_FROM(0.00)[bounces-7086-lists,linux-fbdev=lfdr.de];
+	DMARC_NA(0.00)[kylinos.cn];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de,microchip.com,bootlin.com,tuxon.dev,armlinux.org.uk,queued.net,gmail.com,HansenPartnership.com,kernel.org,exactco.de,suse.de,vivo.com,linux.dev,c64.rulez.org,linuxfoundation.org,thingy.jp];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[javierm@redhat.com,linux-fbdev@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[aichao@kylinos.cn,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.875];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+This patch series introduces wrapper functions strscpy().
 
-Hello,
+Use a safer function strscpy() instead of strcpy() for copying to arrays.
 
-[...]
+Only idiomatic code replacement, and no functional changes.
 
->>>>>> On Thu, Apr 2, 2026, at 11:09, Thomas Zimmermann wrote:
->>>>>> I don't really like this part of the series and would prefer
->>>>>> to keep CONFIG_SYSFB hidden as much as possible as an x86
+Summary:
 
-I tend to agree with Arnd here, I'm also not seeing that much value on
-making this symbol user selectable. For now I would just keep it hidden.
+  fbdev: matroxfb: Use safer strscpy() instead of strcpy()
+  fbdev: i810: Use safer strscpy() instead of strcpy()
+  fbdev: sisfb: Use safer strscpy() instead of strcpy()
+  fbdev: geode: Use safer strscpy() instead of strcpy()
+  fbdev: atafb: Use safer strscpy() instead of strcpy()
+  fbdev: tdfxfb: Use safer strscpy() instead of strcpy()
+  fbdev: pm2fb: Use safer strscpy() instead of strcpy()
+  fbdev: xen-fbfront: Use safer strscpy() instead of strcpy()
+  fbdev: controlfb: Use safer strscpy() instead of strcpy()
+  fbdev: stifb: Use safer strscpy() instead of strcpy()
+  fbdev: fm2fb: Use safer strscpy() instead of strcpy()
+  fbdev: arkfb: Use safer strscpy() instead of strcpy()
+  fbdev: vt8500lcdfb: Use safer strscpy() instead of strcpy()
+  fbdev: vt8623fb: Use safer strscpy() instead of strcpy()
+  fbdev: gbefb: Use safer strscpy() instead of strcpy()
+  fbdev: wm8505fb: Use safer strscpy() instead of strcpy()
+  fbdev: rivafb: Use safer strscpy() instead of strcpy()
+  fbdev: sh7760fb: Use safer strscpy() instead of strcpy()
+  fbdev: savage: Use safer strscpy() instead of strcpy()
+  fbdev: atmel_lcdfb: Use safer strscpy() instead of strcpy()
+  fbdev: aty128fb: Use safer strscpy() instead of strcpy()
+  fbdev: amifb: Use safer strscpy() instead of strcpy()
+  fbdev: s3fb: Use safer strscpy() instead of strcpy()
+  fbdev: viafb: Use safer strscpy() instead of strcpy()
+  fbdev: platinumfb: Use safer strscpy() instead of strcpy()
+  fbdev: cyber2000fb: Use safer strscpy() instead of strcpy()
+  fbdev: mb862xxfb: Use safer strscpy() instead of strcpy()
+  fbdev: mmpfb: Use safer strscpy() instead of strcpy()
+  fbdev: ep93xx-fb: Use safer strscpy() instead of strcpy()
+  fbdev: valkyriefb: Use safer strscpy() instead of strcpy()
+  fbdev: pxafb: Use safer strscpy() instead of strcpy()
+  fbdev: sa1100fb: Use safer strscpy() instead of strcpy()
+  fbdev: sm501fb: Use safer strscpy() instead of strcpy()
+  fbdev: acornfb: Use safer strscpy() instead of strcpy()
+  fbdev: ocfb: Use safer strscpy() instead of strcpy()
 
-[...]
-
->> Yes, I saw that as well and don't have an immediate idea for how
->> to best do it. I saw that you already abstracted the access to
->> the screen_info members in drm_sysfb_screen_info.c, which I think
->> is a step in that direction.
->>
->> I also noticed that efidrm is mostly a subset of vesadrm, so
->> in theory they could be merged back into an x86 drm driver
->> along with the drm_sysfb_screen_info helpers, and have a non-x86
->> driver that constructs a drm_sysfb_device directly from the
->> EFI structures.
->
-> I would not want to have a unifed driver for all-things-screen_info. The 
-> code that can easily be shared is already in the sysfb helpers. But I 
-> don't mind adding a separate driver for EFI's Graphics Output Protocol.
-
-I agree. It is much more maintainable if we have dedicated DRM drivers that
-use shared helpers, than attempting to have a driver for different platforms.
-
-As Thomas explained, the maintance effort is small on the DRM side and he has
-done a lot of work to split simpledrm in efidrm, vesadrm and ofdrm.
+ drivers/video/fbdev/acornfb.c               |  2 +-
+ drivers/video/fbdev/amifb.c                 |  2 +-
+ drivers/video/fbdev/arkfb.c                 |  2 +-
+ drivers/video/fbdev/atafb.c                 | 10 +++++-----
+ drivers/video/fbdev/atmel_lcdfb.c           |  2 +-
+ drivers/video/fbdev/aty/aty128fb.c          |  2 +-
+ drivers/video/fbdev/controlfb.c             |  2 +-
+ drivers/video/fbdev/cyber2000fb.c           |  2 +-
+ drivers/video/fbdev/ep93xx-fb.c             |  2 +-
+ drivers/video/fbdev/fm2fb.c                 |  2 +-
+ drivers/video/fbdev/gbefb.c                 |  2 +-
+ drivers/video/fbdev/geode/gx1fb_core.c      |  2 +-
+ drivers/video/fbdev/geode/gxfb_core.c       |  2 +-
+ drivers/video/fbdev/geode/lxfb_core.c       |  2 +-
+ drivers/video/fbdev/i810/i810-i2c.c         |  2 +-
+ drivers/video/fbdev/i810/i810_main.c        |  2 +-
+ drivers/video/fbdev/matrox/matroxfb_base.c  |  6 +++---
+ drivers/video/fbdev/matrox/matroxfb_crtc2.c |  2 +-
+ drivers/video/fbdev/mb862xx/mb862xxfbdrv.c  |  2 +-
+ drivers/video/fbdev/mmp/fb/mmpfb.c          |  2 +-
+ drivers/video/fbdev/ocfb.c                  |  2 +-
+ drivers/video/fbdev/platinumfb.c            |  2 +-
+ drivers/video/fbdev/pm2fb.c                 |  6 +++---
+ drivers/video/fbdev/pxafb.c                 |  2 +-
+ drivers/video/fbdev/riva/rivafb-i2c.c       |  2 +-
+ drivers/video/fbdev/s3fb.c                  |  2 +-
+ drivers/video/fbdev/sa1100fb.c              |  2 +-
+ drivers/video/fbdev/savage/savagefb-i2c.c   |  2 +-
+ drivers/video/fbdev/sh7760fb.c              |  2 +-
+ drivers/video/fbdev/sis/sis_main.c          | 16 ++++++++--------
+ drivers/video/fbdev/sm501fb.c               |  2 +-
+ drivers/video/fbdev/stifb.c                 |  2 +-
+ drivers/video/fbdev/tdfxfb.c                |  6 +++---
+ drivers/video/fbdev/valkyriefb.c            |  2 +-
+ drivers/video/fbdev/via/viafbdev.c          |  2 +-
+ drivers/video/fbdev/vt8500lcdfb.c           |  2 +-
+ drivers/video/fbdev/vt8623fb.c              |  2 +-
+ drivers/video/fbdev/wm8505fb.c              |  2 +-
+ drivers/video/fbdev/xen-fbfront.c           |  2 +-
+ 39 files changed, 56 insertions(+), 56 deletions(-)
 
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+2.34.1
 
 
