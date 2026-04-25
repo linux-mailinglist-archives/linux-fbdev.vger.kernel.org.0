@@ -1,43 +1,43 @@
-Return-Path: <linux-fbdev+bounces-7078-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7082-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOaqKcVn7GkNYgAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7078-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:05:41 +0200
+	id 8G5iKjtn7Gn9YQAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7082-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:03:23 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B094655D6
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:05:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27EFE465512
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1C7A305E103
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 07:00:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 52B9930565A4
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 07:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E22632F770;
-	Sat, 25 Apr 2026 07:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A093644C3;
+	Sat, 25 Apr 2026 07:00:27 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E3C317173;
-	Sat, 25 Apr 2026 07:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86C63290A0;
+	Sat, 25 Apr 2026 07:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777100424; cv=none; b=Pluaoc1UQNsAGUOnS6pBJFBq1JllaS7XyS1UODhSP9/APPA/Cjr+FZZHhFAw8NgsFDmUMjeiJHCc69kS6rYP8fIxPuDICWyLY759S6quhQKXE0oRCFhPLeJQCAOV32E0QadB/R3YFXb01T3gFbO9G5UYn/skqHSEA4WQTbb+O/0=
+	t=1777100427; cv=none; b=SoE8q6tJGOKulKOaxMf4SjDxZoC8pgClgczdUl1UIFNuvEb+pl6Mlp8Q49Hq+1/nY7NukMFPftXI3TnofDne8EOa6M9ViND/VbZDexz7j6NjdivXJEmcA5TpI0EFrCun9JuB0gOPEehBEa33VY5Hpq2zpx8lYG8oEYHbX8xBHmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777100424; c=relaxed/simple;
-	bh=cNLW1+gfw/w4SbQ5GkL7beFDqct8CSpkNM/5IxfKyMo=;
+	s=arc-20240116; t=1777100427; c=relaxed/simple;
+	bh=Gonxd0iL9Tuk6y5z2YyM12SrWNe71P84mx/Nq1ooZWU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b5Sa0Jln0q+7IIaWhOW0lv0X9Sb/mD801mwKm4tG2i29Ts1O4WAUgnwSNlPaRIrVZEfzjyyRDR61tfNyjXyshutNLERF6LIDFuKFJh2cFpPMPwC2KOP1rL3gaZJCawiAoTwJTvyEgidiCur22sV6kSde3LgYvlL4TLlhpqip3mg=
+	 MIME-Version; b=kedr/uy/7yA91DSRhvGe+uTOBYdbuD+ELV/W8cOuoXe85QW4RjItrZ+LO/WFshS76oJbhlkORtH9jW0US4gltzxkN0JjXW6ug90D2p/b1V/ZGIPPYsDpU+DvEY3apsX4qMoopolxfaG12yH6pdIVD8FegMt+PJ2xw7b0p38B9ek=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 6a2c7650407411f1aa26b74ffac11d73-20260425
+X-UUID: 6b15c40e407411f1aa26b74ffac11d73-20260425
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:fdc010c6-e076-4745-b7e5-e1bed8a59466,IP:0,U
+X-CID-O-INFO: VERSION:1.3.12,REQID:0c821f6f-9d7b-434f-8633-d577e1bb29c1,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:ed903573245299c43d6b840fab10832b,BulkI
+X-CID-META: VersionHash:e7bac3a,CLOUDID:811162c714472847b9bf5bdc8c960aba,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|898,TC:nil,Content:0|15|50,EDM
 	:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
 	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -45,12 +45,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6a2c7650407411f1aa26b74ffac11d73-20260425
+X-UUID: 6b15c40e407411f1aa26b74ffac11d73-20260425
 X-User: aichao@kylinos.cn
 Received: from thinksys.. [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <aichao@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1783447415; Sat, 25 Apr 2026 15:00:16 +0800
+	with ESMTP id 1074413301; Sat, 25 Apr 2026 15:00:18 +0800
 From: Ai Chao <aichao@kylinos.cn>
 To: deller@gmx.de,
 	nicolas.ferre@microchip.com,
@@ -81,9 +81,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-geode@lists.infradead.org,
 	linux-parisc@vger.kernel.org,
 	Ai Chao <aichao@kylinos.cn>
-Subject: [PATCH 16/35] fbdev: wm8505fb: Use safer strscpy() instead of strcpy()
-Date: Sat, 25 Apr 2026 14:59:07 +0800
-Message-Id: <20260425065926.1091168-17-aichao@kylinos.cn>
+Subject: [PATCH 17/35] fbdev: rivafb: Use safer strscpy() instead of strcpy()
+Date: Sat, 25 Apr 2026 14:59:08 +0800
+Message-Id: <20260425065926.1091168-18-aichao@kylinos.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260425065926.1091168-1-aichao@kylinos.cn>
 References: <20260425065926.1091168-1-aichao@kylinos.cn>
@@ -94,7 +94,7 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 19B094655D6
+X-Rspamd-Queue-Id: 27EFE465512
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
@@ -102,28 +102,28 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[29];
-	TAGGED_FROM(0.00)[bounces-7078-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7082-lists,linux-fbdev=lfdr.de];
 	DMARC_NA(0.00)[kylinos.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[gmx.de,microchip.com,bootlin.com,tuxon.dev,armlinux.org.uk,queued.net,gmail.com,HansenPartnership.com,kernel.org,exactco.de,suse.de,vivo.com,linux.dev,c64.rulez.org,linuxfoundation.org,thingy.jp];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[aichao@kylinos.cn,linux-fbdev@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.936];
+	NEURAL_HAM(-0.00)[-0.930];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:mid,kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:mid,kylinos.cn:email]
 
 Use a safer function strscpy() instead of strcpy() for copying to arrays.
 
@@ -131,22 +131,22 @@ Only idiomatic code replacement, and no functional changes.
 
 Signed-off-by: Ai Chao <aichao@kylinos.cn>
 ---
- drivers/video/fbdev/wm8505fb.c | 2 +-
+ drivers/video/fbdev/riva/rivafb-i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/wm8505fb.c b/drivers/video/fbdev/wm8505fb.c
-index 5caf74ca92fb..8d6b530e5ad3 100644
---- a/drivers/video/fbdev/wm8505fb.c
-+++ b/drivers/video/fbdev/wm8505fb.c
-@@ -278,7 +278,7 @@ static int wm8505fb_probe(struct platform_device *pdev)
- 	if (!fbi)
- 		return -ENOMEM;
+diff --git a/drivers/video/fbdev/riva/rivafb-i2c.c b/drivers/video/fbdev/riva/rivafb-i2c.c
+index 6a183375ced1..5ee59be01850 100644
+--- a/drivers/video/fbdev/riva/rivafb-i2c.c
++++ b/drivers/video/fbdev/riva/rivafb-i2c.c
+@@ -91,7 +91,7 @@ static int riva_setup_i2c_bus(struct riva_i2c_chan *chan, const char *name,
+ {
+ 	int rc;
  
--	strcpy(fbi->fb.fix.id, DRIVER_NAME);
-+	strscpy(fbi->fb.fix.id, DRIVER_NAME);
- 
- 	fbi->fb.fix.type	= FB_TYPE_PACKED_PIXELS;
- 	fbi->fb.fix.xpanstep	= 1;
+-	strcpy(chan->adapter.name, name);
++	strscpy(chan->adapter.name, name);
+ 	chan->adapter.owner		= THIS_MODULE;
+ 	chan->adapter.class		= i2c_class;
+ 	chan->adapter.algo_data		= &chan->algo;
 -- 
 2.34.1
 
