@@ -1,43 +1,43 @@
-Return-Path: <linux-fbdev+bounces-7080-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7081-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABpZKMtm7GnoYQAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7080-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:01:31 +0200
+	id oOjAFdNm7GnoYQAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7081-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:01:39 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F2B46548D
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:01:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7764654AA
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 479533037931
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 07:00:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E39B3039C44
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 07:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BC4316199;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDFE33A9E1;
 	Sat, 25 Apr 2026 07:00:25 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DFA23ED6A;
-	Sat, 25 Apr 2026 07:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F93031353C;
+	Sat, 25 Apr 2026 07:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777100425; cv=none; b=FRtWh92/do+P7VQbyt0szbywRIBhsDVjUwuR2sIYPC8b8TFG6hcvxnPgcOw+Xi1H3B/Pp5GkyHYC231KL2lnNh4+glyEWnV0DYbNQBwzfNTRZ8a2iokgnoW7j5uWHCavEHzSm8nFhKtrMHsP9kvVsROj/+i2J+cRhxEhCTmHZTw=
+	t=1777100425; cv=none; b=HOC+xUzug+De6Pkq8BYRsIk2+t//pIs6Qx00qxdQm4ih3/NcvigmcHDSEeq9/ZjuSXO69yFwb6b2e3Z3Fr0/3mc9QXaEGCvqBGgziDPTFHWKMYZ8xpdfvBPQ5f3WJjG/eLZLg7hVA4wuRN9y8j5OBjv4wxMGXZbGEYgOdLx0Ku4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777100425; c=relaxed/simple;
-	bh=33JQMz0higVLKqyA1nH2w0X58eZRRFe2DIYJuMkbihw=;
+	bh=+M6ubjQ9aRc/tyA2IqCtKVan4fpgcZxrZ4Y+DRfcxhE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OZgOvpWQsK5vvngZVfR9M+Kwjyt8NY9bVEQcaxGCqjgKLoJYa2Hu6H6ZNrFpyhXdAxguT7GjLvuJqfNVvIIAEB0larWUHlrUqj6c4hRfx/DZ4jeGlQITb2H9s6s2tl0F5zbBaF2v8/rPbW647XJbBs2uLzyVARaHstkflrfuXGI=
+	 MIME-Version; b=n2GS/rg48lIPAqeINKS6UybZpTIqXe9OJbsYR8uapdBnl3nvfJ30h7nMi+Yh/36cR8n9FJGu+ZHLPN8mQlU+iqbNrhFgtS7pWzOUaHeIu0I/jVgYjL25ZcJgaipIZc3UECqvJaLr0iXDUhvtG6NqZUTKs1DsKIzYsv9QtmTVvQM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 6773645a407411f1aa26b74ffac11d73-20260425
+X-UUID: 685b2c22407411f1aa26b74ffac11d73-20260425
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:e5d59cc5-f32d-463b-896c-a4dc1bf43607,IP:0,U
+X-CID-O-INFO: VERSION:1.3.12,REQID:1317c607-6f95-4648-9c91-0d1abc8a267b,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:fd83a8144feb64fa34790e64a2920d8e,BulkI
+X-CID-META: VersionHash:e7bac3a,CLOUDID:6a84e139e42e31287a3b0b54bb54e1f8,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|898,TC:nil,Content:0|15|50,EDM
 	:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
 	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -45,12 +45,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6773645a407411f1aa26b74ffac11d73-20260425
+X-UUID: 685b2c22407411f1aa26b74ffac11d73-20260425
 X-User: aichao@kylinos.cn
 Received: from thinksys.. [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <aichao@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 732702706; Sat, 25 Apr 2026 15:00:12 +0800
+	with ESMTP id 1943006758; Sat, 25 Apr 2026 15:00:13 +0800
 From: Ai Chao <aichao@kylinos.cn>
 To: deller@gmx.de,
 	nicolas.ferre@microchip.com,
@@ -81,9 +81,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-geode@lists.infradead.org,
 	linux-parisc@vger.kernel.org,
 	Ai Chao <aichao@kylinos.cn>
-Subject: [PATCH 13/35] fbdev: vt8500lcdfb: Use safer strscpy() instead of strcpy()
-Date: Sat, 25 Apr 2026 14:59:04 +0800
-Message-Id: <20260425065926.1091168-14-aichao@kylinos.cn>
+Subject: [PATCH 14/35] fbdev: vt8623fb: Use safer strscpy() instead of strcpy()
+Date: Sat, 25 Apr 2026 14:59:05 +0800
+Message-Id: <20260425065926.1091168-15-aichao@kylinos.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260425065926.1091168-1-aichao@kylinos.cn>
 References: <20260425065926.1091168-1-aichao@kylinos.cn>
@@ -94,7 +94,7 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 17F2B46548D
+X-Rspamd-Queue-Id: BC7764654AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
@@ -102,19 +102,19 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[29];
-	TAGGED_FROM(0.00)[bounces-7080-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7081-lists,linux-fbdev=lfdr.de];
 	DMARC_NA(0.00)[kylinos.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[gmx.de,microchip.com,bootlin.com,tuxon.dev,armlinux.org.uk,queued.net,gmail.com,HansenPartnership.com,kernel.org,exactco.de,suse.de,vivo.com,linux.dev,c64.rulez.org,linuxfoundation.org,thingy.jp];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[aichao@kylinos.cn,linux-fbdev@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -131,22 +131,22 @@ Only idiomatic code replacement, and no functional changes.
 
 Signed-off-by: Ai Chao <aichao@kylinos.cn>
 ---
- drivers/video/fbdev/vt8500lcdfb.c | 2 +-
+ drivers/video/fbdev/vt8623fb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/vt8500lcdfb.c b/drivers/video/fbdev/vt8500lcdfb.c
-index 85c7a99a7d64..d6e061628100 100644
---- a/drivers/video/fbdev/vt8500lcdfb.c
-+++ b/drivers/video/fbdev/vt8500lcdfb.c
-@@ -287,7 +287,7 @@ static int vt8500lcd_probe(struct platform_device *pdev)
- 	if (!fbi)
- 		return -ENOMEM;
+diff --git a/drivers/video/fbdev/vt8623fb.c b/drivers/video/fbdev/vt8623fb.c
+index df984f3a7ff6..521b60b8b3e4 100644
+--- a/drivers/video/fbdev/vt8623fb.c
++++ b/drivers/video/fbdev/vt8623fb.c
+@@ -752,7 +752,7 @@ static int vt8623_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	}
  
--	strcpy(fbi->fb.fix.id, "VT8500 LCD");
-+	strscpy(fbi->fb.fix.id, "VT8500 LCD");
- 
- 	fbi->fb.fix.type	= FB_TYPE_PACKED_PIXELS;
- 	fbi->fb.fix.xpanstep	= 0;
+ 	info->fix.smem_len = info->screen_size;
+-	strcpy(info->fix.id, "VIA VT8623");
++	strscpy(info->fix.id, "VIA VT8623");
+ 	info->fix.type = FB_TYPE_PACKED_PIXELS;
+ 	info->fix.visual = FB_VISUAL_PSEUDOCOLOR;
+ 	info->fix.ypanstep = 0;
 -- 
 2.34.1
 
