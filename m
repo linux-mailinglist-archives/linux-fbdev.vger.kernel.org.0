@@ -1,56 +1,56 @@
-Return-Path: <linux-fbdev+bounces-7084-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7085-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJHgH5lo7GkNYgAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7084-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:09:13 +0200
+	id yL69KUdn7Gn9YQAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7085-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:03:35 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F0346563B
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:09:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77C3465529
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 09:03:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BDE2307A355
-	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 07:01:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1570D3014A1D
+	for <lists+linux-fbdev@lfdr.de>; Sat, 25 Apr 2026 07:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493B8382F2C;
-	Sat, 25 Apr 2026 07:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB3F345CA5;
+	Sat, 25 Apr 2026 07:00:33 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78394345CA5;
-	Sat, 25 Apr 2026 07:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A34B34A3DB;
+	Sat, 25 Apr 2026 07:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777100430; cv=none; b=qYxyoNqsuTWQ38u73FLZ3kzEJGTlfTZMjNRypFmj9qy2PtwwQUTeqvPay6aiXo6h44QwxjWYjIXHu5PZcTg6x7ebSR2vz9q61K6MyyWl4EI7wf9FoqmjKYBT0z3V1gcCccQYnEaLR0QMmU9COoeIjOO3VvbvfFVRMBQYajZO030=
+	t=1777100432; cv=none; b=bmvNWx8TlI0GJ8TtKgOmjEw7erj1V8fWMa8Bmh6uED3BYH9p+YfznljD/4jxZpSkGSuA1Oj27qB1xw6pX6jYgxv536xQ1UPlV6OkCqBTOA6xNYCodMY04DNGCBfZyWMMydE1by4leA/APOPNNIDFTWy1K9jvEf9KDPaTXE7IqKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777100430; c=relaxed/simple;
-	bh=ENYuoviW2JAQWxLbWKk6UXdZpHI0mlCy4SVu01X6CCM=;
+	s=arc-20240116; t=1777100432; c=relaxed/simple;
+	bh=gukY7AYS/X2lF4ah+ofqTbrCgzdvWRI1EOuDfrFZ+Fo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jmCKE9954ONCWOGQ2rFFOoqzAayvPJ/Xk+721yBEz1YpJjhQRSM0Ylo9sObpsajIGPIIpx/3jZtukckzhRaqOl3f/ieWNg06PZWBGPtrocqGiTqyhvPRprheblGscPqDBlO9iFY3V7yzE/HYnneCmy++qvdL8H9yW7UPNdvid9s=
+	 MIME-Version; b=g4eoioFkQ0Ft1Hq0rHzFsVFMDnD/cQZ2/pJ8JvpJo0jjgJK93919OzmtfBFnMLbMuLfCzzads1xLaO8RhqEXV2ecZcKdRZ9ySxHkwXzGf1o1J59Ub1eoNVZVqVNiXF108rPV7DCfkFuJvq9LKlQj8QA9hhCtA77mxf/RogVNniM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 6bfdf940407411f1aa26b74ffac11d73-20260425
+X-UUID: 6ce5a60a407411f1aa26b74ffac11d73-20260425
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:d1826ead-5184-49b4-ab54-bd89ba17c0cc,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:4d7cd59de39a349ee6b3fcc5a4e49fdf,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|898,TC:nil,Content:0|15|50,EDM
+X-CID-O-INFO: VERSION:1.3.12,REQID:39e59a1e-bd96-4760-aeee-7d043f3972ff,IP:0,U
+	RL:0,TC:0,Content:41,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:41
+X-CID-META: VersionHash:e7bac3a,CLOUDID:1cac463a28960947bbd5d6a30f10f1dc,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|898,TC:nil,Content:4|15|50,EDM
 	:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
 	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6bfdf940407411f1aa26b74ffac11d73-20260425
+X-UUID: 6ce5a60a407411f1aa26b74ffac11d73-20260425
 X-User: aichao@kylinos.cn
 Received: from thinksys.. [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <aichao@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 648226386; Sat, 25 Apr 2026 15:00:19 +0800
+	with ESMTP id 1739332319; Sat, 25 Apr 2026 15:00:21 +0800
 From: Ai Chao <aichao@kylinos.cn>
 To: deller@gmx.de,
 	nicolas.ferre@microchip.com,
@@ -81,9 +81,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-geode@lists.infradead.org,
 	linux-parisc@vger.kernel.org,
 	Ai Chao <aichao@kylinos.cn>
-Subject: [PATCH 18/35] fbdev: sh7760fb: Use safer strscpy() instead of strcpy()
-Date: Sat, 25 Apr 2026 14:59:09 +0800
-Message-Id: <20260425065926.1091168-19-aichao@kylinos.cn>
+Subject: [PATCH 19/35] fbdev: savage: Use safer strscpy() instead of strcpy()
+Date: Sat, 25 Apr 2026 14:59:10 +0800
+Message-Id: <20260425065926.1091168-20-aichao@kylinos.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260425065926.1091168-1-aichao@kylinos.cn>
 References: <20260425065926.1091168-1-aichao@kylinos.cn>
@@ -94,7 +94,7 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C9F0346563B
+X-Rspamd-Queue-Id: A77C3465529
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
@@ -102,28 +102,28 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[29];
-	TAGGED_FROM(0.00)[bounces-7084-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7085-lists,linux-fbdev=lfdr.de];
 	DMARC_NA(0.00)[kylinos.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[gmx.de,microchip.com,bootlin.com,tuxon.dev,armlinux.org.uk,queued.net,gmail.com,HansenPartnership.com,kernel.org,exactco.de,suse.de,vivo.com,linux.dev,c64.rulez.org,linuxfoundation.org,thingy.jp];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[aichao@kylinos.cn,linux-fbdev@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.926];
+	NEURAL_HAM(-0.00)[-0.931];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:mid,kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:mid,kylinos.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
 Use a safer function strscpy() instead of strcpy() for copying to arrays.
 
@@ -131,22 +131,22 @@ Only idiomatic code replacement, and no functional changes.
 
 Signed-off-by: Ai Chao <aichao@kylinos.cn>
 ---
- drivers/video/fbdev/sh7760fb.c | 2 +-
+ drivers/video/fbdev/savage/savagefb-i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
-index 130adef2e468..acd70dff3a65 100644
---- a/drivers/video/fbdev/sh7760fb.c
-+++ b/drivers/video/fbdev/sh7760fb.c
-@@ -508,7 +508,7 @@ static int sh7760fb_probe(struct platform_device *pdev)
- 	info->var.transp.length = 0;
- 	info->var.transp.msb_right = 0;
+diff --git a/drivers/video/fbdev/savage/savagefb-i2c.c b/drivers/video/fbdev/savage/savagefb-i2c.c
+index 80fa87e2ae2f..820d1f83669d 100644
+--- a/drivers/video/fbdev/savage/savagefb-i2c.c
++++ b/drivers/video/fbdev/savage/savagefb-i2c.c
+@@ -136,7 +136,7 @@ static int savage_setup_i2c_bus(struct savagefb_i2c_chan *chan,
+ 	int rc = 0;
  
--	strcpy(info->fix.id, "sh7760-lcdc");
-+	strscpy(info->fix.id, "sh7760-lcdc");
- 
- 	/* set the DON2 bit now, before cmap allocation, as it will randomize
- 	 * palette memory.
+ 	if (chan->par) {
+-		strcpy(chan->adapter.name, name);
++		strscpy(chan->adapter.name, name);
+ 		chan->adapter.owner		= THIS_MODULE;
+ 		chan->adapter.algo_data		= &chan->algo;
+ 		chan->adapter.dev.parent	= &chan->par->pcidev->dev;
 -- 
 2.34.1
 
