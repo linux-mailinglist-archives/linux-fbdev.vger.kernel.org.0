@@ -1,152 +1,200 @@
-Return-Path: <linux-fbdev+bounces-7107-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7108-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8L1CAEc672mD+gAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7107-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 12:28:23 +0200
+	id 6MDPNlxg72mHAwEAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7108-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 15:10:52 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02AE0471010
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 12:28:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DCD4732F3
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 15:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3C934302F4BC
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 10:14:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE1B23063D7D
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 13:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434FB3B5302;
-	Mon, 27 Apr 2026 10:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657303B47FF;
+	Mon, 27 Apr 2026 13:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S/MWFHxm"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D5F3B4E87;
-	Mon, 27 Apr 2026 10:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D882F25F4
+	for <linux-fbdev@vger.kernel.org>; Mon, 27 Apr 2026 13:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777284873; cv=none; b=HIPBy2GYEkaNZCBx7pyfylirXwT/TSnNT2YoVMuBNbtq88cs0TtkDccir9Lddr7zREbM9/7fdDUouCsLBZ55reAYyceZ9oJF0xojLxhGKSJKFk5fcOYXGMxu+tGJJmZElajva8W2hhQXswx1KkNlfcKSIpBBCGAfbFys1HRzZBE=
+	t=1777295162; cv=none; b=mkBn90i65gfzYyEePqL3JOn/fcVp06k8fVE9qAlj4DS/toTcSOakhXWpADxuFB2JTSPCk8Zyn8x7qma64pSIJOxDuISExFc1HrzhJThL0OgP/AyDdRubwYyZGUiFBeweYxbfS/DeI6Jt6LHVeX/CD8+YEcCSn+C71Ea7IrDdjnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777284873; c=relaxed/simple;
-	bh=EwGmzFPqzgbncknvZivMRZbDi0fNWaa/Sli5xc1kWf0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tW/GDWoJRWNW+dlFtZqSgj1+QKgLEYO5I7ydzpZheagIvjXfUHEAVVwCS4MY4sQ6GCt5LRMzqsmkNOLn2Tij2V6v2Y9J+ov29JnegxEXbeb2NOl1I4wRiEHSGSBXomC46MYcgh8tZH92lMVd6voDOmenqDcHIDcAY0W8EGsKapg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: dbb47b66422111f1aa26b74ffac11d73-20260427
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:42a87919-8872-4d14-b715-ee17e98e16c3,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:fbda4651c2406ebcf9e57774bb9946c3,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|83|102|898,TC:nil,Content:4|15|50,EDM
-	:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
-	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: dbb47b66422111f1aa26b74ffac11d73-20260427
-X-User: aichao@kylinos.cn
-Received: from thinksys.. [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <aichao@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1929850333; Mon, 27 Apr 2026 18:14:21 +0800
-From: Ai Chao <aichao@kylinos.cn>
-To: deller@gmx.de,
-	nicolas.ferre@microchip.com,
-	alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev,
-	linux@armlinux.org.uk,
-	dilinger@queued.net,
-	adaplas@gmail.com,
-	James.Bottomley@HansenPartnership.com,
-	FlorianSchandinat@gmx.de,
-	alchark@gmail.com,
-	krzk@kernel.org,
-	kees@kernel.org,
-	rene@exactco.de,
-	tzimmermann@suse.de,
-	rongqianfeng@vivo.com,
-	thorsten.blum@linux.dev,
-	chelsyratnawat2001@gmail.com,
-	soci@c64.rulez.org,
-	gregkh@linuxfoundation.org,
-	daniel@thingy.jp,
-	linmq006@gmail.com,
-	fourier.thomas@gmail.com
-Cc: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-geode@lists.infradead.org,
-	linux-parisc@vger.kernel.org
-Subject: Re: Re: [PATCH 03/35] fbdev: sisfb: Use safer strscpy() instead of strcpy()
-Date: Mon, 27 Apr 2026 18:14:17 +0800
-Message-Id: <20260427101417.2199601-1-aichao@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1777295162; c=relaxed/simple;
+	bh=S4pqVnC7SrykP5CG0Cf7mf34BERu4m5QkSgWfBe5Qoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Iv709ILkK7C8bjmcsF00s5+5XARqxp2mmOrI7XaiXZ0UmcYZH5OmygRlIEaGhr/J3ozMZ1N6VaebGObahOYkrY7U1epCfeqSO8Me3Cm/Qc4WJ8zjagIOhals/KNMftA6Hbs0eMT6IaYi3XinpJWE3CjDy0/3Vgoiydy4ltrTV/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S/MWFHxm; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-483487335c2so100229325e9.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 27 Apr 2026 06:06:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777295159; x=1777899959; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F8iqGCzMLvZ/FUHTnqulEZ9CiBEz3wlFLR64nRtCLLQ=;
+        b=S/MWFHxmiycuD3HU0EXzLIkC50oqSfh9RZXXPpjnGWIa5/zFuE5EbIpp3Sj820l6X/
+         +cQUkoUYkXn48mw4z2KPJ5VXbjFZgyI2k404SYQRjnvFMp/PnPNbYnLYACmsQv3RMfHb
+         l5oMqE7CAsIxfZvahOE/XbWt4pIBPKR1p5orA19BeR1PAhJ1kDbQW4CChsp+KekbCs4W
+         1PZCNm6FxpUOivynK2MbzzEabO6KdFjCe4ARpwN/aMcJXddfLMLmK31PBCPe4pySVCgO
+         omkEG+Hscn0lisPIQX6MZQng7vBpncOk5oPXG3HG6mhZgAIl8SboqQCwAajXAwv2q6LP
+         lK0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777295159; x=1777899959;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=F8iqGCzMLvZ/FUHTnqulEZ9CiBEz3wlFLR64nRtCLLQ=;
+        b=qGsCotG/tMlKRAc1jKv1PltHz4iCajDWjSop8neF9xlGF/Zmer7JMCyggnyR1wi562
+         EqYLGtenEBdEPw5ZynCUWYlfiSzynWzgbg8Z3ld5WWL60EUccOEGeCrCaIU3KhRFplR0
+         0BnFBh9OOzIkkNAt2kJdA8i6w8VOHxQ69e6L1tyb2V6eo4JmJ3zLO4opOn9jPMIw7sDj
+         +SCQ6xBDC6MWc6nniNmhDiUMorJYjU4vUTfJ956UH7xkwWbu/7yAtSV7Z7AU4p5pi+Ze
+         r+6QyLEdx5XBx1IGD2tqC+HpJS2QZtLuDtMMpywiA/tVE9GvEw/doCMC2N0duSzMQMAj
+         3pJA==
+X-Forwarded-Encrypted: i=1; AFNElJ+ixvvjVBZSIbqNl4uyARUHgyj3qNdJ5oaUNeI1Q5C8QUHCGxMXRvmyDeKNRxFzMbu0tR/1rEijrawLAw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzW+aVdHMoog8gV9BMVo12aLxlmAcd1kpii7wzEluLOhyC9XocH
+	q65yBWVxs3VgyOL7vZXQR983HDKzOP3Q90hq5WpYFOkg/E6yLtHCmV0s
+X-Gm-Gg: AeBDietXTGl6BL79aM73tBxmHUL1llQG2/AjE62OLTgzgEDgEroKoVAwEi7CVtbVrO7
+	SU9XRAZlA/l2W/U8hbLERZDMylZuK5y24vHfoI3lUCLt6piUIyAFFlX5ICtoFpi6XXFzR6AgKtD
+	krcN33a4tiKO5hnwNAFWGrgJgYVoCguLlQXspLntUtXuim8dNhdNDenWB43eLPr4Tx2jLnRbXs0
+	lWYLtxlVbaUTgYYeBXQdwhkgaMUppaZcGO5wd5A9cXN5tUWAvIXzN5COl4kAhgrYj9RQZhaiAzv
+	c3Ve0A1QYET6elJlizpgk5jVbreJM+yAug5u025GAAadFSwPyBUJxPRZsLmvAI0wI1+N26FGuiL
+	ROFmiegjcDds7c1DlCjNsXIsza9AReoZrg8rHFQnqglu/EODHpHMbUmFyI/gkhso7BXlIhKKmx2
+	A/TBOkvlXoJrjUs2vKCqaEOwXgW80JwisX3SwZlRM6qbdlQdnVaesluAx60tBD5Ph0Gr65HMeVC
+	D8=
+X-Received: by 2002:a05:600c:3150:b0:480:3ad0:93bf with SMTP id 5b1f17b1804b1-488fb7930famr614025895e9.24.1777295159074;
+        Mon, 27 Apr 2026 06:05:59 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb75ab25sm247366475e9.11.2026.04.27.06.05.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 06:05:58 -0700 (PDT)
+Date: Mon, 27 Apr 2026 14:05:55 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Ai Chao <aichao@kylinos.cn>
+Cc: deller@gmx.de, nicolas.ferre@microchip.com,
+ alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev,
+ linux@armlinux.org.uk, dilinger@queued.net, adaplas@gmail.com,
+ James.Bottomley@HansenPartnership.com, FlorianSchandinat@gmx.de,
+ alchark@gmail.com, krzk@kernel.org, kees@kernel.org, rene@exactco.de,
+ tzimmermann@suse.de, rongqianfeng@vivo.com, thorsten.blum@linux.dev,
+ chelsyratnawat2001@gmail.com, soci@c64.rulez.org,
+ gregkh@linuxfoundation.org, daniel@thingy.jp, linmq006@gmail.com,
+ fourier.thomas@gmail.com, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-geode@lists.infradead.org,
+ linux-parisc@vger.kernel.org
+Subject: Re: [PATCH 03/35] fbdev: sisfb: Use safer strscpy() instead of
+ strcpy()
+Message-ID: <20260427140555.4d001050@pumpkin>
+In-Reply-To: <20260427090910.1940231-1-aichao@kylinos.cn>
+References: <20260427090910.1940231-1-aichao@kylinos.cn>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 02AE0471010
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 40DCD4732F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.54 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	FAKE_REPLY(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[kylinos.cn];
-	TAGGED_FROM(0.00)[bounces-7107-lists,linux-fbdev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmx.de,microchip.com,bootlin.com,tuxon.dev,armlinux.org.uk,queued.net,gmail.com,HansenPartnership.com,kernel.org,exactco.de,suse.de,vivo.com,linux.dev,c64.rulez.org,linuxfoundation.org,thingy.jp];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aichao@kylinos.cn,linux-fbdev@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-7108-lists,linux-fbdev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	FREEMAIL_CC(0.00)[gmx.de,microchip.com,bootlin.com,tuxon.dev,armlinux.org.uk,queued.net,gmail.com,HansenPartnership.com,kernel.org,exactco.de,suse.de,vivo.com,linux.dev,c64.rulez.org,linuxfoundation.org,thingy.jp,vger.kernel.org,lists.freedesktop.org,lists.infradead.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[thinksys:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kylinos.cn:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hello Helge
-...
->>> So leaving it as strcpy() is fine - and possibly even better.
->>> The header files might get changed to error strcpy() unless the compiler
->>> knows the source string has a constant length and the destination is
->>> big enough - but that hasn't been done yet.
->> 
->> struct sis_video_info {
->>      char    myid[40];
->> }
->> I have rewritten the code:
->> strcpy(ivideo->myid, "SiS 730-0123456789abcdefghijklmnopqrstuvwxyz0123456789");
->> Used gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3)
->> There was no compiler warning or error.
->
->Sure it would
->But the compiler issued a warning that the string is too big..
->So, such places will be detected at compile time.
+On Mon, 27 Apr 2026 17:09:10 +0800
+Ai Chao <aichao@kylinos.cn> wrote:
 
-gcc-version: gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3)
-aichao@thinksys:~/dev/linux-next$ make W=2 drivers/video/fbdev/sis/sis_main.o
-  CC [M]  drivers/video/fbdev/sis/sis_main.o
+> Hello David and Helge
+> ...
+> > > > -            strcpy(ivideo->myid, "SiS 730");
+> > > > +            strscpy(ivideo->myid, "SiS 730");    
+> > > 
+> > > The compiler knows at build time the length of myid, and the "SIS 730" string.
+> > > Using strscpy() has no benefit here either. Contrary, the code generated
+> > > because of using strscpy() is probably even larger.
+> > > Don't replace such code with strscpy().  
+> 
+> > Both should get converted to a memcpy().  
+> 
+> > If you increase the literal to be too long I'm pretty sure you'll
+> > get a compiler warning/error from strcpy().
+> > OTOH strscpy() is more likely to truncate the string (I'd need to
+> > check).  
+> 
+> > So leaving it as strcpy() is fine - and possibly even better.
+> > The header files might get changed to error strcpy() unless the compiler
+> > knows the source string has a constant length and the destination is
+> > big enough - but that hasn't been done yet.  
+> 
+> struct sis_video_info {
+>     char    myid[40];
+> }
+> I have rewritten the code: 
+> strcpy(ivideo->myid, "SiS 730-0123456789abcdefghijklmnopqrstuvwxyz0123456789");
+> Used gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3)
+> There was no compiler warning or error. 
+> The strcpy copies the entire string into myid(causing a buffer overflow),
+> whereas strscpy only copies 40 characters into myid according to its size.
 
-There was no error and no warning.
+It depends on what is in string.h and the enabled warnings.
+Testing on 'godbolt' gives an error with both gcc and clang without any
+special compilation options.
 
-Thanks,
-Ai Chao
+The linux kernel build errors strcpy() at line 799 of fortify-string.h.
+strscpy() doesn't (and really shouldn't) generate an error since it is
+expected to truncate overlong strings.
+
+Since you should (at least) test compile any patches before sending them
+(even trivial ones) you ought to have things setup to have checked what
+happens in a kernel build.
+Ideally you should also run the code.
+
+This really means that strcpy() is better than strscpy() for copying fixed
+length strings into arrays.
+
+	David
+
+> 
+> Thanks,
+> Ai Chao
+> 
+
 
