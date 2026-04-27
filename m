@@ -1,131 +1,152 @@
-Return-Path: <linux-fbdev+bounces-7106-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7107-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EdqJOsv72mb8wAAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7106-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 11:44:11 +0200
+	id 8L1CAEc672mD+gAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7107-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 12:28:23 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D252C470146
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 11:44:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AE0471010
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 12:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63811305761B
-	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 09:40:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3C934302F4BC
+	for <lists+linux-fbdev@lfdr.de>; Mon, 27 Apr 2026 10:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D64F3B3896;
-	Mon, 27 Apr 2026 09:40:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PI13SUlr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434FB3B5302;
+	Mon, 27 Apr 2026 10:14:34 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96053B2FF1
-	for <linux-fbdev@vger.kernel.org>; Mon, 27 Apr 2026 09:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D5F3B4E87;
+	Mon, 27 Apr 2026 10:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777282848; cv=none; b=sylps1CLxC2i4qEC8E5WKw2X12sRqYn04W6kc0Z0qUcytL0UJkt5atSBRf/dkO8/R7rjx5ceLkqooTGGCSu2KarmjIoStrsf4/18UKDQOyeF0ZtNRbI5n/qovyShNNilh4ZAcB1/gaMT3OZZy2L22GExst/G39u13Rpad0q13w0=
+	t=1777284873; cv=none; b=HIPBy2GYEkaNZCBx7pyfylirXwT/TSnNT2YoVMuBNbtq88cs0TtkDccir9Lddr7zREbM9/7fdDUouCsLBZ55reAYyceZ9oJF0xojLxhGKSJKFk5fcOYXGMxu+tGJJmZElajva8W2hhQXswx1KkNlfcKSIpBBCGAfbFys1HRzZBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777282848; c=relaxed/simple;
-	bh=p3UMujP9GxlC4pAKxmVcyI2i6Qyxet+WaXjZz8D9hsA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gvnpZZj6arSWEiyXSSA97tWruF4/oztlRhaZMwc+yT4om4zyuC0aksJS32CbGGtyCR85f0Y0IKuJB2Wse5nh7/iZ1IGvf7+T01J9FVSDnRPZ25fODiufqpUIB0/nztRQ13pFbrLWeNMMuF+UQK8a38xLT9bYC2/ycsrjbaK8PUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PI13SUlr; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5C7CC4E42B32;
-	Mon, 27 Apr 2026 09:40:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 33202600D1;
-	Mon, 27 Apr 2026 09:40:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 912A21072242B;
-	Mon, 27 Apr 2026 11:40:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777282844; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=gB5C1Vp+oUxvDgPzpB0utak4Vhj0PTvajTmSSeRNoUw=;
-	b=PI13SUlrLSvWKiKCuUvsCVSaqpQtv48TJ7ik+wztK3L7F351Pt+TzaBzPHwS05rNsMcZv9
-	Kd+XuvhqvhUOU1WlM73Dnsh0B3rIyqVyvT0XNJSHCU2W26Tkq29HfraRU/X+PbbWXnDvfN
-	5ME5RjLIERQ5i3mJRCJmPrsjxn6u5vFurj8VbBs8eCk7nMMdUFZM+o6eIgBYICtNvy6vV3
-	KEHA4ZNXFQeNEADOmEf4xu73NYgF/d5khVg74RdrtR7OSEXnZFHbWY/wucA2fZP/JpcKYb
-	XL9eMohETsE7iTxFjPb3WmN1pSPbu8KefTIOIuIIU4G8dNO4mKaiNjhzOu9MDw==
-From: Thomas Richard <thomas.richard@bootlin.com>
-Date: Mon, 27 Apr 2026 11:40:34 +0200
-Subject: [PATCH v2 2/2] MAINTAINERS: Add cgbc backlight driver
+	s=arc-20240116; t=1777284873; c=relaxed/simple;
+	bh=EwGmzFPqzgbncknvZivMRZbDi0fNWaa/Sli5xc1kWf0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tW/GDWoJRWNW+dlFtZqSgj1+QKgLEYO5I7ydzpZheagIvjXfUHEAVVwCS4MY4sQ6GCt5LRMzqsmkNOLn2Tij2V6v2Y9J+ov29JnegxEXbeb2NOl1I4wRiEHSGSBXomC46MYcgh8tZH92lMVd6voDOmenqDcHIDcAY0W8EGsKapg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: dbb47b66422111f1aa26b74ffac11d73-20260427
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:42a87919-8872-4d14-b715-ee17e98e16c3,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:e7bac3a,CLOUDID:fbda4651c2406ebcf9e57774bb9946c3,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|83|102|898,TC:nil,Content:4|15|50,EDM
+	:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
+	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: dbb47b66422111f1aa26b74ffac11d73-20260427
+X-User: aichao@kylinos.cn
+Received: from thinksys.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <aichao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1929850333; Mon, 27 Apr 2026 18:14:21 +0800
+From: Ai Chao <aichao@kylinos.cn>
+To: deller@gmx.de,
+	nicolas.ferre@microchip.com,
+	alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev,
+	linux@armlinux.org.uk,
+	dilinger@queued.net,
+	adaplas@gmail.com,
+	James.Bottomley@HansenPartnership.com,
+	FlorianSchandinat@gmx.de,
+	alchark@gmail.com,
+	krzk@kernel.org,
+	kees@kernel.org,
+	rene@exactco.de,
+	tzimmermann@suse.de,
+	rongqianfeng@vivo.com,
+	thorsten.blum@linux.dev,
+	chelsyratnawat2001@gmail.com,
+	soci@c64.rulez.org,
+	gregkh@linuxfoundation.org,
+	daniel@thingy.jp,
+	linmq006@gmail.com,
+	fourier.thomas@gmail.com
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-geode@lists.infradead.org,
+	linux-parisc@vger.kernel.org
+Subject: Re: Re: [PATCH 03/35] fbdev: sisfb: Use safer strscpy() instead of strcpy()
+Date: Mon, 27 Apr 2026 18:14:17 +0800
+Message-Id: <20260427101417.2199601-1-aichao@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-backlight-cgbc-remove-x86-dependency-v2-2-da9f2375a34a@bootlin.com>
-References: <20260427-backlight-cgbc-remove-x86-dependency-v2-0-da9f2375a34a@bootlin.com>
-In-Reply-To: <20260427-backlight-cgbc-remove-x86-dependency-v2-0-da9f2375a34a@bootlin.com>
-To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Thomas Richard <thomas.richard@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: D252C470146
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 02AE0471010
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	FAKE_REPLY(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-7106-lists,linux-fbdev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,gmx.de];
-	DKIM_TRACE(0.00)[bootlin.com:+];
+	DMARC_NA(0.00)[kylinos.cn];
+	TAGGED_FROM(0.00)[bounces-7107-lists,linux-fbdev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmx.de,microchip.com,bootlin.com,tuxon.dev,armlinux.org.uk,queued.net,gmail.com,HansenPartnership.com,kernel.org,exactco.de,suse.de,vivo.com,linux.dev,c64.rulez.org,linuxfoundation.org,thingy.jp];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[28];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.richard@bootlin.com,linux-fbdev@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aichao@kylinos.cn,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,bootlin.com:dkim,bootlin.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[thinksys:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kylinos.cn:mid]
 
-Add missing backlight driver in CONGATEC BOARD CONTROLLER entry.
+Hello Helge
+...
+>>> So leaving it as strcpy() is fine - and possibly even better.
+>>> The header files might get changed to error strcpy() unless the compiler
+>>> knows the source string has a constant length and the destination is
+>>> big enough - but that hasn't been done yet.
+>> 
+>> struct sis_video_info {
+>>      char    myid[40];
+>> }
+>> I have rewritten the code:
+>> strcpy(ivideo->myid, "SiS 730-0123456789abcdefghijklmnopqrstuvwxyz0123456789");
+>> Used gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3)
+>> There was no compiler warning or error.
+>
+>Sure it would
+>But the compiler issued a warning that the string is too big..
+>So, such places will be detected at compile time.
 
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+gcc-version: gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3)
+aichao@thinksys:~/dev/linux-next$ make W=2 drivers/video/fbdev/sis/sis_main.o
+  CC [M]  drivers/video/fbdev/sis/sis_main.o
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2fb1c75afd16..15b8db0721ea 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6474,6 +6474,7 @@ F:	drivers/gpio/gpio-cgbc.c
- F:	drivers/hwmon/cgbc-hwmon.c
- F:	drivers/i2c/busses/i2c-cgbc.c
- F:	drivers/mfd/cgbc-core.c
-+F:	drivers/video/backlight/cgbc_bl.c
- F:	drivers/watchdog/cgbc_wdt.c
- F:	include/linux/mfd/cgbc.h
- 
+There was no error and no warning.
 
--- 
-2.53.0
-
+Thanks,
+Ai Chao
 
