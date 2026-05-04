@@ -1,46 +1,46 @@
-Return-Path: <linux-fbdev+bounces-7148-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7150-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELu1OHCs+Gn2xgIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7148-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 04 May 2026 16:25:52 +0200
+	id QIdMKG+y+GkdzAIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7150-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 04 May 2026 16:51:27 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0A34BF5DF
-	for <lists+linux-fbdev@lfdr.de>; Mon, 04 May 2026 16:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B92324C0176
+	for <lists+linux-fbdev@lfdr.de>; Mon, 04 May 2026 16:51:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2B4DF300A59A
-	for <lists+linux-fbdev@lfdr.de>; Mon,  4 May 2026 14:13:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6E3F1307CE5A
+	for <lists+linux-fbdev@lfdr.de>; Mon,  4 May 2026 14:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC4B377575;
-	Mon,  4 May 2026 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27023E51F5;
+	Mon,  4 May 2026 14:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/9Fchfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiVDp5ej"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585423AA4F8;
-	Mon,  4 May 2026 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEDD3E51F0;
+	Mon,  4 May 2026 14:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777904018; cv=none; b=mY1j5UKe08gaJc/Bgmqw/M9hpwOWfXTGSA1CeeaCRn0Uxl58gb9KwmD0WhGOypib2x8kfjJvil//2/zf4hQTWJHuBret5RMXpInVVsPIfWaYFtE5FQhr+dsOdR0k1F5gRx+wKhNKyDGmt5lW7BLqYqKLS7AFUyMGJU6fmE6dVU0=
+	t=1777904700; cv=none; b=g6GVZx/pngT7YQZFPxjIGLUoDe8dUpaVaZ1uDdzdJFF/MmV7PtqAAyN2MOVOwe1LycTFo2iIxGwsD2Tdp6jvjA19U8pddpeJWptmsWBT0KMGAUgQ0nuazXwkuWDmR49MCdLCVPZIX0oosLKQPP1pawQ7upV9Y2F5WzuBk3RcqQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777904018; c=relaxed/simple;
-	bh=hLcl7R2ZTtN05pxwCmIHLdmy6ua4QQmzONOfisUhQWs=;
+	s=arc-20240116; t=1777904700; c=relaxed/simple;
+	bh=/YR6w9Cd/NH2f4RdpEJJ57enQ3LRY297wpXUGq9eRFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lxs8q//FbE1/QcYm8ahp71/2LiSXWxT38ORbOthuwYWewTG2YU6UYzaGryObqJhlM1XzncAiKq8DIYtksJe7M0JO3b/Yw76433o+liUhRTil3FtPAJv3cbyfDYrBUiBJ0H4RfTg7JZoabWlHJ2ea2ztkWVERkZT4d+wu5BXx2mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/9Fchfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2747C2BCB8;
-	Mon,  4 May 2026 14:13:37 +0000 (UTC)
+	 MIME-Version; b=XIrraHdO+kwHn+zGXm431f+JNTXc8G8tb3QeDIhOIwOWM+YOkaCA6NXY0eOq5NL6Ejcj5UNZ9KQtPpU28t9BuJzlpuWAqHPqDlJy2B+pPRdLV2dohWgjz8OVUrJ4eRQcNHFGGpsbIqSh8UnZpL13vUzUGqDoZhwPVLNoV+CFNjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiVDp5ej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEB7C2BCB8;
+	Mon,  4 May 2026 14:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777904018;
-	bh=hLcl7R2ZTtN05pxwCmIHLdmy6ua4QQmzONOfisUhQWs=;
+	s=korg; t=1777904700;
+	bh=/YR6w9Cd/NH2f4RdpEJJ57enQ3LRY297wpXUGq9eRFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/9Fchfn5RboHx4j++HtfDna6g2ZgXEcqbqkDTa4oByl/oFg6B+mdaLKbF4qebwCX
-	 5e+V3/PHkC9nP5CyCS1EjudPwcRGyv1pVFue1RA3U10DnxuTN1FAwZxO/6X9AiGvVY
-	 AVLIam1gQ1vX+zfUB89T7X7ZzQgpWt2My5MEiP9U=
+	b=NiVDp5ejFdoxoUNtEdd4270P/FlFHzH0SO+DMYq0LxWvN5ghJjVdr9bARIUqex7QM
+	 RobrwuaINAjIWL1kCNE0ui3/oNE7bc8mNZ03rOxS0fVBCPnXCpspsjfrYmsRKrHVdf
+	 99BTuxWnzNwADiQ6edGkF0mGe4vZOdJW9AqLNE34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Javier Martinez Canillas <javierm@redhat.com>,
 	Hans de Goede <hansg@kernel.org>,
 	linux-fbdev@vger.kernel.org
-Subject: [PATCH 6.18 151/275] firmware: google: framebuffer: Do not unregister platform device
-Date: Mon,  4 May 2026 15:51:31 +0200
-Message-ID: <20260504135148.546551690@linuxfoundation.org>
+Subject: [PATCH 6.12 107/215] firmware: google: framebuffer: Do not unregister platform device
+Date: Mon,  4 May 2026 15:52:06 +0200
+Message-ID: <20260504135134.059961733@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260504135142.929052779@linuxfoundation.org>
-References: <20260504135142.929052779@linuxfoundation.org>
+In-Reply-To: <20260504135130.169210693@linuxfoundation.org>
+References: <20260504135130.169210693@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0B0A34BF5DF
+X-Rspamd-Queue-Id: B92324C0176
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -82,7 +82,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7148-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7150-lists,linux-fbdev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -96,9 +96,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,chromium.org:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -138,7 +138,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/firmware/google/framebuffer-coreboot.c
 +++ b/drivers/firmware/google/framebuffer-coreboot.c
-@@ -81,19 +81,10 @@ static int framebuffer_probe(struct core
+@@ -67,19 +67,10 @@ static int framebuffer_probe(struct core
  						 sizeof(pdata));
  	if (IS_ERR(pdev))
  		pr_warn("coreboot: could not register framebuffer\n");
@@ -158,7 +158,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static const struct coreboot_device_id framebuffer_ids[] = {
  	{ .tag = CB_TAG_FRAMEBUFFER },
  	{ /* sentinel */ }
-@@ -102,7 +93,6 @@ MODULE_DEVICE_TABLE(coreboot, framebuffe
+@@ -88,7 +79,6 @@ MODULE_DEVICE_TABLE(coreboot, framebuffe
  
  static struct coreboot_driver framebuffer_driver = {
  	.probe = framebuffer_probe,
