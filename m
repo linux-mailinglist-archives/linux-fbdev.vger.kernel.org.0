@@ -1,204 +1,119 @@
-Return-Path: <linux-fbdev+bounces-7199-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7200-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CTKAGbm1AmrFvwEAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7199-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2026 07:08:09 +0200
+	id wGudHUi/AmoUwQEAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7200-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2026 07:48:56 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4114519BE5
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2026 07:08:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E078C51A6B8
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2026 07:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 504DB3027977
-	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2026 05:08:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18D0C30BD4D1
+	for <lists+linux-fbdev@lfdr.de>; Tue, 12 May 2026 05:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0342874F8;
-	Tue, 12 May 2026 05:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770843C1976;
+	Tue, 12 May 2026 05:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D1eFl37/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVi+rA53"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687B51B87C9
-	for <linux-fbdev@vger.kernel.org>; Tue, 12 May 2026 05:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB4E388E52;
+	Tue, 12 May 2026 05:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778562486; cv=none; b=qfWjAL4qzSJK8gmnQ+DpNAmm+q2d2DjceBZg4miZope0Y7lJPSoSEC4kJQHIVEi2jYc9f0PGgOl8jd6fFc0XQQ61OXLXMipLYn9BNFGnoifqfBk5WoVdTQdWyUjQ5yKxmTLl7/v1oHU11MIgpTy3gP27SloB0iGPQheb6wMelm8=
+	t=1778564168; cv=none; b=NBa/2RjMKwLd9C+GOYqRoIdrBiBu21AeNIJcfQ2dcOaVMCWPxkZk4EN8TJAztq5yY6pvuNUlie/7omCuzXdHb7UXXEogy0XVxDCL69VuoGS+GbNryqBPnAOWVBHnmZplxOVliuc/IQNcnD+8x495S56+AHZR++BgOtrDz6bEan0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778562486; c=relaxed/simple;
-	bh=BAuthF2Z16WH+zfDEHk3KKdJ2eXOVPk1jSTNkvFdwRk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bxv3FWr31xjMuvHYpc14UZE3jkHDK/uF66HPOgBaLMQ4PpDbWEZrrSDjBSAEz6IoxO5c5EiPqNfdl1/P09AIPs452DT0EzQXgatbN0/v+FrqGwqZWhXBy05qlAQ9qV2e6x0Zds0wwr89Dg/BzwhYtMrOh/gRrqdKCYhw/dAJ8i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D1eFl37/; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-83945063f70so2719272b3a.0
-        for <linux-fbdev@vger.kernel.org>; Mon, 11 May 2026 22:08:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778562485; x=1779167285; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=upF+QNLvJv5Mrb2znPY+HkCjKz2u/xiqje/4qNyRhbA=;
-        b=D1eFl37/xQBJMgrXHEcTK0g6LC+BzwhyqLqu5Pdglj5ZSXK+q+9luZ0EctU8sQFDIr
-         VhkPUZJMtHDcCR/EJ5Y5CTPBRLF2NmocXKmMHOQJ44eLgODSX6n9FAEFkseotTwyJ+s6
-         qrvTZEsa1MB2UF7uN80bOPTQYvyn/g7Ae7UyQcFrNNmxqpEsAKQNsE50RtYkGTIMNAvG
-         0DJM/xV0OO/yeZyub7iMLaByauvNaRcc2o40qHfI6sY2x1jQlr1fEDrq9xay/xOsBbKg
-         dumZGaGmopKy9HBJ+rIV+WypnJi+y4DrMGfw192WP4kVJ9q0Y+TLa2HIpvTecLJE81Fe
-         RDYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778562485; x=1779167285;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=upF+QNLvJv5Mrb2znPY+HkCjKz2u/xiqje/4qNyRhbA=;
-        b=frvybZQoF/5zuIuqQBFevKhiv157VnBbEclel5mCZm0n0lpG+9DHM2RxpA68jBjmDG
-         0JTNEWSnjAmy9gCRD6gGzV7BjMyKZPH/gXG2oU+d7CXasIIF2kfDkS8YgufRfhJvxF99
-         v0uZiEkdsPRjTX40WVLDhf/oy/0jt4oqeul2Gq1WXqqYNu/ecZMsHivlZs/L6GY7zahA
-         Kky+aNGpUbnA37/pnj/mps7LGHXiW/imTlJ9bX5X+Oq/3OOZO83887KPj1n/N4QIe5wv
-         11ZPcavIJHSjoA1hXSuOuaotU39wrEFnV2FLge1XBiOuA80/SUsisnLDniWkg/VJRlWk
-         iaRQ==
-X-Gm-Message-State: AOJu0Yw5Y7MsI7XKNpvLdkvfaz10MuromuYBv5g2BCw1nsjEx29SKFAj
-	KDKbjkdhKhZaqnHk1eO9Lp0BQM0fKMJjvm4cacFW9ip06kvQ5xC2xnbo
-X-Gm-Gg: Acq92OF4KBMH38ZADC1DiGjoKL8JYU/ZrI56mpvjHpJanMzd9rDl/iqeeWgucMrUw0K
-	W8KDV7XguDD4xLk4hPfK1SropkvJN3rB9MUCSywhKl/enstxbYnGTS/TSH9k/oVx55n2wH6i4k/
-	hzTjL19p0s1/0zfl6jlPawW1OCFpX2EEknDLS6mTfZPgA6gP9mAG+hYH7W1iGjAgWaFr+DG7Trl
-	oMx4HRzbf2ci6cj6UmND7zTjBm2JBt5iFVJn02zANZCY7LapR7OBE11mCHUAc5KnIjRmzZCLIFd
-	Ih1lN7xgfDYPvpbnclbrXh0tilINwnKfKK9FOlRzvh1UBUolJAXSXN2a6MVmdTCzQ/3hSUhwk3O
-	0kKUXY48dEZMYGdVjdVlCGK2SiwJHFy0NBEhOQP3n44RjPmSWeCjy/mzagvXQmbFr9mJRuToUOQ
-	I2Wap1BGJkCbtFUmXMtzU2lu7QzKf6bYjNTb5YWGcazl/OV++9cWDYcWcy0WJRNnlZKtF9jvmMv
-	hZgO0G0iQlBnnk=
-X-Received: by 2002:a05:6a00:3981:b0:82f:39df:dd54 with SMTP id d2e1a72fcca58-83ee83021e3mr2137334b3a.8.1778562484707;
-        Mon, 11 May 2026 22:08:04 -0700 (PDT)
-Received: from localhost.localdomain ([2404:7c00:52:d485:aae2:91ff:fe57:5e15])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839679c7b92sm21645449b3a.29.2026.05.11.22.08.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 22:08:04 -0700 (PDT)
-From: Chhabilal Dangal <yogeshdangal66@gmail.com>
-To: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	s=arc-20240116; t=1778564168; c=relaxed/simple;
+	bh=DZH5yH5vZbTuff6CKFBxrdPNRi5PhD/0sETkrpzSgX8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YG+1H3CpNp0QryQsMh+CMFkrGfzwYbUd57rXKb3VSkW1YUsRxzyGamN6MXFKTF0oLe4yyGDuZjEhBdbaI3p/3hQ+VhI2FsYrSnrLyoBUY3vwpElPKEx/fNIx5VeQ/+zrfTLmjttSfBmwM++JunxUGstRwfffzGEFwfaAEvQ783Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVi+rA53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E2BC4AF18;
+	Tue, 12 May 2026 05:36:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778564167;
+	bh=DZH5yH5vZbTuff6CKFBxrdPNRi5PhD/0sETkrpzSgX8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aVi+rA53fQYulcZb7kAiPI+b7sf1jNogk8gH/VcsbOTpHfMvoYZY0zw6Rze+4U1ES
+	 +Q9lvuc51/kBGUJ2lNvwSgrQJMK1Ar6eFZ8sXF6Bn+JHVnuGmtt8srjdinObYopT45
+	 OdWW8cmifoFPclQQvP1NQOcBfUw208V2GAncKAaI=
+Date: Tue, 12 May 2026 07:35:22 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alone <yogeshdangal66@gmail.com>
+Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
 	Teddy Wang <teddy.wang@siliconmotion.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Chhabilal Dangal <yogeshdangal66@gmail.com>
-Subject: [PATCH v1 2/2] staging: sm750fb: remove unused functions
-Date: Tue, 12 May 2026 10:52:25 +0545
-Message-ID: <20260512050725.58408-1-yogeshdangal66@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] staging: sm750fb: Keep g_fbmode array non-const
+Message-ID: <2026051255-ditto-stainless-e4ba@gregkh>
+References: <20260511170245.53556-1-yogeshdangal66@gmail.com>
+ <2026051150-yearbook-detention-49d8@gregkh>
+ <CAF9nfaDfdBKUnC6sVN8w84ruH5NkSxm8cqXN8JCWH0RESff4Rg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B4114519BE5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAF9nfaDfdBKUnC6sVN8w84ruH5NkSxm8cqXN8JCWH0RESff4Rg@mail.gmail.com>
+X-Rspamd-Queue-Id: E078C51A6B8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[gmail.com,siliconmotion.com,linuxfoundation.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-7200-lists,linux-fbdev=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-7199-lists,linux-fbdev=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[yogeshdangal66@gmail.com,linux-fbdev@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.968];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,siliconmotion.com,vger.kernel.org,lists.linux.dev];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
 X-Rspamd-Action: no action
 
-sm750_hw_cursor_set_data2() in sm750_cursor.c is defined and declared
-but never called anywhere in the driver.
+On Tue, May 12, 2026 at 12:48:05AM +0545, Alone wrote:
+> Thanks for the clarification and guidance.
+> 
+> I want to learn the correct workflow. As a student contributor, what checks
+> and testing steps should I always perform before sending a patch?
 
-sm750_enable_i2c() in ddk750_power.c is similarly defined and declared
-but has no callers. The software I2C implementation (ddk750_swi2c.c)
-uses GPIO directly rather than the I2C gate.
+Please start with not top-posting and sending html email :)
 
-Remove both dead functions and their declarations per the TODO item
-to refine the code and remove unused code.
+After that, go through the kernelnewbies.org first-patch tutorial, as
+well as the free Linux Foundation kernel development online class.
+Between those two, you should have a good basis for working on this
+correctly.
 
-Tested by building the full kernel and module with CONFIG_FB_SM750=m
-on x86_64:
-  make -j$(nproc)
-  make M=drivers/staging/sm750fb modules
-Signed-off-by: Chhabilal Dangal <yogeshdangal66@gmail.com>
----
- drivers/staging/sm750fb/ddk750_power.c | 16 ----------------
- drivers/staging/sm750fb/ddk750_power.h |  5 -----
- drivers/staging/sm750fb/sm750_cursor.h |  2 --
- 3 files changed, 23 deletions(-)
+Also read all of the documentation we have about submitting a patch.
+People wrote that for a reason, don't ignore it :)
 
-diff --git a/drivers/staging/sm750fb/ddk750_power.c b/drivers/staging/sm750fb/ddk750_power.c
-index 12834f78eef7..1f7e0ec1d02b 100644
---- a/drivers/staging/sm750fb/ddk750_power.c
-+++ b/drivers/staging/sm750fb/ddk750_power.c
-@@ -127,19 +127,3 @@ void sm750_enable_gpio(unsigned int enable)
- 	sm750_set_current_gate(gate);
- }
- 
--/*
-- * This function enable/disable the I2C Engine
-- */
--void sm750_enable_i2c(unsigned int enable)
--{
--	u32 gate;
--
--	/* Enable I2C Gate */
--	gate = peek32(CURRENT_GATE);
--	if (enable)
--		gate |= CURRENT_GATE_I2C;
--	else
--		gate &= ~CURRENT_GATE_I2C;
--
--	sm750_set_current_gate(gate);
--}
-diff --git a/drivers/staging/sm750fb/ddk750_power.h b/drivers/staging/sm750fb/ddk750_power.h
-index 5cbb11986bb8..1c4f054d7276 100644
---- a/drivers/staging/sm750fb/ddk750_power.h
-+++ b/drivers/staging/sm750fb/ddk750_power.h
-@@ -33,9 +33,4 @@ void sm750_enable_dma(unsigned int enable);
-  */
- void sm750_enable_gpio(unsigned int enable);
- 
--/*
-- * This function enable/disable the I2C Engine
-- */
--void sm750_enable_i2c(unsigned int enable);
--
- #endif
-diff --git a/drivers/staging/sm750fb/sm750_cursor.h b/drivers/staging/sm750fb/sm750_cursor.h
-index 88fa02f6377a..51ba0da0270c 100644
---- a/drivers/staging/sm750fb/sm750_cursor.h
-+++ b/drivers/staging/sm750fb/sm750_cursor.h
-@@ -10,6 +10,4 @@ void sm750_hw_cursor_set_pos(struct lynx_cursor *cursor, int x, int y);
- void sm750_hw_cursor_set_color(struct lynx_cursor *cursor, u32 fg, u32 bg);
- void sm750_hw_cursor_set_data(struct lynx_cursor *cursor, u16 rop,
- 			      const u8 *data, const u8 *mask);
--void sm750_hw_cursor_set_data2(struct lynx_cursor *cursor, u16 rop,
--			       const u8 *data, const u8 *mask);
- #endif
--- 
-2.54.0
+thanks,
 
+greg k-h
 
