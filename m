@@ -1,168 +1,115 @@
-Return-Path: <linux-fbdev+bounces-7257-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7258-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDPoAv1KB2pZwwIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7257-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2026 18:34:05 +0200
+	id yEFHE2FPB2rBxgIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7258-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2026 18:52:49 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF84553790
-	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2026 18:34:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CE5554164
+	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2026 18:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 75A783120BBA
-	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2026 16:14:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B37233859E6
+	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2026 16:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6073E0085;
-	Fri, 15 May 2026 16:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC3D47279E;
+	Fri, 15 May 2026 16:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6fVYy9t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rm0aXw47"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C86280035;
-	Fri, 15 May 2026 16:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD1E3F6C51;
+	Fri, 15 May 2026 16:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861608; cv=none; b=eA3SpChQp2H7LqYdOrPjdlFXNEIXQrFfaE15RE4OdIDyGJynqZ5wEPonq2QDSJ/3cqgTh1nrMKNjb2LhPOg8UfgJRpj51X8VVdaXjuAOPNWdqggCWCQTw3bjeasNNaE8JRAa4OCgXq561vsMtYiqr7thh5FLc6xeOUqf9yNI2oE=
+	t=1778861804; cv=none; b=fwXzxXW643fmB714WDHNjM9y8uTa1or9P/uF1CmAOBLKDjdebiqkMAebmDDAsLIBFPnoNyOCllU3X7+OUVPUYxI8h9GgAiFpHfSq4CYFr1NEGvU1vYhCfV6nTnxxaSIIVHzhjWUyyDTHaR4v2ih2m1PVLe2rIGOJ5dlH8ZaXdLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861608; c=relaxed/simple;
-	bh=K//Kw4tO7eUvcykpXn+WzuXGhlwcZVGOUUAzD/U161k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTDpydL/D1WbahpzYPn2Qaw+6MILQTF2bi54g83XXVNAZN8+Q2cSKC5GvWRcEDCB+1n5JorV8RFdHTrp4xWqG93HzyRd0BlUn4bBEoBuMzAzNUxFNs1356uKOi4EVTRJPu1vA3HAKYTRajmk4IozLWgSr7KaSFlb0Wl7Vvhaf6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6fVYy9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B2FC2BCF5;
-	Fri, 15 May 2026 16:13:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1778861608;
-	bh=K//Kw4tO7eUvcykpXn+WzuXGhlwcZVGOUUAzD/U161k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6fVYy9t07Oh1mhGzQgyIc9y39vBULfKLgdNPDU1W6lWWXEYyMHdGs6LfCnmWWtOe
-	 kEn8UiXaGbtg20IEORq254+DaqvvreBvh7KHGv0PQA4NZ+IrI+kXtuzEBal8dY6HxL
-	 Jc6+/ANGkPxMXgcQ0auZQhzOase1BlZ0s7lalWRE=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Julius Werner <jwerner@chromium.org>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Hans de Goede <hansg@kernel.org>,
-	linux-fbdev@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 395/474] firmware: google: framebuffer: Do not unregister platform device
-Date: Fri, 15 May 2026 17:48:24 +0200
-Message-ID: <20260515154723.590815875@linuxfoundation.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1778861804; c=relaxed/simple;
+	bh=mqYa/GHvUQdJjr9Q95SDUrpGgPrZMqy7TvdIMziLca4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F8ejHZRvOat+F/pOzH+zpdyGckD17uSwL053f/H7I5gYQJW0WgW5hsqHltL5Rp/hwgCompI8IgR3AXDgzGVy0flnNfnX2vWDGDHk3HgAnPQbNGfHMBQEUiqLGaCAClV6L1udmHibbbZAWMZYCIIRCxngQkM2kfkNduTnVsEDdgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rm0aXw47; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BCCC2BCB0;
+	Fri, 15 May 2026 16:16:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778861804;
+	bh=mqYa/GHvUQdJjr9Q95SDUrpGgPrZMqy7TvdIMziLca4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rm0aXw475XclSOQxzbBcwZmoJvlAcMjc/q9W7OMqBVQu7sP6shKwJ9Z+kMjOl2eMX
+	 JuusKkOGT+DqKZhtyGCVb7YQffUPqnz4cq0gR/oD0MQAXDw7lqa4yJKDE1i9eQzISm
+	 Zsrih3IKg28VGKiLPrK7+jfFe9s3JJ3h6YgMP2R3pXiq5aPn2ZPf6Cg6MyLTTPTKYt
+	 Ulao28EsiYLXO8TmWkHGGJbV0clMoMbHTKjDcL1Nws8E58CFEn8Q4sf8n7I7J/+azl
+	 yA4PDtVTEZ3Cvs2TjzwFUH5WTnAtDlu9mK65GKDBLsJKSnneoOYxMb0q/5OCbkKIjg
+	 MDcuaigPoKUCg==
+Date: Fri, 15 May 2026 17:16:38 +0100
+From: Daniel Thompson <danielt@kernel.org>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+	Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
+	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, KancyJoe <kancy2333@outlook.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: leds: backlight: document the SY7758
+ 6-channel High Efficiency LED Driver
+Message-ID: <agdG5hdbLkZt2pAZ@aspen.lan>
+References: <20260430-topic-sm8650-ayaneo-pocket-s2-sy7758-v2-0-308140640de9@linaro.org>
+ <20260430-topic-sm8650-ayaneo-pocket-s2-sy7758-v2-1-308140640de9@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CAF84553790
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260430-topic-sm8650-ayaneo-pocket-s2-sy7758-v2-1-308140640de9@linaro.org>
+X-Rspamd-Queue-Id: B4CE5554164
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7257-lists,linux-fbdev=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-7258-lists,linux-fbdev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,gmx.de,lists.freedesktop.org,vger.kernel.org,outlook.com,oss.qualcomm.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[danielt@kernel.org,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,aspen.lan:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+On Thu, Apr 30, 2026 at 11:47:15AM +0200, Neil Armstrong wrote:
+> Document the Silergy SY7758 6-channel High Efficiency LED Driver
+> used for backlight brightness control.
+>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-------------------
-
-From: Thomas Zimmermann <tzimmermann@suse.de>
-
-[ Upstream commit 5cd28bd28c8ce426b56ce4230dbd17537181d5ad ]
-
-The native driver takes over the framebuffer aperture by removing the
-system- framebuffer platform device. Afterwards the pointer in drvdata
-is dangling. Remove the entire logic around drvdata and let the kernel's
-aperture helpers handle this. The platform device depends on the native
-hardware device instead of the coreboot device anyway.
-
-When commit 851b4c14532d ("firmware: coreboot: Add coreboot framebuffer
-driver") added the coreboot framebuffer code, the kernel did not support
-device-based aperture management. Instead native driviers only removed
-the conflicting fbdev device. At that point, unregistering the framebuffer
-device most likely worked correctly. It was definitely broken after
-commit d9702b2a2171 ("fbdev/simplefb: Do not use struct
-fb_info.apertures"). So take this commit for the Fixes tag. Earlier
-releases might work depending on the native hardware driver.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: d9702b2a2171 ("fbdev/simplefb: Do not use struct fb_info.apertures")
-Acked-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Acked-by: Julius Werner <jwerner@chromium.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Hans de Goede <hansg@kernel.org>
-Cc: linux-fbdev@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v6.3+
-Link: https://patch.msgid.link/20260217155836.96267-2-tzimmermann@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/firmware/google/framebuffer-coreboot.c |   10 ----------
- 1 file changed, 10 deletions(-)
-
---- a/drivers/firmware/google/framebuffer-coreboot.c
-+++ b/drivers/firmware/google/framebuffer-coreboot.c
-@@ -64,22 +64,12 @@ static int framebuffer_probe(struct core
- 						 sizeof(pdata));
- 	if (IS_ERR(pdev))
- 		pr_warn("coreboot: could not register framebuffer\n");
--	else
--		dev_set_drvdata(&dev->dev, pdev);
- 
- 	return PTR_ERR_OR_ZERO(pdev);
- }
- 
--static void framebuffer_remove(struct coreboot_device *dev)
--{
--	struct platform_device *pdev = dev_get_drvdata(&dev->dev);
--
--	platform_device_unregister(pdev);
--}
--
- static struct coreboot_driver framebuffer_driver = {
- 	.probe = framebuffer_probe,
--	.remove = framebuffer_remove,
- 	.drv = {
- 		.name = "framebuffer",
- 	},
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
 
 
+Daniel.
 
