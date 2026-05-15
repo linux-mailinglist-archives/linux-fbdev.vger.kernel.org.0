@@ -1,79 +1,79 @@
-Return-Path: <linux-fbdev+bounces-7261-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7262-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEQIExSgB2rP/QIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7261-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 16 May 2026 00:37:08 +0200
+	id mJjoMfGwB2pBCgMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7262-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 16 May 2026 01:49:05 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27C7558F44
-	for <lists+linux-fbdev@lfdr.de>; Sat, 16 May 2026 00:37:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444F75596DB
+	for <lists+linux-fbdev@lfdr.de>; Sat, 16 May 2026 01:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFBCB302DF45
-	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2026 22:35:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3C423016490
+	for <lists+linux-fbdev@lfdr.de>; Fri, 15 May 2026 23:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E3B3EFFDB;
-	Fri, 15 May 2026 22:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272D436C5A1;
+	Fri, 15 May 2026 23:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kcjKnZg4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zy45wDIF"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BC9385539;
-	Fri, 15 May 2026 22:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D77405C21;
+	Fri, 15 May 2026 23:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778884556; cv=none; b=pAa7McLSvSkhKS/ylhuIhEpecCyXeSNyFjEkKygcjleVDK3On1VesCzOcoU+59ghWcQOg6/9jbQp1xn/LZzJn6sLuaf65HXKOnzi9d7g0y95PSrEbFXpGaPKjTN8MBfoLrtslMTO/wfcOZZ8fU3WAc6WXOsKo4sXPZE3r8tHSwc=
+	t=1778888941; cv=none; b=sgOox0EhydEnB4vAEEuo4N6KX5f4oBMeXRmasnfj0xC29cOUAa6CIJ0bkekUtkW+FFIm2pcSbweo7t+r0K3gapnZ4moYywn/84bk39QZPLY2Nu+ZjAoOsAd3+UuoST0cWQb9mtEc60hSF7OAjoemkKh9+5hBEq53QDE+O+3GpzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778884556; c=relaxed/simple;
-	bh=ZLma/H6ELmnkcoiyQ0o01HFGuCYj6H1K9UncyvKSe50=;
+	s=arc-20240116; t=1778888941; c=relaxed/simple;
+	bh=d1xUV3LYwn2Bxm7M0wWJinu2epoQTclEe/MFl5Y2zf8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b+IO58gpL9qR6QYLrng5vd/Xm34iPCCChH8NUgi5XRzQou/YAXL8G+Szz+hfIwXL4+jJL1vjsEs/U/dluRiy+jq48+1fqhGOFfKdJTL3JmhXIwPF94RuCVPbWk1gEGB9tYO7BxzHK85XHqN4Ky9oDkt141uUwM7yNCNC6GDDV88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kcjKnZg4; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=uajGb5tMehBscQIU270eWY7yEUO1A2eoT9us1+veDWidNU7oh+d/Pux+fq4eUCE3iZEzUBk3re4D/vvIjJIQmjvPKcsF0HxYTeKeHKEsIo+KQjNwfMVJtgLFr1ot3HLEvAW/mfZYLXb32pl+sNTN+2xAXsWDkx6KrTwQxf8e0Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zy45wDIF; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778884555; x=1810420555;
+  t=1778888939; x=1810424939;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=ZLma/H6ELmnkcoiyQ0o01HFGuCYj6H1K9UncyvKSe50=;
-  b=kcjKnZg4dL25Nt4vMRsRgPqe41ZY3cSVYs9L34BPppJcd2P4jhDThaXm
-   ddwStflOnVoL2XFXGBxjmJcyae6DFOfx0pugbtI/ZuelJH3Brma13wtb9
-   w7pRDLHz76QjP7yxE+zmJtaV0QXb/Z+nM/cZsghDYu9tu/SUaP6zMgyRb
-   3e8dwily6YIob0L4Q6hhHLN8kDtZmAKeflAgHiHd6rM9/uR1vbcUTVXAL
-   iHhc4+zOGgBx5IYVRTEOoZQ9h+5xuQtK04n1u0mzprrx6gku/yFChJeaY
-   VgeWIbXJelrdjZT8zqvqDjV9VY0tltYX3oiSEFi23Sa05hIFNXEIHU2KZ
+  bh=d1xUV3LYwn2Bxm7M0wWJinu2epoQTclEe/MFl5Y2zf8=;
+  b=Zy45wDIFM1G01/BB5UFGoXm511GZ+cwds/1zmwZ3mHJ2QxsHFOWoV5YC
+   tUfBqfj31/Bd421EkKnLq8N1zHBudznTstSfSwxuxlsmrq/4tgeVnjgHB
+   ACAx1WN1/IcdYUuh1p6BL2diF+jAEBCb7WlUFQzekNuV5f9O60OH1IbOn
+   FsApuEck9g5WZwD5Hu/ayn819h0fds7kX+f1Yk5pVTbkkAN2KSiQLmAr+
+   K3+niZMec153RFJmb8gCW2CPgWqT/ezmVAYVGhUquLaY2BAmVmI7YMaBv
+   J/baE76XRe0knbzdhCgb6FxKE+HwfFgKzuQFjqE0oSNUZ35QUFuh4HH0n
    A==;
-X-CSE-ConnectionGUID: lpynC2T6RiSbXrCKCGBh3A==
-X-CSE-MsgGUID: 6pff5jvHRYysTkw5/FHNKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="90542475"
+X-CSE-ConnectionGUID: cejyp2B/SBiw4P7fOdSs0Q==
+X-CSE-MsgGUID: VVN/HemiTAu9+b36BgHBXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="90545782"
 X-IronPort-AV: E=Sophos;i="6.23,237,1770624000"; 
-   d="scan'208";a="90542475"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 15:35:54 -0700
-X-CSE-ConnectionGUID: xxC8lg0KTzuiZ9OQU4WCHg==
-X-CSE-MsgGUID: 7mRHL75DTaK2Ki/HxjXdSw==
+   d="scan'208";a="90545782"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 16:48:58 -0700
+X-CSE-ConnectionGUID: sLChG9qcQpiyBu/nSLdIJg==
+X-CSE-MsgGUID: GLJszDl/Q56fwFseRVRihA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,237,1770624000"; 
-   d="scan'208";a="269178747"
+   d="scan'208";a="238949691"
 Received: from lkp-server01.sh.intel.com (HELO d94e5e629b2d) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 15 May 2026 15:35:52 -0700
+  by orviesa009.jf.intel.com with ESMTP; 15 May 2026 16:48:56 -0700
 Received: from kbuild by d94e5e629b2d with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1wO18H-000000000BF-17wQ;
-	Fri, 15 May 2026 22:35:49 +0000
-Date: Sat, 16 May 2026 06:35:42 +0800
+	id 1wO2Gz-000000000F3-24nA;
+	Fri, 15 May 2026 23:48:53 +0000
+Date: Sat, 16 May 2026 07:48:38 +0800
 From: kernel test robot <lkp@intel.com>
 To: Rupesh Majhi <zoone.rupert@gmail.com>, gregkh@linuxfoundation.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Rupesh Majhi <zoone.rupert@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, sudipm.mukherjee@gmail.com,
+	teddy.wang@siliconmotion.com, linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Rupesh Majhi <zoone.rupert@gmail.com>
 Subject: Re: [PATCH] staging: sm750: rename CamelCase variable in sm750.c
-Message-ID: <202605160624.pd29nXG5-lkp@intel.com>
+Message-ID: <202605160741.A9M01x77-lkp@intel.com>
 References: <20260515103811.2808620-1-zoone.rupert@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -84,38 +84,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260515103811.2808620-1-zoone.rupert@gmail.com>
-X-Rspamd-Queue-Id: A27C7558F44
+X-Rspamd-Queue-Id: 444F75596DB
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,siliconmotion.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-7261-lists,linux-fbdev=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,siliconmotion.com,vger.kernel.org];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-7262-lists,linux-fbdev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,linux-fbdev@vger.kernel.org];
 	DKIM_TRACE(0.00)[intel.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,01.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Action: no action
 
 Hi Rupesh,
@@ -128,27 +127,32 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Rupesh-Majhi/staging-sm75
 base:   staging/staging-testing
 patch link:    https://lore.kernel.org/r/20260515103811.2808620-1-zoone.rupert%40gmail.com
 patch subject: [PATCH] staging: sm750: rename CamelCase variable in sm750.c
-config: powerpc64-randconfig-002-20260516 (https://download.01.org/0day-ci/archive/20260516/202605160624.pd29nXG5-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260516/202605160624.pd29nXG5-lkp@intel.com/reproduce)
+config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20260516/202605160741.A9M01x77-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260516/202605160741.A9M01x77-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605160624.pd29nXG5-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605160741.A9M01x77-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/staging/sm750fb/sm750.c:758:33: error: no member named 'pv_reg' in 'struct sm750_dev'
+   drivers/staging/sm750fb/sm750.c: In function 'lynxfb_set_fbinfo':
+>> drivers/staging/sm750fb/sm750.c:758:40: error: 'struct sm750_dev' has no member named 'pv_reg'; did you mean 'pvReg'?
      758 |         crtc->cursor.mmio = sm750_dev->pv_reg +
-         |                             ~~~~~~~~~  ^
->> drivers/staging/sm750fb/sm750.c:863:23: error: no member named 'set_all_eng_off' in 'struct init_status'
+         |                                        ^~~~~~
+         |                                        pvReg
+   drivers/staging/sm750fb/sm750.c: In function 'sm750fb_setup':
+>> drivers/staging/sm750fb/sm750.c:863:30: error: 'struct init_status' has no member named 'set_all_eng_off'; did you mean 'setAllEngOff'?
      863 |         sm750_dev->init_parm.set_all_eng_off = 0;
-         |         ~~~~~~~~~~~~~~~~~~~~ ^
-   drivers/staging/sm750fb/sm750.c:1062:21: error: no member named 'pv_reg' in 'struct sm750_dev'
+         |                              ^~~~~~~~~~~~~~~
+         |                              setAllEngOff
+   drivers/staging/sm750fb/sm750.c: In function 'lynxfb_pci_remove':
+   drivers/staging/sm750fb/sm750.c:1062:28: error: 'struct sm750_dev' has no member named 'pv_reg'; did you mean 'pvReg'?
     1062 |         iounmap(sm750_dev->pv_reg);
-         |                 ~~~~~~~~~  ^
-   3 errors generated.
+         |                            ^~~~~~
+         |                            pvReg
 
 
 vim +758 drivers/staging/sm750fb/sm750.c
