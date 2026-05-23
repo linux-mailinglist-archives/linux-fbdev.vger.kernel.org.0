@@ -1,52 +1,55 @@
-Return-Path: <linux-fbdev+bounces-7350-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7352-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GFhCKv03EWrIiwYAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7350-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 23 May 2026 07:15:41 +0200
+	id 6LEpHkM5EWoEjAYAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7352-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 23 May 2026 07:21:07 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42065BD430
-	for <lists+linux-fbdev@lfdr.de>; Sat, 23 May 2026 07:15:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E829F5BD467
+	for <lists+linux-fbdev@lfdr.de>; Sat, 23 May 2026 07:21:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0B09C300DEC5
-	for <lists+linux-fbdev@lfdr.de>; Sat, 23 May 2026 05:15:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0DBC5301C6FF
+	for <lists+linux-fbdev@lfdr.de>; Sat, 23 May 2026 05:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A70233B970;
-	Sat, 23 May 2026 05:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3410A32ED40;
+	Sat, 23 May 2026 05:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sezginduran.net header.i=@sezginduran.net header.b="VspJ2Tlm"
+	dkim=pass (1024-bit key) header.d=sezginduran.net header.i=@sezginduran.net header.b="O8Q/96CU"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from forward103d.mail.yandex.net (forward103d.mail.yandex.net [178.154.239.214])
+Received: from forward201d.mail.yandex.net (forward201d.mail.yandex.net [178.154.239.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD65132E6B8;
-	Sat, 23 May 2026 05:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.214
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F053EA66;
+	Sat, 23 May 2026 05:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779513333; cv=none; b=DpagXWw60UAUrCmr95ZRJO2y1zbVhdsqZLep6olmdrzYV/OpCHIUJn5xZ/456Zw0hwn5DSd8yDmntC4Ml5X/8FsTGzMRfWbZ1T6Sgv54wSNPcyqj88HkjBOfW7Ca1fIbs5UhaNVLoijvnm/EPtYVg5Iu1m3+ywj6f4pJcJa5kiw=
+	t=1779513663; cv=none; b=AO9ZRkYXTDbZlUanPuA5Ndxk0+91ldrJIHsLgHau2zszLdJHdDPwg63+ALMMmWO7lQ4HBdsWvrV6yUgM8Q1uO9MDKcqp+lk4QUm8oIqyQihNrSdEpqtUipfRL5QtjS3jJth6jSHM/ild4qoRc2+ym7CiFj6GjpgQD7fKi0VAvjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779513333; c=relaxed/simple;
-	bh=tm+9vvsTReF3573YCo1i3Q/KWcCGV/4bLS6dafRlr9A=;
+	s=arc-20240116; t=1779513663; c=relaxed/simple;
+	bh=lRLTEhZDHzg1bMcQQyh+N6hTgp70dNNJqO0x7Gu1FpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2jkh2AG6BebEwKhZbGK6PEfEadXWGb9nHLjb6KaOtlx8bf//CGAJ0HsZsBGwFL5LXTuvEk02rrowvr0K8DEs8JWj80NC0TXBhF8p3H7kK5SH/IYNVrSRWKlffxRrOFEgE5Eb9c/oUQuEIKecLvIlNkBlD9tnF7rdmLJnb6K1a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sezginduran.net; spf=pass smtp.mailfrom=sezginduran.net; dkim=pass (1024-bit key) header.d=sezginduran.net header.i=@sezginduran.net header.b=VspJ2Tlm; arc=none smtp.client-ip=178.154.239.214
+	 MIME-Version; b=lrGBe127biVLW51UKHbjAQzoX12WspJSlhEKUrBO+r0jHhHwX7NSZsUkunOU3QmXnqz8hFuBCUUKviPNL7GWdKIEIM6yLkqmRNIfGCQti3+h7nZpqKV7HUZFYdEuwBZLiTf7vI/0Ve2X0ZNP1LPQZ+haMtJdxo2KK7mHcPhfd0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sezginduran.net; spf=pass smtp.mailfrom=sezginduran.net; dkim=pass (1024-bit key) header.d=sezginduran.net header.i=@sezginduran.net header.b=O8Q/96CU; arc=none smtp.client-ip=178.154.239.220
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sezginduran.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sezginduran.net
+Received: from forward101d.mail.yandex.net (forward101d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d101])
+	by forward201d.mail.yandex.net (Yandex) with ESMTPS id 0476081180;
+	Sat, 23 May 2026 08:15:32 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:27a5:0:640:93ca:0])
-	by forward103d.mail.yandex.net (Yandex) with ESMTPS id E2682C006C;
-	Sat, 23 May 2026 08:15:22 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (smtp) with ESMTPSA id DFNL0fJe2Ko0-oobSE2Ow;
-	Sat, 23 May 2026 08:15:22 +0300
+	by forward101d.mail.yandex.net (Yandex) with ESMTPS id 57608C0041;
+	Sat, 23 May 2026 08:15:24 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (smtp) with ESMTPSA id DFNL0fJe2Ko0-DjBQ4v6g;
+	Sat, 23 May 2026 08:15:23 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sezginduran.net;
-	s=mail; t=1779513322;
-	bh=r+U23zr9A1yaCGijp+/mJG1U0f98IpdMdSvDaEN04Z0=;
+	s=mail; t=1779513323;
+	bh=zrl/uPh8XULY9xneCuXEdgDPlcjH+DMAp7B3cFGot8o=;
 	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=VspJ2TlmqHEjF6POqpguLrlCnsBg8Hb14BejmeIKmjQvOmeDKPoOHlNM10te0kLk+
-	 xMIsJrybf5WRUwpmHlj0/jRA6cuTAUdMHBP60UZPA9KhQJrGdP9IZXKyduLVDIgrCl
-	 kIAlpz5jdXz7ld3bcXN1wP9ORZ2M39Zilt+/2wNE=
+	b=O8Q/96CUKkIS4WozKOQhe/YRn19hoITkLBYVQnNShY6NVw7pU8OoWPs8QM9OUdNcJ
+	 I0BEMg6OimqdDDuEf2uuXSKjK2aqyZqhBLJILV6vyF2DKePL/4/YWJHkjCKdg4qf7v
+	 HLvIbfOrbMVw31svlzVjkPgKd54ZJg/BmUevQG+o=
 Authentication-Results: mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net; dkim=pass header.i=@sezginduran.net
 From: Ahmet Sezgin Duran <ahmet@sezginduran.net>
 To: gregkh@linuxfoundation.org
@@ -54,9 +57,9 @@ Cc: linux-fbdev@vger.kernel.org,
 	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Ahmet Sezgin Duran <ahmet@sezginduran.net>
-Subject: [PATCH 4/5] staging: sm750fb: use ARRAY_SIZE macro in fb_find_mode loop
-Date: Sat, 23 May 2026 05:15:08 +0000
-Message-ID: <20260523051509.166152-5-ahmet@sezginduran.net>
+Subject: [PATCH 5/5] staging: sm750fb: deduplicate fbinfo loop in suspend/resume
+Date: Sat, 23 May 2026 05:15:09 +0000
+Message-ID: <20260523051509.166152-6-ahmet@sezginduran.net>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260523051509.166152-1-ahmet@sezginduran.net>
 References: <20260523051509.166152-1-ahmet@sezginduran.net>
@@ -71,7 +74,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[sezginduran.net:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,46 +84,102 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-7350-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7352-lists,linux-fbdev=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ahmet@sezginduran.net,linux-fbdev@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	DKIM_TRACE(0.00)[sezginduran.net:+];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sezginduran.net:email,sezginduran.net:mid,sezginduran.net:dkim]
-X-Rspamd-Queue-Id: B42065BD430
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sezginduran.net:email,sezginduran.net:mid,sezginduran.net:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E829F5BD467
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The loop in lynxfb_set_fbinfo() iterates over pdb[] and cdb[] using
-a hardcoded bound of 3.
+lynxfb_suspend() and lynxfb_resume() both walk sm750_dev->fbinfo[]
+via duplicated per-index blocks for fbinfo[0] and fbinfo[1].
 
-Replace it with ARRAY_SIZE(pdb) so the bound tracks the array.
+Replace each pair of blocks with a for-loop bounded by
+sm750_dev->fb_count, the number of successfully registered
+framebuffers.
+
+No functional changes intended.
 
 Signed-off-by: Ahmet Sezgin Duran <ahmet@sezginduran.net>
 ---
- drivers/staging/sm750fb/sm750.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/sm750fb/sm750.c | 34 +++++++++++++--------------------
+ 1 file changed, 13 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/staging/sm750fb/sm750.c b/drivers/staging/sm750fb/sm750.c
-index fff9c35ee7b0..465615b528fd 100644
+index 465615b528fd..279471d6cd14 100644
 --- a/drivers/staging/sm750fb/sm750.c
 +++ b/drivers/staging/sm750fb/sm750.c
-@@ -764,7 +764,7 @@ static int lynxfb_set_fbinfo(struct fb_info *info, int index)
- 			g_fbmode[index] = g_fbmode[0];
- 	}
+@@ -388,18 +388,18 @@ static int __maybe_unused lynxfb_suspend(struct device *dev)
+ {
+ 	struct fb_info *info;
+ 	struct sm750_dev *sm750_dev;
++	int i;
  
--	for (i = 0; i < 3; i++) {
-+	for (i = 0; i < ARRAY_SIZE(pdb); i++) {
- 		ret = fb_find_mode(var, info, g_fbmode[index],
- 				   pdb[i], cdb[i], NULL, 8);
+ 	sm750_dev = dev_get_drvdata(dev);
  
+ 	console_lock();
+-	info = sm750_dev->fbinfo[0];
+-	if (info)
+-		/* 1 means do suspend */
+-		fb_set_suspend(info, 1);
+-	info = sm750_dev->fbinfo[1];
+-	if (info)
+-		/* 1 means do suspend */
+-		fb_set_suspend(info, 1);
++
++	for (i = 0; i < sm750_dev->fb_count; i++) {
++		info = sm750_dev->fbinfo[i];
++		if (info)
++			/* 1 means do suspend */
++			fb_set_suspend(info, 1);
++	}
+ 
+ 	console_unlock();
+ 	return 0;
+@@ -414,6 +414,7 @@ static int __maybe_unused lynxfb_resume(struct device *dev)
+ 	struct lynxfb_par *par;
+ 	struct lynxfb_crtc *crtc;
+ 	struct lynx_cursor *cursor;
++	int i;
+ 
+ 	sm750_dev = pci_get_drvdata(pdev);
+ 
+@@ -421,21 +422,12 @@ static int __maybe_unused lynxfb_resume(struct device *dev)
+ 
+ 	hw_sm750_inithw(sm750_dev, pdev);
+ 
+-	info = sm750_dev->fbinfo[0];
+-
+-	if (info) {
+-		par = info->par;
+-		crtc = &par->crtc;
+-		cursor = &crtc->cursor;
+-		memset_io(cursor->vstart, 0x0, cursor->size);
+-		memset_io(crtc->v_screen, 0x0, crtc->vidmem_size);
+-		lynxfb_ops_set_par(info);
+-		fb_set_suspend(info, 0);
+-	}
++	for (i = 0; i < sm750_dev->fb_count; i++) {
++		info = sm750_dev->fbinfo[i];
+ 
+-	info = sm750_dev->fbinfo[1];
++		if (!info)
++			continue;
+ 
+-	if (info) {
+ 		par = info->par;
+ 		crtc = &par->crtc;
+ 		cursor = &crtc->cursor;
 -- 
 2.53.0
 
