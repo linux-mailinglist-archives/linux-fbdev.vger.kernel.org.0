@@ -1,87 +1,96 @@
-Return-Path: <linux-fbdev+bounces-7391-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7394-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGR5FZILF2pB2AcAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7391-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 17:19:46 +0200
+	id 6Eu8Mp8LF2pB2AcAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7394-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 17:19:59 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD60C5E6BF9
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 17:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 355415E6C25
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 17:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 668E8302A079
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 15:16:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0575F3025935
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 15:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BEA3793BA;
-	Wed, 27 May 2026 15:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A00332906;
+	Wed, 27 May 2026 15:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EgDs66DT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mfwVqURc";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EgDs66DT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mfwVqURc"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xdndTBFU";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="v2n5aavs";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xdndTBFU";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="v2n5aavs"
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6CF2ECE91
-	for <linux-fbdev@vger.kernel.org>; Wed, 27 May 2026 15:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEDF361DC3
+	for <linux-fbdev@vger.kernel.org>; Wed, 27 May 2026 15:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779894960; cv=none; b=FpzyFOk3zV94nchZxTplcmo0qhjK3U22kvIB1AflAElwdgTHlVDP9V0xOqbBi9wPEZj3MuU6WmPlMd5YuvPTnq+tW2Y7obk+TDppQrTDtRDTao6e6DueF3ojMmhT45tlxnWQ/QkoZjxAM6kT5R8gYYcOEzghYftDhH7vMgkHsIc=
+	t=1779894970; cv=none; b=V1CGy7DTYm11E1IPg0SeUd/quR3Lnv42tNnJOBh+jNvqdwT/Bth6+mb7m8tPL+WHgSP7+toKLWGgRhoNPDM5llxPYZb6tgS9el5mlXJrGQqgzD7pnnh82srZ3SIMCFJQ5/kV0i294nVc1qSnOu+j8bErFlheeV3KmWpzovCxjys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779894960; c=relaxed/simple;
-	bh=865utLaQm01zMFhaL9ArvbQ3aue9OkJfjp6OFr0GOBM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TCsJiuDWUST4Rb7HoyzXzFSz0tHqFqJ6JXaF0PP5Iv5tpvKOnNNZkVHJEXzVK8WYHZAZq5IrhsCwkBqSOTo7R3ZWytqaTn2Lh9HbHbn2PMeMBVC24jecNXPQdxe/BkP5yKJT0rwIIpGMuTNUnvOKCC+Jot5+/9ubhP0Tb2bdpz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EgDs66DT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mfwVqURc; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EgDs66DT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mfwVqURc; arc=none smtp.client-ip=195.135.223.130
+	s=arc-20240116; t=1779894970; c=relaxed/simple;
+	bh=ebgDHIsiFvQ/wq0+NDxK6JD75UVuhswVAJSIsrbe/gE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YH3mBgYJzrkI/Pv6ER3VsLJQ7i4VaLVVLHNnvCzKN14YD+uwYiS1j10sJTgnszE8q9KPMvtxwmvGKBA7tmwaKkoWH9GN5l/LZpekpvqGrGYFoWIT25YiNeArEqmRO3RFzEvoci5nygKR0zXppXZuSZg2Yh+6uL8k3jJu1U0jBkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xdndTBFU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=v2n5aavs; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xdndTBFU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=v2n5aavs; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4BB596A9B1;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A65256AA37;
 	Wed, 27 May 2026 15:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1779894955; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=BwKD8u/oFzgxbvk0UW8C8FJ0orKlewT3AkmJOJgnQXw=;
-	b=EgDs66DTREZMPkqpwlSW7x3i5hxMbdCzFi9MujxugNSU+OA9XEklbUXmWtCF1y+H+ikJ6Y
-	uXQa47jzn+Cwbnyp7yquxz3a29yXy6CW9EqE9Jf6pmU0Z5Y+kSxasL2D503QiOZNd+sNNv
-	/TgxXUQRA535R9+Fb4JcqeYuNoHHYDU=
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AC9L7qlZbtz9ZlnMfxZoo95vX+3Yiqd0s5v2/8LwRIM=;
+	b=xdndTBFUh9zOeBPXuq2uboWM+KX2sjCVlSqE9xEfsyVSJi7HinN7TiOkzwFd3uu0CkuNO5
+	fjGvJdWUs7Cz1sT45qdXm6IH0z3JX0DcaEY5ea6hFYmOvfw28rx5+q55Ci+rWQxiVncsdC
+	AesL/I5Lv4csVDsSIrd02vzXijZGkeI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1779894955;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=BwKD8u/oFzgxbvk0UW8C8FJ0orKlewT3AkmJOJgnQXw=;
-	b=mfwVqURcXjstDdXst6R+1tJatuARK/bqZoM3AR2T9cvK/Ub6zljgI/GlruyxHphJju8Zvy
-	CunfSqDNRrfWptDw==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AC9L7qlZbtz9ZlnMfxZoo95vX+3Yiqd0s5v2/8LwRIM=;
+	b=v2n5aavs6TljC0G23wkYlN//EI/+IfzmESw4y+vl8cg+PStxBYBn7pKzF477SrIj1jhNLT
+	quw+IrniNLbaDiBg==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1779894955; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=BwKD8u/oFzgxbvk0UW8C8FJ0orKlewT3AkmJOJgnQXw=;
-	b=EgDs66DTREZMPkqpwlSW7x3i5hxMbdCzFi9MujxugNSU+OA9XEklbUXmWtCF1y+H+ikJ6Y
-	uXQa47jzn+Cwbnyp7yquxz3a29yXy6CW9EqE9Jf6pmU0Z5Y+kSxasL2D503QiOZNd+sNNv
-	/TgxXUQRA535R9+Fb4JcqeYuNoHHYDU=
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AC9L7qlZbtz9ZlnMfxZoo95vX+3Yiqd0s5v2/8LwRIM=;
+	b=xdndTBFUh9zOeBPXuq2uboWM+KX2sjCVlSqE9xEfsyVSJi7HinN7TiOkzwFd3uu0CkuNO5
+	fjGvJdWUs7Cz1sT45qdXm6IH0z3JX0DcaEY5ea6hFYmOvfw28rx5+q55Ci+rWQxiVncsdC
+	AesL/I5Lv4csVDsSIrd02vzXijZGkeI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1779894955;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=BwKD8u/oFzgxbvk0UW8C8FJ0orKlewT3AkmJOJgnQXw=;
-	b=mfwVqURcXjstDdXst6R+1tJatuARK/bqZoM3AR2T9cvK/Ub6zljgI/GlruyxHphJju8Zvy
-	CunfSqDNRrfWptDw==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AC9L7qlZbtz9ZlnMfxZoo95vX+3Yiqd0s5v2/8LwRIM=;
+	b=v2n5aavs6TljC0G23wkYlN//EI/+IfzmESw4y+vl8cg+PStxBYBn7pKzF477SrIj1jhNLT
+	quw+IrniNLbaDiBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EA48E5A8C1;
-	Wed, 27 May 2026 15:15:54 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5196B5A8C3;
+	Wed, 27 May 2026 15:15:55 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QMq3N6oKF2p6FQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 27 May 2026 15:15:54 +0000
+	id cAO7EqsKF2p6FQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 27 May 2026 15:15:55 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: deller@gmx.de,
 	geert@linux-m68k.org,
@@ -96,10 +105,12 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 0/4] fbdev: Internalize fbcon
-Date: Wed, 27 May 2026 17:14:01 +0200
-Message-ID: <20260527151551.258659-1-tzimmermann@suse.de>
+Subject: [PATCH v3 1/4] fbdev: Wrap user-invoked calls to fb_set_var() in helper
+Date: Wed, 27 May 2026 17:14:02 +0200
+Message-ID: <20260527151551.258659-2-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260527151551.258659-1-tzimmermann@suse.de>
+References: <20260527151551.258659-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -107,9 +118,9 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
 X-Spam-Level: 
+X-Spam-Score: -6.80
+X-Spam-Flag: NO
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
@@ -122,7 +133,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-7391-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7394-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmx.de,linux-m68k.org,ffwll.ch,gmail.com,wunner.de,linux.ibm.com,ellerman.id.au,kernel.org];
@@ -137,55 +148,170 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:mid,suse.de:dkim]
-X-Rspamd-Queue-Id: AD60C5E6BF9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,suse.de:mid,suse.de:dkim]
+X-Rspamd-Queue-Id: 355415E6C25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Turn fbcon into an internal client of fbdev. Manage all interactions
-with graphics drivers within fbdev. Add helpers for these tasks and
-convert drivers.
+Handle fbcon during display updates in fb_set_var_from_user(). Check
+with fbcon if the mode change is possible, update hardware state and
+finally update fbcon. Update all callers.
 
-Fbdev's PS3 and SH-Mobile drivers update fbcon as part of user-invoked
-mode changes. Call the new helpers, which also fix inconsistencies
-among the various code paths.
+Only the FBIOPUT_VSCREENINFO ioctl currently does all steps. Other
+mode-changes callers in sysfs and driver code are missing fbcon-related
+steps.
 
-Vga-switcheroo remaps the fbcon terminals when switching physical
-outputs. For now, hide this in another helper. The call will later
-move into DRM's fbdev emulation.
+With the new helper, ps3fb and sh_mobile_lcdcfb no longer maintain
+fbcon state themselves.
 
-With all refactoring in place, fbdev manages fbcon interactions by
-itself. Remove the public interfaces.
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
+ drivers/video/fbdev/core/fb_chrdev.c   |  6 +-----
+ drivers/video/fbdev/core/fbcon.c       |  2 --
+ drivers/video/fbdev/core/fbmem.c       | 13 +++++++++++++
+ drivers/video/fbdev/core/fbsysfs.c     |  4 +---
+ drivers/video/fbdev/ps3fb.c            |  5 +----
+ drivers/video/fbdev/sh_mobile_lcdcfb.c |  5 +----
+ include/linux/fb.h                     |  2 ++
+ 7 files changed, 19 insertions(+), 18 deletions(-)
 
-v3:
-- resolve vga-switcheroo dependencies wrt fbcon (Geert)
-v2:
-- use '#if defined' (Helge)
-
-Thomas Zimmermann (4):
-  fbdev: Wrap user-invoked calls to fb_set_var() in helper
-  fbdev: Wrap user-invoked calls to fb_blank() in helper
-  fbdev: Wrap fbcon updates from vga-switcheroo in helper
-  fbdev: Do not export fbcon from fbdev
-
- MAINTAINERS                            |  1 -
- drivers/gpu/vga/Kconfig                |  2 +-
- drivers/gpu/vga/vga_switcheroo.c       |  6 +--
- drivers/video/fbdev/core/fb_chrdev.c   | 12 ++----
- drivers/video/fbdev/core/fb_internal.h |  1 +
- drivers/video/fbdev/core/fbcon.c       |  3 --
- drivers/video/fbdev/core/fbcon.h       | 50 +++++++++++++++++++++++
- drivers/video/fbdev/core/fbmem.c       | 35 +++++++++++++++-
- drivers/video/fbdev/core/fbsysfs.c     |  9 +----
- drivers/video/fbdev/ps3fb.c            |  5 +--
- drivers/video/fbdev/sh_mobile_lcdcfb.c |  5 +--
- include/linux/fb.h                     |  3 ++
- include/linux/fbcon.h                  | 55 --------------------------
- 13 files changed, 99 insertions(+), 88 deletions(-)
- delete mode 100644 include/linux/fbcon.h
-
-
-base-commit: 5fb5a9a63cf5ece68e0eeb6fa397da27712bccf0
+diff --git a/drivers/video/fbdev/core/fb_chrdev.c b/drivers/video/fbdev/core/fb_chrdev.c
+index 4ebd16b7e3b8..54f926fb411b 100644
+--- a/drivers/video/fbdev/core/fb_chrdev.c
++++ b/drivers/video/fbdev/core/fb_chrdev.c
+@@ -85,11 +85,7 @@ static long do_fb_ioctl(struct fb_info *info, unsigned int cmd,
+ 		var.activate &= ~FB_ACTIVATE_KD_TEXT;
+ 		console_lock();
+ 		lock_fb_info(info);
+-		ret = fbcon_modechange_possible(info, &var);
+-		if (!ret)
+-			ret = fb_set_var(info, &var);
+-		if (!ret)
+-			fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
++		ret = fb_set_var_from_user(info, &var);
+ 		unlock_fb_info(info);
+ 		console_unlock();
+ 		if (!ret && copy_to_user(argp, &var, sizeof(var)))
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index b0e3e765360d..50b84cd32938 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -2699,7 +2699,6 @@ void fbcon_update_vcs(struct fb_info *info, bool all)
+ 	else
+ 		fbcon_modechanged(info);
+ }
+-EXPORT_SYMBOL(fbcon_update_vcs);
+ 
+ /* let fbcon check if it supports a new screen resolution */
+ int fbcon_modechange_possible(struct fb_info *info, struct fb_var_screeninfo *var)
+@@ -2727,7 +2726,6 @@ int fbcon_modechange_possible(struct fb_info *info, struct fb_var_screeninfo *va
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(fbcon_modechange_possible);
+ 
+ int fbcon_mode_deleted(struct fb_info *info,
+ 		       struct fb_videomode *mode)
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 30f2b59c47bf..d37a1039e221 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -346,6 +346,19 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+ }
+ EXPORT_SYMBOL(fb_set_var);
+ 
++int fb_set_var_from_user(struct fb_info *info, struct fb_var_screeninfo *var)
++{
++	int ret = fbcon_modechange_possible(info, var);
++
++	if (!ret)
++		ret = fb_set_var(info, var);
++	if (!ret)
++		fbcon_update_vcs(info, var->activate & FB_ACTIVATE_ALL);
++
++	return ret;
++}
++EXPORT_SYMBOL(fb_set_var_from_user);
++
+ static void fb_lcd_notify_blank(struct fb_info *info)
+ {
+ 	int power;
+diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
+index baa2bae0fb5b..5ece236e6252 100644
+--- a/drivers/video/fbdev/core/fbsysfs.c
++++ b/drivers/video/fbdev/core/fbsysfs.c
+@@ -19,9 +19,7 @@ static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
+ 	var->activate |= FB_ACTIVATE_FORCE;
+ 	console_lock();
+ 	lock_fb_info(fb_info);
+-	err = fb_set_var(fb_info, var);
+-	if (!err)
+-		fbcon_update_vcs(fb_info, var->activate & FB_ACTIVATE_ALL);
++	err = fb_set_var_from_user(fb_info, var);
+ 	unlock_fb_info(fb_info);
+ 	console_unlock();
+ 	if (err)
+diff --git a/drivers/video/fbdev/ps3fb.c b/drivers/video/fbdev/ps3fb.c
+index dbcda307f6a6..1376d19b19ae 100644
+--- a/drivers/video/fbdev/ps3fb.c
++++ b/drivers/video/fbdev/ps3fb.c
+@@ -29,7 +29,6 @@
+ #include <linux/freezer.h>
+ #include <linux/uaccess.h>
+ #include <linux/fb.h>
+-#include <linux/fbcon.h>
+ #include <linux/init.h>
+ 
+ #include <asm/cell-regs.h>
+@@ -830,9 +829,7 @@ static int ps3fb_ioctl(struct fb_info *info, unsigned int cmd,
+ 				/* Force, in case only special bits changed */
+ 				var.activate |= FB_ACTIVATE_FORCE;
+ 				par->new_mode_id = val;
+-				retval = fb_set_var(info, &var);
+-				if (!retval)
+-					fbcon_update_vcs(info, var.activate & FB_ACTIVATE_ALL);
++				retval = fb_set_var_from_user(info, &var);
+ 				console_unlock();
+ 			}
+ 			break;
+diff --git a/drivers/video/fbdev/sh_mobile_lcdcfb.c b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+index 72969fe8e513..e8324b01700f 100644
+--- a/drivers/video/fbdev/sh_mobile_lcdcfb.c
++++ b/drivers/video/fbdev/sh_mobile_lcdcfb.c
+@@ -15,7 +15,6 @@
+ #include <linux/ctype.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/delay.h>
+-#include <linux/fbcon.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/ioctl.h>
+@@ -1768,11 +1767,9 @@ static void sh_mobile_fb_reconfig(struct fb_info *info)
+ 	var.height = ch->display.height;
+ 	var.activate = FB_ACTIVATE_NOW;
+ 
+-	if (fb_set_var(info, &var) < 0)
++	if (fb_set_var_from_user(info, &var) < 0)
+ 		/* Couldn't reconfigure, hopefully, can continue as before */
+ 		return;
+-
+-	fbcon_update_vcs(info, true);
+ }
+ 
+ /*
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index 5178a33c752c..88680a7cabd5 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -533,6 +533,8 @@ extern int fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var);
+ extern int fb_pan_display(struct fb_info *info, struct fb_var_screeninfo *var);
+ extern int fb_blank(struct fb_info *info, int blank);
+ 
++int fb_set_var_from_user(struct fb_info *info, struct fb_var_screeninfo *var);
++
+ /*
+  * Helpers for framebuffers in I/O memory
+  */
 -- 
 2.54.0
 
