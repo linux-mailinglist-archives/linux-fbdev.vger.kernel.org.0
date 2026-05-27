@@ -1,116 +1,88 @@
-Return-Path: <linux-fbdev+bounces-7393-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7396-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kII+IkQMF2oR2gcAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7393-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 17:22:44 +0200
+	id yLd1D9EQF2o12wcAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7396-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 17:42:09 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF51F5E6CCA
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 17:22:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E581D5E70C5
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 17:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0E14D3069F3F
-	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 15:16:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 14276305B8E0
+	for <lists+linux-fbdev@lfdr.de>; Wed, 27 May 2026 15:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A39537AA7D;
-	Wed, 27 May 2026 15:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBC4436375;
+	Wed, 27 May 2026 15:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VVnVTMVc";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8jo1ekQu";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VVnVTMVc";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8jo1ekQu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mampa31n"
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE127296BCD
-	for <linux-fbdev@vger.kernel.org>; Wed, 27 May 2026 15:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91F640149B
+	for <linux-fbdev@vger.kernel.org>; Wed, 27 May 2026 15:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779894968; cv=none; b=aqXQRjWrYPN1bZj1SeW7Iquj8vJAUaLwFS1XYyTgPlD+6soVvXaAsKnjEg7KMa0J5jqg7daPsFZ2kFI4+B3RJgenq9ngmY0mSviprfVgBi8F4tNiThb/qqzB2WybHh7w9u+cw/UZJBM41glv2eD6gE/WLa5vhX4Eaj6KY80cH64=
+	t=1779896369; cv=none; b=uWafd215mIevzy4kuL+pVpnbWTbT/ZN8QQzRomxpwRxz6S7O0kZsHU1MQ6qRcj0W26zXaW70wMJEeOa1ZXxlobBjgKqPsGY8jIgq7oUQew10IN1BKOlb9uNwgd7bLTruy+ZQixQNuGAyVRJRZSBwZU07+W4a5Nh7rvtrlHw/tic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779894968; c=relaxed/simple;
-	bh=KCpDejPzCIJ3a4Vytjktk/1LSBI2DtmUmA0ZGsup8fw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxxfDIxRmz641LLT60elSzYXj6H7hNJHzLKHg+Mo2L1PL8Fu30A3Eu6WthHDAwDnTzk/822TIjxD9HLKIWizTBd6V4HTIQQNREh76pSqBvEJvaxjWvMZYHazEdQMTvzny4dHHONDj0kW+c5ig8lFOb/qchryI/pZqOap5d2peyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VVnVTMVc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8jo1ekQu; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VVnVTMVc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8jo1ekQu; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BE40666E4A;
-	Wed, 27 May 2026 15:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779894956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fHqLZ2GvcUmtifBg8VJOPlaQl701/Z9Y7J0m1EOmzqM=;
-	b=VVnVTMVcWSRb0L8sXIUg2uEVgPIMgmxaiAaekeLks9Hah8A3TMi3VUymKeLsKn8HcXzYDN
-	4B26nOQQPMSb6MoiVQi8GcvTL+NKQLx+3+9cbGSmbRk6WKMu5Dnl3X5OyGHnjzgnokJGKH
-	usj8LZwIiQ0Gnu3hOCMMlmZtj8iohhw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779894956;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fHqLZ2GvcUmtifBg8VJOPlaQl701/Z9Y7J0m1EOmzqM=;
-	b=8jo1ekQuh9DR7FzXkjkibIBVuBvq7R34A2kyQ9gGxJkBcMhTpw8PvUDL/7JGqf1lARtVF6
-	bpry/6LTeIehe+Ag==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1779894956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fHqLZ2GvcUmtifBg8VJOPlaQl701/Z9Y7J0m1EOmzqM=;
-	b=VVnVTMVcWSRb0L8sXIUg2uEVgPIMgmxaiAaekeLks9Hah8A3TMi3VUymKeLsKn8HcXzYDN
-	4B26nOQQPMSb6MoiVQi8GcvTL+NKQLx+3+9cbGSmbRk6WKMu5Dnl3X5OyGHnjzgnokJGKH
-	usj8LZwIiQ0Gnu3hOCMMlmZtj8iohhw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1779894956;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fHqLZ2GvcUmtifBg8VJOPlaQl701/Z9Y7J0m1EOmzqM=;
-	b=8jo1ekQuh9DR7FzXkjkibIBVuBvq7R34A2kyQ9gGxJkBcMhTpw8PvUDL/7JGqf1lARtVF6
-	bpry/6LTeIehe+Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6A4155A8C1;
-	Wed, 27 May 2026 15:15:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2Nt+GKwKF2p6FQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 27 May 2026 15:15:56 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: deller@gmx.de,
-	geert@linux-m68k.org,
-	simona@ffwll.ch,
-	airlied@gmail.com,
-	lukas@wunner.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 4/4] fbdev: Do not export fbcon from fbdev
-Date: Wed, 27 May 2026 17:14:05 +0200
-Message-ID: <20260527151551.258659-5-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260527151551.258659-1-tzimmermann@suse.de>
-References: <20260527151551.258659-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1779896369; c=relaxed/simple;
+	bh=SZl0ZZ7Nk5+70c1aao78jyHVyCFkqKgvd/ZaC6sV7gw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vCkWCS1KsRhxi/ZBWEvYKU9tyqei2VjzoCck/EJFg1E1RNgygCq+Wx1E5uPIuOP/dZADwE25lVca/PpWlfI0DP/TrrTMOEJZPF/g5a4H3hSeFKfQS+T957Il7PEm3I+VsSUkzySaL+iWx2awdvm8NlxNTDuV5Z2G9g2DA549VWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mampa31n; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49048f70faaso4010605e9.3
+        for <linux-fbdev@vger.kernel.org>; Wed, 27 May 2026 08:39:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779896366; x=1780501166; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ADHAKXLPSV+B46SoR3AVK3+w80ncz+/VZrd71fy3Anc=;
+        b=Mampa31nK2C3CaNVzQKmW1TuqaqxPQ3JYp1i8wF9Iz4RB++d8vOI9btDAh4Rs2YA5y
+         Qgi44NwkRcqlcAn0FWN6sWql93LWLn2wPyoqzad544EfpwDc+VK0XLtIFqf92S/aNcq3
+         D3oykZb+NL4e/6/BuD9iGpkMMK69WDC7R0W5LidboGJWZG8XIQUmySfCyFxCvq0fe7dI
+         vfQMQrGZSSwi123fQs3vnIwmFP+adOltnp8mXw3SvReQcAGu94STDRwrsmXMZy40suhX
+         LDWL5RwdpQ16kBAkeabFvSgRIulXWP/d2zrCyoibpVfEXh5ReU4wR42EkqDX2Ul2xPTh
+         IM3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779896366; x=1780501166;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ADHAKXLPSV+B46SoR3AVK3+w80ncz+/VZrd71fy3Anc=;
+        b=tHPfYCPwPQIm7wh5tW9qu43tWMe8D9vwg2aPbyaenMeHAYgKN7dEOlLjO8j+XC66Ua
+         7PcHddkwRUcqoB6vjAvcESV7otBw4Mb1Rwg7aNT3ZQ/rybPjgdGtuhxoQxVZEX6ScdrY
+         Q6hLZlg4UGlpOOB9iAKvmyf+zNUca0FD8Qozx4Lx09AJw5cUDSTBUzBR6ZqBBPfC9Coz
+         NaY1EbLy2vUgrGbYtXclj0cB5SDc1BE3epr5aFG0EiAAIqTGy2l1v0fkU2GOJFV8JXYP
+         9wr0VAJAVpIVDk6GAAuTnwzha99XtcNeeRguINSjP3WZ274DtqjETBNstYGHH4EdXuhQ
+         pJIw==
+X-Gm-Message-State: AOJu0YyH1jyV8dcgS8pcYgfTWa1X3XQBz8jObFp0kw5BL0xh0ytZl5gD
+	AKKAv7QCz9LfUbGKqD5C9a+gT6zX4GhlLOitC2H/r3k9jkeDR/h89M2Q
+X-Gm-Gg: Acq92OFHI++C9FoBQvze3mMxTiKX264T00p8k8Jbrwck2EH3kMJDRs0Uxy69diPcdj4
+	P7dL3zcTZw/e2GekCn5Yg7SawHj/c2nsF41Kra9EgaSeKdT4C9+rP1toxYfkX8hR1PYGyGYJ8s3
+	V9yRCch8BsvreT5XVvqlP/JaaZI7FjAWwbpfh35PMwwAafOhYRbh7UKY/bZqPopkluNyc9NGuv3
+	XsP6L9LtXEPjHL6FzyePsfvzXEkH668CzCbZ4rbuHOvIuCJpWrP10qc4OO02XpDB1BpgMypJvyg
+	nlSacttTm3nLAHrfH1BlKaD5L5uwuRBf1wdH8G2Ers2LKRXfW4NiuD7yft8Aj9ZIIsUyDDdAFzP
+	GuAV4ZUTPusEXMOTBHkLpZOSY4RSpyuLVkLjVylcBQxgDl/2lEnGwmald1dFJLQ2ajlAmOifAG9
+	ppHdRaipCs3j86OKeKUcdhVe+qwaCiznLwPh658G8Uak3DC9W+2R/3KoqzWAjcp9/Wd9VefCT28
+	qogbuMeA1M=
+X-Received: by 2002:a05:600c:4ecc:b0:490:502:8422 with SMTP id 5b1f17b1804b1-490428e2ceamr162598325e9.6.1779896366116;
+        Wed, 27 May 2026 08:39:26 -0700 (PDT)
+Received: from simuladores.arostegui.proxmox (178.pool85-58-80.dynamic.orange.es. [85.58.80.178])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb54a6cdsm7241937f8f.2.2026.05.27.08.39.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 08:39:25 -0700 (PDT)
+From: =?UTF-8?q?Alberto=20Ar=C3=B3stegui?= <aarosteguig@gmail.com>
+To: Helge Deller <deller@gmx.de>
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	AlbertoArostegui <aarosteguig@gmail.com>
+Subject: [PATCH] fbdev: pxa168fb: use devm_ioremap_resource() for MMIO
+Date: Wed, 27 May 2026 15:39:13 +0000
+Message-ID: <20260527153913.33342-1-aarosteguig@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -118,248 +90,72 @@ List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -6.80
-X-Spam-Level: 
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7393-lists,linux-fbdev=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,linux-m68k.org,ffwll.ch,gmail.com,wunner.de,linux.ibm.com,ellerman.id.au,kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EF51F5E6CCA
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-7396-lists,linux-fbdev=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmx.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aarosteguig@gmail.com,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[linux-fbdev];
+	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E581D5E70C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-There are no callers of fbcon outside fbdev. Move the declarations
-into the internal header.
+From: AlbertoArostegui <aarosteguig@gmail.com>
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+pxa168fb maps the LCD controller register resource with devm_ioremap(),
+which does not request the memory region. Use devm_ioremap_resource()
+instead so the MMIO range is claimed before being mapped.
+
+This also handles cleanup automatically.
+
+Signed-off-by: AlbertoArostegui <aarosteguig@gmail.com>
 ---
- MAINTAINERS                          |  1 -
- drivers/video/fbdev/core/fb_chrdev.c |  2 +-
- drivers/video/fbdev/core/fbcon.c     |  1 -
- drivers/video/fbdev/core/fbcon.h     | 50 +++++++++++++++++++++++++
- drivers/video/fbdev/core/fbmem.c     |  2 +-
- include/linux/fbcon.h                | 55 ----------------------------
- 6 files changed, 52 insertions(+), 59 deletions(-)
- delete mode 100644 include/linux/fbcon.h
+ drivers/video/fbdev/pxa168fb.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4ae6919454c3..a795628ff46a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10150,7 +10150,6 @@ F:	drivers/video/fbdev/core/fbcon_rotate.h
- F:	drivers/video/fbdev/core/fbcon_ud.c
- F:	drivers/video/fbdev/core/softcursor.c
- F:	drivers/video/fbdev/core/tileblit.c
--F:	include/linux/fbcon.h
- F:	include/linux/font.h
- F:	lib/fonts/
+diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
+index ec602f7776eb..6784888d93c9 100644
+--- a/drivers/video/fbdev/pxa168fb.c
++++ b/drivers/video/fbdev/pxa168fb.c
+@@ -653,10 +653,9 @@ static int pxa168fb_probe(struct platform_device *pdev)
+ 	/*
+ 	 * Map LCD controller registers.
+ 	 */
+-	fbi->reg_base = devm_ioremap(&pdev->dev, res->start,
+-					     resource_size(res));
+-	if (fbi->reg_base == NULL) {
+-		ret = -ENOMEM;
++	fbi->reg_base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(fbi->reg_base)) {
++		ret = PTR_ERR(fbi->reg_base);
+ 		goto failed_free_info;
+ 	}
  
-diff --git a/drivers/video/fbdev/core/fb_chrdev.c b/drivers/video/fbdev/core/fb_chrdev.c
-index 035e67d2c28f..ba1d0bc214c5 100644
---- a/drivers/video/fbdev/core/fb_chrdev.c
-+++ b/drivers/video/fbdev/core/fb_chrdev.c
-@@ -3,10 +3,10 @@
- #include <linux/compat.h>
- #include <linux/console.h>
- #include <linux/fb.h>
--#include <linux/fbcon.h>
- #include <linux/major.h>
- 
- #include "fb_internal.h"
-+#include "fbcon.h"
- 
- /*
-  * We hold a reference to the fb_info in file->private_data,
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 50b84cd32938..853b52b40d01 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -70,7 +70,6 @@
- #include <linux/printk.h>
- #include <linux/slab.h>
- #include <linux/fb.h>
--#include <linux/fbcon.h>
- #include <linux/vt_kern.h>
- #include <linux/selection.h>
- #include <linux/font.h>
-diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
-index 321cc7f44baa..407d207b14f1 100644
---- a/drivers/video/fbdev/core/fbcon.h
-+++ b/drivers/video/fbdev/core/fbcon.h
-@@ -11,6 +11,7 @@
- #ifndef _VIDEO_FBCON_H
- #define _VIDEO_FBCON_H
- 
-+#include <linux/compiler_types.h>
- #include <linux/font.h>
- #include <linux/types.h>
- #include <linux/vt_buffer.h>
-@@ -19,6 +20,11 @@
- 
- #include <asm/io.h>
- 
-+struct fb_blit_caps;
-+struct fb_info;
-+struct fb_var_screeninfo;
-+struct fb_videomode;
-+
-    /*
-     *    This is the interface between the low-level console driver and the
-     *    low-level frame buffer device
-@@ -233,4 +239,48 @@ static inline int get_attribute(struct fb_info *info, u16 c)
-         (void) (&_r == &_v); \
-         (i == FB_ROTATE_UR || i == FB_ROTATE_UD) ? _r : _v; })
- 
-+#ifdef CONFIG_FRAMEBUFFER_CONSOLE
-+void __init fb_console_init(void);
-+void __exit fb_console_exit(void);
-+int fbcon_fb_registered(struct fb_info *info);
-+void fbcon_fb_unregistered(struct fb_info *info);
-+void fbcon_fb_unbind(struct fb_info *info);
-+void fbcon_suspended(struct fb_info *info);
-+void fbcon_resumed(struct fb_info *info);
-+int fbcon_mode_deleted(struct fb_info *info,
-+		       struct fb_videomode *mode);
-+void fbcon_delete_modelist(struct list_head *head);
-+void fbcon_new_modelist(struct fb_info *info);
-+void fbcon_get_requirement(struct fb_info *info,
-+			   struct fb_blit_caps *caps);
-+void fbcon_fb_blanked(struct fb_info *info, int blank);
-+int  fbcon_modechange_possible(struct fb_info *info,
-+			       struct fb_var_screeninfo *var);
-+void fbcon_update_vcs(struct fb_info *info, bool all);
-+void fbcon_remap_all(struct fb_info *info);
-+int fbcon_set_con2fb_map_ioctl(void __user *argp);
-+int fbcon_get_con2fb_map_ioctl(void __user *argp);
-+#else
-+static inline void fb_console_init(void) {}
-+static inline void fb_console_exit(void) {}
-+static inline int fbcon_fb_registered(struct fb_info *info) { return 0; }
-+static inline void fbcon_fb_unregistered(struct fb_info *info) {}
-+static inline void fbcon_fb_unbind(struct fb_info *info) {}
-+static inline void fbcon_suspended(struct fb_info *info) {}
-+static inline void fbcon_resumed(struct fb_info *info) {}
-+static inline int fbcon_mode_deleted(struct fb_info *info,
-+				     struct fb_videomode *mode) { return 0; }
-+static inline void fbcon_delete_modelist(struct list_head *head) {}
-+static inline void fbcon_new_modelist(struct fb_info *info) {}
-+static inline void fbcon_get_requirement(struct fb_info *info,
-+					 struct fb_blit_caps *caps) {}
-+static inline void fbcon_fb_blanked(struct fb_info *info, int blank) {}
-+static inline int  fbcon_modechange_possible(struct fb_info *info,
-+				struct fb_var_screeninfo *var) { return 0; }
-+static inline void fbcon_update_vcs(struct fb_info *info, bool all) {}
-+static inline void fbcon_remap_all(struct fb_info *info) {}
-+static inline int fbcon_set_con2fb_map_ioctl(void __user *argp) { return 0; }
-+static inline int fbcon_get_con2fb_map_ioctl(void __user *argp) { return 0; }
-+#endif
-+
- #endif /* _VIDEO_FBCON_H */
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index ecadbc58abff..e5221653ec2b 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -14,13 +14,13 @@
- #include <linux/console.h>
- #include <linux/export.h>
- #include <linux/fb.h>
--#include <linux/fbcon.h>
- #include <linux/lcd.h>
- #include <linux/leds.h>
- 
- #include <video/nomodeset.h>
- 
- #include "fb_internal.h"
-+#include "fbcon.h"
- 
-     /*
-      *  Frame buffer device initialization and setup routines
-diff --git a/include/linux/fbcon.h b/include/linux/fbcon.h
-deleted file mode 100644
-index f206370060e1..000000000000
---- a/include/linux/fbcon.h
-+++ /dev/null
-@@ -1,55 +0,0 @@
--#ifndef _LINUX_FBCON_H
--#define _LINUX_FBCON_H
--
--#include <linux/compiler_types.h>
--
--struct fb_blit_caps;
--struct fb_info;
--struct fb_var_screeninfo;
--struct fb_videomode;
--
--#ifdef CONFIG_FRAMEBUFFER_CONSOLE
--void __init fb_console_init(void);
--void __exit fb_console_exit(void);
--int fbcon_fb_registered(struct fb_info *info);
--void fbcon_fb_unregistered(struct fb_info *info);
--void fbcon_fb_unbind(struct fb_info *info);
--void fbcon_suspended(struct fb_info *info);
--void fbcon_resumed(struct fb_info *info);
--int fbcon_mode_deleted(struct fb_info *info,
--		       struct fb_videomode *mode);
--void fbcon_delete_modelist(struct list_head *head);
--void fbcon_new_modelist(struct fb_info *info);
--void fbcon_get_requirement(struct fb_info *info,
--			   struct fb_blit_caps *caps);
--void fbcon_fb_blanked(struct fb_info *info, int blank);
--int  fbcon_modechange_possible(struct fb_info *info,
--			       struct fb_var_screeninfo *var);
--void fbcon_update_vcs(struct fb_info *info, bool all);
--void fbcon_remap_all(struct fb_info *info);
--int fbcon_set_con2fb_map_ioctl(void __user *argp);
--int fbcon_get_con2fb_map_ioctl(void __user *argp);
--#else
--static inline void fb_console_init(void) {}
--static inline void fb_console_exit(void) {}
--static inline int fbcon_fb_registered(struct fb_info *info) { return 0; }
--static inline void fbcon_fb_unregistered(struct fb_info *info) {}
--static inline void fbcon_fb_unbind(struct fb_info *info) {}
--static inline void fbcon_suspended(struct fb_info *info) {}
--static inline void fbcon_resumed(struct fb_info *info) {}
--static inline int fbcon_mode_deleted(struct fb_info *info,
--				     struct fb_videomode *mode) { return 0; }
--static inline void fbcon_delete_modelist(struct list_head *head) {}
--static inline void fbcon_new_modelist(struct fb_info *info) {}
--static inline void fbcon_get_requirement(struct fb_info *info,
--					 struct fb_blit_caps *caps) {}
--static inline void fbcon_fb_blanked(struct fb_info *info, int blank) {}
--static inline int  fbcon_modechange_possible(struct fb_info *info,
--				struct fb_var_screeninfo *var) { return 0; }
--static inline void fbcon_update_vcs(struct fb_info *info, bool all) {}
--static inline void fbcon_remap_all(struct fb_info *info) {}
--static inline int fbcon_set_con2fb_map_ioctl(void __user *argp) { return 0; }
--static inline int fbcon_get_con2fb_map_ioctl(void __user *argp) { return 0; }
--#endif
--
--#endif /* _LINUX_FBCON_H */
 -- 
-2.54.0
+2.43.0
 
 
