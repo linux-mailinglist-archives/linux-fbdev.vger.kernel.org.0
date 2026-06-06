@@ -1,81 +1,81 @@
-Return-Path: <linux-fbdev+bounces-7521-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7522-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iLBlG4GqI2rLwgEAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7521-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 06 Jun 2026 07:05:05 +0200
+	id 9zyeIZapI2pVwgEAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7522-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 06 Jun 2026 07:01:10 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE00B64C7BC
-	for <lists+linux-fbdev@lfdr.de>; Sat, 06 Jun 2026 07:05:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E36B64C732
+	for <lists+linux-fbdev@lfdr.de>; Sat, 06 Jun 2026 07:01:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WtSr6VpN;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7521-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7521-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ck2telJ+;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7522-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7522-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EAD530C89EA
-	for <lists+linux-fbdev@lfdr.de>; Sat,  6 Jun 2026 04:59:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 69696302439E
+	for <lists+linux-fbdev@lfdr.de>; Sat,  6 Jun 2026 04:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA39230BF67;
-	Sat,  6 Jun 2026 04:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE7130C153;
+	Sat,  6 Jun 2026 04:58:48 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790FE3128DF
-	for <linux-fbdev@vger.kernel.org>; Sat,  6 Jun 2026 04:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89A930C166
+	for <linux-fbdev@vger.kernel.org>; Sat,  6 Jun 2026 04:58:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780721924; cv=none; b=LeHEWvFIvfDtZKJs4/4i/sEEpLgVE90X5KuMWw3o8HtRBmtwj6fKbBLBjwJMnCIpKsl5dr6milmtL8g6Hq1+f2hJ4ghJgb0OL+3nQ9jBbf2/gUdC1STBHotb1L/s6LRhcjzEi+EQhZ1f+8kVB+PP6xzTymLwVXiV9Q5EqFzGzaM=
+	t=1780721928; cv=none; b=G5qWF8tnt//FKsr0yAI6uHiP99WbL1Pj2vWVxRHv5n/45FiB84e0r9k+Kw0n33WzR05qSHFuvSYeAOQpbDnqAopRrH3bQkiR59gdbkeQUdMzpFLaBaa7WnwpeGduT+cAUg2ab4z4/arduWWALKqtfeE6LpW4aXmdEeK/w2eHT90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780721924; c=relaxed/simple;
-	bh=1X3Fe5KMAyI8d0lBSX7gzgdG4WYUQVZ8AWRde1CmRRg=;
+	s=arc-20240116; t=1780721928; c=relaxed/simple;
+	bh=8ihLzDpqisj7RCWIgvP+oI6UBuVHBgOFSoKuiunQyxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XK9TmNJOwitElQVgyVAQfoM0PLhqUYk/KueIzKtCQwY+W97nkTT0lD6CLI4Md0xlJ8LOrnYuogww1X0PQc0IowL7npVNLF4J10hyFYesN5a65YllqAdKOtx/etG/8bAEyo+mgLRlxZBVutzZdJtvn5e3L3HFk+JAfauwx3chLd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WtSr6VpN; arc=none smtp.client-ip=209.85.218.42
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bec429c2bb1so382389166b.1
-        for <linux-fbdev@vger.kernel.org>; Fri, 05 Jun 2026 21:58:43 -0700 (PDT)
+	 MIME-Version; b=l32Wr02FfUS2Tet3iEvmQtWwHcTfdFESrj7YDlYRTD1phTkMOMVfnLgncEIpQtLzuhg+Uw4ah34PXh0Fe0VJfUTIYnvIe5dip/rW9YTVVmDSOyHQnBP3jfo5k8WAtgCtRr/NdReafM57mVLI/gj/8Me/s8HAV+SvKbuLi72wbcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ck2telJ+; arc=none smtp.client-ip=209.85.218.50
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bec450b950dso372855666b.2
+        for <linux-fbdev@vger.kernel.org>; Fri, 05 Jun 2026 21:58:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780721922; x=1781326722; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780721925; x=1781326725; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tMzv/S8Y4Icyy6C4SSXqpDWOb9w1xnX2+g+CSvM++O4=;
-        b=WtSr6VpNr5A1Ml2hGyJFaVqvyy6fxdgIFVLXIUFtW0YsU3e93OWG6eVDH8OYO/VAXH
-         qnqlb2GvKyBGxF+ZNcPHtJeyGzapi/3lhMyI4yUHGvLA4eXjYkHd8e0xqptkOzsX+p8W
-         lTXYexnL2obWiFIU7CJRXtRV8/QzFvPgR8ctCxYHSSwshvvUSOM06XPi6V+nd1FcmCMh
-         P4s5eYoK/Js6UOp083Gw+pKhrJ6JBvWzgf/Q75tkU4sVMVkl420LeDTV2CBMiCNb5X2V
-         KlJ+AW/m8Z4g7n99HixqijrLfpY9aaisaNNkmWbiziId9dTqjRv/aJzhQTAepwRJhyHf
-         RCLw==
+        bh=aMkYm2wLFurUx2dgxyb2h52E5PnRVf0UR593PbHgI/g=;
+        b=Ck2telJ+fs74MtpcAOJeTy4O7AEBa7S8SvbI7OpYYhirYyA6IQTINVWse9cGmNGteB
+         m9Pz+khqBVoefNt3pWHCLM/JJO/MYzuvVQ4ysjk+6IGfrMDUgGOTZ5zVRUfEUL7WFBAh
+         OPTkXEejpD9sJ4B+SqdswG8ZzOD9DC0WzdG9FN7CSrGSiSPUnrIN2n7ahP9exY6YFOhF
+         6//N9euZ1h1OTBVXq6h5UER+PRmnJmWYKSmIav2nGH/3w9QNGomZH4urpmqYdCye6znu
+         L0rY5XFuVf69oYK9AmpsqfQru9MiW8v45eXo9kEX8QV1M1kp1K6hivKfWZ50b8Yt55J7
+         hbYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780721922; x=1781326722;
+        d=1e100.net; s=20251104; t=1780721925; x=1781326725;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=tMzv/S8Y4Icyy6C4SSXqpDWOb9w1xnX2+g+CSvM++O4=;
-        b=E3wW5aYgDQogJD/ENnARDaajFQFrpOYPBCmnZrWQLU/DJzV/mRIqnzkse2Q2/fjXoR
-         td0gY7aSYg833Zl7HS0/uK+cGbiaVfC5iC9SpeuVEDrCbvnxSblNBvMS0ihF3fsAE0JX
-         XMgKGKZDSv5VI4OKea2aemGYGlqRWKR5wzxTZt56A6UyCIBROJudoQjqyHAJc9fuE8Rp
-         Nim7iiZsPdeMIPy1m0wu2CKy4JSuxTqWPrLVNtkp/Vlez8TuHuj0fs6mz10kE434CFs0
-         DB24SjHpCtkda/YGVJjzm2A29Bx/eFj1H+ukE7giEFQOxLBmrW1v5aRTfYoghlCuIa8v
-         7Lbg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Y+fesNvpTpwZ6rQJpIRJLfsWtcARjUF1imMzCcMKxcXLG6BMDNRrDefmRMjVuR8ux2V6Sv8U7ljnpeg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxA1FgD8KPpZH7CDXgVtnPUcF5YcLw+B+x97DNfHxhRGPtD+rOD
-	PFTBS/DamwMH3Bya6Dazd0a0tUl4iP1hQ5/ifZ4+62T2vCkgb1/aiB3v
-X-Gm-Gg: Acq92OHYwepgj8mXU3bY9CrbRlX5BvBCU6co6nkiEGqdEUUtN3ZEPgzOTszznYn8ZnA
-	O9IJQEUIOhtH5P36PlcqcBBkmwyV76gWXJwLDAaDBvDsvVKphP50wszH+dDAyiPxyH9Cl0iXpNr
-	P54zO0UnnigdLFXv0W3heRw5xKMzEOOo85B/AXWuknEH32xk2YHFKdnkVm7dW0K3pgoIg07zlQl
-	rf+ZEkQrS+/c22ww5K/izbvYFQ0FujdBbueY60SxXyV7ZxvHP2fAPt5VYu1FtduT94MdXWpGtIQ
-	zLwofRiNjefzFOy0tkJMEjFeznskRcyxg5eP610ZV1kOjQ/zbUjy0MxCPhdK2ITr9+/US1DkyTl
-	We7E3e4anvNOraJowKHxkF0wkPWaykdHVdhSdKVAK2+4IP92wT3D/ai4TuSkKMXvVVcHUK9pvEY
-	HJO9iN1dv7B1eJqxZpzUUpZ0Xr+zwitIaxhw==
-X-Received: by 2002:a17:907:6d05:b0:bed:afd7:185 with SMTP id a640c23a62f3a-bf3737ed359mr332707666b.43.1780721921881;
-        Fri, 05 Jun 2026 21:58:41 -0700 (PDT)
+        bh=aMkYm2wLFurUx2dgxyb2h52E5PnRVf0UR593PbHgI/g=;
+        b=aH9M7OVJFY3LrM/ueFnMSqNAZDBCRd6mBAYbin7OytB5VsUv0drK2JCKxSBnAobGwj
+         rGwHfbdi01JTb7rpX6q7VL8lxEjm1am88/8+7FSa0cB9UMlKOwPdND9xY96rIqARHq6A
+         FAtJ3uji0ZLTvwgUuf5rxVZPrH4X5e8I8TZPR/Hyi0BmYYWvfHTvRkvFIBwCiPnkhrsR
+         +Y4jcWt1SaSoZmCNeT2C2wlrCXlRIDfCJRYpMGqP6pP1ddThRilfhvnx7sNcEphVaZX2
+         Jv+oeUdGzA7NWcZXJSUbdLVvvyFNdkha6zakc/wJ/3QM5qttmrUKV2UnqXfeWcealUqd
+         mbyQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+/tyfnYk1kaCovYmeavf6gaxh225b6ZxxWQb6gF/1Ss5kh1CSRzQRL9e6uhiOIR+7DapE1im8W8zgtEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0kqIANskBzKG94qFXiHFVGld08JFNYZKQxxG1EcMWXkRVNT1I
+	EJhbJBcE23x0PAHRqt0yV4/GAyBRT2X/etknw/bIGXWZbX3xpZCr8aX/
+X-Gm-Gg: Acq92OE/End7/i+dPDqGnhgeoNQ4G67ATmUJrGBxHO2urPkNLfSB933VH8iupD5slup
+	9Qeln5MmoScikBctMMzfxKWjmudgms3oi8Ay/AbGxBt/GUEGUds54VYNeWMsc4tjmTKb+eudwCw
+	0S8aJySUhIYKUH55r32wm/IMoTxOxubCEfojgd4QWGvPOQzmHuPJrCKoQk758KLP+1CPeoLOnRZ
+	0LawuHegKeUeQVilRLYrR4wX8kxxNRXRb/dTeA6TVIYj8Km/c4RLVhHnuALBA7CeOTFI2wa5/Bx
+	HPqp0fgQwQ7TBJd2upTdzZ5QW+sgguJYvtsI6fTI7Ai3B/8EZQof2sEYtVkMlBsiL2XBfmpDmkh
+	Ybm+KN2DgJ+uIeeGtHfPDUV3Wm7Kn2aE0F06pJz5e0T2istgTPpEX27Z+AEXU+9GdlZlPHJe/Nh
+	JIPTC+biucJ650oNzTu4J0N8A=
+X-Received: by 2002:a17:906:f5aa:b0:bec:157:a630 with SMTP id a640c23a62f3a-bf3721598f7mr362897366b.23.1780721925345;
+        Fri, 05 Jun 2026 21:58:45 -0700 (PDT)
 Received: from xeon ([188.163.112.61])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf054e086fesm570597166b.32.2026.06.05.21.58.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bf054e086fesm570597166b.32.2026.06.05.21.58.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 21:58:40 -0700 (PDT)
+        Fri, 05 Jun 2026 21:58:43 -0700 (PDT)
 From: Svyatoslav Ryhel <clamor95@gmail.com>
 To: Lee Jones <lee@kernel.org>,
 	Daniel Thompson <danielt@kernel.org>,
@@ -97,9 +97,9 @@ Cc: Johan Hovold <johan@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org,
 	linux-fbdev@vger.kernel.org
-Subject: [PATCH v4 12/14] video: backlight: lm3533_bl: Set initial mapping mode from DT
-Date: Sat,  6 Jun 2026 07:57:36 +0300
-Message-ID: <20260606045738.21050-13-clamor95@gmail.com>
+Subject: [PATCH v4 13/14] video: backlight: lm3533_bl: Implement backlight_scale property
+Date: Sat,  6 Jun 2026 07:57:37 +0300
+Message-ID: <20260606045738.21050-14-clamor95@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260606045738.21050-1-clamor95@gmail.com>
 References: <20260606045738.21050-1-clamor95@gmail.com>
@@ -117,7 +117,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -125,7 +125,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCPT_COUNT_TWELVE(0.00)[20];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7521-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7522-lists,linux-fbdev=lfdr.de];
 	FORGED_SENDER(0.00)[clamor95@gmail.com,linux-fbdev@vger.kernel.org];
 	FORGED_RECIPIENTS(0.00)[m:lee@kernel.org,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:pavel@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:deller@gmx.de,m:clamor95@gmail.com,m:johan@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-leds@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -141,60 +141,54 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DE00B64C7BC
+X-Rspamd-Queue-Id: 2E36B64C732
 
-Add support to obtain the initial mapping mode from DT instead of leaving
-it unconfigured.
+Since the device supports linear and non-linear modes, implement the
+backlight_scale property to describe this state.
 
 Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
 Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
 ---
- drivers/video/backlight/lm3533_bl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/video/backlight/lm3533_bl.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/video/backlight/lm3533_bl.c b/drivers/video/backlight/lm3533_bl.c
-index 9ad7ea1bbbcc..4f8cde9f290d 100644
+index 4f8cde9f290d..2aa4b86042ff 100644
 --- a/drivers/video/backlight/lm3533_bl.c
 +++ b/drivers/video/backlight/lm3533_bl.c
-@@ -37,6 +37,7 @@ struct lm3533_bl {
- 	u32 pwm;
- 
- 	bool have_als;
-+	bool linear;
- };
- 
- 
-@@ -226,8 +227,14 @@ static struct attribute_group lm3533_bl_attribute_group = {
- 
- static int lm3533_bl_setup(struct lm3533_bl *bl)
+@@ -142,6 +142,7 @@ static ssize_t store_linear(struct device *dev, struct device_attribute *attr,
  {
-+	int ctrlbank = lm3533_bl_get_ctrlbank_id(bl);
+ 	struct lm3533_bl *bl = dev_get_drvdata(dev);
+ 	int ctrlbank = lm3533_bl_get_ctrlbank_id(bl);
++	struct backlight_device *bd = bl->bd;
+ 	unsigned long linear;
  	int ret;
  
-+	ret = regmap_assign_bits(bl->regmap, LM3533_REG_CTRLBANK_AB_BCONF,
-+				 CTRLBANK_AB_BCONF_MODE(ctrlbank), bl->linear);
-+	if (ret)
-+		return ret;
-+
- 	ret = lm3533_ctrlbank_set_max_current(&bl->cb, bl->max_current);
+@@ -153,6 +154,9 @@ static ssize_t store_linear(struct device *dev, struct device_attribute *attr,
  	if (ret)
  		return ret;
-@@ -281,6 +288,9 @@ static int lm3533_bl_probe(struct platform_device *pdev)
- 	props.max_brightness = LM3533_BL_MAX_BRIGHTNESS;
- 	props.brightness = default_brightness;
  
-+	bl->linear = device_property_read_bool(&pdev->dev,
-+					       "ti,linear-mapping-mode");
++	bd->props.scale = linear ? BACKLIGHT_SCALE_LINEAR :
++				   BACKLIGHT_SCALE_NON_LINEAR;
 +
+ 	return len;
+ }
+ 
+@@ -290,6 +294,8 @@ static int lm3533_bl_probe(struct platform_device *pdev)
+ 
+ 	bl->linear = device_property_read_bool(&pdev->dev,
+ 					       "ti,linear-mapping-mode");
++	props.scale = bl->linear ? BACKLIGHT_SCALE_LINEAR :
++				   BACKLIGHT_SCALE_NON_LINEAR;
+ 
  	bd = devm_backlight_device_register(&pdev->dev, name, &pdev->dev,
  					    bl, &lm3533_bl_ops, &props);
- 	if (IS_ERR(bd)) {
 -- 
 2.53.0
 
