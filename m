@@ -1,217 +1,121 @@
-Return-Path: <linux-fbdev+bounces-7593-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7595-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9O7DGvSMKmrtsAMAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7593-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 12:24:52 +0200
+	id LojCK+WQKmoQsgMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7595-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 12:41:41 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D903F670D43
-	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 12:24:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04743670EDE
+	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 12:41:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UQq+rGIQ;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7593-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7593-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=sezginduran.net header.s=mail header.b=acNQZIrd;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7595-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7595-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CA9803029898
-	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 10:24:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B71C13351A8D
+	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 10:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01AE3CAA5D;
-	Thu, 11 Jun 2026 10:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0263D333C;
+	Thu, 11 Jun 2026 10:38:23 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward502b.mail.yandex.net (forward502b.mail.yandex.net [178.154.239.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBFF3C9EEF
-	for <linux-fbdev@vger.kernel.org>; Thu, 11 Jun 2026 10:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EB93D3CF6;
+	Thu, 11 Jun 2026 10:38:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781173487; cv=none; b=Q+xNSY2+Z+rCnufHGr8y/8EtdHILPgcxDnhNUxC+kl6xXQZwQlr58mAdGrvYWnpCeouKNYpx6IMdxvi0KXqu8NUNl6M/QBjxVgucLCNMrdpUH2ZZKYKg8bHt7sWX+v6x7lfVq0wp87TR+KZ+xi2Tcdb3qmBwlK5kNyzb9owKoWs=
+	t=1781174303; cv=none; b=aV+272J1FJ3HuvPF+6qC2vriVTJJUGtvSfLWZLlks3aMXcApgYSyweyj2+35FWS4JyeE1WkOqmqLCdbj+QJwB/s70nxAkvGKH7NB7dZt8NHTumImkikluza8d9+8jM0s55Nf92S33/IPbPV/g3P8ILzceK7V1tKxfJI3H1uAhMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781173487; c=relaxed/simple;
-	bh=hlfMl8YRaJvwDqi/+iqxrs0r1tbx3KXyGipQCqVE0hg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NMQ83PMn/i621P1a3EDOAJJfBRUdwU9aGK+lPhZODvNQtzpzW+IE5UMsZX3MLwAusVYoXa7qRRVcMhGkpFsAryq914EngwQT2WhQ6rzJBM90uOQQnwtPWSzmhS5Sm5fWhJH6z34htGW5LJDH9IKwkqYkbrE82kiEgX22w1y8Kko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UQq+rGIQ; arc=none smtp.client-ip=209.85.214.171
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c168baac83so37095525ad.2
-        for <linux-fbdev@vger.kernel.org>; Thu, 11 Jun 2026 03:24:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781173486; x=1781778286; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ouPpwQMT501sab37XIOkk8CD2y0PoAbrmxd6qozXfMQ=;
-        b=UQq+rGIQM/zuhZjb1KqhheEcrIeOWtPlhxRQ3FIIYC5ZxmO7KPWwqZLViZbEQIvkvH
-         VIit9u0F9pPy+lXnfp8Bsc5yKY2HG/C5A3G1hiY23mtmHYtA1vBkfJhn53waw/q2gsAS
-         MvaIqiznp2AY77c6LBaJvk8MB5oGvKMbskd/Ayg+Oqr7MQFt1MCyY47AdJLDP/XgcTpj
-         8Ncyh5yJ5It2kFdJ54F5JMflBNZCwTLBEJ6g8ESkHcroVg+Fm5L65zfMeHqtLhHPLBgf
-         I9HL6yo+2MxQoRAI8AzhtQKcuxneHtl1h2QHlJZyTVIpuWxjJ9hQZtCKUhf7ikIHNAHB
-         7cLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781173486; x=1781778286;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ouPpwQMT501sab37XIOkk8CD2y0PoAbrmxd6qozXfMQ=;
-        b=fe83giq86Ot3VnSCaxbYUwH3usvr8Kdyyks3MjSuMOS0D3AghoJCaFwbJFLZVZCczx
-         n4cYOZ8UIflDZl2o4YPl6YMezgel3n7CzpZliwtbxu579DbWp1gq0U3tQUXH3/WQS76R
-         RXbsFrW4wiuN/mywJZu1JthYrSPvIfbrox+raPTo+mXqTHHFOh0LBj7e3xgYhgQgiB5A
-         DVsUuy8s7JdQPcC7mOw8ugGOSrdU0GzJCDMfK+Cc4asHTE2nC4uxvCecjufuvO8spFnD
-         sh4gjOS2CXDKurX5d0LTWZFO4q3lG7dqNStRsaOqSlRm1eNlJ//FLreMdGVtgJZq8qFq
-         TYng==
-X-Gm-Message-State: AOJu0YzZNEB7gHPTnvH5ikCLSX4a7dWehtnYAYveeZxVIz2kTGb9mcZH
-	H5pbH0gK2ZrZsZmyAF9KeNPiG4iSB4fyPzHa38sT/ADFcLkDFodgSeKW
-X-Gm-Gg: Acq92OFIKIqRR0OgRQVN5oh72vMXsc1Opmi2/NJ5aH/OWjx9PXiQsTE9PFvbmKzo+6b
-	zphwF0DPhPvYOgUw/FqB+xNRDwjRwE45nyEw871KnI/vKs3AwZDjv0X8rDe7PpK6ld10zw2dMcf
-	2ar2L2QomjchBlJY3bi5bz4sF9gGQaAqSHllQXmrSnGF1UTMcy4GJNADCNzkR/UN+ZuujYHnK3e
-	jMdtxD5WZXGrZQS4Fr5lahnuW95HrRJswb1NIAIvG7P2bufPgPY+dsBl1F5tKN6CdNK/ZF0asD1
-	u4mlGty01OVlqqQL3TQ4Lu576BmQkiQZAL+7PVWN0PArqo1D+9pFyQYSp/SrfZr9kDX1B6VOgs/
-	WPGwo/uf5pbPZ4o+NLqb4rz+gIOVOxPJ0xEnGQJzTVdLazaL5VkS3Obg0v9N5F7m1EXG89vipPC
-	03Rvn5bbrJO8t+QnTIRiqRRcvBrGLRizjk
-X-Received: by 2002:a17:903:3b8b:b0:2be:e3bc:e8e4 with SMTP id d9443c01a7336-2c2f2a77e4fmr24126845ad.18.1781173485714;
-        Thu, 11 Jun 2026 03:24:45 -0700 (PDT)
-Received: from 192.168.1.10 ([43.248.69.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629d55esm279641675ad.63.2026.06.11.03.24.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 03:24:45 -0700 (PDT)
-From: Xebec77 <ixebec777@gmail.com>
-To: sudipm.mukherjee@gmail.com,
-	teddy.wang@siliconmotion.com,
-	gregkh@linuxfoundation.org
-Cc: linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Xebec77 <ixebec777@gmail.com>
-Subject: [PATCH] staging: sm750fb: fix CamelCase variable name Bpp to bpp
-Date: Thu, 11 Jun 2026 15:50:27 +0530
-Message-ID: <20260611102027.28137-1-ixebec777@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1781174303; c=relaxed/simple;
+	bh=PrUEcu8IZi1yM9J1a1qqizLO+dia8kRZEkhnxeBOv1I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZBT3DOW30arYNB0+R1C4jDcJp9Fk8FErSG0+1+o8nAqIl6gEp1LXtyjNybDQxLTfi+NkBozCajy6rxKSHuzzXYO2UgHLQYr17pruqyhzZ/X475NXTS4hEEqlebuKYDSopyQFCrq93jy/WXskt7QcSy3+IsNEi7cZAS9IxxR1l2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sezginduran.net; spf=pass smtp.mailfrom=sezginduran.net; dkim=pass (1024-bit key) header.d=sezginduran.net header.i=@sezginduran.net header.b=acNQZIrd; arc=none smtp.client-ip=178.154.239.146
+Received: from mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:2310:0:640:2452:0])
+	by forward502b.mail.yandex.net (Yandex) with ESMTPS id 32426819D1;
+	Thu, 11 Jun 2026 13:31:23 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (smtp) with ESMTPSA id HVIQvZXcXOs0-ThDHC39I;
+	Thu, 11 Jun 2026 13:31:22 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sezginduran.net;
+	s=mail; t=1781173882;
+	bh=Hx/cAgimb1DUiWGR0srCfHZqWnXNBC1sS6Ab6UAz7vI=;
+	h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+	b=acNQZIrdnQSsje/3iQ0qq0oKV25Hwp628vWW4HuHCs2IwjS/Uig5hI7X7jkTs9K8Y
+	 j+zP25qGNJ2tt3iGGjEp6+LRe49KA3MDJ68EAjQTiV6H0VoXJi5n081KCBk7LVLzxZ
+	 9r11TzIkM/tS3k7+Xu2kIotp0IIiCK7OWrQoh25I=
+Message-ID: <9e704c86-57d8-4bea-be11-464dbe3ab78c@sezginduran.net>
+Date: Thu, 11 Jun 2026 13:31:17 +0300
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] staging: sm750fb: fix CamelCase variable name Bpp to bpp
+Content-Language: tr
+To: Xebec77 <ixebec777@gmail.com>, sudipm.mukherjee@gmail.com,
+ teddy.wang@siliconmotion.com, gregkh@linuxfoundation.org
+Cc: linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260611102027.28137-1-ixebec777@gmail.com>
+From: Ahmet Sezgin Duran <ahmet@sezginduran.net>
+In-Reply-To: <20260611102027.28137-1-ixebec777@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[sezginduran.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-7593-lists,linux-fbdev=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sudipm.mukherjee@gmail.com,m:teddy.wang@siliconmotion.com,m:gregkh@linuxfoundation.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:ixebec777@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-7595-lists,linux-fbdev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:ixebec777@gmail.com,m:sudipm.mukherjee@gmail.com,m:teddy.wang@siliconmotion.com,m:gregkh@linuxfoundation.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com,siliconmotion.com,linuxfoundation.org];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[sezginduran.net];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[ixebec777@gmail.com,linux-fbdev@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[ahmet@sezginduran.net,linux-fbdev@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[sezginduran.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ixebec777@gmail.com,linux-fbdev@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[ahmet@sezginduran.net,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D903F670D43
+X-Rspamd-Queue-Id: 04743670EDE
 
-Signed-off-by: Xebec77 <ixebec777@gmail.com>
----
- drivers/staging/sm750fb/sm750_accel.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+On 6/11/26 1:20 PM, Xebec77 wrote:
+> Signed-off-by: Xebec77 <ixebec777@gmail.com>
+> ---
+>   drivers/staging/sm750fb/sm750_accel.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
+> 
+You need to:
 
-diff --git a/drivers/staging/sm750fb/sm750_accel.c b/drivers/staging/sm750fb/sm750_accel.c
-index 0f94d859e..4beabe105 100644
---- a/drivers/staging/sm750fb/sm750_accel.c
-+++ b/drivers/staging/sm750fb/sm750_accel.c
-@@ -85,7 +85,7 @@ void sm750_hw_set2dformat(struct lynx_accel *accel, int fmt)
- }
- 
- int sm750_hw_fillrect(struct lynx_accel *accel,
--		      u32 base, u32 pitch, u32 Bpp,
-+		      u32 base, u32 pitch, u32 bpp,
- 		      u32 x, u32 y, u32 width, u32 height,
- 		      u32 color, u32 rop)
- {
-@@ -102,14 +102,14 @@ int sm750_hw_fillrect(struct lynx_accel *accel,
- 
- 	write_dpr(accel, DE_WINDOW_DESTINATION_BASE, base); /* dpr40 */
- 	write_dpr(accel, DE_PITCH,
--		  ((pitch / Bpp << DE_PITCH_DESTINATION_SHIFT) &
-+		  ((pitch / bpp << DE_PITCH_DESTINATION_SHIFT) &
- 		   DE_PITCH_DESTINATION_MASK) |
--		  (pitch / Bpp & DE_PITCH_SOURCE_MASK)); /* dpr10 */
-+		  (pitch / bpp & DE_PITCH_SOURCE_MASK)); /* dpr10 */
- 
- 	write_dpr(accel, DE_WINDOW_WIDTH,
--		  ((pitch / Bpp << DE_WINDOW_WIDTH_DST_SHIFT) &
-+		  ((pitch / bpp << DE_WINDOW_WIDTH_DST_SHIFT) &
- 		   DE_WINDOW_WIDTH_DST_MASK) |
--		   (pitch / Bpp & DE_WINDOW_WIDTH_SRC_MASK)); /* dpr44 */
-+		   (pitch / bpp & DE_WINDOW_WIDTH_SRC_MASK)); /* dpr44 */
- 
- 	write_dpr(accel, DE_FOREGROUND, color); /* DPR14 */
- 
-@@ -138,7 +138,7 @@ int sm750_hw_fillrect(struct lynx_accel *accel,
-  * @sy: Starting y coordinate of source surface
-  * @dest_base: Address of destination: offset in frame buffer
-  * @dest_pitch: Pitch value of destination surface in BYTE
-- * @Bpp: Color depth of destination surface
-+ * @bpp: Color depth of destination surface
-  * @dx: Starting x coordinate of destination surface
-  * @dy: Starting y coordinate of destination surface
-  * @width: width of rectangle in pixel value
-@@ -149,7 +149,7 @@ int sm750_hw_copyarea(struct lynx_accel *accel,
- 		      unsigned int source_base, unsigned int source_pitch,
- 		      unsigned int sx, unsigned int sy,
- 		      unsigned int dest_base, unsigned int dest_pitch,
--		      unsigned int Bpp, unsigned int dx, unsigned int dy,
-+		      unsigned int bpp, unsigned int dx, unsigned int dy,
- 		      unsigned int width, unsigned int height,
- 		      unsigned int rop2)
- {
-@@ -249,9 +249,9 @@ int sm750_hw_copyarea(struct lynx_accel *accel,
- 	 * pixel values. Need Byte to pixel conversion.
- 	 */
- 	write_dpr(accel, DE_PITCH,
--		  ((dest_pitch / Bpp << DE_PITCH_DESTINATION_SHIFT) &
-+		  ((dest_pitch / bpp << DE_PITCH_DESTINATION_SHIFT) &
- 		   DE_PITCH_DESTINATION_MASK) |
--		  (source_pitch / Bpp & DE_PITCH_SOURCE_MASK)); /* dpr10 */
-+		  (source_pitch / bpp & DE_PITCH_SOURCE_MASK)); /* dpr10 */
- 
- 	/*
- 	 * Screen Window width in Pixels.
-@@ -259,9 +259,9 @@ int sm750_hw_copyarea(struct lynx_accel *accel,
- 	 * for a given point.
- 	 */
- 	write_dpr(accel, DE_WINDOW_WIDTH,
--		  ((dest_pitch / Bpp << DE_WINDOW_WIDTH_DST_SHIFT) &
-+		  ((dest_pitch / bpp << DE_WINDOW_WIDTH_DST_SHIFT) &
- 		   DE_WINDOW_WIDTH_DST_MASK) |
--		  (source_pitch / Bpp & DE_WINDOW_WIDTH_SRC_MASK)); /* dpr3c */
-+		  (source_pitch / bpp & DE_WINDOW_WIDTH_SRC_MASK)); /* dpr3c */
- 
- 	if (accel->de_wait() != 0)
- 		return -1;
--- 
-2.54.0
+* Use a real name for Signed-off-by part.
+* Add a commit body describing the changes. Commit title itself is not 
+enough.
 
+Regards,
+Ahmet Sezgin Duran
 
