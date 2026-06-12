@@ -1,186 +1,140 @@
-Return-Path: <linux-fbdev+bounces-7602-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7603-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0yh+GE0MK2pp1wMAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7602-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 21:28:13 +0200
+	id RIqaO0wxLGqENQQAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7603-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Fri, 12 Jun 2026 18:18:21 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D27B674BDA
-	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 21:28:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D1267AD02
+	for <lists+linux-fbdev@lfdr.de>; Fri, 12 Jun 2026 18:18:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b="KXIXh/UE";
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7602-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7602-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kY40Iw/j";
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7603-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7603-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00F01311FECA
-	for <lists+linux-fbdev@lfdr.de>; Thu, 11 Jun 2026 19:27:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1CBFC30055FF
+	for <lists+linux-fbdev@lfdr.de>; Fri, 12 Jun 2026 16:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A41A3655DA;
-	Thu, 11 Jun 2026 19:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF2F3A963D;
+	Fri, 12 Jun 2026 16:18:15 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3B030DEB8;
-	Thu, 11 Jun 2026 19:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312CA218EB1;
+	Fri, 12 Jun 2026 16:18:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781206076; cv=none; b=brBSwOpY2Ab/oO62wBKVI7SZ1E3v6POxRlA7UiPVAxHActpJyp7W/N0bJjpDUUrLaMmr7OjhSvoqefigjK4jRqsrI9xhhbnI3AjXbgHBny4PIRdlmMcXwraf205rYY34IDoPw2h2wYRTyaiPU6QO8fRuNZU7kDc3B/VDHNppUm4=
+	t=1781281095; cv=none; b=WzUtYXcitEgkHE4ICuJrxa18bGBiDKcrDF9jk77jOxStq6faalVAUGDGAQPOEMpve2l/Ga9IIFikeLPzyebvxyauTTi5Va3opjYu+bxpBPXKN1rw0EKP7ggxrtoH2r+88KHWzp9Uwwe6V0KK2SLWYcO2Ow+XMp9geNWNnF9KRjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781206076; c=relaxed/simple;
-	bh=ZsYHI2Mv0/sivtqF2/BNg7mQl3iBrP2bqcQipJwiT+Y=;
+	s=arc-20240116; t=1781281095; c=relaxed/simple;
+	bh=gcN/ebDW59Eb8scLHGRO1cBHAeg7AB0pQ62NF8tH3yY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Anc1SYlaNtOnPirZ9jRRTZP//gAGZbDC56gRIgfUj3XXmX18dIiRsNHLM63VcahWEhUyNVaMe7eHm8EByQWgGIdMOfknT9TUFPX9tjinNz+YAygCnzVsHklGaQQALbJ9nM3sxMPqPuSxCx2+eeDiuU/bqQxPQieaHVP644+gOUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KXIXh/UE; arc=none smtp.client-ip=198.175.65.9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781206074; x=1812742074;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ZsYHI2Mv0/sivtqF2/BNg7mQl3iBrP2bqcQipJwiT+Y=;
-  b=KXIXh/UE+RtfjZbZWSKCylfzkfw+lWUJZ9EXSIa8yk07l4RVT7YfY3nH
-   OO/2YB2BwXgfOV9RyLVySoMQskmpUSIUPuexuALIlYnF7uPZCz3gHFAqA
-   +tHykquc1ntsgkCm/TR1EzvM6TDGvn6au2PAwzl0sAr0X53ldVp0A0UCo
-   WFvAdgpVm2o0jWKgq0KP8vG7ud6NoS8Z0K/Ng3xPyKOcp3bmnjuIOdo8N
-   0St0+9lrEE+0OacY7YccUVAaMxmhX1nVRz4z5quyD61yayRmK80krA1Ek
-   731QvVvxpWsSgbZ7XUbkdBnRwUFYMzsrbrDNRJ7aGExnalxolwBONSdeZ
-   A==;
-X-CSE-ConnectionGUID: 1SxWtLrYSr6etcJ97qJbDg==
-X-CSE-MsgGUID: MJQyfFTOTeSAtvXlT5Qe0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="104698285"
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="104698285"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 12:27:54 -0700
-X-CSE-ConnectionGUID: qhaqYVHXR62R6ZSVw7gEwA==
-X-CSE-MsgGUID: H7BMtbp3SoKVHA79A3Horg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,199,1774335600"; 
-   d="scan'208";a="246662023"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.123])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2026 12:27:48 -0700
-Date: Thu, 11 Jun 2026 22:27:46 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kn5ApB1Vn0I5ZWnfxrYC4UyHHl3Ct2ITzgrho9uMK4oO8TgvgHK4OA3DMimp0VLJ8B4zKgeQzpZM+IfeZHZyxK/qgWOFDCBwIhll4lxjc6sBYXQz1NvidNdRO4DosnEdpYRga0cp1fNH+WksbOsM+xpPjeQMhluDM8nLAvFZWn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kY40Iw/j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F6D1F00A3A;
+	Fri, 12 Jun 2026 16:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781281093;
+	bh=t59SHBM/VnxNzq8RXGo9/WOt6b2EmmZZqsobTFLaZsw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kY40Iw/jyhoBShnqbs4tO+X4bPSLaSNBb69NP2nyAtkQfCRIlfETj5U3LYjbg+7vd
+	 VU237ntWsQSo9Yr3akENeHyUQqIe0/Ha3yMvGxa4Ce8xs1/0wFluWa9qeaB3apMACq
+	 EhFaTb5EJ9SX/UnDWB8DEqZB6XBpPCwV+OeXZ31afkcTk5cKdIbnIH1CGVJa7QqVvr
+	 VahhRTGopjjbqlvbKpb+/YQnt0T2uXMsCZ6JTWagTE6k/XtjrxtOr1nlBKaaXGotaB
+	 1ry8eZqr7JMbWcYvHMchXhUmToBacgrwJXkgOLT1NhvZDmnrq9D/TbWcVOj6qLkSm+
+	 eJjd8clEscl/g==
+Date: Fri, 12 Jun 2026 11:18:12 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
+Cc: Jonathan Cameron <jic23@kernel.org>, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Helge Deller <deller@gmx.de>,
-	Johan Hovold <johan@kernel.org>, dri-devel@lists.freedesktop.org,
-	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v4 14/14] video: leds: backlight: lm3533: Support getting
- LED sources from DT
-Message-ID: <aisMMgsGMNwOq1lX@ashevche-desk.local>
+	Johan Hovold <johan@kernel.org>, linux-iio@vger.kernel.org,
+	Andy Shevchenko <andy@kernel.org>, linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Daniel Thompson <danielt@kernel.org>, Lee Jones <lee@kernel.org>,
+	linux-fbdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH v4 01/14] dt-bindings: leds: Document TI LM3533 LED
+ controller
+Message-ID: <178128109241.1149158.14270432284406889754.robh@kernel.org>
 References: <20260606045738.21050-1-clamor95@gmail.com>
- <20260606045738.21050-15-clamor95@gmail.com>
- <aihoH9Pmzufa9pnE@ashevche-desk.local>
- <CAPVz0n0m+i7wexfC0BWwvdOuJxDk_=x+EpxEbNmoHN1AsEmfNg@mail.gmail.com>
- <aimy3BxBaXQ3Uigd@ashevche-desk.local>
- <CAPVz0n0bpo6PAfdN+LGEgPYhEx8mqtu_SL=WnDxhWn-Cq4rQKA@mail.gmail.com>
+ <20260606045738.21050-2-clamor95@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPVz0n0bpo6PAfdN+LGEgPYhEx8mqtu_SL=WnDxhWn-Cq4rQKA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20260606045738.21050-2-clamor95@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-7602-lists,linux-fbdev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:clamor95@gmail.com,m:lee@kernel.org,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:pavel@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:deller@gmx.de,m:johan@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-leds@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,baylibre.com,analog.com,gmx.de,lists.freedesktop.org,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-7603-lists,linux-fbdev=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:clamor95@gmail.com,m:jic23@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:jingoohan1@gmail.com,m:nuno.sa@analog.com,m:johan@kernel.org,m:linux-iio@vger.kernel.org,m:andy@kernel.org,m:linux-leds@vger.kernel.org,m:devicetree@vger.kernel.org,m:krzk+dt@kernel.org,m:pavel@kernel.org,m:dlechner@baylibre.com,m:danielt@kernel.org,m:lee@kernel.org,m:linux-fbdev@vger.kernel.org,m:deller@gmx.de,m:conor+dt@kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[robh@kernel.org,linux-fbdev@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,linux-fbdev@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,lists.freedesktop.org,vger.kernel.org,gmail.com,analog.com,baylibre.com,gmx.de];
 	TAGGED_RCPT(0.00)[linux-fbdev,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D27B674BDA
+X-Rspamd-Queue-Id: E3D1267AD02
 
-On Thu, Jun 11, 2026 at 03:33:42PM +0300, Svyatoslav Ryhel wrote:
-> ср, 10 черв. 2026 р. о 21:54 Andy Shevchenko <andriy.shevchenko@intel.com> пише:
-> > On Wed, Jun 10, 2026 at 05:45:28PM +0300, Svyatoslav Ryhel wrote:
-> > > вт, 9 черв. 2026 р. о 22:23 Andy Shevchenko <andriy.shevchenko@intel.com> пише:
-> > > > On Sat, Jun 06, 2026 at 07:57:38AM +0300, Svyatoslav Ryhel wrote:
-> > > > > Add Control Bank to HVLED/LVLED muxing support based on the led-sources
-> > > > > defined in the device tree.
 
-...
-
-> > > > > +     int ret, i;
-> > > >
-> > > > No need to add 'i'.
-> > >
-> > > This is personal preference as well. There is no strict rule that
-> > > iteration variable must be defined strictly in the for loop.
-> >
-> > This is a preference by Linus who is the leader of the project.
-> > Also in IIO we have some set of maintainer preferences.
+On Sat, 06 Jun 2026 07:57:25 +0300, Svyatoslav Ryhel wrote:
+> Document the LM3533 - a complete power source for backlight, keypad and
+> indicator LEDs in smartphone handsets. The high-voltage inductive boost
+> converter provides the power for two series LED strings display backlight
+> and keypad functions.
 > 
-> Well, this is not meant for IIO,
+> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+> Reviewed-by: Jonathan Cameron <jic23@kernel.org> #for light sensor
+> Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org> #for backlight
+> ---
+>  .../leds/backlight/ti,lm3533-backlight.yaml   |  69 +++++++
+>  .../bindings/leds/ti,lm3533-leds.yaml         |  67 +++++++
+>  .../devicetree/bindings/leds/ti,lm3533.yaml   | 169 ++++++++++++++++++
+>  3 files changed, 305 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/leds/backlight/ti,lm3533-backlight.yaml
+>  create mode 100644 Documentation/devicetree/bindings/leds/ti,lm3533-leds.yaml
+>  create mode 100644 Documentation/devicetree/bindings/leds/ti,lm3533.yaml
+> 
 
-Oh, my bad. I am overwhelmed with the IIO patches, automatically thought that
-I am dealing with yet another IIO patch.
-
-> though it seems that Lee is also in favor if this approach.
-
-Good to know!
-
-> > > > > +             for (i = 0; i < led->num_leds; i++) {
-> > > >
-> > > >                 for (unsigned int i = 0; i < led->num_leds; i++) {
-> > > >
-> > > > > +                     if (led->leds[i] >= LM3533_LVCTRLBANK_MAX)
-> > > > > +                             continue;
-> > > > > +
-> > > > > +                     output_cfg_shift = led->leds[i] * 2;
-> > > > > +                     output_cfg_val |= led->id << output_cfg_shift;
-> > > > > +                     output_cfg_mask |= OUTPUT_LVLED_MASK << output_cfg_shift;
-> > > > > +             }
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 
