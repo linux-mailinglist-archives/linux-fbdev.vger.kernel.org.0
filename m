@@ -1,97 +1,60 @@
-Return-Path: <linux-fbdev+bounces-7610-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7612-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ApzFCTXPLGpsWgQAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7610-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 13 Jun 2026 05:32:05 +0200
+	id zMGAKLkMLWrAZwQAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7612-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 13 Jun 2026 09:54:33 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B557667D9C9
-	for <lists+linux-fbdev@lfdr.de>; Sat, 13 Jun 2026 05:32:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A362267E0A6
+	for <lists+linux-fbdev@lfdr.de>; Sat, 13 Jun 2026 09:54:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ldFT21cP;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7610-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7610-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=lunn.ch header.s=20171124 header.b=t1JQej0W;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7612-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7612-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=lunn.ch;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 300233011EA3
-	for <lists+linux-fbdev@lfdr.de>; Sat, 13 Jun 2026 03:32:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DC6BB3007296
+	for <lists+linux-fbdev@lfdr.de>; Sat, 13 Jun 2026 07:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290B53612EC;
-	Sat, 13 Jun 2026 03:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD206376A13;
+	Sat, 13 Jun 2026 07:54:26 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CF737D132
-	for <linux-fbdev@vger.kernel.org>; Sat, 13 Jun 2026 03:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E557175A81;
+	Sat, 13 Jun 2026 07:54:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781321523; cv=none; b=nhWoCNrVGC6yTWHbIV8mzQ/3Is5Wpl72rsMLGeSTNBkyB8yHEM+a7GMKSeHawLueMgDL3r+OmwLICnZUZ0eaMnnxU1hE2sZWbgSbYsFzV1gmyFIKUZPTPwXhQy+5AF0/dkX6l61WkUALhjodT+0xr0fo4ydRlHTBGzF3RRSqNL0=
+	t=1781337266; cv=none; b=jRCHTHM89rczHNcxVzTG6hvxAfAZoIaVc+eN6CKM6ekM33Xfu9+auo5gLRlqxhk/JrejlNlbvyJaAiqdZVOLbao+q9UOJxZLvPKIGva6Uqk6Badf3m5poTOwdkzUtkCPbzCq2ne7rJametpRyDU0uaxpkk9b3w8G2hOp0fX9CK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781321523; c=relaxed/simple;
-	bh=XEGNtJgL9zV/iYvc+RbEVKQGxheJ2tZMTihk7BmV8fQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rv72+DEMqHPqC3vDAoHja+2EJC+Q9JDXSMYJXR9I+ipaLZy2eCU9F7/mqawyi7QR2SQh66P6Inksm/TPuNKO5pmNW31eBCDT1K8BuyZM2vp90kHwrgQ2etNf+SPEqJnaShhKvq4hFNRWYFtj9nvbyGnNxNkwfqLPWrfenP5dFBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldFT21cP; arc=none smtp.client-ip=74.125.82.48
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-137335bc3caso1992480c88.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 12 Jun 2026 20:32:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781321521; x=1781926321; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YB2UXCTST1G3EKX58d9G7S+JZrvHFI4WiciNlIDqnEE=;
-        b=ldFT21cPronIyrkDfdk4OFdUfONZ8KnTr0NMJozvaFyOCgPmlw4yCrSMB3jDggGtNe
-         jD6yCMsYXas33ZledkzeDw1Hv5icvH8oqEhV5f+/7JNVCsc2bNpw76puhFMbDQ+TN6wn
-         njHf1kbM5A8qr53nN1uWFjIdJlrKVc8heVvthtcM/V64rCw9XS0CtsKp5xMJH2yOfWbt
-         Qi1YGPg9hAXNzEAmDP43qFQgtxJCzpRDNN4MTvgQ+vjb05Sp+2t2nNgPay99S6OOOgRq
-         dnYYuMk3+dUSk2aLbFwtyR8OzEw36h++l/okrpnjIFHwX1n7r3JVNbd+Eeh1IkXL73Pu
-         0OKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781321521; x=1781926321;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YB2UXCTST1G3EKX58d9G7S+JZrvHFI4WiciNlIDqnEE=;
-        b=b3qZzn8gRzwTQxmyhfNRUNVnJ5LCJaxbqhXZ6N0MD0qr61QxVeJfN2OfQVQMgljDYl
-         FOFUd8ry3be08pdhDizE/fb+UmvQWOuEGQr8g/Fn9za8gcaqIvlWVbweVtAIiubXKZX5
-         RDUrmIAvM4Yng5sqliQ7KAH7/WzW0vFO7gtMqfMaJ4a75PSZeRtUBw+7h6LfelIpWRY6
-         SFsuwLzDJyGwdqfpJpuMfD3lOT58CVXtEe28p+LkVw1X597FfIhFxF9mtowzaTr2VdUT
-         bbF8lKAn2ZIfVHSQu5/IxjRjtTz7WUxdfpQIgZcOqrCOrS52XJm93kFdS49i+FlFAACO
-         vaZA==
-X-Forwarded-Encrypted: i=1; AFNElJ93smsLqSnKE2b6/0jqRXrgY4CuSIWArtY0ynWFdrgVd+iefRPUkyxoCKcT3vgA+2evxAzUzw9f11CbYw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy2pk6boKoNLnNPHMtXQXV8t59djT5jKrWfOO+XFDed7x/3FWb
-	Qk2MOUzocfs0y91ET95EzuIsUuQ172oKNnx4PhpphQYRVm47a3CEdvzP
-X-Gm-Gg: Acq92OH6S/I5fWMsRV2DYOTzpLFjZ8QVNiC5Jo8etH9ZfzAeB4LnSSxLL8lhjR0sE4e
-	Jd7Ag86BVG0Yr4ggo4qJpHGPB9pzxZgQUTIy4arrvrsp2GHtkwz/NxK4uXJYjuX/dyaIjYox1xN
-	6aIY2OsYBMteV7APAZ+fshmiauyeM/QoH382C8X4LquawXgNLEgdJZEy5SL3fCHOKpXkAxFiKD/
-	ojr0SGSN1BsTFJesQHS0k3j7+SgYI+UvYMi0JKWiqMkB8KoE7ZOArtzjSBnxYZ0FPYHAkWbfRRq
-	JDWMBylXJz2gnzLHGibKIorMlpVy0NGwrFnIMfZpTRheuobRyQK/8/3ftf3fJGc3p0OKj7KY1zy
-	ncLaUMVyVxzzRgTQKlcfDmAuUpxe4paVpBdh/2zY/4RNE18ybie5yb548ujf5tf2CTOo5AgPdy/
-	4Q+5tY+CIhNb3ZdE4HDhFDkw==
-X-Received: by 2002:a05:7300:aca5:b0:304:5b0d:489b with SMTP id 5a478bee46e88-30820098d2emr3305528eec.27.1781321521004;
-        Fri, 12 Jun 2026 20:32:01 -0700 (PDT)
-Received: from 192.168.1.17 ([179.63.13.36])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e5d810fsm6136001eec.12.2026.06.12.20.31.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 20:32:00 -0700 (PDT)
-From: Gabriel Ramos Barbosa Mota <maguraa53@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	deller@gmx.de,
-	fero@drama.obuda.kando.hu
-Cc: netdev@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Gabriel Ramos Barbosa Mota <maguraa53@gmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] staging: vme_user: remove obsolete VMEbus driver and Kconfig entry
-Date: Sat, 13 Jun 2026 00:31:31 -0300
-Message-ID: <20260613033138.601841-2-maguraa53@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260613033138.601841-1-maguraa53@gmail.com>
+	s=arc-20240116; t=1781337266; c=relaxed/simple;
+	bh=I7TM6p7Jd+LMycfsbvG9o53bN+61uM7hWmSeH706uGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uNCqJ9FkpmZfMZWU3/c4jDhfFIQ8IA8uxTonui3S+qsO10IjQglg8OaFF1nVJ7ZVtOngoGtyEHMHS9BXu3hcwwdxP+rQNXW5yV9vfuRSeFjvPIiqr/iJdbHmtNlZRL/eyOqFV0InDzZkDfIjYehL3+Z9kJuvjSiQcsqAYlx//r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=t1JQej0W; arc=none smtp.client-ip=156.67.10.101
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=jKr6D0QomrXndRUM0kTG+EY+S4tjgLHhIqD9NsgnK+8=; b=t1JQej0WP+uA8ctP2eqhWVi1Is
+	LeuVqI1nI9iXHR4N/INYtri+j+tIdmlqT4EkBrOU3Ce1Em93h+QmJJbRKjwrY5demAueHPaxODGZR
+	cYJ8Kz2w+JQ05eZcbqQGQhCSMyq2adyC36CpTQ+s4EzOGjaG492rjErQubowflSnI2xE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wYJC4-007RtV-20; Sat, 13 Jun 2026 09:54:16 +0200
+Date: Sat, 13 Jun 2026 09:54:16 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Gabriel Ramos Barbosa Mota <maguraa53@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, deller@gmx.de,
+	fero@drama.obuda.kando.hu, netdev@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers: net and video: remove legacy 16-bit and non-x86
+ hardware drivers
+Message-ID: <d66c7e93-b39a-4e79-b047-528e094b51d6@lunn.ch>
 References: <20260613033138.601841-1-maguraa53@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -99,65 +62,57 @@ List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260613033138.601841-1-maguraa53@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER(0.00)[maguraa53@gmail.com,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,gmail.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-7610-lists,linux-fbdev=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-7612-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:davem@davemloft.net,m:kuba@kernel.org,m:deller@gmx.de,m:fero@drama.obuda.kando.hu,m:netdev@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:maguraa53@gmail.com,m:lkp@intel.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[davemloft.net,kernel.org,gmx.de,drama.obuda.kando.hu];
+	FORGED_RECIPIENTS(0.00)[m:maguraa53@gmail.com,m:davem@davemloft.net,m:kuba@kernel.org,m:deller@gmx.de,m:fero@drama.obuda.kando.hu,m:netdev@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,gmx.de,drama.obuda.kando.hu,vger.kernel.org,lists.freedesktop.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[andrew@lunn.ch,linux-fbdev@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maguraa53@gmail.com,linux-fbdev@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[lunn.ch:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lunn.ch:dkim,lunn.ch:mid,lunn.ch:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B557667D9C9
+X-Rspamd-Queue-Id: A362267E0A6
 
-Reported-by: kernel test robot <lkp@intel.com>
+You need to commit message to justify why these should be removed.
 
-Closes: https://lore.kernel.org/oe-kbuild-all/202606130547.TsvyPMvB-lkp@intel.com/
+Also, please remove each driver one by one, so that if there are
+users, it is easier to revert.
+
+Please also look at the discussion about these MAC drivers over the
+last couple of months. We discussed removing some of them, but they
+still have users, and one of them gained a new Maintainer.
+
+    Andrew
+
 ---
- drivers/staging/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/staging/Kconfig b/drivers/staging/Kconfig
-index 2f92cd698..0e6e5330f 100644
---- a/drivers/staging/Kconfig
-+++ b/drivers/staging/Kconfig
-@@ -46,6 +46,4 @@ source "drivers/staging/vc04_services/Kconfig"
- 
- source "drivers/staging/axis-fifo/Kconfig"
- 
--source "drivers/staging/vme_user/Kconfig"
--
- endif # STAGING
--- 
-2.54.0
-
+pw-bot: cr
 
