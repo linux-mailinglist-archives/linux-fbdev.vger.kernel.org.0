@@ -1,173 +1,157 @@
-Return-Path: <linux-fbdev+bounces-7621-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7622-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tHwrKOqlL2oREAUAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7621-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jun 2026 09:12:42 +0200
+	id 831HI1frL2ogJAUAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7622-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jun 2026 14:08:55 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B74684100
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jun 2026 09:12:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002CB68600A
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jun 2026 14:08:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XfvmMjYU;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7621-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7621-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=siemens.com header.s=fm2 header.b=VJIW+hB1;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7622-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7622-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=siemens.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A44C330134A2
-	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jun 2026 07:12:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BD6A7307D674
+	for <lists+linux-fbdev@lfdr.de>; Mon, 15 Jun 2026 12:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A633BBFA7;
-	Mon, 15 Jun 2026 07:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798CC3E5A35;
+	Mon, 15 Jun 2026 12:04:11 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21C438A714
-	for <linux-fbdev@vger.kernel.org>; Mon, 15 Jun 2026 07:12:32 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781507554; cv=pass; b=c6zIWpJ74cL6DNgETOumJZPdhyNLuSd3pqxRPQq9tXmVIzzbmKWLWFlh4sMxEqyUHExFNfymFAY5/d7UAtGhhZr/M40HFCWCrP8vR0gyEQi/y1TMr54KhDtcBfnR1AXdYfSbnZE8x7Ew3uqVih5ngItxV9A+XKr5QuY/BCvTu20=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781507554; c=relaxed/simple;
-	bh=FzhraAC351YoE/9WyaNWJaPNFlY7jKFOVa/EdskiQPI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WNDueaZlTitlfu9UfV44E9xN6H+p4OkpDiEYCz9YySx7ij0+3DpZBDow8x9SM9nDPpP8ShAK5ZxWp6GG/NFa0Bfs4/rrLj17L08GysM1xJg35yxRurZHRUhND5J2p3TiJd/1eYcR+/QUQsnh4Nou/1OMrlmCx80AbYdRZ6n3IJo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XfvmMjYU; arc=pass smtp.client-ip=209.85.218.43
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bef1e6423e7so297475266b.1
-        for <linux-fbdev@vger.kernel.org>; Mon, 15 Jun 2026 00:12:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781507551; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GXOtXmDez1YWGK11Rp9muKeoTzswOF5TvA7vT4ThIHbsxAwft+XEK37+gRNpyVthBS
-         68loesYEmSw5t1bWT8ImKgfv9UOAvTAzzarg8PXCfWTDYQdAkEuuD8Y9AyoeUZzZPhyF
-         cmERxsjSNdDu4Vqqh3LU5Xn53QnKY+6E4GrpoC47wifwsq0OL1JfHyWL4fRAvQlrtTvR
-         aTqfZSiC84eCh1MXVLKagwADKht1kfsZiKaQ2Brn1l+jLlPnrdSB29GtJv2HYFAdEyyH
-         gjK4+ndeL89czyum/J/mGg8b7Nba07NyhwuoChklOHy5T9YJirw/fvbnSkfSrXMZuh9f
-         +Ztg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FzhraAC351YoE/9WyaNWJaPNFlY7jKFOVa/EdskiQPI=;
-        fh=75/YUcLBfEdGOsGU6MCCiEIK9ZSAwvDecw/45QZ+oTE=;
-        b=eIzy0UQuwh4X4hIxWftLWVP11sJCHE10msa0GpTAiy0TWAPt62XaCnHRnl4L7W9Q8I
-         BoFM7JSL/wehIEQ7Lnr3l6fNpEl7f/Pj07JbSZRRsflLY+NPXDh/7qZ6HuFIVs7jSMQk
-         Qy+9uZJGwTeqjvOrIzneqXBXAw7qpSlIiew2SIuTNQ8cZeGXvi8OG6B2ubzYYcTqvP3B
-         bl3xT5b2tdqCzkuv8aUosC6NUYYjT+oz4RgXSbKrtW2wJzkkdD4jGobV4qM4e7aPg1Xv
-         6YIjLbwLkLIW51fDMkEAyE0Aoinin2NKQGTnMjYCiNXoUTZVgQIwzZoCLMe8mzeHx2lw
-         cWFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781507551; x=1782112351; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FzhraAC351YoE/9WyaNWJaPNFlY7jKFOVa/EdskiQPI=;
-        b=XfvmMjYUawhJlfFB4gRcDFCNY5HCm+5T0NcYeiQm4g04OmDC9jlOcrOLwxGdkfxeDD
-         a3MxBif3A0LmYMS+EiFY9LQ1RVQr9McOxUu/dCGtLvXwv1R0YX9pJYE/VKjoleOLVQZM
-         6nr1DXUFteFq0MToLqEpf6LRDUy4iQd7eoX/72DfrYyVnqIZrgXvLowC9yZhE2vQp7i/
-         zcPAWW75q/14JB0+bzj5r1JKOPd/CCUaQCJE5dbFcWvo7f489VkOp5YrA5ac9Xlx8/UK
-         Sr6KxibzAbxzicXqXUW9HVEHYM9pYxLVgoe3OVpK6fOuyUZv4FhoKRR+zbCiRWNPX3Cm
-         SvVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781507551; x=1782112351;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FzhraAC351YoE/9WyaNWJaPNFlY7jKFOVa/EdskiQPI=;
-        b=RAR1YbxaP50+/kOlgq7KulR/tgUzf8NNCtsazMeRZNmMhL1gK4ytu57WEh4Aj5xdQy
-         Hwqa4PmZ9CyFpRwuM5BdNybYXTOZuUHxAoDtkmrj+ssm0dGXjbglFqvUG0SU+XwaGpXz
-         1EVhYYLZpa+rCgr111jvZovBD4jhVrrwnMfHauTyiE4Lk4mP5PVMjEBONNuCAX0opO35
-         nGJGAiOSpOH02qGFML3UYddWNAxS/y0nhDmg0X6ZH2LPUNeygWssxL5/0Mnf6aQhqlXS
-         bmIvYN4hFzdCMzIlBBEEDpyG6v6eTREN7aIRTryZws7DGZHz0p6di1cyXjENiTgvt1fl
-         +EuA==
-X-Forwarded-Encrypted: i=1; AFNElJ/ZBtp++1L6SrVFKoIQRL0QTrl8rRdreVUzBMjWq7Bh0itSDbKgJMp0tOudfmeorvdKS+b3eAx4QFu0Gg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzleOnSPOveodXUCNLEUH5Q+HV7afnk+xBoYUWkHGH9rTdhggEp
-	M8t9mF0nzkx8e06IEY3sKq/T4m9O70oroT4Viyr6P9lTcgx4HJmAsNzbYa1pxK96qDOoqDrkfqv
-	vz++fiYMSKfgY9ul/gfiYTiiRKi1N9TU=
-X-Gm-Gg: Acq92OGE6W5foJ6xf1uMD7k8Yx9T1HyBhqlJFXM2bdDpu2maTCOdnM+Q+yCZ/kXx1a2
-	1u8+DWC6yZC25BdP3/PYxb34lmovXvg7gihMajxA/jT/8ZSTqPkvtt2ECvAV3lNLJW4qhHRhKhz
-	kVp7UeabcICoLxhVe3rIgp0TMxQgYs4/75ELxE5P/JEJYULr5g9rnlwewp3tC8xkKVw8s6HMjYv
-	7pFbb+dDEeJuU3hFUJ3qT8k1+5rG1+IRASuct3OK68rWdkJz8TIbd91jOQsredtl0HfV+4wKFbX
-	NreSTfswqxJxK/hRJW4ldBcTENsjVSeySoUJbjp8zk2wBivXuNY1uS1mRMFEdAWnqsMEzWSkSJS
-	QpAerxoArv0oQ6XlbdmlNdtsi3KSllTdVnC5p/NzQqR5Kzk4z03PKcvqjYvfH+mcQQeSs
-X-Received: by 2002:a17:907:1c9f:b0:bee:426:87ec with SMTP id
- a640c23a62f3a-bfe2a21eb9dmr597482466b.23.1781507550955; Mon, 15 Jun 2026
- 00:12:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFEC3E5EF6
+	for <linux-fbdev@vger.kernel.org>; Mon, 15 Jun 2026 12:04:06 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781525051; cv=none; b=jWtE6crlUbWn41x6sdXbYb86fqRN6aYZj6j06y4GuItIlB663vxpOJa1Jr6OHrdlZSahJfP67w4iDgyy9NS0ATOuZjY6v3JCbxAID9vp0hA8T9a2IyZYzc4uCN/fMyIsJyJerAoowV1NuaMAZkjRgPVxUxGMqFgSene6ty0Lkvo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781525051; c=relaxed/simple;
+	bh=PoZENPoFpelQPToGedaF1Qw1CDV54r0klXwF9Vpvzyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JsSOZPs3B+dCKgIC6V+I79sfGC6EkBza8Ltg8iwlIPu7JyYpqaJl+sQx8RTQ5ckT4nqmTqDO+tBh7b4n8fV2kR0Z0kvMhJajTl2eKNkHgp3wWP144jlkKbJXjK7o20SScdyEWQEMAWN/wf+dfmJSsqN19MsgPWPRimW8Amd1U/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=VJIW+hB1; arc=none smtp.client-ip=185.136.64.227
+Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 2026061512035757e8e2936a000207c8
+        for <linux-fbdev@vger.kernel.org>;
+        Mon, 15 Jun 2026 14:03:58 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=lCOoc1nkAj9LM105Jbsd+SDj6HDskDfhiImH70CCtpM=;
+ b=VJIW+hB1r1v2BVNgjuHpz6m0c3XuTFAuC/jxb2JCOs91V5KqN1/rIudfcyLJzmwMVZcyu3
+ k4kYp6CZ1PwOIxG8TelhNFFt1GTde3wxRMv4THGZFLSHEZPVkh9//BGZYZEJC8VNJAIP6Nwf
+ 2UXdbonCtfumlbbYGnB9IGuA0Q3MU7iDYLL0bM1BwnLn7HZkhBsLlmKC1fg9QaSxtWhcz8lx
+ S37v3jWBHhxulH3QQHqvux22KJSG5S5EokxDK3y2mDzJ1CVmuLXKEi+beE4JKcnLLynlU0IE
+ STyI2qoMO+ZTrxK7VvWSSCMZ1mgkLnIetYx98tLDOYi2spHtQ8KPIelQ==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: linux-leds@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Lee Jones <lee@kernel.org>,
+	Daniel Thompson <danielt@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	Andrew Davis <afd@ti.com>,
+	dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fbdev@vger.kernel.org
+Subject: [PATCH 0/3] Convert LP8864 LED driver to backlight class
+Date: Mon, 15 Jun 2026 14:03:46 +0200
+Message-ID: <20260615120353.3409035-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260614201551.20542-1-reeveskeefe@gmail.com>
-In-Reply-To: <20260614201551.20542-1-reeveskeefe@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 15 Jun 2026 10:11:54 +0300
-X-Gm-Features: AVVi8CeSC29eIc4U_npHh4CvhBaUd3ShetIXEBLYi-0z2YrMYKXv9Qbr5BF-IPM
-Message-ID: <CAHp75VfkVQ0JJd4+ceniNnij8t-PXsrNOfof4c6NDWf3KW2s=A@mail.gmail.com>
-Subject: Re: [PATCH v2] staging: fbtft: use %pe for backlight errors
-To: Keefe Reeves <reeveskeefe@gmail.com>
-Cc: andy@kernel.org, gregkh@linuxfoundation.org, abdun.nihaal@gmail.com, 
-	error27@gmail.com, chintanlike@gmail.com, namcao@linutronix.de, 
-	niejianglei2021@163.com, dri-devel@lists.freedesktop.org, 
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[siemens.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[siemens.com:s=fm2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:reeveskeefe@gmail.com,m:andy@kernel.org,m:gregkh@linuxfoundation.org,m:abdun.nihaal@gmail.com,m:error27@gmail.com,m:chintanlike@gmail.com,m:namcao@linutronix.de,m:niejianglei2021@163.com,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:abdunnihaal@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[andyshevchenko@gmail.com,linux-fbdev@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-7621-lists,linux-fbdev=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-7622-lists,linux-fbdev=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[siemens.com,kernel.org,gmail.com,gmx.de,ti.com,lists.freedesktop.org,vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andyshevchenko@gmail.com,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,gmail.com,linutronix.de,163.com,lists.freedesktop.org,vger.kernel.org,lists.linux.dev];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER(0.00)[alexander.sverdlin@siemens.com,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:linux-leds@vger.kernel.org,m:alexander.sverdlin@siemens.com,m:lee@kernel.org,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:pavel@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:deller@gmx.de,m:afd@ti.com,m:dri-devel@lists.freedesktop.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alexander.sverdlin@siemens.com,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[siemens.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-fbdev,dt];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[siemens.com:dkim,siemens.com:email,siemens.com:mid,siemens.com:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F1B74684100
+X-Rspamd-Queue-Id: 002CB68600A
 
-On Sun, Jun 14, 2026 at 11:16=E2=80=AFPM Keefe Reeves <reeveskeefe@gmail.co=
-m> wrote:
->
-> Coccinelle found two places where backlight registration errors are
-> printed by passing PTR_ERR() to dev_err().
->
-> Use %pe instead so the error pointer can be printed directly. This keeps
-> the behavior the same and just makes the error printing cleaner.
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Oh, nice! Now
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-(for curious ones: you can also see my comment against v1 of this patch).
+This series converts the TI LP8864/LP8866 driver from a pure LED class
+driver to a backlight class driver, while preserving backward-compatible
+LED class device registration.
 
---=20
-With Best Regards,
-Andy Shevchenko
+The motivation is a use case on a hot-pluggable segment of an I2C bus.
+The generic led-backlight driver (drivers/video/backlight/led_bl.c) is
+a platform driver and thus inherently non-hotpluggable -- it cannot react
+to dynamic appearance/disappearance of the underlying I2C device. By
+making the LP8864 driver directly register a backlight class device, it
+becomes a self-contained I2C driver that properly supports hot-plug/unplug
+events without depending on a separate platform device for backlight
+functionality.
+
+The LED class device registration is retained for backward compatibility:
+if the "led" child node is present in the device-tree, an LED class device
+is registered in addition to the backlight device.
+
+No in-tree device-trees reference this driver, so there is no mainline
+impact. Out-of-tree users who previously relied on the LP8864 as a backend
+for the generic led-backlight platform driver will notice a backlight class
+device appearing directly.
+
+Alexander Sverdlin (3):
+  dt-bindings: backlight: ti,lp8864: Add backlight class properties
+  leds: lp8864: Rename struct lp8864_led and local variables
+  backlight: lp8864: Convert from LED to backlight class driver
+
+ .../bindings/leds/backlight/ti,lp8864.yaml    |  16 +-
+ MAINTAINERS                                   |   2 +-
+ drivers/leds/Kconfig                          |  12 --
+ drivers/leds/Makefile                         |   1 -
+ drivers/video/backlight/Kconfig               |  15 ++
+ drivers/video/backlight/Makefile              |   1 +
+ .../backlight/lp8864_bl.c}                    | 169 ++++++++++++------
+ 7 files changed, 147 insertions(+), 69 deletions(-)
+ rename drivers/{leds/leds-lp8864.c => video/backlight/lp8864_bl.c} (55%)
+
+-- 
+2.54.0
+
 
