@@ -1,171 +1,184 @@
-Return-Path: <linux-fbdev+bounces-7653-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7654-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5kaCJiFvMmqczwUAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7653-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jun 2026 11:55:45 +0200
+	id AsRGHol4Mmrd0QUAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7654-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jun 2026 12:35:53 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23304698263
-	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jun 2026 11:55:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4AE6988AE
+	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jun 2026 12:35:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=baylibre.com header.s=google header.b=JgfY6jyN;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7653-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7653-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kAlEW2mZ;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7654-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7654-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 743D630B9C5C
-	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jun 2026 09:44:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F133C30A9FE1
+	for <lists+linux-fbdev@lfdr.de>; Wed, 17 Jun 2026 10:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6683A383C;
-	Wed, 17 Jun 2026 09:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402803F58C9;
+	Wed, 17 Jun 2026 10:32:59 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FEE395AD0
-	for <linux-fbdev@vger.kernel.org>; Wed, 17 Jun 2026 09:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9231E30674D;
+	Wed, 17 Jun 2026 10:32:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781689459; cv=none; b=rhbR14qWykRrNvh35lI+A7HKh/B014eezrFKULNknhHeHrsxLJKfkEHvSqeleGSefm37w2xAcFZBhxWHs7TjET79VF7dAumk+Y6heRz36BCof73AVt8c6QTPeTySeeQ2Tepc5uKmcu1gOrvyu4ag3F/qhnfxJOSxmtvoLaahAS8=
+	t=1781692379; cv=none; b=WKtDJ18efILzbum0kWYlnUOrbzHwB1o9EFUw5iXrwb//2u/zfNm1KHtKpU1CnmoiF1bj0RwXeO3Gi4qwHQ1Wdm+oPwpbYbzqk05r1JDYKh+NZbLfcfcvkI9OqGhBX0AUVsLQgwbEe5rUkNGAb2Nx72sJBf01EOOaPS/oehl+rDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781689459; c=relaxed/simple;
-	bh=sfrAhb1Z+VzM4SLtBkm5dpCf6X9unUUYYTWLBBKX+Bw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UK7r0CPAXHqabYGikeb2UOTwIYTFNuJGpn1WC1ysKXiJYGR2kYZ1pR7LMHhZzZUvfHJkxSJJv997GVvT0up1P6BFYMBc1OoJSlMk4ttXBJnNQ0mEZ9fblgsTSEyff4U93OoX/KpocuFC2omXyggGT9mfH5zwtJYdF21cKa1fibA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=JgfY6jyN; arc=none smtp.client-ip=209.85.221.48
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4624c1409c9so475487f8f.3
-        for <linux-fbdev@vger.kernel.org>; Wed, 17 Jun 2026 02:44:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1781689456; x=1782294256; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5e5ThiuCQuL2m3Kf27kb7O5XV1gp2X/Il1NBQqxg5Bg=;
-        b=JgfY6jyN1PtX/OeXLMfJsb9ghFjYVL31wPDUCP2tCK6wE3cUqSAvLY5DQTEF/dbu7L
-         1Sz+U9ZzsVMukjDZtvgmPQkn8o9GAw3/bUR5AkarkLrbDxNRAX9B9R7wf6JhSz589rlf
-         fPJuNdtKCRpsTyu4uWN/THt9iy/994nOZJoM3eSwcXdBkFYe+47e44eGWkSF/pgWpN4u
-         9A6tBKh6dwmoRz0qFBup0UkjZngk/K52EADPzdskqa/QYGNEWlVRRclnqVBYWXSj/YmO
-         BhLEUhFUT0PCkmIXGZx8w52TKPW8qtQBQUTkvEBB9du1RuxrdFoPSkAQ2BOH2n5R9U3+
-         m0Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781689456; x=1782294256;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5e5ThiuCQuL2m3Kf27kb7O5XV1gp2X/Il1NBQqxg5Bg=;
-        b=iFFtiLzFUfGIs38FesSjnQSDiXpJYzvMz0hfENnaOaGClaIMu+bIyjc/rNDNeBF41I
-         pt4xQm0AI7IgSjUD3ATcQPy4lXaijkm/fcukokj45it85LwTrG7HcgQlgrLs++LU+oSX
-         IsyBPDbSG3VgiPg7//fgNwjSHqCzoKxcLq9zs/Hg3MGFT8rsUvrvlgbLymvzZF+tRKNn
-         Bp+3ZzYnvCv6zbSLLUY2/JtmZUeYqb8TgyCT0uPwVKAWdE/dVjy+K4faiJEVoTmN6wlS
-         nsd+LfDhv6kQNcXCs9cQ2qna/ij8sxKW2lCR+G9Pn/VA2h2AiFqMhuVSN6i5FdTN9VzI
-         beUg==
-X-Forwarded-Encrypted: i=1; AFNElJ9y7hZ1NmdjTVhlsQmgkT92OYQQK3oKwblTVPF3+tWE5GakLvktRD8SIURk9Td61d504tc/KHUwRn9L+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyALMpuYX64LBnN39h1n/KxgkMDpXQ/tSIeFh8Jdx8EdcW5jvUb
-	W/Dde5rjAxpCXU3I0V2tZRWJWEIIaH7c/vzym6QyBRG8T7D5RVGI1rJ5/qFXNVY2CYk=
-X-Gm-Gg: AfdE7cl2tQwV7Zqn+XdTEh0IUXuKljQpBGUga27NkXcpGt4uT4FIoypkETikctCwQwM
-	ifgmgsy07/mOk8lOSZ0hwpL3GMSIrXbJOjGmh5mE7M7F30lVd2YTBoCqkf195qwc9qlNCMu7yw7
-	iwQ5Bfga7wBDF7XWF5OsNV//Hj7ElG1FOqcEhoh48ZS6ZOpq7LHW6zRQ25NuVLxqFaJPmhSYecl
-	upEFetc/96IbWz2WhrxGPESHzubWDl6ZNOxRMSMBR/5l/cJOrZSIvsF/pBd/i6OgABnNvqZNp2O
-	u+yCB1nuzG028n5b/J1rT2Jx3GO9dgxI4Bz4vird5KsSXlBQZEd1pCNj+w5vcEjfkfYAZy4rXhj
-	1R/OM39YixZs04LS5Z79atAHfEd60vj5nMKBH1bEkDDue83TWtJNVhgZGXwhICL3EsYzTPiTt1F
-	8wl1dPGvuP3dis1gMMi5gCS6xElrZL+9nCUxEh4WFIlNdbpOEYvxciOb7YgRBlxWi3G0tx3LLpr
-	mpK
-X-Received: by 2002:a05:6000:2913:b0:45e:ef4a:8192 with SMTP id ffacd0b85a97d-46238bc0537mr4819136f8f.38.1781689456251;
-        Wed, 17 Jun 2026 02:44:16 -0700 (PDT)
-Received: from localhost (p200300f65f47db04bc2080ea3c93ea6d.dip0.t-ipconnect.de. [2003:f6:5f47:db04:bc20:80ea:3c93:ea6d])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-462236047c8sm7797131f8f.10.2026.06.17.02.44.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 02:44:15 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Helge Deller <deller@gmx.de>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
-	Javier Garcia <rampxxxx@gmail.com>,
-	Vivek BalachandharTN <vivek.balachandhar@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] fbdev: vga16fb: Drop unused assignment of platform_device_id driver data
-Date: Wed, 17 Jun 2026 11:44:08 +0200
-Message-ID:  <02710e01b80c06230f399afa6a7d247b95b3f2de.1781689394.git.u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1781692379; c=relaxed/simple;
+	bh=X3winq5qm2HIT6UC0/yxmrF0jTAu33Gl4aE30OAa1oI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cx1nVbjJ4QcRWGCGEdc3NBw7nwVV5ycwaUlBJo7N759M1PLbROwYxFdDBokp4xrPU9q/ED2ljiADzotaYGSxGwaCQuJOaH7QsC0AYVxVAfR4OhQKjbHpMEuJD/b5Wpr+7bXJfsKyovrB4hd0ESD1P/yIE6sSTcp3kBGNAWqk1Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kAlEW2mZ; arc=none smtp.client-ip=198.175.65.13
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781692377; x=1813228377;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=X3winq5qm2HIT6UC0/yxmrF0jTAu33Gl4aE30OAa1oI=;
+  b=kAlEW2mZ3uZngNOBMtaNvhBeyWkA7uhdlSO9KJL000T459Mmv8rJphOs
+   76D+hamhhVKLHIoWzEDkbwOzahCRV4UH1lCrVtOKpWI8WnFATq3M6t04E
+   s3XVML4tSvItwDI7cHgG/dwTXeKu4KKXrcjUblZk/gGZ1VK5DANfj/N4o
+   +zxN+MD962PFEEF9bcVVPkl7EmS9j0u5q4WroC+BG4fA9n2SxhCgYUoqz
+   IK3eH3jdhv38N8Yrm2CPRFCpyJYD2w3E6G/aQDFiDiQhor1aEm3RyzMbm
+   CUwyOY8oyCRqgJZ+tqSUziZ/OX7WZHNicSY6inVqZXd1Wx4mtk5KsSAFl
+   Q==;
+X-CSE-ConnectionGUID: VU2zsj0lQC2AxCYJ51w9Ww==
+X-CSE-MsgGUID: 29+8XFCgQCmEeh6slDi6mA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="93594475"
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="93594475"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 03:32:57 -0700
+X-CSE-ConnectionGUID: leLgKuVYTtSbL+4Q82bKlQ==
+X-CSE-MsgGUID: Uko2CTWXRUGLJxZ5qEEMcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="247139272"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.245.69])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 03:32:53 -0700
+Date: Wed, 17 Jun 2026 13:32:50 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Helge Deller <deller@gmx.de>,
+	Johan Hovold <johan@kernel.org>, dri-devel@lists.freedesktop.org,
+	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v5 02/14] mfd: lm3533: Remove driver specific regmap
+ wrappers
+Message-ID: <ajJ30lHG5lEXri7I@ashevche-desk.local>
+References: <20260617080031.99156-1-clamor95@gmail.com>
+ <20260617080031.99156-3-clamor95@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1048; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=sfrAhb1Z+VzM4SLtBkm5dpCf6X9unUUYYTWLBBKX+Bw=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqMmxppssr45MHySgEWeWZleAyeuAwv3bsYiZiq r9lwBexJquJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCajJsaQAKCRCPgPtYfRL+ TnGSCAC2BtWvXO0gmLj+tyQU4J7B+LnhNFDgUzyzNZ7l6PEKXhgel4HZQXSYuEgSkIAzWyRk/ev rLK4bC97m/7SdwgoOKsmXgGl/LU2l49JxH9yzxemF0LIshQEp4lO2b8YdVd7TzZVOvEsENyqreM PTUsQWuPXtZRbPZQ0gMPvFWHWiYgiO4UUsOobWuDtL2GqAgQtRvjZXHzif0zPPwHNsKVBDz9tMP LfuekMSZDeUIiBbNBiosjVGIKs4knvXYk9vARIrSB/gRq6HmTLqVqWPO15at8VixbX5azGXnVNT KP0nsPwH+BbFT2heZrEox0WUItbcXRuyQTMEnnmDmev27k4b
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617080031.99156-3-clamor95@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[baylibre.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-7653-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7654-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[baylibre.com];
-	FREEMAIL_TO(0.00)[gmx.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:ardb@kernel.org,m:rampxxxx@gmail.com,m:vivek.balachandhar@gmail.com,m:tzimmermann@suse.de,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:vivekbalachandhar@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[u.kleine-koenig@baylibre.com,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:clamor95@gmail.com,m:lee@kernel.org,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:pavel@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:deller@gmx.de,m:johan@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-leds@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[baylibre.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[u.kleine-koenig@baylibre.com,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,suse.de,vger.kernel.org,lists.freedesktop.org];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,baylibre.com,analog.com,gmx.de,lists.freedesktop.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:dkim,baylibre.com:email,baylibre.com:mid,baylibre.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,ashevche-desk.local:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 23304698263
+X-Rspamd-Queue-Id: DD4AE6988AE
 
-The driver explicitly sets the .driver_data member of struct
-platform_device_id to zero without relying on that value. Drop these
-unused assignments.
+On Wed, Jun 17, 2026 at 11:00:19AM +0300, Svyatoslav Ryhel wrote:
+> Remove driver-specific regmap wrappers in favor of using regmap helpers
+> directly.
 
-While touching this array unify spacing and usage of commas and use
-named initializers for .name.
+OK, let's go with this variant.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
----
- drivers/video/fbdev/vga16fb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Some side notes below for the record.
 
-diff --git a/drivers/video/fbdev/vga16fb.c b/drivers/video/fbdev/vga16fb.c
-index 22085d3668e8..cdd6b8de0ceb 100644
---- a/drivers/video/fbdev/vga16fb.c
-+++ b/drivers/video/fbdev/vga16fb.c
-@@ -1421,8 +1421,8 @@ static void vga16fb_remove(struct platform_device *dev)
- }
- 
- static const struct platform_device_id vga16fb_driver_id_table[] = {
--	{"ega-framebuffer", 0},
--	{"vga-framebuffer", 0},
-+	{ .name = "ega-framebuffer" },
-+	{ .name = "vga-framebuffer" },
- 	{ }
- };
- MODULE_DEVICE_TABLE(platform, vga16fb_driver_id_table);
+...
 
-base-commit: 4fa3f5fabb30bf00d7475d5a33459ea83d639bf9
+>  	struct lm3533_led *led = to_lm3533_led(led_cdev);
+>  	unsigned enable;
+
+Oh, besides using the old way of declaring unsigned int, it most likely
+just needs to be kstrtobool().
+
+>  	u8 reg;
+> -	u8 mask;
+> -	u8 val;
+>  	int ret;
+>  
+>  	if (kstrtouint(buf, 0, &enable))
+>  		return -EINVAL;
+
+We should unshadow error codes (it may return more than -EINVAL).
+
+>  	reg = lm3533_led_get_lv_reg(led, LM3533_REG_CTRLBANK_BCONF_BASE);
+> -	mask = LM3533_REG_CTRLBANK_BCONF_ALS_EN_MASK;
+>  
+> -	if (enable)
+> -		val = mask;
+> -	else
+> -		val = 0;
+> -
+
+...
+
+> -	if (kstrtou8(buf, 0, &val))
+> +	if (kstrtou32(buf, 0, &val))
+>  		return -EINVAL;
+
+Like in the previous case we should unshadow error codes.
+
 -- 
-2.47.3
+With Best Regards,
+Andy Shevchenko
+
 
 
