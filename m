@@ -1,91 +1,90 @@
-Return-Path: <linux-fbdev+bounces-7663-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7664-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PaRJB25uN2qdNgcAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7663-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jun 2026 06:54:06 +0200
+	id XWi5HPiEN2oPOgcAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7664-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jun 2026 08:30:16 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650E26AA3BC
-	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jun 2026 06:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A57316AA4E0
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jun 2026 08:30:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hkI9G8PI;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7663-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7663-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bHcN1kbA;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7664-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7664-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A25813019068
-	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jun 2026 04:53:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40C05300EF42
+	for <lists+linux-fbdev@lfdr.de>; Sun, 21 Jun 2026 06:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBFC3093CF;
-	Sun, 21 Jun 2026 04:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F99925B0AF;
+	Sun, 21 Jun 2026 06:30:13 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE5553E0B
-	for <linux-fbdev@vger.kernel.org>; Sun, 21 Jun 2026 04:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D690022A4E1
+	for <linux-fbdev@vger.kernel.org>; Sun, 21 Jun 2026 06:30:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782017631; cv=none; b=ZLaUWXEzD91VOr1HYQYp/f6kooLH9KDSE+8Ni7iyDBFTFFbwqjAF9hkL3adR4i4e/VIDErde84ml1CwN2jBxSYUV6Ec+JN3LN6+cpmblxm5XSr5ta6IEGo6FiF05C6G1MuUGMLVVuW0LC4tTBYRIkbeamzGL+DVq+nvu7neTbfI=
+	t=1782023413; cv=none; b=u1gnki59tlBuIVplOqhmcyCthpjPl6oEbB8vVhANjkD1DxzwlWg6WEsZ8HfnVqQoULiRKe4xXwZiQm5c139QRLDNsBr+gTuQQOghb40JDARrYnqqCSYVjCnAYdFCjTNxJair83Cxp2mKoMbC/33uaKhEyY0G4axqvOLWa6t28iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782017631; c=relaxed/simple;
-	bh=ysODE48MG38Ze7E7lc6OSDgmmH6AUYqISUF/OUOmkLA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a7AH0hfZR35P//349m3R0E9rWTabQufPzlY2zWUbPzHg/OHpO7SBxw4CV49S6/HLMZclbgC0GV7QDToAabj6eTFcaf7nR3QsapQ6Zm6Q/iwTp5G9vbauaPimTf/+PQKlr1HAtrGo6fHyzj22KYP0fLYoSDmmKMyA5Jvj9s6lMnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hkI9G8PI; arc=none smtp.client-ip=209.85.216.42
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-36babe2c4bdso1720444a91.1
-        for <linux-fbdev@vger.kernel.org>; Sat, 20 Jun 2026 21:53:49 -0700 (PDT)
+	s=arc-20240116; t=1782023413; c=relaxed/simple;
+	bh=LPBX5peVu2+CGfivQVGZ27pn3uwBQKahf3dtTK2W6jw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q1FCSH+mLND3zrTucsDsCtvJNhL0Z7QT66GQK+kgmnGbA5Kw1OWgXz0dHF5v34wFk/jBbJUl9uZbSRu5eD9z9xpqYjC/HR2FFdNSVVczCMQP1MS6NR4P7eEzMSGzo3Ci+A14HWB3dHpuGAz98TVVhWE+xPRKLGIEYyG5hm9BBdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHcN1kbA; arc=none smtp.client-ip=209.85.210.180
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8454160043aso2590149b3a.3
+        for <linux-fbdev@vger.kernel.org>; Sat, 20 Jun 2026 23:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782017629; x=1782622429; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782023411; x=1782628211; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7G/nkYZdx0E/SLt2rECUHCRRofMdYVLWGsUUXwSGwrk=;
-        b=hkI9G8PIevXko3h3BAcKsRww4I+lPKjetanLW4zX+iIQGrm5Fpvpt/cvMg4+3BmaAy
-         SbFepdJrAYAHUi11ltR6VxD0muJrrdyPk8eJcOUP7YQZTFY4Fc/Al8cDjS6tGdWMxyTE
-         vMbfiEsBp/iY4wi7ecGh9d87LU1cRCoizSL8iRn4hHfvMv8zRdu9sXR0w3+s3EEuIpMA
-         6PNZO6wKMpKFPX3TmSiv/inZGATprJCgM3dgeIzOkz4cG7VQXEF82iwQPhxJ2GrLm3Oz
-         Xllj1ewrq09RQ3gM/9yVn/WYyVv99Tq7tyq6vDm80Qj6nYGZgerFe39fv41S6nSinq8a
-         OkNw==
+        bh=W6tpylLWP859Y5GaGz8xWvHuAS1IpP/+yGasAke1UnQ=;
+        b=bHcN1kbAaVFX+WZ+1Uc7UZaHJbbo+klo3MdlrbcvW0j6kgCdNuHwQdxmwZZzA1q9Ym
+         uhwAvM7ZEd6ZN+ydB/4lTRV+BM6SGQB5pKRrnzi6uWuZ/hfh/iwrhhUVnQ3xaIpa/Lcn
+         GmyMfNE39piZ/CO3j3K/wOxMUSOWTl0LzhGNzh32B/x3xY2BJp6Hk2530AOaUMxj8ok3
+         f41zNmupRKsqHxcZUbLTB4DkZEvlGrtSdyD0Eo6LnFz91My/fwtJdWtHuHBs0MDY/sC3
+         tP4l1aDsV1a51juSZI/7UNtC1dgmclMbR9Z+7NqrmwqdoOvWGSew5/MBkBljYqYqSugE
+         LVLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782017629; x=1782622429;
+        d=1e100.net; s=20251104; t=1782023411; x=1782628211;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7G/nkYZdx0E/SLt2rECUHCRRofMdYVLWGsUUXwSGwrk=;
-        b=dFGZvwXOmvHxEWWbME+MDXPfcEz+b45XOt0G6v63qLWOgv52ZLNXg3c9BdGonVcJoF
-         YZnSEP+/NUbW3qnj7Xpxw2TjgKyzgIvl/VoOgVVTP4Avc2BbQb88Qf2y2N9GXPtv434Y
-         KlpUZxK5HyagQ9Ol+5O3T95ykTKgrPdZpMLsc89rCZSbcrvVG4KFpMCom+J85bEroAjj
-         0VDgb+zr0Lkn9ubV6cs4X4z9Th6JLlw50dNK4ietlPDNgYyHFgsTN/WsH5pN2lTwEkai
-         P4+X7wxiF2m14hO24q4aawYCjs4fsWsN/3d9nMViBaroW9PyAgBYOfZ/qxfh+NYN/SdR
-         FLUw==
-X-Forwarded-Encrypted: i=1; AHgh+RovmWTBtZ1O2LobJZQObkRpQXf2f83ETJTTrLgtJrML8ZD9TBH0LLEjDfNS9kj6g7OmFOLFEffcgfz8NA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5XiA8jlwVjquKKhNHrgov+4+S+862aXgPmFb9h7VGbiRw2OF7
-	wHarEUUzqrhm0mENrV2XoeQejELF+7umtRAu01XYxBxCOQ+RQjLKeEfy
-X-Gm-Gg: AfdE7cm8PEKbB4QDRJTusmWM8tt+fZ3+ZGsTLmFdz/MQt9cW9pm0onZ/xmhav39MZCt
-	Fs28ALNLKTbumraahhdCRIwKC2EE/uXMWCgC4PMh6DB0HqqjQ1ydO0AvZCChTkcpuT3T/bQG1Qg
-	rAiQp3WGboSTvtVlelREDkO/HFKJPKY/wHZrF7z9PEdaJl38HSXNVtNLytn4KcAM6t4hHMwwaCL
-	f9t7BYZT/6gkOWzdDFFrsHV8Btnn9Q5YKxqhpRrJJ97y/jplFtR0lb5hHHNElml+lH4d7azWRbD
-	YgNYwf4H/s/6eWjy+l4V9B31jbhYuOyzFzBi341n2CmSk3ZO0Bu+OVR6MP5cpc3Yr4WPJEncM09
-	mR+j/5szbGxQ6xIEM5z1epgRZNFjg2BClbvmddSJ2JFd5NKnb651P97xX8/LziwN2TT6SRpwFVH
-	4vQ0x81GHDumyRNgfLqrABACS6d5+xs6pySZZ2gvtOJFoRvsWfciePRyOF72Ej6bex4LqJrw4sW
-	4KE0bGZpnmT0KwEGp1V5W6f8/DQM7a/qAWq1bhTxa1iNOd9ZHusMvnWlA==
-X-Received: by 2002:a17:902:db0e:b0:2c6:8e82:977c with SMTP id d9443c01a7336-2c718cbdd0bmr100658595ad.15.1782017628373;
-        Sat, 20 Jun 2026 21:53:48 -0700 (PDT)
-Received: from kapoor.mahindrauniversity.edu.in ([122.184.65.229])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7436f90d4sm36864575ad.34.2026.06.20.21.53.44
+        bh=W6tpylLWP859Y5GaGz8xWvHuAS1IpP/+yGasAke1UnQ=;
+        b=aUI/P4dMcXISSwBMDu290vjrhETfGqOlwHuHAQU6X22K2h1PgSmNk1y51/PneDubxZ
+         Rrm2+Q2fFZXRF8j+Ab5atIQX5CBBtHwyqCe39+kHemb07pdW/RlqNMy/ex0G+k+cgACC
+         8LsKiJ3q4w5V+n4zJ05r5mj7oEAstD/S+TRr0H34+FxZ08C0FAcVLi8cNXtETGkbkqqa
+         DiXYJBtokFAzVhDFWuSpDZnJaMOTT9or72YK1fNcS9J0SmUOVhB+g4MRKcVdv2kKzuzT
+         EAEGBz1IDrpFZyrPykq06OBsuLZ+vfqfGJArZk+BNkawMD8U51tuX9Y7MmIA9DA9bDxC
+         heRA==
+X-Forwarded-Encrypted: i=1; AFNElJ9jBp9Wnhv7yxMNknnXqVasJt37rG5FBThCUrpkYFHBQgafiLb+T/TIipzPi2uhKOvwzbPG30pBgIMHVQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0XyhRWzf951iQQjjYasJRdIP7HjwuL/F+hsNJw26i4+55Ep95
+	vB5+mGIZfIKGKCTRaxqhtcu8Z85xEEJb90U3I33dYDysa6gYtxmcaaMJ
+X-Gm-Gg: AfdE7ckX44mtI9c/jNzl1e0vYssJRacmLF/nB7WYgDpuBy1GkC4VNDskURspb/4Qu5+
+	NlES6r1gRRyZ9qiQahexRtMenv4dQivrtlIdL3kSqBJHIKsJ/gaLDTtR4UR1p8Wj+qgPG6KxzB9
+	MIeaIYP9L6p259wo8wOXyMYLhxqxByJTGnb5iOecERWiOCQMarZsTCTc/Qwctc5yPI1EQ/r1v+U
+	waGpNWKCNDjx7L8iE1MR7uy1zpyVXqF/ZmcEfNVfuzuTON0M41I9yHZRzGJcj9ddf4y38V4VIDk
+	pRC/Uj5L5HUfWRYjpi6SimtaSTolrsiP4hrY8+AY4uiqfhslfcBbOnpFw850g9qrGXtjj5++Zkq
+	kDukJb/t5DEWs2aB5lKIhwJkLoP3daakDX8ESRBUZW0Uro4AZQylnR/RnVaWjzXSlSdLeI1uYVU
+	dG5Bxyy2Myhz8OuMwL6ZQHmEyC8eyXjEehXqwS+NUO3g==
+X-Received: by 2002:a05:6a00:2a0c:b0:842:5d9b:d590 with SMTP id d2e1a72fcca58-84550887d3cmr11687574b3a.30.1782023411053;
+        Sat, 20 Jun 2026 23:30:11 -0700 (PDT)
+Received: from kernel-dev ([49.36.101.14])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564e76d3csm3812486b3a.30.2026.06.20.23.30.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Jun 2026 21:53:47 -0700 (PDT)
-From: Arnav Kapoor <kapoorarnav43@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-	Teddy Wang <teddy.wang@siliconmotion.com>
-Cc: linux-staging@lists.linux.dev,
+        Sat, 20 Jun 2026 23:30:10 -0700 (PDT)
+From: Aditya Chari <adi25charis@gmail.com>
+To: andy@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: dri-devel@lists.freedesktop.org,
 	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Arnav Kapoor <kapoorarnav43@gmail.com>
-Subject: [staging] staging: sm750fb: fix remaining CamelCase issues
-Date: Sun, 21 Jun 2026 10:23:40 +0530
-Message-ID: <20260621045340.65872-1-kapoorarnav43@gmail.com>
+	Aditya Chari <adi25charis@gmail.com>
+Subject: [PATCH] staging: fbtft: fix parenthesis alignment in fb_tinylcd.c
+Date: Sun, 21 Jun 2026 11:59:45 +0530
+Message-ID: <20260621062945.42519-1-adi25charis@gmail.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
@@ -93,89 +92,67 @@ List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-7663-lists,linux-fbdev=lfdr.de];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com,siliconmotion.com];
-	FORGED_SENDER(0.00)[kapoorarnav43@gmail.com,linux-fbdev@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sudipm.mukherjee@gmail.com,m:teddy.wang@siliconmotion.com,m:linux-staging@lists.linux.dev,m:linux-fbdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kapoorarnav43@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,lists.linux.dev,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-7664-lists,linux-fbdev=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:andy@kernel.org,m:gregkh@linuxfoundation.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:adi25charis@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[adi25charis@gmail.com,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adi25charis@gmail.com,linux-fbdev@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kapoorarnav43@gmail.com,linux-fbdev@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 650E26AA3BC
+X-Rspamd-Queue-Id: A57316AA4E0
 
-Rename the remaining CamelCase variables and constants to follow
-kernel coding style:
-- powerMode → power_mode
-- setAllEngOff → set_all_eng_off
-- resetMemory → reset_memory
-- sm750_doubleTFT → SM750_DOUBLE_TFT
-- sm750_dualTFT → SM750_DUAL_TFT
+Fix a checkpatch.pl
+CHECK:PARENTHESIS_ALIGNMENT warning by aligning the wrapped
+argument list of write_reg() with the line above it.
 
-Signed-off-by: Arnav Kapoor <kapoorarnav43@gmail.com>
+Signed-off-by: Aditya Chari <adi25charis@gmail.com>
 ---
- drivers/staging/sm750fb/sm750.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/staging/fbtft/fb_tinylcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/sm750fb/sm750.c b/drivers/staging/sm750fb/sm750.c
-index 125ad1062..f034d3278 100644
---- a/drivers/staging/sm750fb/sm750.c
-+++ b/drivers/staging/sm750fb/sm750.c
-@@ -859,9 +859,9 @@ static void sm750fb_setup(struct sm750_dev *sm750_dev, char *src)
- 	sm750_dev->init_parm.chip_clk = 0;
- 	sm750_dev->init_parm.mem_clk = 0;
- 	sm750_dev->init_parm.master_clk = 0;
--	sm750_dev->init_parm.powerMode = 0;
--	sm750_dev->init_parm.setAllEngOff = 0;
--	sm750_dev->init_parm.resetMemory = 1;
-+	sm750_dev->init_parm.power_mode = 0;
-+	sm750_dev->init_parm.set_all_eng_off = 0;
-+	sm750_dev->init_parm.reset_memory = 1;
- 
- 	/* defaultly turn g_hwcursor on for both view */
- 	g_hwcursor = 3;
-@@ -880,9 +880,9 @@ static void sm750fb_setup(struct sm750_dev *sm750_dev, char *src)
- 		} else if (!strncmp(opt, "nocrt", strlen("nocrt"))) {
- 			sm750_dev->nocrt = 1;
- 		} else if (!strncmp(opt, "36bit", strlen("36bit"))) {
--			sm750_dev->pnltype = sm750_doubleTFT;
-+			sm750_dev->pnltype = SM750_DOUBLE_TFT;
- 		} else if (!strncmp(opt, "18bit", strlen("18bit"))) {
--			sm750_dev->pnltype = sm750_dualTFT;
-+			sm750_dev->pnltype = SM750_DUAL_TFT;
- 		} else if (!strncmp(opt, "24bit", strlen("24bit"))) {
- 			sm750_dev->pnltype = sm750_24TFT;
- 		} else if (!strncmp(opt, "nohwc0", strlen("nohwc0"))) {
+diff --git a/drivers/staging/fbtft/fb_tinylcd.c b/drivers/staging/fbtft/fb_tinylcd.c
+index afa8f1c74..d58b12472 100644
+--- a/drivers/staging/fbtft/fb_tinylcd.c
++++ b/drivers/staging/fbtft/fb_tinylcd.c
+@@ -38,7 +38,7 @@ static int init_display(struct fbtft_par *par)
+ 	write_reg(par, 0xE5, 0x00);
+ 	write_reg(par, 0xF0, 0x36, 0xA5, 0x53);
+ 	write_reg(par, 0xE0, 0x00, 0x35, 0x33, 0x00, 0x00, 0x00,
+-		       0x00, 0x35, 0x33, 0x00, 0x00, 0x00);
++		  0x00, 0x35, 0x33, 0x00, 0x00, 0x00);
+ 	write_reg(par, MIPI_DCS_SET_PIXEL_FORMAT, 0x55);
+ 	write_reg(par, MIPI_DCS_EXIT_SLEEP_MODE);
+ 	fsleep(250);
 -- 
 2.53.0
 
