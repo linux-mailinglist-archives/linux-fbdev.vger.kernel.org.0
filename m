@@ -1,71 +1,75 @@
-Return-Path: <linux-fbdev+bounces-7706-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7707-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x4W8IqmrO2prbAgAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7706-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jun 2026 12:04:25 +0200
+	id E4xNIlzAO2racAgAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7707-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jun 2026 13:32:44 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C96826BD2DF
-	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jun 2026 12:04:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643D36BDAB4
+	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jun 2026 13:32:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WsA3GFLl;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7706-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7706-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=intel.com header.s=Intel header.b=l38ZyQB2;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7707-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7707-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C571B3016521
-	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jun 2026 10:04:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 89E6E300AD6B
+	for <lists+linux-fbdev@lfdr.de>; Wed, 24 Jun 2026 11:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4995C3AFD0F;
-	Wed, 24 Jun 2026 10:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D63830569F;
+	Wed, 24 Jun 2026 11:31:43 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961503ACF0C;
-	Wed, 24 Jun 2026 10:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2C2194C98;
+	Wed, 24 Jun 2026 11:31:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782295453; cv=none; b=hZtX/E0BfyxanooFp+H2pSEiuchh+BTL2eBj1x/bSdYHK5uvdeZqAwPrpYkPbKBHITWerbOuHdg7AB8W11VcUhtzRyVKuAUDnrIqdpT/Tmz+aalqku3I7vs6OLJRRx0S/dlFp8xRWlnZBIRjoJYye8c6G4nT4wlBwZW7X1375xk=
+	t=1782300703; cv=none; b=QJetQ1GeCTkKnH4xWDWG6DXFtHEPRNC4UfF10XE7dkDKR6+3Q1fyWvprFbKJGM7NIWQrBizitfMxSTMoDQjC7lIzIdrBmPb1Wy/m4unsqX4EHWzUpLOaSgrvkpJHgD0eVXPJ2KmvrrNmiGReaR73yaOQsWiRCdrOePXoGSVkxC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782295453; c=relaxed/simple;
-	bh=V2xL5spx0Bw3nq5DCJ41peJmadVLewOTsGrgOweshTg=;
+	s=arc-20240116; t=1782300703; c=relaxed/simple;
+	bh=d5HyWw/v+MgocWmiFJGhqAbm8vl8c80N0u9O+M8mTY4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AWaKp0a6zrRlU3U2qj8oDx3o9v/BtDCltoxRH5S/ucFHhM+GSJUHA+8gvn+1EBGapOksYwFNQXkYsxxxA/Lz6ZH1KQKCUw++BBhbZtF78cQhGWB35MBru6512bhhWv/tIcEWyz1EHxy795Ih591uJN9uizXFZnFascGTLIcrVEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WsA3GFLl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A861F000E9;
-	Wed, 24 Jun 2026 10:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782295451;
-	bh=V2xL5spx0Bw3nq5DCJ41peJmadVLewOTsGrgOweshTg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WsA3GFLl8oEmpAYbgnyy1sjrM/OUy2YwTdbA/HqXIeqPekL7nXV49/ZuidyAKBwPH
-	 b2o6jJmsLjpQ5C9zJtcxp8RZYzMMzJnfUlXTjpi5uGVBGKvKZXSYrDnoDtPzO1dIF3
-	 3tIgGnYSoMsYA0EB/t39Xs+pi9D5mnU4h6HZsmduygKi8RJUfYVZLKnaa2Lj/7AJSr
-	 oCAbG+le+GIESH1CSeluTfX1vYETQ3ItuVytwI73SRDxptQf1MJ7Cn/DZmJhvb9Y7T
-	 obs0HgGFzpf7ZO0ARQ7Bwyu/PVVFbP7bHWGMJ27W12lwEuWKeM4POnqHCYPlvyTqD+
-	 p8PrGXZThNp2A==
-Date: Wed, 24 Jun 2026 11:04:03 +0100
-From: Daniel Thompson <danielt@kernel.org>
-To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Helge Deller <deller@gmx.de>,
-	Johan Hovold <johan@kernel.org>, dri-devel@lists.freedesktop.org,
-	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v5 14/14] video: leds: backlight: lm3533: Support getting
- LED sources from DT
-Message-ID: <ajurk9wOxHh6rOH-@aspen.lan>
-References: <20260617080031.99156-1-clamor95@gmail.com>
- <20260617080031.99156-15-clamor95@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RwG7z4jcTQdR+9AUfKtBfCta0PDNkxByrlr5q1MmVVRYUhlxyFY8CoedHZetsWAVNzxKrqj3pHBbnkEJ/ChlwaYNrXlAwRQr20m+FM9ck8+h4J3FV6FHRwG2jmZmo4HrAIQB+bhGE/EanQSiRwP07DXjakNVPEAYsCF10geok48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l38ZyQB2; arc=none smtp.client-ip=192.198.163.10
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782300702; x=1813836702;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d5HyWw/v+MgocWmiFJGhqAbm8vl8c80N0u9O+M8mTY4=;
+  b=l38ZyQB25nom/AKrlcWWaFZxC1cqTUnqBezR2J5gQtgQ2ZlymsL8UNif
+   EqVPHJkcPxF2fpY6K6MkDqEjVE7jwMvkAFmgmbXW2c9ucy2ma9unvyjTh
+   0qPujSLK3Fh5N7S9vx1KNWW7iD+oDEhXDzq07oClPI+omgRe8ySzLileY
+   KWD+nRsnH4bKqRvxNAj10tHRgECsZJ+U0W3Qch/+eLctAu19tqMA/BTnO
+   k2+VSBeY1OV/PDs1Iq2cz0Fk0VtHdXcetnosAPyIPnra7fUjr7JbSBLUV
+   lF31qn5j3TCJYaHJzbvNu0sO3Qj1GAjUDB0z1p+xAn6bMr9rl3y8WCZYg
+   w==;
+X-CSE-ConnectionGUID: 5P3kkip4S8eD/Xvacx0Ktg==
+X-CSE-MsgGUID: eeI+IpGrSJ2DZprEkmD03w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="94454223"
+X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
+   d="scan'208";a="94454223"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 04:31:41 -0700
+X-CSE-ConnectionGUID: OFM21aTwQy+Fi8Ylpx5HTw==
+X-CSE-MsgGUID: GLjjPo9NSSS9kKrITL0FQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
+   d="scan'208";a="254791087"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.156])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 04:31:39 -0700
+Date: Wed, 24 Jun 2026 14:31:36 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Joyeta Modak <joyetamdk@gmail.com>
+Cc: andy@kernel.org, gregkh@linuxfoundation.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: use ARRAY_SIZE() in NUMARGS macro
+Message-ID: <ajvAGK-0kCfkThcs@ashevche-desk.local>
+References: <20260624073804.4391-1-joyetamdk@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -74,54 +78,67 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260617080031.99156-15-clamor95@gmail.com>
+In-Reply-To: <20260624073804.4391-1-joyetamdk@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:clamor95@gmail.com,m:lee@kernel.org,m:jingoohan1@gmail.com,m:pavel@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:deller@gmx.de,m:johan@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-leds@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7706-lists,linux-fbdev=lfdr.de];
-	FORGED_SENDER(0.00)[danielt@kernel.org,linux-fbdev@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[danielt@kernel.org,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,baylibre.com,analog.com,gmx.de,lists.freedesktop.org,vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	FORGED_RECIPIENTS(0.00)[m:joyetamdk@gmail.com,m:andy@kernel.org,m:gregkh@linuxfoundation.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-7707-lists,linux-fbdev=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,aspen.lan:mid]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-fbdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ashevche-desk.local:mid,intel.com:dkim,intel.com:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C96826BD2DF
+X-Rspamd-Queue-Id: 643D36BDAB4
 
-On Wed, Jun 17, 2026 at 11:00:31AM +0300, Svyatoslav Ryhel wrote:
-> Add Control Bank to HVLED/LVLED muxing support based on the led-sources
-> defined in the device tree.
->
-> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+On Wed, Jun 24, 2026 at 01:08:04PM +0530, Joyeta Modak wrote:
+> NUMARGS() computes the number of arguments by dividing the size of a
+> temporary int array by sizeof(int). Using the standard ARRAY_SIZE()
+> macro is the correct way to count array elements in the kernel, and
+> ARRAY_SIZE() also provides a __must_be_array() compile time check. There
+> are no functional changes.
 
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+...
+
+> -#define NUMARGS(...)  (sizeof((int[]){__VA_ARGS__}) / sizeof(int))
+> +#define NUMARGS(...)  ARRAY_SIZE(((int[]){__VA_ARGS__}))
+>  
+>  #define write_reg(par, ...)                                            \
+>  	((par)->fbtftops.write_register(par, NUMARGS(__VA_ARGS__), __VA_ARGS__))
+
+What is the maximum parameters .write_register() takes in practice in the
+fbtft drivers? If it's less than or equal to 15, we may use args.h instead.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Daniel.
 
