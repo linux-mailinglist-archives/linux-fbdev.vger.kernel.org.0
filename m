@@ -1,76 +1,79 @@
-Return-Path: <linux-fbdev+bounces-7733-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7734-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TLlQAdg3PWo2zQgAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7733-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 16:14:48 +0200
+	id L47XLI84PWp/zQgAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7734-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 16:17:51 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16AD6C67BC
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 16:14:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21AC36C683E
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 16:17:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=d3qQK7m5;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7733-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7733-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=intel.com header.s=Intel header.b=TNeglqTd;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7734-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7734-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E16B530615C5
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 14:09:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9E2D30A6A91
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 14:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A025B37B413;
-	Thu, 25 Jun 2026 14:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E03E349CDD;
+	Thu, 25 Jun 2026 14:09:55 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA7D364024;
-	Thu, 25 Jun 2026 14:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B072E7394;
+	Thu, 25 Jun 2026 14:09:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782396498; cv=none; b=f3Y9vhzOYdp57J5OTDTNQhLB0CEsw6tUltJUWi3+yhllHHJZ0XyGi8n/nAraQ0tpQLfdS/fjUMnFxUGspg4d4gAovhjjjpU89/Zuz6R365/sZjvMAlW4gslY12zQaLAyZinagmxdHcdXRt9kLBzkT40L4a85IDKPWQpgqbYPfCQ=
+	t=1782396595; cv=none; b=OHndsl1W5C8D5exbNQOWJvrnujvb5sl67S0srlD9YOhqRiEmrFBUN6wOneuyZaweZ3EL2DD6gO3SReXIKNJGWt8ArjEKD3HCd6AgZxc2Nm4kX6MdLkqkH56xBUERnRAPbFRHyEFvjbZSqj5JIEDAz/vuPE8iYDcDnIiGvPO36Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782396498; c=relaxed/simple;
-	bh=G4bOlvhhdVwBaq8kCvvh+9q6vDkJkXVzE3VkYXm/UN0=;
+	s=arc-20240116; t=1782396595; c=relaxed/simple;
+	bh=c0Bmn6hGAyuAnYk1EnLNUGmPoh3wiWyFQ1JCR1xdNDM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E1Iv6DufNitDHo3FX1CmGUsW99vyXNmOZk3A1fbLCUh/odU5y0RctaYnAu74lrRU8Y31recSmdg/+9ticj8pwF/b7DVojjUyHGZqDOLhFTZoyZEH7PH/9RkXg1/jSH/3u2EdGqnOJcvtOwsqbwb0vpC/qetsYUuiUYaj1gjde0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d3qQK7m5; arc=none smtp.client-ip=192.198.163.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/VM9ewSXl86Y+WPlXSmlaK2sxm0cZm/djQzWU3L9Q/eN3TIZ7as3W4zU5oQFUa/t3IrZrErURNSn71iB4f9pTQObNv+eWjh/8CBN1UVw9EcLhW6vfTz8u9UQln447qv8VFjDSYxbS+chpohYuzf8q5XTjT3DONAH/fAliRjabo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TNeglqTd; arc=none smtp.client-ip=198.175.65.10
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782396497; x=1813932497;
+  t=1782396595; x=1813932595;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=G4bOlvhhdVwBaq8kCvvh+9q6vDkJkXVzE3VkYXm/UN0=;
-  b=d3qQK7m5HkPq7LmbK2cF3gLuj47S1TUrLY8eglMaD8jSjtVbSrJfExVa
-   7fZdwvfnae93mdqSGs/oJyCjkWaHPwIZ2uybRGEist3cfJKOgEsDrtVhT
-   x1M63/NLba0bGJF5Ss9NZtMarsnc3w1l6wHq1UfFM6LBrfhcKr9tCe/DY
-   5Z3310+VUGxHOei38g3qXu/Kp7sn3iDeH6wO3oMbdanbld1qxTirxCHbU
-   wrZtk7zVeRXtPEAmk1ibIgup/uxA/AMOUkhkq+LU/OuNmnMaX4tv5TeRL
-   ZVaH/GhvsZbzb+V97vUaHKfCFFyW9k0ToSa2hiMMROzCkjix57C2YTioo
-   Q==;
-X-CSE-ConnectionGUID: 4TdTTSCGTlOLpTb8rT9zmg==
-X-CSE-MsgGUID: dFcG7eouS9ickorF05HVsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="94569710"
+  bh=c0Bmn6hGAyuAnYk1EnLNUGmPoh3wiWyFQ1JCR1xdNDM=;
+  b=TNeglqTdTJbbhXlleiqx0UCu7VPf2DhTyRxjkpgcK8GgjRxlE+8WOBgZ
+   UlAOX+ERFa0gkJ+ljgEv+HUOZIGpnqp6JKKag4j3G/vrkZDMWjdmsa6Lu
+   Sz5DqzYCDrp5BQltjGEWOA25SKVwcOnxKEVsqT3lzVMDH/LSaMhxLWKhI
+   pcTEutiDE5TIK13Br6cmWI+aOLFaVCswSuIqUKHS9z87Bi9RQBGwgh/0Q
+   1mXwdb9jLVWWDf69FA7MHHUXjw6R/XNpcww/93Hf5m0QK4mSn0QXUH8+r
+   KbOCm653RwN48NEq/1eSCPDpbpGSYZSZcckEr11O9HYnj4eHV5N/t971C
+   g==;
+X-CSE-ConnectionGUID: LbM4iuVuRiq1xmNFv6L1mA==
+X-CSE-MsgGUID: kgvsQshTR1mEGRX2OqRicQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="100597977"
 X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="94569710"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 07:08:16 -0700
-X-CSE-ConnectionGUID: O6ZI7uD3TeG2GgYuKgT3ZQ==
-X-CSE-MsgGUID: shf94d8NTFWU0aUritrzjg==
+   d="scan'208";a="100597977"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 07:09:54 -0700
+X-CSE-ConnectionGUID: fJBYsruzT7O3YosKUuaS6w==
+X-CSE-MsgGUID: DDU2IQeoRC2DL9WI0rmhJw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="244368609"
+   d="scan'208";a="255652309"
 Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.245.93])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 07:08:15 -0700
-Date: Thu, 25 Jun 2026 17:08:12 +0300
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 07:09:52 -0700
+Date: Thu, 25 Jun 2026 17:09:49 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: suryasaimadhu <suryasaimadhu369@gmail.com>
-Cc: andy@kernel.org, gregkh@linuxfoundation.org,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: fbtft: fix unaligned access and buffer size
- when startbyte is used
-Message-ID: <aj02TPm9nawLC18g@ashevche-desk.local>
-References: <20260625103041.281190-1-suryasaimadhu369@gmail.com>
+To: Sai Madhu <suryasaimadhu369@gmail.com>
+Cc: Dan Carpenter <error27@gmail.com>, andy@kernel.org,
+	gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: fbtft: replace empty modifier argument with
+ no-op macro
+Message-ID: <aj02rT4eRKRPhrNe@ashevche-desk.local>
+References: <20260625092721.238366-1-suryasaimadhu369@gmail.com>
+ <aj0Cv0Wzb3rieNqW@stanley.mountain>
+ <CAB0uMAeMOV4Xhq2cNVjxne89yqF8vdubM8-OpPYGK4f4yBLMNw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -79,7 +82,7 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260625103041.281190-1-suryasaimadhu369@gmail.com>
+In-Reply-To: <CAB0uMAeMOV4Xhq2cNVjxne89yqF8vdubM8-OpPYGK4f4yBLMNw@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Action: no action
@@ -87,23 +90,24 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-7734-lists,linux-fbdev=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:suryasaimadhu369@gmail.com,m:andy@kernel.org,m:gregkh@linuxfoundation.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:suryasaimadhu369@gmail.com,m:error27@gmail.com,m:andy@kernel.org,m:gregkh@linuxfoundation.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-7733-lists,linux-fbdev=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linuxfoundation.org,lists.freedesktop.org,vger.kernel.org,lists.linux.dev];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -111,30 +115,31 @@ X-Spamd-Result: default: False [-5.16 / 15.00];
 	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:dkim,intel.com:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,ashevche-desk.local:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,ashevche-desk.local:mid,intel.com:dkim,intel.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F16AD6C67BC
+X-Rspamd-Queue-Id: 21AC36C683E
 
-On Thu, Jun 25, 2026 at 06:30:41PM +0800, suryasaimadhu wrote:
-> When par->startbyte is non-zero, buf is advanced by one byte creating
-> an unaligned pointer for 16-bit types (u16, __be16). Dereferencing this
-> unaligned pointer can cause a kernel panic on strict-alignment
-> architectures.
-> 
-> Fix by using put_unaligned() instead of direct pointer dereference.
-> 
-> Also fix incorrect buffer size calculation in fbtft_write_buf_dc() call:
->   len * (sizeof(data_type) + offset)  /* wrong: multiplies offset by len */
->   len * sizeof(data_type) + offset    /* correct: one startbyte +
->                                          len items */
+On Thu, Jun 25, 2026 at 04:00:24PM +0530, Sai Madhu wrote:
 
-Same comments as per your other patch contributions. Make it cleaner next time.
-So it seem a v2 should be a mini-series with fixes for different
-issues/drivers/et cetera.
+First of all, do not top-post!
+
+> Thank you for the feedback. I understand and will drop this patch.
+> 
+> I have also noticed two pre-existing bugs in the same file
+> (unaligned access and buffer size calculation when startbyte is used)
+> and have sent a separate patch to fix those.
+
+> On Thu, 25 Jun 2026 at 15:58, Dan Carpenter <error27@gmail.com> wrote:
+> > On Thu, Jun 25, 2026 at 05:27:21PM +0800, suryasaimadhu wrote:
+
+> > I don't hate this patch, but I think we've decided to leave this
+> > as-is.
+
+Yep. as Dan said,
 
 -- 
 With Best Regards,
