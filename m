@@ -1,149 +1,260 @@
-Return-Path: <linux-fbdev+bounces-7734-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7735-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id L47XLI84PWp/zQgAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7734-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 16:17:51 +0200
+	id +jlSAhhEPWoY0ggAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7735-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 17:07:04 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AC36C683E
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 16:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 566E26C6EF7
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 17:07:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TNeglqTd;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7734-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7734-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BPfrj+sv;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=HKRm90AE;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=aw+WTHqT;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="I/773ghd";
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7735-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7735-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=suse.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9E2D30A6A91
-	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 14:10:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01B59302EEF0
+	for <lists+linux-fbdev@lfdr.de>; Thu, 25 Jun 2026 15:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E03E349CDD;
-	Thu, 25 Jun 2026 14:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733F93E7BB7;
+	Thu, 25 Jun 2026 15:04:59 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B072E7394;
-	Thu, 25 Jun 2026 14:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1A23E7141
+	for <linux-fbdev@vger.kernel.org>; Thu, 25 Jun 2026 15:04:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782396595; cv=none; b=OHndsl1W5C8D5exbNQOWJvrnujvb5sl67S0srlD9YOhqRiEmrFBUN6wOneuyZaweZ3EL2DD6gO3SReXIKNJGWt8ArjEKD3HCd6AgZxc2Nm4kX6MdLkqkH56xBUERnRAPbFRHyEFvjbZSqj5JIEDAz/vuPE8iYDcDnIiGvPO36Zo=
+	t=1782399899; cv=none; b=f9N1JxZ0jgaMAxSNgkjFQhVR6v3yVtJsOc+mQBpNY+vmD7H9Sei+DBqZ8xBK5QSQdi7JbgWVGUjtSah2AKoYUoXCiNXqKUNaQkT2yXTA+O2k61RDRcaoT2NA7rXUaJajP6VBmUntgPK/fVrFrUsl0I4D6MnIFqa07fZhJcxBro8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782396595; c=relaxed/simple;
-	bh=c0Bmn6hGAyuAnYk1EnLNUGmPoh3wiWyFQ1JCR1xdNDM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y/VM9ewSXl86Y+WPlXSmlaK2sxm0cZm/djQzWU3L9Q/eN3TIZ7as3W4zU5oQFUa/t3IrZrErURNSn71iB4f9pTQObNv+eWjh/8CBN1UVw9EcLhW6vfTz8u9UQln447qv8VFjDSYxbS+chpohYuzf8q5XTjT3DONAH/fAliRjabo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TNeglqTd; arc=none smtp.client-ip=198.175.65.10
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782396595; x=1813932595;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=c0Bmn6hGAyuAnYk1EnLNUGmPoh3wiWyFQ1JCR1xdNDM=;
-  b=TNeglqTdTJbbhXlleiqx0UCu7VPf2DhTyRxjkpgcK8GgjRxlE+8WOBgZ
-   UlAOX+ERFa0gkJ+ljgEv+HUOZIGpnqp6JKKag4j3G/vrkZDMWjdmsa6Lu
-   Sz5DqzYCDrp5BQltjGEWOA25SKVwcOnxKEVsqT3lzVMDH/LSaMhxLWKhI
-   pcTEutiDE5TIK13Br6cmWI+aOLFaVCswSuIqUKHS9z87Bi9RQBGwgh/0Q
-   1mXwdb9jLVWWDf69FA7MHHUXjw6R/XNpcww/93Hf5m0QK4mSn0QXUH8+r
-   KbOCm653RwN48NEq/1eSCPDpbpGSYZSZcckEr11O9HYnj4eHV5N/t971C
-   g==;
-X-CSE-ConnectionGUID: LbM4iuVuRiq1xmNFv6L1mA==
-X-CSE-MsgGUID: kgvsQshTR1mEGRX2OqRicQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="100597977"
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="100597977"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 07:09:54 -0700
-X-CSE-ConnectionGUID: fJBYsruzT7O3YosKUuaS6w==
-X-CSE-MsgGUID: DDU2IQeoRC2DL9WI0rmhJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="255652309"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.245.93])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 07:09:52 -0700
-Date: Thu, 25 Jun 2026 17:09:49 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Sai Madhu <suryasaimadhu369@gmail.com>
-Cc: Dan Carpenter <error27@gmail.com>, andy@kernel.org,
-	gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: fbtft: replace empty modifier argument with
- no-op macro
-Message-ID: <aj02rT4eRKRPhrNe@ashevche-desk.local>
-References: <20260625092721.238366-1-suryasaimadhu369@gmail.com>
- <aj0Cv0Wzb3rieNqW@stanley.mountain>
- <CAB0uMAeMOV4Xhq2cNVjxne89yqF8vdubM8-OpPYGK4f4yBLMNw@mail.gmail.com>
+	s=arc-20240116; t=1782399899; c=relaxed/simple;
+	bh=6tx4Bj5p/W5ZyYRHsOq0eMuZbcediTREx9mrc3HpU/c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BNSIV0Ljr6RuL3lZWX7MMHnJOAP89zbsQUAEc9Bz886kpuiOViymXi8FGWjJHikMWk2iYGo7gf7k33oHJ/zGQqUnLXF5tfMTZhEmbp+8f6GXBHPUfYQ4lOFKM52h964KEji9ndoZFPUB+JrvH6a6AkoKlGBjf6YruohgptsLeiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BPfrj+sv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HKRm90AE; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aw+WTHqT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=I/773ghd; arc=none smtp.client-ip=195.135.223.130
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AC4D871C6A;
+	Thu, 25 Jun 2026 15:04:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782399895; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KzggUgTvPO75sojZnEGWKA6d2yXkTbrwYEONUppR//8=;
+	b=BPfrj+sv6w7n+gmiG2iIdGXmJxUlDbu3HSpcquG2SAcsnFeyp17ZidKBm/D46BZHt7EUUb
+	THUg5zqBz0Nj+5Ct+/Arm25WxQx93eaFxCwCr2Z3QYZXucGx3diYMMH9iq6PggoB0E6Xzk
+	PKLb8tBZbnpNV4yRhpD+JWAo7mxgzHs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782399895;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KzggUgTvPO75sojZnEGWKA6d2yXkTbrwYEONUppR//8=;
+	b=HKRm90AEAb+BVSkFlsfYRXtYho6u4uL+vtQv9mZVZ7utmzu2VYLoKfnognyftVimbpvzWb
+	UzxP9KzFkrqdnJCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782399891; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KzggUgTvPO75sojZnEGWKA6d2yXkTbrwYEONUppR//8=;
+	b=aw+WTHqTaud8aM2myU4+DWvoJBJfDfIwzNdUuRID+AnyTEbLB4FtAHI3E4aWc4dYzyYZSw
+	DFBHJfbqJmZ15BXgIOPxR4GD3+MUanJDmtLAQUaWSrLCXKaHpF4LtSno0+1mNxO8hGEnDk
+	JIIJ7mUu2qaOrAr1kHQ93Z+ymtVXgL8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782399891;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KzggUgTvPO75sojZnEGWKA6d2yXkTbrwYEONUppR//8=;
+	b=I/773ghdFNhqVT7xorQZLCxBA31dTB7MWLqkneyXb6Z71BdxfWLoCpH9SSP6ukb/2IcuJ6
+	0P+HN6vNhtRf5HCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 73CA0779A8;
+	Thu, 25 Jun 2026 15:04:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 7E/SGpNDPWrSOAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 25 Jun 2026 15:04:51 +0000
+Message-ID: <7dd87e55-5170-4317-8c9e-38a7868f68fc@suse.de>
+Date: Thu, 25 Jun 2026 17:04:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAB0uMAeMOV4Xhq2cNVjxne89yqF8vdubM8-OpPYGK4f4yBLMNw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fbdev: fbcon: fix out-of-bounds read in err_out of
+ fbcon_do_set_font()
+To: w15303746062@163.com, deller@gmx.de, simona@ffwll.ch
+Cc: syoshida@redhat.com, dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mingyu Wang <25181214217@stu.xidian.edu.cn>, stable@vger.kernel.org
+References: <20260624083316.389677-1-w15303746062@163.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260624083316.389677-1-w15303746062@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -4.50
+X-Spam-Level: 
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-7735-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7734-lists,linux-fbdev=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:suryasaimadhu369@gmail.com,m:error27@gmail.com,m:andy@kernel.org,m:gregkh@linuxfoundation.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linuxfoundation.org,lists.freedesktop.org,vger.kernel.org,lists.linux.dev];
+	FORGED_RECIPIENTS(0.00)[m:w15303746062@163.com,m:deller@gmx.de,m:simona@ffwll.ch,m:syoshida@redhat.com,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:25181214217@stu.xidian.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[163.com,gmx.de,ffwll.ch];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,linux-fbdev@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,ashevche-desk.local:mid,intel.com:dkim,intel.com:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,xidian.edu.cn:email,vger.kernel.org:from_smtp,suse.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 21AC36C683E
+X-Rspamd-Queue-Id: 566E26C6EF7
 
-On Thu, Jun 25, 2026 at 04:00:24PM +0530, Sai Madhu wrote:
+Hi
 
-First of all, do not top-post!
+Am 24.06.26 um 10:33 schrieb w15303746062@163.com:
+> From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+>
+> When fbcon_do_set_font() fails (e.g., due to a memory allocation failure
+> inside vc_resize() under heavy memory pressure), it jumps to the `err_out`
+> label to roll back the console state. However, the current rollback logic
+> forgets to restore the `hi_font` state, leading to a severe state machine
+> corruption.
+>
+> Earlier in the function, `set_vc_hi_font()` might be called to change
+> `vc->vc_hi_font_mask` and mutate the screen buffer. If `vc_resize()`
+> subsequently fails, the `err_out` path restores `vc_font.charcount`
+> but entirely skips rolling back the `vc_hi_font_mask` and the screen
+> buffer.
+>
+> This mismatch leaves the terminal in a desynchronized state. Because
+> `vc_hi_font_mask` remains set, the VT subsystem will still accept
+> character indices greater than 255 from userspace and write them to the
+> screen buffer. Subsequent rendering calls (e.g., `fbcon_putcs()`) will
+> then use these inflated indices to access the reverted, 256-character
+> font array, leading to a deterministic out-of-bounds read and potential
+> kernel memory disclosure.
+>
+> Fix this by adding the missing rollback logic for the `hi_font` mask
+> and screen buffer in the error path.
+>
+> Fixes: a5a923038d70 ("fbdev: fbcon: Properly revert changes when vc_resize() failed")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-> Thank you for the feedback. I understand and will drop this patch.
-> 
-> I have also noticed two pre-existing bugs in the same file
-> (unaligned access and buffer size calculation when startbyte is used)
-> and have sent a separate patch to fix those.
+The email in your S-o-b tag differs from the one in the mail's From: 
+line. I think this is not accepted in the kernel. Can you please 
+resubmit with the email addresses synchronized.
 
-> On Thu, 25 Jun 2026 at 15:58, Dan Carpenter <error27@gmail.com> wrote:
-> > On Thu, Jun 25, 2026 at 05:27:21PM +0800, suryasaimadhu wrote:
+Apart from that:
 
-> > I don't hate this patch, but I think we've decided to leave this
-> > as-is.
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-Yep. as Dan said,
+Thanks for fixing this problem.
+
+Best regards
+Thomas
+
+> ---
+>   drivers/video/fbdev/core/fbcon.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+> index 9077d3b99357..5880ab9f3cde 100644
+> --- a/drivers/video/fbdev/core/fbcon.c
+> +++ b/drivers/video/fbdev/core/fbcon.c
+> @@ -2405,6 +2405,7 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+>   	int resize, ret, old_width, old_height, old_charcount;
+>   	font_data_t *old_fontdata = p->fontdata;
+>   	const u8 *old_data = vc->vc_font.data;
+> +	int old_hi_font_mask = vc->vc_hi_font_mask;
+>   
+>   	font_data_get(data);
+>   
+> @@ -2451,6 +2452,12 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+>   	vc->vc_font.height = old_height;
+>   	vc->vc_font.charcount = old_charcount;
+>   
+> +	/* Restore the hi_font state and screen buffer */
+> +	if (old_hi_font_mask && !vc->vc_hi_font_mask)
+> +		set_vc_hi_font(vc, true);
+> +	else if (!old_hi_font_mask && vc->vc_hi_font_mask)
+> +		set_vc_hi_font(vc, false);
+> +
+>   	font_data_put(data);
+>   
+>   	return ret;
 
 -- 
-With Best Regards,
-Andy Shevchenko
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
 
 
 
