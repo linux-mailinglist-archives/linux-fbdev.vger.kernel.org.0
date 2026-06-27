@@ -1,211 +1,143 @@
-Return-Path: <linux-fbdev+bounces-7750-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7751-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wEF1L9qBPmoLHQkAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7750-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Fri, 26 Jun 2026 15:42:50 +0200
+	id 3Dq3KChHP2p0RAkAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7751-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 27 Jun 2026 05:44:40 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6379C6CDA43
-	for <lists+linux-fbdev@lfdr.de>; Fri, 26 Jun 2026 15:42:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD7B6D1007
+	for <lists+linux-fbdev@lfdr.de>; Sat, 27 Jun 2026 05:44:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UnkkXCx5;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7750-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7750-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7751-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7751-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86DE3304DED1
-	for <lists+linux-fbdev@lfdr.de>; Fri, 26 Jun 2026 13:41:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 888CC300609C
+	for <lists+linux-fbdev@lfdr.de>; Sat, 27 Jun 2026 03:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B143F7A9C;
-	Fri, 26 Jun 2026 13:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A24A1C5F1B;
+	Sat, 27 Jun 2026 03:44:35 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCDE3F789C
-	for <linux-fbdev@vger.kernel.org>; Fri, 26 Jun 2026 13:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102DB137923;
+	Sat, 27 Jun 2026 03:44:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782481295; cv=none; b=YVFPOAw3O/DL4IRzLpzHW4yl4HsMpeU6m6wb5FHe4GSmrp09nfjPxGIfney6r8gySmeKO2d+71su2RucKJ+VbL/yaCbIswFZPHfXxFKyqYF45rENnFx0sNU175Vi9r80Lsi08L3RuvpmDoMX+ed3wb+mkA5O177CxaX/OHgLImk=
+	t=1782531875; cv=none; b=p79A01xhQhBcguTmcBj4U/tz9zC5i0RW/Y7KQRPrImzZMMxTE+k+WyvX/sOsEaCX1rX6fMh6yU5uiiJTFTDah2jNs9rjVh5awIhKWQccBn7UeZdRWvvMe2cIn63e06BMTK+9ENFSig+347rP4UStM2OZ0AiVUaQQYvLI7H2HSYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782481295; c=relaxed/simple;
-	bh=YXrVrVYcp68EEcS0zryKhbW8e+jMsX4pF+5qgEERs3Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k3Kp+NvWo+TlslXP6qlhVIzBmfMlpkPI3KMoV+VtXUdq6yUSz94penqrR8g/zQjIcyXkdSEC7Y9dzsu/0Wmg4Wk69Ai4IaKrAj+wiC4ORwbZDjMAPvew3ViTTdoFtqJBYpU0M4eI3vAgA+JO1TX58bcqHJiEjIx75BzKjc/sRvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UnkkXCx5; arc=none smtp.client-ip=209.85.128.51
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4926046fbc5so10930875e9.0
-        for <linux-fbdev@vger.kernel.org>; Fri, 26 Jun 2026 06:41:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782481292; x=1783086092; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=inH5gHgw2GQJ8Jf/udrV2wKYoIHtRnRBi3E4+pGgxJ8=;
-        b=UnkkXCx5XmaebaTPGuT+gHbXMrMwSqkNmx4hRRO3QievQLgcDbeAatYoWd50gzJPNA
-         jxUqVJgqZCH1xZ/LORYhbuW1s644urhnbIMy69PeWXpXeViKLcj+fQxqA9M+a3ixpVsr
-         WRs3GGPKQ2CCUogfWu2xzeheKprWJVmW/z2w1+9eLuarFP0O1SVF9ezhg5VXUwMrqJ6h
-         oumQPdTMNsKRUKUWihNMOndUJs/cSyuWdkYcpusbpr0sWlTO4a/h0tsmrItNddLNRWnE
-         QHkfx4el30AUFWJcr3Ply+H8y096T11M1yLZz70rrrUwMRC+DF3j56vQIJ7bHg9RnKz6
-         ulgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782481292; x=1783086092;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=inH5gHgw2GQJ8Jf/udrV2wKYoIHtRnRBi3E4+pGgxJ8=;
-        b=NVBN3ImLctNqx6Bt2bzn/6b3injVLC8Yp62axtP06lR8/4Z2P2rvoeFFwcBBlmPV8S
-         L8gahx/9rQl1AdhNKwagfVIdOPGp+s4acCxrP8yrQ+EOJnEBuhHSO+x7DZcYWZEjqla4
-         D80HevbyeQC3jRi7UEBAmlWcnzSRYKC0bvmN1CBqfKnGL8+8priT/VOfSwxemSNOdP2H
-         4olBkGHG0cGzpN+U9i7eAEqBOIgLvjBU7yciEdBDlNAhgOvhrx0DEPE1J3+oB3fHiHA2
-         pchyhT6y2nh5Ns8iycU6xkD0Ku9hMVfS7X2n3sq5uWeZv7zN69Z9T4N4AgI7VScap5gp
-         XXVQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/tv5cigB63k15Uvz1CaW0WIGGcly5VsRgkvM+aY/RC1f2A/gYsTK6yALMpNrhjI9KKrYPusoiKuGGsPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbRUKKsmr57L+NDDrfrS3+t2o9U4vl4l8l8EngI7hAtUjq+zre
-	LK9F01ZDhe2fyk9Ae6AO0XdN6GseiVLAkbX6SYyFe4yGcQ0QhZFYYGJH
-X-Gm-Gg: AfdE7cm+FaDKVlAAqqau/t9SW9nIecthoghbI7eR4Yhb6JnMvaJhLWINnM9h0DugqVf
-	jJjwVZEqET8cJtjzfQUTnlT04yx8Kv6GRITgK9T00mrgPwCKKtIXXtMaFoAzlICpaDXZhMG8iZg
-	DhZ2YZAIwZe08TpxdeEIGYiKg42y4JgTxyr+Gsl38zHlVapwY4t+Cve/osdbdgTgwHBr8JNUG11
-	2pO1EsxJlW9w2jlXSqNKkZXfxRsVp6efEsGKdjYXIfAjW/nhqySAvkq9TdDoYp+f9BSNCTDHrl2
-	ZTmL3tVAacAz/atjfRaMtU4k81XNOjzyYv58VbzLckUHM//QzwbR7VvWargqd8pwwHGs5GVOlkX
-	9fq9tzWPpggeeTqJlDVCUfwsb9VfkI2MspSL1WPuLKArZiP1L5hqf52EuuyPvneDbJ6vMMV2jJM
-	Rfa8Le8ziKFaTfnz9lw/Guju/rxQhalEcb9zlgBCKmz9RhNAdMqg==
-X-Received: by 2002:a05:600c:8519:b0:492:4889:3d18 with SMTP id 5b1f17b1804b1-4926641a911mr83146765e9.9.1782481291771;
-        Fri, 26 Jun 2026 06:41:31 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49268f7670bsm79114415e9.0.2026.06.26.06.41.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 06:41:31 -0700 (PDT)
-Date: Fri, 26 Jun 2026 14:41:30 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Joyeta Modak <joyetamdk@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, andy@kernel.org,
- gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: fbtft: use ARRAY_SIZE() in NUMARGS macro
-Message-ID: <20260626144130.6e3c924e@pumpkin>
-In-Reply-To: <CAN3JnUCem3Mw17e5D9b-aX58_ZaAvC6GZ-sBPEQfTTTP=o-WHA@mail.gmail.com>
-References: <20260624073804.4391-1-joyetamdk@gmail.com>
-	<ajvAGK-0kCfkThcs@ashevche-desk.local>
-	<CAN3JnUCem3Mw17e5D9b-aX58_ZaAvC6GZ-sBPEQfTTTP=o-WHA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1782531875; c=relaxed/simple;
+	bh=H22b1DXAepBmGTA3ko0ruPqwWcSCVZqUBYYG8Mf80U0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cDjixoSX+iuXnEbBQGwtddNRQ3EDdDjkkWytaQXe0TzpXKXqE+pR5LbNczHAhJd8Ne8c7F4gtCGxmPo5k7HEhGmgDHPxwqgHon2UQtQw4d9VmHQmsjcC7+mUTHdLy5EXPbWGSEIJmbjcxRanjx8iojFOMVHI+ajKgVwpzgUOlzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from localhost.localdomain (unknown [117.182.75.66])
+	by APP-01 (Coremail) with SMTP id qwCowAD3kMkeRz9qYW2BAw--.26715S2;
+	Sat, 27 Jun 2026 11:44:30 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: deller@gmx.de
+Cc: linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	WenTao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] fix: drivers/video: __screen_info_pci_dev: leaked pci_dev references in pci_get_base_class loop
+Date: Sat, 27 Jun 2026 11:44:28 +0800
+Message-Id: <20260627034428.59479-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAD3kMkeRz9qYW2BAw--.26715S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7GFyUAFyktryUKw4rJr4Dtwb_yoW8Jr1kpF
+	Z3GFWayF45XFWxGw1DuryDuFyfua15C3yfKFZ2kw15uayfZa4avr1xuryDur1fArW8Jr1S
+	qw4Ut3W8uFy5uaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
+	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
+	AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_
+	Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjIJmU
+	UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwgLA2o-ErFs-AAAsh
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmx.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:joyetamdk@gmail.com,m:andriy.shevchenko@intel.com,m:andy@kernel.org,m:gregkh@linuxfoundation.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[davidlaightlinux@gmail.com,linux-fbdev@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-7750-lists,linux-fbdev=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,linux-fbdev@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7751-lists,linux-fbdev=lfdr.de];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,linux-fbdev@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,linux-fbdev@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6379C6CDA43
+X-Rspamd-Queue-Id: 9FD7B6D1007
 
-On Fri, 26 Jun 2026 14:27:25 +0530
-Joyeta Modak <joyetamdk@gmail.com> wrote:
+In __screen_info_pci_dev(), the loop uses pci_get_base_class() with a
+non-NULL starting device pdev. Each iteration returns a new device
+reference but does not release the previous one. When a non-matching
+device is found, pdev is overwritten and the previous reference leaks.
+When no match is found, all acquired references are leaked.
 
-> Thank you for the feedback and the question.
->=20
-> I checked every write_reg() across all fbtft drivers and found that
-> the largest number of arguments is 129 in write_reg(par,
-> MIPI_DCS_WRITE_LUT,...)
-> As COUNT_ARGS() in args.h only supports up to 15, it is not a safe fit he=
-re.
+Add pci_dev_put(pdev) for non-matching devices before continuing the loop.
 
-That is also a pretty horrid way to write that message out.
-The function call itself uses well over 512 bytes of stack.
-Then there is all the code to push the arguments.
+Cc: stable@vger.kernel.org
+Fixes: 036105e3a776 ("video: Provide screen_info_get_pci_dev() to find screen_info's PCI device")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+---
+ drivers/video/screen_info_pci.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-It really shouldn't be too hard to pass the address of a const u8[]
-all the way through to the code that copies the data to the hardware.
-
-I tried to follow the code earlier. The 'common functions' that pretty
-much just call back through per-driver functions with names the 'write'
-really don't make it easy.
-
-	David
-
->=20
-> However, the kernel test robot reported a problem with my
-> implementation as the __must_be_array() check in ARRAY_SIZE() requires
-> the array to be a compile time constant expression and thus breaks the
-> call at several places.(example par->bgr)
->=20
-> I tried to reproduce this locally on my system using both GCC and
-> Clang with ARCH=3Dum on x86_64 but could not reproduce the build
-> failure.
->=20
-> Since the original sizeof() based approach had no such errors flagged,
-> I am thinking of dropping the ARRAY_SIZE() approach.
->=20
-> Any other feedback is appreciated. Thanks again.
->=20
-> On Wed, Jun 24, 2026 at 5:01=E2=80=AFPM Andy Shevchenko
-> <andriy.shevchenko@intel.com> wrote:
-> >
-> > On Wed, Jun 24, 2026 at 01:08:04PM +0530, Joyeta Modak wrote: =20
-> > > NUMARGS() computes the number of arguments by dividing the size of a
-> > > temporary int array by sizeof(int). Using the standard ARRAY_SIZE()
-> > > macro is the correct way to count array elements in the kernel, and
-> > > ARRAY_SIZE() also provides a __must_be_array() compile time check. Th=
-ere
-> > > are no functional changes. =20
-> >
-> > ...
-> > =20
-> > > -#define NUMARGS(...)  (sizeof((int[]){__VA_ARGS__}) / sizeof(int))
-> > > +#define NUMARGS(...)  ARRAY_SIZE(((int[]){__VA_ARGS__}))
-> > >
-> > >  #define write_reg(par, ...)                                         =
-   \
-> > >       ((par)->fbtftops.write_register(par, NUMARGS(__VA_ARGS__), __VA=
-_ARGS__)) =20
-> >
-> > What is the maximum parameters .write_register() takes in practice in t=
-he
-> > fbtft drivers? If it's less than or equal to 15, we may use args.h inst=
-ead.
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >
-> > =20
->=20
->=20
+diff --git a/drivers/video/screen_info_pci.c b/drivers/video/screen_info_pci.c
+index 8f34d8a74f09..c821101e9304 100644
+--- a/drivers/video/screen_info_pci.c
++++ b/drivers/video/screen_info_pci.c
+@@ -123,6 +123,10 @@ static struct pci_dev *__screen_info_pci_dev(struct resource *res)
+ 
+ 	while (!r && (pdev = pci_get_base_class(PCI_BASE_CLASS_DISPLAY, pdev))) {
+ 		r = pci_find_resource(pdev, res);
++		if (!r) {
++			pci_dev_put(pdev);
++			pdev = NULL;
++		}
+ 	}
+ 
+ 	return pdev;
+-- 
+2.39.5 (Apple Git-154)
 
 
