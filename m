@@ -1,89 +1,90 @@
-Return-Path: <linux-fbdev+bounces-7801-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7803-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LR7fHQOmRWrQDQsAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7801-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 01:42:59 +0200
+	id ObohCEWmRWrgDQsAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7803-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 01:44:05 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA736F26B5
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 01:42:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7BA6F26EE
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 01:44:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=K0SeM34J;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7801-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7801-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=T68td7Dc;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7803-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7803-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7292B3033D02
-	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Jul 2026 23:42:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83DB63061606
+	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Jul 2026 23:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF103CC300;
-	Wed,  1 Jul 2026 23:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C46040E8E2;
+	Wed,  1 Jul 2026 23:43:02 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC45239085
-	for <linux-fbdev@vger.kernel.org>; Wed,  1 Jul 2026 23:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81AE3F23D1
+	for <linux-fbdev@vger.kernel.org>; Wed,  1 Jul 2026 23:42:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782949376; cv=none; b=kgaY0d/Drulbnw+nxNNlKdYNTOxqt2d/jTz0KOMYMgjQY1Xq8adTb47fGnxpe88RE5At3qnGFgUt4r0UdpZeSt1E1xIov+K3CMUX6cekKdy5eh5H48HjSBpIOe1VgaQqKrtpdvyzSjWzI7v5eUEgjPm0j4HtVuZk9JPTsoCUdjo=
+	t=1782949382; cv=none; b=m4FNaChyrVnMFuj3NpfCU932juZa7mPtAqnM3R/TMupjlmmeIZtIr1Pq+jhnpZH9P0fAtz02TlHzlJ5uPwQbyXJCo01lpMlI2fLGsdQehm3Rimoj+Sn9UWpTt2vVMlphczzS/Z11I4SjCbh6o91EwldpadPhh5t3LHBOWVAhcg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782949376; c=relaxed/simple;
-	bh=mNWeivU1LTCLtzAmnPXhb/l3Ii27zsURXKeeXn07BtI=;
+	s=arc-20240116; t=1782949382; c=relaxed/simple;
+	bh=NwvngB55nrQuY2zsw+u/UlQ+ziOq9i4AgvNGIC5B8qg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UZbPpQoHO5UjoeQlpaGxxyyiaa0owUjYSxC3LMjNmd5kOg5YR+VYTwv9il7x83jHnPIWPBehQ0QJhA6fOKcEYXrNz3LrFGkC55zDgtaMV43Bu/Xw/wM6WrgFLuXwQnB4e+qnzHAzuQHxPRYht0zEXMXZxT+yiwQW55vSkP/+n0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K0SeM34J; arc=none smtp.client-ip=209.85.208.182
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-39b22d0e488so11394441fa.3
-        for <linux-fbdev@vger.kernel.org>; Wed, 01 Jul 2026 16:42:54 -0700 (PDT)
+	 MIME-Version; b=lrFRpu2Vdq2/y0Z7c4lu94Xqnrw/oOJ4sMe34/u77s+byHFH/6MDPEMOMnEWuXz0s7s1hXkJ76C4ZhBGyJ7XrxhKrdvJJ36ngE0qVRwGajB1Xa6h2/TXHV/HVugRi6SqT9TEMGuCcNf7cBAiAke0WYwmTyvyzNqdsSRpdy0MlqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T68td7Dc; arc=none smtp.client-ip=209.85.167.43
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5aeb89359a3so953298e87.3
+        for <linux-fbdev@vger.kernel.org>; Wed, 01 Jul 2026 16:42:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782949373; x=1783554173; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782949375; x=1783554175; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ycdmV2nQEP91NkF/uwFJLP2QOp24ehuy24vYh15fuUM=;
-        b=K0SeM34JksRPlffkf2lxVjGmjzNuykbSmF/WCYvg5wUY2HxSIHU1YEIcS2ajdZSKb8
-         xDatJkOpsSr8QhQVuXEMTpSlC0bZ7XItYCKsFUaPFr9KVRXU6VS+vqxQcZ28QfbtopMy
-         n9fbZZX/aefAv+oXQGcFiUENx2pqe6mTF+qQJ8EDDL0XdtFrQGpYyDMoGMGSY1cscOjA
-         MzwwwRuP/6dElpoZb4GmFQ26RpT3eSnz2knkBKKTuV57FgT9sTvXdjIpdAACoIcPDlSB
-         FfOrTF1/GbfLMusS2ZcSlKbwiVdq/SfHpN2ONZ0ylOS1/gTARwTPDLjQiPtUVbfX4VEJ
-         0YTw==
+         :message-id:reply-to:content-type;
+        bh=HjOEsE0qEDjFyTwl3K+CtParcmWNsl4rWJyxgaM5lGk=;
+        b=T68td7DcIeSQXbb7LNevtAYMB3InXe2EW5aCNI5m/JIAaf+B1nAdfL/rnNERZrIvXB
+         aIkQoS09lnSuCUOQB2U0Tv6vb3lOG1U+h7HhKLgZTidsXh38B+RmG7JXd+xxQMh5Qoaj
+         fOo69VyGYfm+VYi22t2tX/zg2ml/s3tGqq+TfKIOpq6GAXhyOkzufC6n9mKdZmT5Vowg
+         dJyvSPj6nLe70KZMtK4E6qBTzCH20KfupjDYYABe6eYnLdKNQTM7Ua8aGI7iYYs+5df/
+         Hys0oSTaVqZU6qs5ln+h9NLb4ANzmBa68vHA2yW5w5t1oAimTFHMK8KQzO9QzCYx4R9o
+         pxYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782949373; x=1783554173;
+        d=1e100.net; s=20251104; t=1782949375; x=1783554175;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ycdmV2nQEP91NkF/uwFJLP2QOp24ehuy24vYh15fuUM=;
-        b=oZfTiXL6UBKxSc/6rwX8I1lUv3kllI28UnqCP5IdnyRvybNV6ZQq2ZWsD+gejR6dOH
-         oeSkSmqlqlf75q52HiT8f/vetoecXCOoM5hVNyEJQ/Nypw885MxCB/L6sE+2vZqZXnfZ
-         179okIuCofEEydLUpOfQmWbBR7wQXwzfErXmc9L5LlTXPJJ/UjlqZjpFVerEvIbRSod7
-         Fs6D1MxDv06HRNzaRIp1+fQOCg+d/a8i/H1bCa60T3b5/qEuOTXerBUGPZtMCaj2cCws
-         68ojbDMIQUFS+fE6lCbVmCiIcuHD7i5pbyziQaP67Vx0/6Yf1UWW7KgfUjIem0TcCSCw
-         i1+g==
-X-Gm-Message-State: AOJu0Yx4vUk4os8Cfo1m2tArPnUM9jf8KU5s01IaH6udFAttqN4A/Df7
-	HHyRFYMPJODHlRsbXVBuOh0VVyyisSFcBExnyMnOMDdTl/EhwJGmtHw/
-X-Gm-Gg: AfdE7cm1UN3KmNRBi7YcBY7ziK7gpTKK2HMO+2k5iVWTSS5wKOckIyQHeAlibH3/ixm
-	R4ViAtnlZa5CeCLZdsIte9a/rb2SqLNAYN+ncjE1HeI9OcEv7hMEqAo89dd25EcgTAAk2kcgRZx
-	3DGUYmiiq67ASbI6P94Ies8GcrjWUAyAqIYFFZ6awpTWIz2iFxmRyTP8ZKsN60ZVag0qY5XPPPK
-	Kbv+YKSZSHXHzmB7r1UjNiQhlD6FQ7SqegKPzXnQuuDNX4Igqup8VIa7POWa55injcnl5ZpEjsY
-	KWWWp81LSXC7KBgX4d1obK+dsJFDp9KYEW0qBQFgTPSsW3VPnwNlIQc1CeZggk0Vlg8tAGLJL7w
-	hRsPGocRTHzau0YIfzkFyx9OR9xO7MxjIIJOoVkKFko2dBSamtKXmAluimDQy8jBPq/wNg4Mw8T
-	oeafe+ydZIqb1EvSbJhLzdsn2ppoKL4zw=
-X-Received: by 2002:a2e:9e08:0:b0:39a:e29b:9a2d with SMTP id 38308e7fff4ca-39b34102c99mr5958141fa.39.1782949372729;
-        Wed, 01 Jul 2026 16:42:52 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HjOEsE0qEDjFyTwl3K+CtParcmWNsl4rWJyxgaM5lGk=;
+        b=Rrt1K5gfpgnmK71OfLVH20mldkJmohVp8WSCd49ceg+hfrmQhfF9jzBfB3Z9DtyTXB
+         KW1L+0rx51fDD2CyqhlXOGBiiklFhARnmPKM98i4ROao5X1cqRGinQEZEsrxGl45Vp8W
+         RaQs2eVE99y1fL4MQc1a08fVsYoDo/YUvGOHdrJBgW8rGDNUs1L0fpTqhS2bVuuhkRjh
+         YPzMNiTVDE8NV1kT2jBy5yNUpHyHo/mSr5Uiw8TNx87aW5x5LhCitrUCBx+z+FKSd6/G
+         vLCFNGNuTTeVHd2pXB9qL2SucRtEBATdHHXb3k55wZw5wEX/pD6wusTNyAKjwOREd9fg
+         sLNA==
+X-Gm-Message-State: AOJu0YwZwtZSC/XWGwHHU4IzVEnpCwYO95wC5iXv0BdjkUMQJqwZXZ2C
+	dvRhmq9MCWwxu/jOtdpCGU86OBGlRHKiFtv1AKPU2suyh/DdTye03JAR
+X-Gm-Gg: AfdE7clMxUJ1x6X3x2SArjw8NIVDRWKKU96n0/fEZoFZYSOkQLaBvMgIgBNl9Asq2q8
+	nSUdBypoNL8wovl3mog+05S0XyEnT4U6aTDLOEw5qC2tiSoR7D5WcF2K7p6tfO+YeC2Mdlv6E5E
+	ZIHXmYkcO6L2xnpLJ+GGXE7NBnfXsSMmvoMoRQi8qEQC03Tomdzj3W6pavLaTzVFaZBOpSIdOeA
+	Woy9F770erD+csGSW5C76n/ft4p4E/lkIXMuRWfxmRHb2LWfqFOIIn0sp8QTuvv+jpB62PSbKWr
+	79bYRsZb3KKK89jkmuRRCR+UrBMCWX5+Izra0D6Dhwb+C6LDFOvzox6RteN2Nsx7+xltGoPHhLl
+	logP5rHPWAdXmemoSqGcmvOxqQb4339CgF/4TgJMrh3Qs9DmHl6it5P/dOVbzznUp3ZN29jbka3
+	vkXUHZGtEGq6kcJe993dhSwpONuUub6yaj/QTVQ/iLJg==
+X-Received: by 2002:a05:6512:4481:b0:5ae:c201:c3d7 with SMTP id 2adb3069b0e04-5aec801063cmr603820e87.8.1782949374962;
+        Wed, 01 Jul 2026 16:42:54 -0700 (PDT)
 Received: from localhost.localdomain ([2a01:4f9:2a:1c13::2])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39b37fda160sm2836261fa.29.2026.07.01.16.42.49
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39b37fda160sm2836261fa.29.2026.07.01.16.42.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 16:42:50 -0700 (PDT)
+        Wed, 01 Jul 2026 16:42:53 -0700 (PDT)
 From: Melbin K Mathew <mlbnkm1@gmail.com>
 To: deller@gmx.de
 Cc: linux-fbdev@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	Melbin K Mathew <mlbnkm1@gmail.com>
-Subject: [PATCH v3 0/3] fbdev: fix mode sysfs lifetime and bounds issues
-Date: Thu,  2 Jul 2026 01:42:45 +0200
-Message-Id: <20260701234248.236023-1-mlbnkm1@gmail.com>
+	Melbin K Mathew <mlbnkm1@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/3] fbdev: bound mode sysfs output to the sysfs buffer
+Date: Thu,  2 Jul 2026 01:42:46 +0200
+Message-Id: <20260701234248.236023-2-mlbnkm1@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260701231706.234715-1-mlbnkm1@gmail.com>
 References: <20260701231706.234715-1-mlbnkm1@gmail.com>
@@ -100,7 +101,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -108,8 +109,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-7801-lists,linux-fbdev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:mlbnkm1@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7803-lists,linux-fbdev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:mlbnkm1@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[gmx.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -117,7 +118,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[mlbnkm1@gmail.com,linux-fbdev@vger.kernel.org];
@@ -125,39 +126,89 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9EA736F26B5
+X-Rspamd-Queue-Id: 6D7BA6F26EE
 
-This v3 adds a patch to clear fb_info->mode before deleting a
-videomode through FBIOPUT_VSCREENINFO with FB_ACTIVATE_INV_MODE.
+mode_string() uses snprintf() which can return a value larger than the
+remaining buffer space. show_modes() accumulates the return value into i
+without checking whether i has reached PAGE_SIZE, causing the offset to
+advance past the sysfs buffer if the modelist is long enough.
 
-Patch 1 bounds mode sysfs output so show_modes() cannot advance the
-sysfs buffer offset past PAGE_SIZE.
+Add a size parameter to mode_string() and use scnprintf() to return
+only the bytes actually written. Add an early return when offset
+already exceeds the buffer. In show_modes(), stop accumulating once
+the buffer is full.
 
-Patch 2 clears fb_info->mode before fb_delete_videomode() when it
-matches the mode being removed via the FBIOPUT_VSCREENINFO ioctl.
+Cc: stable@vger.kernel.org
+Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
+---
+ drivers/video/fbdev/core/fbsysfs.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-Patch 3 serializes mode sysfs access with lock_fb_info(), including
-store_mode(), show_mode(), and show_modes().
-
-Changes in v3:
-- Add patch to clear fb_info->mode in fb_set_var() INV_MODE path.
-
-
-Melbin K Mathew (3):
-  fbdev: bound mode sysfs output to the sysfs buffer
-  fbdev: clear fb_info->mode before deleting a videomode
-  fbdev: serialize mode sysfs access with lock_fb_info()
-
- drivers/video/fbdev/core/fbmem.c   |  5 ++-
- drivers/video/fbdev/core/fbsysfs.c | 59 ++++++++++++++++++++++++------
- 2 files changed, 51 insertions(+), 13 deletions(-)
-
+diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
+index ea196603c7..af21dc5052 100644
+--- a/drivers/video/fbdev/core/fbsysfs.c
++++ b/drivers/video/fbdev/core/fbsysfs.c
+@@ -27,12 +27,15 @@ static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
+ 	return 0;
+ }
+ 
+-static int mode_string(char *buf, unsigned int offset,
++static int mode_string(char *buf, size_t size, unsigned int offset,
+ 		       const struct fb_videomode *mode)
+ {
+ 	char m = 'U';
+ 	char v = 'p';
+ 
++	if (offset >= size)
++		return 0;
++
+ 	if (mode->flag & FB_MODE_IS_DETAILED)
+ 		m = 'D';
+ 	if (mode->flag & FB_MODE_IS_VESA)
+@@ -45,7 +48,7 @@ static int mode_string(char *buf, unsigned int offset,
+ 	if (mode->vmode & FB_VMODE_DOUBLE)
+ 		v = 'd';
+ 
+-	return snprintf(&buf[offset], PAGE_SIZE - offset, "%c:%dx%d%c-%d\n",
++	return scnprintf(&buf[offset], size - offset, "%c:%dx%d%c-%d\n",
+ 	                m, mode->xres, mode->yres, v, mode->refresh);
+ }
+ 
+@@ -64,7 +67,7 @@ static ssize_t store_mode(struct device *device, struct device_attribute *attr,
+ 
+ 	list_for_each_entry(modelist, &fb_info->modelist, list) {
+ 		mode = &modelist->mode;
+-		i = mode_string(mstr, 0, mode);
++		i = mode_string(mstr, sizeof(mstr), 0, mode);
+ 		if (strncmp(mstr, buf, max(count, i)) == 0) {
+ 
+ 			var = fb_info->var;
+@@ -86,7 +89,7 @@ static ssize_t show_mode(struct device *device, struct device_attribute *attr,
+ 	if (!fb_info->mode)
+ 		return 0;
+ 
+-	return mode_string(buf, 0, fb_info->mode);
++	return mode_string(buf, PAGE_SIZE, 0, fb_info->mode);
+ }
+ 
+ static ssize_t store_modes(struct device *device,
+@@ -136,7 +139,9 @@ static ssize_t show_modes(struct device *device, struct device_attribute *attr,
+ 	i = 0;
+ 	list_for_each_entry(modelist, &fb_info->modelist, list) {
+ 		mode = &modelist->mode;
+-		i += mode_string(buf, i, mode);
++		i += mode_string(buf, PAGE_SIZE, i, mode);
++		if (i >= PAGE_SIZE - 1)
++			break;
+ 	}
+ 	return i;
+ }
 -- 
 2.39.5
 
