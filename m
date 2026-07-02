@@ -1,269 +1,204 @@
-Return-Path: <linux-fbdev+bounces-7804-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7805-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oaYNKg2oRWooDgsAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7804-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 01:51:41 +0200
+	id vx0oFkMVRmoWJgsAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7805-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 09:37:39 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1D86F27C6
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 01:51:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC426F4435
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 09:37:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JkPdlsBd;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7804-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7804-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UUw36nfQ;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7805-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7805-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DFAB530228A4
-	for <lists+linux-fbdev@lfdr.de>; Wed,  1 Jul 2026 23:43:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95C85312CF8C
+	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Jul 2026 07:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAB93C4B9A;
-	Wed,  1 Jul 2026 23:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4EE3914E5;
+	Thu,  2 Jul 2026 07:28:17 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF813F825B
-	for <linux-fbdev@vger.kernel.org>; Wed,  1 Jul 2026 23:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FD33909BF;
+	Thu,  2 Jul 2026 07:28:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782949384; cv=none; b=WzivpdlqvlXPVJknxWQ8Kadhi68nM7sm6mAjhbnms6nDBF+ka4NrU9hAfrD5S9mhDcBI5kd+zgDTasyBPgwcL8nDyMUjxarX86h7GsurmMixE5sZkV0X84RIgEEQ6IsQlNRvKj+4hCGaZl+xMkaC6FgUnqdxbPD9O2OiJ8D3U0s=
+	t=1782977297; cv=none; b=ISPbTQvjKDjg6ulZapZVOj0xNfCb0gp1t0urFAOHrEonij8lCS38Gz+Hp4W55h9Yw9Zh5diJKjEkVGu+NKoj620co/wdFU8VYUHHzOp5PQOQBTYjGgqaiermLighcXOw3t39VaKNtsgPQVsGCVZPqZQYPBbH1cUmaOs/YB/CPBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782949384; c=relaxed/simple;
-	bh=LCQ5ybY2W5wSNed4JctAr7mTZXfrxHe+bWEoILZJZwg=;
+	s=arc-20240116; t=1782977297; c=relaxed/simple;
+	bh=cdXAMvaGTLXZ4tRHqX+15mFjqPO5NJv7/lbzInUeZeM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hhGYVyqbI2cR7HOTeoESa3GfbE8yEg0/9UEh6lPZo2JBffNburNKIWv9/Vp6EnGVfuRKGpRA5oCanLyFe7QIsfdlzSkbpZGaILotBqYUsVvvYJRS1XlUTG4+6RpRTy7HnOt/loPVUjweG03P501zIDgd5FiiixgUf+jYWgsXczc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JkPdlsBd; arc=none smtp.client-ip=209.85.167.49
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aebbeba529so1152185e87.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 01 Jul 2026 16:43:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782949381; x=1783554181; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/M9QqAmY7Pg8H8gQnrUHA/IfrEsurxPK03ttJdgNJSc=;
-        b=JkPdlsBdf4cS+C34AVRyVeY3zM/jZPOIUkRashaM+siqNDXniGcnvK9Fhqbd48HBh7
-         JUe7dhYfMWHfHJScIFdeNX7Kgjtu4LMEA0KLhQuKXGYGa5sasKtqQmk3lnp4SAb6jIjX
-         WaeGf195f9mJ/hvZh4ZRF/iWedOKIOk8sXBpp9F9JIyovRfkS3+XOaqqVcC8TmFLJB8X
-         h5zd8Vt0rPMZtCj49sTziglB7NCwfxTN5DLeuji0vGXB5t+1dNbi7Uey22KLiUi+qw2z
-         HoeRlHX4WedKs6Q3lEcb5v52X4q+Y/fhdlzq9uWJD6riSf/riIrLe2yYzkV5PCAZzZ3m
-         71nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782949381; x=1783554181;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/M9QqAmY7Pg8H8gQnrUHA/IfrEsurxPK03ttJdgNJSc=;
-        b=VbQq0o5solvaeJ4phKu5yhziDyo/YjfC/lfDlYxcCmNHHfCZQEhTOD4OL2+spzLb/O
-         3GbsXJu2aYF+uJ2XzsADcgodT65EHtBLPHzBvWt6ocIrdzeuRfK/Mhtn2Y+8X4Xm+ybK
-         0DPVZAswvzWu0xQ+nCFvkAZx9uc4cC7xANjLX4HUfw/Egvl1K8fMKQSLBlA1fA9SDZeu
-         ziGgOplgRTMV0sQxxvZSSYWbehu9jhsVbeiyMsYfNACC1q1GrUbKzBCCviXR3hcA2JRm
-         s6guGi+abbeDga1Qjd8mVxtJ4WkK31SbkAta7HZgwmWkRcsqCUYXVCXZUT2TdQHPFZ+G
-         S+Qw==
-X-Gm-Message-State: AOJu0YwlG4fddGOO/a6sHDTI01sP/9Ni/8sxbNGrj8vunM/xLXQZ7uzm
-	ZbQ7mKCQKZD6vQLK7cbvzf10aDG7P6/dMqPBRir7MWr80bRS+0hew0na
-X-Gm-Gg: AfdE7cnljtnUcROGOgpG8gg20KMY5yKMzler8acyCaB7Jyi7ZCqTu2N6SZmbWE8x/5K
-	IicfG5TQTcTOxu1Ysw1J9B4n23Fc0wfPyVSHIgKC3yPb+PkhBNBOAZSiJznVQNwF+lsxvO5Knxn
-	vX8s5rOUilaakNl98DbtiqbgMsirRMo9Pv5tdBvE/I0r3HB1NqgngurwWVvAzhg789mcVwBwNwF
-	HFQWDPWCffGiVhCIqfdVyuJ2ChB6HJ/pAJS8Qd1jbSM/NQ/BBeeRe28L9ncdqZxdmJYqeU16QYa
-	GDl3l9RaQ3UkHo/FsFxu+ZHV7AEKXqY1ix7tdSoiWbiIOrDJuAqPN7HdivqNkROrEk7fSM2Fb81
-	KWRWAXIK1Ke8UKWGXPutd8HKyAxbQHRaau1B5KMObsT7bThDv4GFzV7w/UuVJIlEBYVaslMD/Bx
-	YvMAm0y4C+0QWDbzCyg6AEfmd6U371HI4=
-X-Received: by 2002:a05:6512:66c1:10b0:5aa:8822:b1ee with SMTP id 2adb3069b0e04-5aec68b7f97mr677361e87.48.1782949380696;
-        Wed, 01 Jul 2026 16:43:00 -0700 (PDT)
-Received: from localhost.localdomain ([2a01:4f9:2a:1c13::2])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39b37fda160sm2836261fa.29.2026.07.01.16.42.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 16:42:58 -0700 (PDT)
-From: Melbin K Mathew <mlbnkm1@gmail.com>
-To: deller@gmx.de
-Cc: linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
+	 MIME-Version:Content-Type; b=S0Ixgx6bojeVx8KXvdWw5velIlcmsXI2VBKXuWGTh6AXLMuiS9SghHYaIfmHGZf9xWsz1yF6QnEDiZF3qqf6bHLXb86HxtXFtnEKtgmFrjnCOHCdy3kHzUhrlcxFtWjWpH6S+n+c+2GZNQCgKFJP1R2qNxdwpur0Z+UTDZFNdII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UUw36nfQ; arc=none smtp.client-ip=95.215.58.187
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782977290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cdXAMvaGTLXZ4tRHqX+15mFjqPO5NJv7/lbzInUeZeM=;
+	b=UUw36nfQUDO4ek5W5MoGxv/bQdNbTQycY1qQKAEoJymjql+ZXc8a2FUo9eNrafl6xDrEni
+	1302Z8Y+Ma+0qxdUDhBISoxry5nus7uGAN8fTkB0ZcU/zUf+14Ol9iIljWhjg5Yh/mt933
+	8BhSh84bNWygA1To4TaXOltx56F5hgs=
+From: Lance Yang <lance.yang@linux.dev>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	tsbogend@alpha.franken.de,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	l.stach@pengutronix.de,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	peter.griffin@linaro.org,
+	jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	tursulin@ursulin.net,
+	robin.clark@oss.qualcomm.com,
+	lumag@kernel.org,
+	lyude@redhat.com,
+	dakr@kernel.org,
+	tomi.valkeinen@ideasonboard.com,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com,
+	thierry.reding@kernel.org,
+	mperttunen@nvidia.com,
+	jonathanh@nvidia.com,
+	kraxel@redhat.com,
+	dmitry.osipenko@collabora.com,
+	zack.rusin@broadcom.com,
+	matthew.brost@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	oleksandr_andrushchenko@epam.com,
+	deller@gmx.de,
+	bcrl@kvack.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	hughd@google.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	kees@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-mips@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Melbin K Mathew <mlbnkm1@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 3/3] fbdev: serialize mode sysfs access with lock_fb_info()
-Date: Thu,  2 Jul 2026 01:42:48 +0200
-Message-Id: <20260701234248.236023-4-mlbnkm1@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260701231706.234715-1-mlbnkm1@gmail.com>
-References: <20260701231706.234715-1-mlbnkm1@gmail.com>
+	linuxppc-dev@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org,
+	etnaviv@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-rockchip@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	intel-xe@lists.freedesktop.org,
+	xen-devel@lists.xenproject.org,
+	linux-fbdev@vger.kernel.org,
+	linux-aio@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 01/13] mm: introduce vma_flags_can_grow() and vma_can_grow()
+Date: Thu,  2 Jul 2026 15:27:50 +0800
+Message-Id: <20260702072750.45641-1-lance.yang@linux.dev>
+In-Reply-To: <f2e8c32515d328db62279cc8bab8398ea278d74f.1782760670.git.ljs@kernel.org>
+References: <f2e8c32515d328db62279cc8bab8398ea278d74f.1782760670.git.ljs@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,alpha.franken.de,linux.ibm.com,ellerman.id.au,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,pengutronix.de,samsung.com,linaro.org,intel.com,ursulin.net,oss.qualcomm.com,redhat.com,ideasonboard.com,rock-chips.com,sntech.de,nvidia.com,collabora.com,broadcom.com,epam.com,gmx.de,kvack.org,zeniv.linux.org.uk,linux.dev,linux.alibaba.com,infradead.org,arm.com,google.com,suse.com,perex.cz,vger.kernel.org,lists.ozlabs.org,lists.freedesktop.org,lists.infradead.org,lists.linux.dev,lists.xenproject.org];
+	TAGGED_FROM(0.00)[bounces-7805-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.freedesktop.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-7804-lists,linux-fbdev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:mlbnkm1@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmx.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[mlbnkm1@gmail.com,linux-fbdev@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mlbnkm1@gmail.com,linux-fbdev@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:akpm@linux-foundation.org,m:tsbogend@alpha.franken.de,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:l.stach@pengutronix.de,m:inki.dae@samsung.com,m:sw0312.kim@samsung.com,m:kyungmin.park@samsung.com,m:krzk@kernel.org,m:peter.griffin@linaro.org,m:jani.nikula@linux.intel.com,m:joonas.lahtinen@linux.intel.com,m:rodrigo.vivi@intel.com,m:tursulin@ursulin.net,m:robin.clark@oss.qualcomm.com,m:lumag@kernel.org,m:lyude@redhat.com,m:dakr@kernel.org,m:tomi.valkeinen@ideasonboard.com,m:hjc@rock-chips.com,m:heiko@sntech.de,m:andy.yan@rock-chips.com,m:thierry.reding@kernel.org,m:mperttunen@nvidia.com,m:jonathanh@nvidia.com,m:kraxel@redhat.com,m:dmitry.osipenko@collabora.com,m:zack.rusin@broadcom.com,m:matthew.brost@intel.com,m:thomas.hellstrom@linux.intel.com,m:oleksandr_andrushchenko@epam.com,m:deller@gmx.de,m:bcrl@kvack.org,m:viro@zeniv.l
+ inux.org.uk,m:brauner@kernel.org,m:muchun.song@linux.dev,m:osalvador@suse.de,m:david@kernel.org,m:ziy@nvidia.com,m:baolin.wang@linux.alibaba.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:hughd@google.com,m:vbabka@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:mhocko@suse.com,m:jannh@google.com,m:pfalcato@suse.de,m:kees@kernel.org,m:perex@perex.cz,m:tiwai@suse.com,m:linux-mips@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:dri-devel@lists.freedesktop.org,m:etnaviv@lists.freedesktop.org,m:linux-arm-kernel@lists.infradead.org,m:linux-samsung-soc@vger.kernel.org,m:intel-gfx@lists.freedesktop.org,m:linux-arm-msm@vger.kernel.org,m:freedreno@lists.freedesktop.org,m:nouveau@lists.freedesktop.org,m:linux-rockchip@lists.infradead.org,m:linux-tegra@vger.kernel.org,m:virtualization@lists.linux.dev,m:intel-xe@lists.freedesktop.org,m:xen-devel@lists.xenproject.org,m:linux-fb
+ dev@vger.kernel.org,m:linux-aio@kvack.org,m:linux-fsdevel@vger.kernel.org,m:linux-mm@kvack.org,m:linux-sound@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[lance.yang@linux.dev,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[83];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RWL_MAILSPIKE_POSSIBLE(0.00)[104.64.211.4:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[linux-fbdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AE1D86F27C6
+X-Rspamd-Queue-Id: 9FC426F4435
 
-show_mode(), show_modes(), and store_mode() access fb_info->modelist
-and fb_info->mode without holding lock_fb_info(). store_modes() takes
-lock_fb_info() while replacing the modelist and freeing the old one.
 
-A concurrent reader or writer can load a pointer to an old modelist
-entry before store_modes() frees it, then dereference freed memory or
-store a stale freed pointer in fb_info->mode.
+On Mon, Jun 29, 2026 at 08:25:24PM +0100, Lorenzo Stoakes wrote:
+>These test whether the VMA has stack sematics, i.e. is able to grow upwards
+>or downwards depending on the architecture.
+>
+>In order to account for arches which do not support upward-growing stacks,
+>introduce VMA_GROWSUP whose definition depends on the architecture
+>supporting it, and use vma_flags_test_single_mask() in vma_flags_can_grow()
+>to account for this.
+>
+>Update the VMA userland tests to reflect the changes
+>
+>No functional change intended.
+>
+>Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>---
 
-Take lock_fb_info() in show_mode(), show_modes(), and store_mode() to
-serialize with store_modes(). In show_mode(), copy the mode to the
-stack and format after dropping the lock. In store_mode(), split
-activate() into a _locked variant to avoid double-locking, and hold
-the locks for the modelist walk, mode conversion, activation, and
-fb_info->mode assignment together.
+Nice cleanup! Feel free to add:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
----
- drivers/video/fbdev/core/fbsysfs.c | 46 ++++++++++++++++++++++++------
- 1 file changed, 38 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/core/fbsysfs.c
-index af21dc5052..d3d60c555b 100644
---- a/drivers/video/fbdev/core/fbsysfs.c
-+++ b/drivers/video/fbdev/core/fbsysfs.c
-@@ -12,19 +12,24 @@
- #include "fb_internal.h"
- #include "fbcon.h"
- 
-+static int activate_locked(struct fb_info *fb_info,
-+			    struct fb_var_screeninfo *var)
-+{
-+	var->activate |= FB_ACTIVATE_FORCE;
-+	return fb_set_var_from_user(fb_info, var);
-+}
-+
- static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
- {
- 	int err;
- 
--	var->activate |= FB_ACTIVATE_FORCE;
- 	console_lock();
- 	lock_fb_info(fb_info);
--	err = fb_set_var_from_user(fb_info, var);
-+	err = activate_locked(fb_info, var);
- 	unlock_fb_info(fb_info);
- 	console_unlock();
--	if (err)
--		return err;
--	return 0;
-+
-+	return err;
- }
- 
- static int mode_string(char *buf, size_t size, unsigned int offset,
-@@ -65,6 +70,9 @@ static ssize_t store_mode(struct device *device, struct device_attribute *attr,
- 
- 	memset(&var, 0, sizeof(var));
- 
-+	console_lock();
-+	lock_fb_info(fb_info);
-+
- 	list_for_each_entry(modelist, &fb_info->modelist, list) {
- 		mode = &modelist->mode;
- 		i = mode_string(mstr, sizeof(mstr), 0, mode);
-@@ -72,12 +80,22 @@ static ssize_t store_mode(struct device *device, struct device_attribute *attr,
- 
- 			var = fb_info->var;
- 			fb_videomode_to_var(&var, mode);
--			if ((err = activate(fb_info, &var)))
-+			err = activate_locked(fb_info, &var);
-+			if (err) {
-+				unlock_fb_info(fb_info);
-+				console_unlock();
- 				return err;
-+			}
- 			fb_info->mode = mode;
-+			unlock_fb_info(fb_info);
-+			console_unlock();
- 			return count;
- 		}
- 	}
-+
-+	unlock_fb_info(fb_info);
-+	console_unlock();
-+
- 	return -EINVAL;
- }
- 
-@@ -85,11 +103,20 @@ static ssize_t show_mode(struct device *device, struct device_attribute *attr,
- 			 char *buf)
- {
- 	struct fb_info *fb_info = dev_get_drvdata(device);
-+	struct fb_videomode mode;
-+	bool have_mode = false;
- 
--	if (!fb_info->mode)
-+	lock_fb_info(fb_info);
-+	if (fb_info->mode) {
-+		mode = *fb_info->mode;
-+		have_mode = true;
-+	}
-+	unlock_fb_info(fb_info);
-+
-+	if (!have_mode)
- 		return 0;
- 
--	return mode_string(buf, PAGE_SIZE, 0, fb_info->mode);
-+	return mode_string(buf, PAGE_SIZE, 0, &mode);
- }
- 
- static ssize_t store_modes(struct device *device,
-@@ -137,12 +164,15 @@ static ssize_t show_modes(struct device *device, struct device_attribute *attr,
- 	const struct fb_videomode *mode;
- 
- 	i = 0;
-+	lock_fb_info(fb_info);
- 	list_for_each_entry(modelist, &fb_info->modelist, list) {
- 		mode = &modelist->mode;
- 		i += mode_string(buf, PAGE_SIZE, i, mode);
- 		if (i >= PAGE_SIZE - 1)
- 			break;
- 	}
-+	unlock_fb_info(fb_info);
-+
- 	return i;
- }
- 
--- 
-2.39.5
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
