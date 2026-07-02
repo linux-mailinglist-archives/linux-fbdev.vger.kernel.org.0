@@ -1,50 +1,50 @@
-Return-Path: <linux-fbdev+bounces-7809-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7810-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U7XMDiJPRmrsQQsAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7809-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 13:44:34 +0200
+	id zv4oF5hQRmpSQgsAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7810-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 13:50:48 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850FF6F6EC4
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 13:44:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31F76F7063
+	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 13:50:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AkD1PO3E;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7809-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7809-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ElylzNP2;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7810-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7810-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A237F3095698
-	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Jul 2026 11:38:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D06030EF2B1
+	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Jul 2026 11:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2E24657CC;
-	Thu,  2 Jul 2026 11:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4EF420E6B;
+	Thu,  2 Jul 2026 11:42:15 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC6F4071E0
-	for <linux-fbdev@vger.kernel.org>; Thu,  2 Jul 2026 11:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AC6477983;
+	Thu,  2 Jul 2026 11:42:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782992290; cv=none; b=dr5h8MyF2yar/gsDOaHuPYUMAk/mLk7vmhOZ75oJTwgxZjlOvez6p4sNL54WLptj2Wic7oJO0JOkZdO86YozlUqQQwwaQq85vCviQXpPRccKlqSTzt+EXxW4DHzF6I1R8Lzpa+hl0j/wPhRpSr8ALcGXyqYv3jxrmyF4wVrWivs=
+	t=1782992534; cv=none; b=tnflN95slrdSiD86Xx9QFNW4utc3KJZaJf4DhmHcMztvUFFhfIEdeyiF0QjN+bIRlii0GyCYoAbDScQPDekAIJkHHHffmwPoJy0/1PA147AKsZ92Ao8M74qTFZQgQJruZF2BwsLK/tyhIFGBh1sPeUrg88hlv2SORDVTT/C353M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782992290; c=relaxed/simple;
-	bh=s4zTiOPxPEEvh+Z2LMv+6gqe9ZZvh+3yTK3Yc5UnT/U=;
+	s=arc-20240116; t=1782992534; c=relaxed/simple;
+	bh=vPHtV6pxZdlKjLiAMh+TI96h/MjbfgTMGiJB5aRI1Dw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OaqVkuemmi3+S7CD6ZpFscy0jeDNaTr9LQ9NgsqsqU0IFbnFzMW3liUWKfAp+v4vNr5qWd8eRw3WiHtC46/XWQ2VHN7PDEWmYyFabXEkKoElGZXQgWOn1665Svqgl8GT0RE0vL0lLT17jcEU22QB/TQTryK+DvcMS+VadSdu6s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AkD1PO3E; arc=none smtp.client-ip=95.215.58.170
+	 MIME-Version:Content-Type; b=n4j839cl63dq5PcgJS7O51vge+yecy1R7PuhxdSD8Z/AB/XUCVOfhJqBxzb63EVvNgo6G78/dc6bP7quJTIbf+xCjhOQVoonGt8e/lHxkxNxWiwvdF1rWWMHWl3pglePCS73fgPZcZdfcGkXJ1W8CoMNCi5mB7MEplFiqypIIGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ElylzNP2; arc=none smtp.client-ip=91.218.175.184
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782992273;
+	t=1782992513;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=s4zTiOPxPEEvh+Z2LMv+6gqe9ZZvh+3yTK3Yc5UnT/U=;
-	b=AkD1PO3EYh/hmuzqNyG5+F4iFU+xRbougp+bY+xotWctIjwUQvMKpAwXsjPb5kG+NxyY12
-	mV0mEGNoe2Czu7JdCtguHySTk1KxuHzjRfZnXIBhIe71SSOqRiI6wOFZz62JhxqVX83KFA
-	KhWu2A9hV9btjfbdFeq0dyXUttdl5PQ=
+	bh=vPHtV6pxZdlKjLiAMh+TI96h/MjbfgTMGiJB5aRI1Dw=;
+	b=ElylzNP2HZvUF6FtGgLgsW4vT0OTcdy2XorLGs6M4jbsXqc3kVIN25VDlrp06Kwp+MnkF0
+	7eCUNpZQUAu53ooUNOnYLe8bcSqU2lbFmJuaAoucdQs+qEK4yKsjIpHuYOtBIHp/EvNPEl
+	ujU0zKbwsKGW+OA8vv+O0JU4vozY/FA=
 From: Lance Yang <lance.yang@linux.dev>
 To: ljs@kernel.org
 Cc: akpm@linux-foundation.org,
@@ -129,11 +129,11 @@ Cc: akpm@linux-foundation.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 03/13] mm: convert __get_unmapped_area() to use vma_flags_t
-Date: Thu,  2 Jul 2026 19:37:22 +0800
-Message-Id: <20260702113722.97837-1-lance.yang@linux.dev>
-In-Reply-To: <b1ad7c4443f5cba622e4c48c5a9ef15427001a93.1782760670.git.ljs@kernel.org>
-References: <b1ad7c4443f5cba622e4c48c5a9ef15427001a93.1782760670.git.ljs@kernel.org>
+Subject: Re: [PATCH 04/13] mm: update generic_get_unmapped_area[_topdown]() to use vma_flags_t
+Date: Thu,  2 Jul 2026 19:41:35 +0800
+Message-Id: <20260702114135.4189-1-lance.yang@linux.dev>
+In-Reply-To: <cef55b19f86c110952f13829aefa4859db3a70ed.1782760670.git.ljs@kernel.org>
+References: <cef55b19f86c110952f13829aefa4859db3a70ed.1782760670.git.ljs@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -148,13 +148,13 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[linux-foundation.org,alpha.franken.de,linux.ibm.com,ellerman.id.au,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,pengutronix.de,samsung.com,linaro.org,intel.com,ursulin.net,oss.qualcomm.com,redhat.com,ideasonboard.com,rock-chips.com,sntech.de,nvidia.com,collabora.com,broadcom.com,epam.com,gmx.de,kvack.org,zeniv.linux.org.uk,linux.dev,linux.alibaba.com,infradead.org,arm.com,google.com,suse.com,perex.cz,vger.kernel.org,lists.ozlabs.org,lists.freedesktop.org,lists.infradead.org,lists.linux.dev,lists.xenproject.org];
-	TAGGED_FROM(0.00)[bounces-7809-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7810-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -175,28 +175,28 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCPT_COUNT_GT_50(0.00)[83];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 850FF6F6EC4
+X-Rspamd-Queue-Id: A31F76F7063
 
 
-On Mon, Jun 29, 2026 at 08:25:26PM +0100, Lorenzo Stoakes wrote:
->Update __get_unmapped_area() to be parameterised by vma_flags_t rather than
->vm_flags_t as part of the effort to move VMA flags from a system word to a
->bitmap.
+On Mon, Jun 29, 2026 at 08:25:27PM +0100, Lorenzo Stoakes wrote:
+>As part of the changes converting VMA flags from a system word size to a
+>bitmap, extend this change to generic_get_unmapped_area() and
+>generic_get_unmapped_area_topdown(), which also allows us to convert
+>stack_guard_placement() as well.
 >
->We cascade the changes up to arch_get_unmapped_area_topdown() and
->arch_get_unmapped_area(), where, for now, we use vma_flags_to_legacy() in
->order to propagate the VMA flags.
+>We retain arch_get_unmapped_area() and arch_get_unmapped_area_topdown()
+>as-is for now, using legacy_to_vma_flags() as necessary to do so.
 >
 >No functional change intended.
 >
 >Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 >---
 
-Nothing suspicious that I could spot :) Feel free to add:
+Nothing jumped out at me ;) Feel free to add:
 
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
