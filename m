@@ -1,76 +1,78 @@
-Return-Path: <linux-fbdev+bounces-7834-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7836-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UFx6LuSTRmq1YwsAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7834-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 18:37:56 +0200
+	id Hnd8EwsJR2oDSgAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7836-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Fri, 03 Jul 2026 02:57:47 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666BF6FA4DB
-	for <lists+linux-fbdev@lfdr.de>; Thu, 02 Jul 2026 18:37:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A38C16FDA8C
+	for <lists+linux-fbdev@lfdr.de>; Fri, 03 Jul 2026 02:57:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FpMAF901;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7834-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7834-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XetlJrW0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7836-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7836-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8A8B630380FA
-	for <lists+linux-fbdev@lfdr.de>; Thu,  2 Jul 2026 16:35:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 61BF53031CB5
+	for <lists+linux-fbdev@lfdr.de>; Fri,  3 Jul 2026 00:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B85634A3BF;
-	Thu,  2 Jul 2026 16:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486A7224B1E;
+	Fri,  3 Jul 2026 00:57:42 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043A4348C53;
-	Thu,  2 Jul 2026 16:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3BF18C332;
+	Fri,  3 Jul 2026 00:57:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783009907; cv=none; b=qbv63i2PZZTX/MAD56B7/Q61USqQZkZlb6Ci+zruQJHzMicrJbFSgMOcmSqEoA0d1hVXqXhVrxq1kgpBz/Z00PpylkZFYdkb3LNIpSA3caWgDOY8UoIBMpIFZIkF149ZqeKKuFiJEU1kuDue2Nh4R8lDZ/AJ8q7E9J/9dO+PDik=
+	t=1783040262; cv=none; b=DrVu7xF8vRDfuCzm4jHLbtMm3Bfy8DOJWfjPUEd8+wUoyp//0DpbKOtr5krjRxeSeXGAaXEL7pXYcSnm9IMS6mbBdasnUcnMCYL0coTTxq7+Az1szrDYkyYtPk7AEleHJ9CmycfwdOh26u0kAoakNKCVbR/f58vf7goedWOmzj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783009907; c=relaxed/simple;
-	bh=6p9oJw5MFDn+kSUamq/zaTSh6Mx38EjNSlPb/ngjyHw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=fNmEWJF+vTdwzBUox2dpXb++YQfsKLQVGN7ZTQ7mVP7OPcwvqMJdQL8PC8j2Qx2stwBB9gRLdWYmd+3QONyeI6ncCeIMuLfjEE7vQXlc9Dfx68wf+fHSyMe+LyjdgkYiZ4LoZRnkHt/zMgLXT7zy/zAn2OnWlKLEDOlKx7d8E4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FpMAF901; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82AB1F000E9;
-	Thu,  2 Jul 2026 16:31:43 +0000 (UTC)
+	s=arc-20240116; t=1783040262; c=relaxed/simple;
+	bh=8tWo6Q0644PyRF7YBZcu76mfXlMXySY0t9qyIdZP05k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j47xDc0TDZS+tHII/MYYYRPHXO6jWBdXAvMp7ModFhhZsFPm6iY6RttfiTgpF/2ZYvgNUZUfLTxJjROsr2yd5tE45wN5Y7UsDmTSbTLVjnASWlDSVUwStAp0oKB7Q5vVMa2WF23DRgwUlDvNFWAUGo6tNh83lIR24rTTorj6Zqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XetlJrW0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5194C1F00A3A;
+	Fri,  3 Jul 2026 00:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783009906;
-	bh=RzzfmIogOoChfCuB1Ba9o2vBi864tKCQNnuaaTtA2d0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=FpMAF901KOCXsLd9Peup0g2nFxlws6YELsM6AeOcDUdHrNZTxBbYwbFPemRHFOrPm
-	 WeoMU7b24n0MLm0SN62gtXKt6cOaVz1trQF1m6P6xawmpvqbHMtuekkcUE2BKRN8oy
-	 iNtPaMFUFktzbSTbZSgrhOaVguNpvX0/clrZNEZoRJ0UeEkYhXB6HmPh5Q6K/0Tn2w
-	 dlbUR0TG0l/hGuupWcYnV6+Ze6hQtoQIOx0dbDSduHKInlWJ5HkcVqY8dh6h1xsZp8
-	 1SO7zYM2TcWCJjyBxxdwyQ66uyj2W11jhZ3BZHot3XYroQmTM1PHfj2EoYrca9LoZL
-	 U6evvTzS2aACA==
-From: Lee Jones <lee@kernel.org>
-To: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
- Neil Armstrong <neil.armstrong@linaro.org>
-Cc: dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fbdev@vger.kernel.org, KancyJoe <kancy2333@outlook.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-In-Reply-To: <20260529-topic-sm8650-ayaneo-pocket-s2-sy7758-v5-0-03aacd49747c@linaro.org>
-References: <20260529-topic-sm8650-ayaneo-pocket-s2-sy7758-v5-0-03aacd49747c@linaro.org>
-Subject: Re: [PATCH v5 0/2] backlight: Add SY7758 6-channel High Efficiency
- LED Driver support
-Message-Id: <178300990349.2239788.13080024963462152507.b4-ty@b4>
-Date: Thu, 02 Jul 2026 17:31:43 +0100
+	s=k20260515; t=1783040260;
+	bh=dgOSzXi3H3wJeZW1ociIAvvOzPFpS+FmJNkakpTdycU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XetlJrW020pJ2/NodgckE91pFr2iY+JQaacOLVnDqnPf4tkEAprlnkwak07XsOePW
+	 GvKmsk6KS9YdrF0BoQkJZHJjCgzCeHre65sz0qfKZGuCx5IluCAsrGQ6bsy2hgr7yF
+	 hc8u4QhVJcG5JD3ZKHG52W1KqvVFm7Rpjb68FSpLd+aqc5upA0AZVKd50bYYqiRK2G
+	 vM0MhPb/6ACRq7DO3mT6kRpQ7hUR1B4iz4z7sjgCtIPAJV8tRL1058fJOBf684uxRA
+	 J3s8i5JyuMmFUU1NHFCEI6QZrTZ3MQcoVX3xYV36HXV8dFPEG08Hoy0J6fns67rtcM
+	 TQ+OFVo9iheLQ==
+Date: Fri, 3 Jul 2026 01:57:35 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>, Jingoo
+ Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Helge Deller <deller@gmx.de>, Johan Hovold <johan@kernel.org>,
+ dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v5 05/14] iio: light: lm3533-als: Remove redundant pdata
+ helpers
+Message-ID: <20260703015735.1403d1de@jic23-huawei>
+In-Reply-To: <20260617080031.99156-6-clamor95@gmail.com>
+References: <20260617080031.99156-1-clamor95@gmail.com>
+	<20260617080031.99156-6-clamor95@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.16-dev-ad80c
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
@@ -79,49 +81,45 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_RECIPIENTS(0.00)[m:lee@kernel.org,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:pavel@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:deller@gmx.de,m:neil.armstrong@linaro.org,m:dri-devel@lists.freedesktop.org,m:linux-leds@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:kancy2333@outlook.com,m:krzysztof.kozlowski@oss.qualcomm.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FORGED_RECIPIENTS(0.00)[m:clamor95@gmail.com,m:lee@kernel.org,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:pavel@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:deller@gmx.de,m:johan@kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-leds@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-iio@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,gmx.de,linaro.org];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[lee@kernel.org,linux-fbdev@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-7834-lists,linux-fbdev=lfdr.de];
+	FORGED_SENDER(0.00)[jic23@kernel.org,linux-fbdev@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-7836-lists,linux-fbdev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,outlook.com,oss.qualcomm.com];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,linux-fbdev@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,baylibre.com,analog.com,gmx.de,lists.freedesktop.org,vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-fbdev,dt];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,jic23-huawei:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 666BF6FA4DB
+X-Rspamd-Queue-Id: A38C16FDA8C
 
-On Fri, 29 May 2026 21:23:07 +0200, Neil Armstrong wrote:
-> Implement support for the Silergy SY7758 6-channel High Efficiency LED Driver
-> used for backlight brightness control in the Ayaneo Pocket S2 dual-DSI panel.
+On Wed, 17 Jun 2026 11:00:22 +0300
+Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 
-Applied, thanks!
-
-[1/2] dt-bindings: leds: backlight: document the SY7758 6-channel High Efficiency LED Driver
-      commit: 2019a2a7268f6f7387f052110558b9f90b500324
-[2/2] backlight: Add SY7758 6-channel High Efficiency LED Driver support
-      commit: 110d67699a430daf0316f941254c46221e3f0914
-
---
-Lee Jones [李琼斯]
-
+> The lm3533_als_set_input_mode() and lm3533_als_set_resistor() functions
+> are used only in lm3533_als_setup(). Incorporate their code into
+> lm3533_als_setup() directly to simplify driver readability.
+> 
+> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+LGTM
+Reviewed-by: Jonathan Cameron <jic23@kernel.org>
 
