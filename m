@@ -1,58 +1,59 @@
-Return-Path: <linux-fbdev+bounces-7858-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7859-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6u07IlLCTGoYpQEAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7858-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 11:09:38 +0200
+	id bYPkKM7ETGq8pQEAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7859-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 11:20:14 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CF4719893
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 11:09:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D478719A9D
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 11:20:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Xm2wKfnj;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QqBjjiwl;
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7858-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7858-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7859-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7859-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 51D30303DC65
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jul 2026 09:08:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D2873045496
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jul 2026 09:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1666A38F927;
-	Tue,  7 Jul 2026 09:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6B938F934;
+	Tue,  7 Jul 2026 09:08:53 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034CB331A5B;
-	Tue,  7 Jul 2026 09:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D197825F7A5;
+	Tue,  7 Jul 2026 09:08:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783415308; cv=none; b=u2tzN76RNZGqGsxeDQ6Xr3g6eLPwG0iUUPEyod2xOE6UrakX5qcfRacXtxheQ3hgpo93mQ4CIUqVxJy0ecYp8xhI3NnO3arjh8C577+tft99p3q4iQR7X3k7Foharw2Ok20lPM5J1b3Pj+x9HbAJcJSG62ZiKo5SjtllGfvRDHA=
+	t=1783415333; cv=none; b=NYkvP4Y83KTJmRCwEt1TkkHuqqrD/+LbQvrA7+dr6p05sci94xu5ofMasq4+qlA5Yld89IBNdO6nVVK6xMmcxKD9249u2Nnp8B+PU0YORdWoFVbTteOy5gmh3BcSp0nd4aALrhl5CwvlH58aaHynDIJbzHibdfgTIV7r+0bD+mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783415308; c=relaxed/simple;
-	bh=zlhtgNkVnWqwGdtNZ6NiYL3PwfGWarfzXXU1qtH1JQ8=;
+	s=arc-20240116; t=1783415333; c=relaxed/simple;
+	bh=vQFlsVUpnwwQQ/tg3FXfczURlLxV6Gtvf4oMfGwwWkQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hVZqSmmwg6EDq7covNtAvTPapcdlh6tNvRZttt1e4VS5VJKP5NLDgAzgBrG9r/LnnYLQA1CIvWrWKcRl4AHsQcvTWJSMAkwYEvF6ErlnE23vXBWd1WLGd6/Jsb5Z8cHMnPxIf5GXENgznqJZ41DGciFIoql4zjRMAg6CdOrq72E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xm2wKfnj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E291F000E9;
-	Tue,  7 Jul 2026 09:08:25 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=M4Pvxsfh35w+MZcLBSS0fBRUA+j5NgcKjQK3hZ44TfwLWDwNXqU3KWStoXmgIRMXb8J9jY/POrX2xiZ3tx6PrJAYAvWCQKtuNn/LRmK7I07lvnbPU4b16ReoXb2kwinQiYjTo1Rd9kJu0Ggiwy4hPhnx9pNx0mXPFeg62CrV7+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqBjjiwl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A2B1F000E9;
+	Tue,  7 Jul 2026 09:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783415306;
-	bh=FKzvUY0CEml5/qgLfDuQEA4KzMAzFatcf8H2zjBdtHY=;
+	s=korg; t=1783415330;
+	bh=Pdx+BwDWnuWomTbS7AhqJEn8Qqhaf/GOs3vSDMIBJx4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Xm2wKfnjx38h+PRMWdDWA1OqB5w8Vl0ybrZcHbIXh9ogyI3C9ap0bJIcaXB6EqXqv
-	 wOJHDXmGbtbfiSJI9cEEKJYAsSUqOhH+bl9art3e8fq4MszOi3Z7F8im4pP6cbFDTc
-	 S7PQsT1q05soAxOiNHuzLxhD5vL34Jc8t0cCBeBI=
-Date: Tue, 7 Jul 2026 11:08:24 +0200
+	b=QqBjjiwlvVpt9iP1NcL6PrZqcd5wryWkV5+0i0ZAysijavcbwjpRYyh76VnatxR5e
+	 Mh0HiS4xX/hoiqg6uYyhGTLkQTvgn+txNUohLFHZxiWtDzArwRAIXGxt92VkFm3fcx
+	 A62N33+RfKYLukuFhpcYykNNJMSumGOcnj7ImFLY=
+Date: Tue, 7 Jul 2026 11:08:47 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Michail Tatas <michail.tatas@gmail.com>
 Cc: sudipm.mukherjee@gmail.com, teddy.wang@siliconmotion.com,
 	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] staging: sm750fb: rename pvReg to pv_reg
-Message-ID: <2026070759-registrar-kilometer-f8ff@gregkh>
+Subject: Re: [PATCH v2 1/2] staging: sm750fb: rename setAllEngOff to
+ set_all_eng_off
+Message-ID: <2026070733-abstract-mascot-09c6@gregkh>
 References: <cover.1779661132.git.michail.tatas@gmail.com>
- <fae018f80f61acea030d9893f3085998a78e4edf.1779661132.git.michail.tatas@gmail.com>
+ <438a9a516955be8cbd7144e95f494663c8c99e23.1779661132.git.michail.tatas@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -61,7 +62,7 @@ List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fae018f80f61acea030d9893f3085998a78e4edf.1779661132.git.michail.tatas@gmail.com>
+In-Reply-To: <438a9a516955be8cbd7144e95f494663c8c99e23.1779661132.git.michail.tatas@gmail.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +81,7 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7858-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7859-lists,linux-fbdev=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -97,17 +98,48 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F3CF4719893
+X-Rspamd-Queue-Id: 3D478719A9D
 
-On Mon, May 25, 2026 at 02:15:38AM +0300, Michail Tatas wrote:
-> Rename variable pvReg to pv_reg as per
-> the Linux coding standards
+On Mon, May 25, 2026 at 02:15:37AM +0300, Michail Tatas wrote:
+> Rename variable setAllEngOff to set_all_eng_off as
+> per the Linux coding standards
+> 
+> Signed-off-by: Michail Tatas <michail.tatas@gmail.com>
+> ---
+>  drivers/staging/sm750fb/sm750.c | 2 +-
+>  drivers/staging/sm750fb/sm750.h | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/staging/sm750fb/sm750.c b/drivers/staging/sm750fb/sm750.c
+> index 89c811e0806c..00c293430a7d 100644
+> --- a/drivers/staging/sm750fb/sm750.c
+> +++ b/drivers/staging/sm750fb/sm750.c
+> @@ -848,7 +848,7 @@ static void sm750fb_setup(struct sm750_dev *sm750_dev, char *src)
+>  	sm750_dev->init_parm.mem_clk = 0;
+>  	sm750_dev->init_parm.master_clk = 0;
+>  	sm750_dev->init_parm.power_mode = 0;
+> -	sm750_dev->init_parm.setAllEngOff = 0;
+> +	sm750_dev->init_parm.set_all_eng_off = 0;
+>  	sm750_dev->init_parm.reset_memory = 1;
+>  
+>  	/* defaultly turn g_hwcursor on for both view */
+> diff --git a/drivers/staging/sm750fb/sm750.h b/drivers/staging/sm750fb/sm750.h
+> index d2c522e67f26..589ae51444f8 100644
+> --- a/drivers/staging/sm750fb/sm750.h
+> +++ b/drivers/staging/sm750fb/sm750.h
+> @@ -44,7 +44,7 @@ struct init_status {
+>  	ushort chip_clk;
+>  	ushort mem_clk;
+>  	ushort master_clk;
+> -	ushort setAllEngOff;
+> +	ushort set_all_eng_off;
+>  	ushort reset_memory;
+>  };
 
-But "pv_reg" is not a correct name, right?  It's still in "hungarian"
-notataion, which is not what we use in the kernel.
+If this is only set and never read, why is it needed at all?
 
 thanks,
 
