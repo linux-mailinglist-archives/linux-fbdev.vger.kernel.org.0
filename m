@@ -1,403 +1,145 @@
-Return-Path: <linux-fbdev+bounces-7883-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7886-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VgcUOBUJTWq8twEAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7883-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 16:11:33 +0200
+	id E3t8HU4OTWpGuQEAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7886-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 16:33:50 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E5F71C603
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 16:11:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79D471CAC0
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 16:33:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tVlgev5g;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZDZ29cXP;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tVlgev5g;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZDZ29cXP;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7883-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7883-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MHjbv5Ph;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7886-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7886-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F1AB83041CF2
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jul 2026 13:57:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3BF5F30D3A5D
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jul 2026 14:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FF6422558;
-	Tue,  7 Jul 2026 13:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D9D4252B9;
+	Tue,  7 Jul 2026 14:17:37 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FC442252A
-	for <linux-fbdev@vger.kernel.org>; Tue,  7 Jul 2026 13:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AF63F4824;
+	Tue,  7 Jul 2026 14:17:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783432677; cv=none; b=FH7F7mmIPDvXDSIz2dDqsQdMKRtJxne/YbodKO5dg1llJxBaZbQ2rgyiNwepj67xhfj+ta9N9cd665Yg0KPCAu4/L6n9O1RWxgOL5g9h700djaYWXALvz41DLr2S2hNE9zjpYrFXo4HsAmjDiPecKeRzMdFaVDgPidAIB7pN6eM=
+	t=1783433855; cv=none; b=nuH0qabSszVHVkpnjT2m54ZM9TWTdpr03C9tAxLLrNpkrbBJWppzFvSeBP6YnKIU+u4OMJrGxFHRk9VXCVZjhnYLWBuk3iJuCMIJrMkY8Fs3DEJCimEz4VOC5yyyhDrRQ5BXTsEiMP/ywh+JN8hRIN9cvHLCpKEXuNprKbxY5WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783432677; c=relaxed/simple;
-	bh=vkSI5ZE3ULXtOGBg0bTc0lgiv4f5T44xO9CSzDjpUMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQ84ofFOBPjXIqCxjGK3s/vBjBf5lJH1iEu9ML2HHKeENZTl9hQwseZ7/MGANcUx+PEdDsxoG7cVg+543z3C1msjO/j3HQoNOcI3+2hs7+jAnoCCateUm0TKm2Ox2BeI9ahUbgleXcXvVMeIdtpsoc8OosQ/wp9H8kO8XqjA204=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tVlgev5g; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZDZ29cXP; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tVlgev5g; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZDZ29cXP; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CA7F475BE3;
-	Tue,  7 Jul 2026 13:57:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783432655; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nZDP+FXYpLLRmRc0CTaqRe3wdSkMkupXUUZLfTjeGo8=;
-	b=tVlgev5gxk9WuTGw7t0f8TTZ97YNMfpPkFMMukAIHQjZtSKdoegJPl7WmxkXgpONkmlQUh
-	7/4oz9rpHKg7aAoieF4rlNIvbscPyMYlOAySEkA0rxL1bH4BIZ9xZ12EslP9E20DeR7g4g
-	j665+ukuJTjKjW436suQwHqdY2FWm6o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783432655;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nZDP+FXYpLLRmRc0CTaqRe3wdSkMkupXUUZLfTjeGo8=;
-	b=ZDZ29cXPvnCgBBEqGSxilQRHln9XEt1uX6sqQga3afgK6z3+jAI/jdUULgQ1B+svCZeuxa
-	Y4ci1nOi4NfZeiDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783432655; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nZDP+FXYpLLRmRc0CTaqRe3wdSkMkupXUUZLfTjeGo8=;
-	b=tVlgev5gxk9WuTGw7t0f8TTZ97YNMfpPkFMMukAIHQjZtSKdoegJPl7WmxkXgpONkmlQUh
-	7/4oz9rpHKg7aAoieF4rlNIvbscPyMYlOAySEkA0rxL1bH4BIZ9xZ12EslP9E20DeR7g4g
-	j665+ukuJTjKjW436suQwHqdY2FWm6o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783432655;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nZDP+FXYpLLRmRc0CTaqRe3wdSkMkupXUUZLfTjeGo8=;
-	b=ZDZ29cXPvnCgBBEqGSxilQRHln9XEt1uX6sqQga3afgK6z3+jAI/jdUULgQ1B+svCZeuxa
-	Y4ci1nOi4NfZeiDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 454AA779AE;
-	Tue,  7 Jul 2026 13:57:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iOFUD88FTWoFSgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 07 Jul 2026 13:57:35 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: lukas@wunner.de,
-	jfalempe@redhat.com,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	jani.nikula@linux.intel.com,
-	joonas.lahtinen@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	tursulin@ursulin.net,
-	lyude@redhat.com,
-	dakr@kernel.org,
-	deller@gmx.de
-Cc: dri-devel@lists.freedesktop.org,
-	amd-gfx@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	sashiko-reviews@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 10/10] vga-switcheroo: Remove unused interfaces
-Date: Tue,  7 Jul 2026 15:38:17 +0200
-Message-ID: <20260707135724.247562-11-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260707135724.247562-1-tzimmermann@suse.de>
-References: <20260707135724.247562-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1783433855; c=relaxed/simple;
+	bh=eajTuACd/4IgS5su39Ql1WyiKQbMRkIT0R0MD1NPBh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ApQSBS94IP21KSv+9Jlsega4rXMF00GvQ577QpnuSJSlnXnBXHTCeSz8iMBE8UloLOSulzncEanqhvQqNUlRxyOqYc+1mZq2E+Pv6d/tXl6Zj0c3LZt6ie/bFNtii1gaTG7gVIYNu3IVsPLOmwyHhJJPi4pKKDZbsfLzVkvaTH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHjbv5Ph; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E5D1F00A3D;
+	Tue,  7 Jul 2026 14:17:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783433843;
+	bh=Jm32KnLzXJKqXIkeeFi/CJ1wSCoIc/iBf+3ICTnzYYM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MHjbv5PhULcWiA3+yqNuQL3c3LwEzOakR8EgQAj5JTpAj1nGA219NfhM5vcgr9k4Q
+	 KG2vzT7K0DqifDRcgXn83s9GsNpLGiVVjnQT2XV7ZOWcfMOsc3mLQfwvH9jySdBtMK
+	 z5ejGeI9PV3/nrhXmmFjjwZt7+nsqgm/0ugxvR2I=
+Date: Tue, 7 Jul 2026 16:17:21 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: =?iso-8859-1?Q?Andr=E9?= Moreira <andrem.33333@gmail.com>
+Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Teddy Wang <teddy.wang@siliconmotion.com>,
+	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] staging: sm750fb: rename variables to comply with
+ kernel style
+Message-ID: <2026070751-user-kitten-e1a6@gregkh>
+References: <2026070710-exact-unveiling-e321@gregkh>
+ <20260707131529.38340-1-andrem.33333@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -3.01
+In-Reply-To: <20260707131529.38340-1-andrem.33333@gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TAGGED_FROM(0.00)[bounces-7883-lists,linux-fbdev=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:lukas@wunner.de,m:jfalempe@redhat.com,m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:jani.nikula@linux.intel.com,m:joonas.lahtinen@linux.intel.com,m:rodrigo.vivi@intel.com,m:tursulin@ursulin.net,m:lyude@redhat.com,m:dakr@kernel.org,m:deller@gmx.de,m:dri-devel@lists.freedesktop.org,m:amd-gfx@lists.freedesktop.org,m:intel-gfx@lists.freedesktop.org,m:nouveau@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:sashiko-reviews@lists.linux.dev,m:tzimmermann@suse.de,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
-	FREEMAIL_TO(0.00)[wunner.de,redhat.com,amd.com,gmail.com,ffwll.ch,linux.intel.com,kernel.org,intel.com,ursulin.net,gmx.de];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,linux-fbdev@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:andrem.33333@gmail.com,m:sudipm.mukherjee@gmail.com,m:teddy.wang@siliconmotion.com,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:andrem33333@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-7886-lists,linux-fbdev=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,siliconmotion.com,vger.kernel.org,lists.linux.dev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.de:from_mime,suse.de:email,suse.de:mid,suse.de:dkim]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 10E5F71C603
+X-Rspamd-Queue-Id: D79D471CAC0
 
-Remove all unused interfaces that used to implement the functionality
-of pre_switch and post_switch.
+On Tue, Jul 07, 2026 at 10:15:28AM -0300, André Moreira wrote:
+> Rename 'setAllEngOff' to 'set_all_eng_off' within the 'init_status'
+> struct to avoid CamelCase and comply with the Linux kernel coding style.
+> 
+> Signed-off-by: André Moreira <andrem.33333@gmail.com>
+> ---
+> v4:
+>   - Drop register renames 'pvReg' to 'regs' as they were merged via another upstream patch.
+>   - Keep only the 'init_status' CamelCase cleanup.
+> 
+> drivers/staging/sm750fb/sm750.h | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/staging/sm750fb/sm750.h b/drivers/staging/sm750fb/sm750.h
+> index 0324778768cbc..3a1bd38ab347a 100644
+> --- a/drivers/staging/sm750fb/sm750.h
+> +++ b/drivers/staging/sm750fb/sm750.h
+> @@ -39,6 +39,15 @@ enum sm750_path {
+>  	sm750_pnc = 3,	/* panel and crt */
+>  };
+>  
+> +struct init_status {
+> +	ushort power_mode;
+> +	/* below three clocks are in unit of MHZ*/
+> +	ushort chip_clk;
+> +	ushort mem_clk;
+> +	ushort master_clk;
+> +	ushort set_all_eng_off;
+> +	ushort reset_memory;
+> +};
+>  
 
-For pre_switch, drop calls to vga_switcheroo_client_fb_set() from
-fbcon. Each client that implements pre_switch holds references to
-its resources; either fbcon's fb_info or something else. Also remove
-vga_switcheroo_client_fb_set(). This further allows for removing all
-symbols and data structures that refer to fbdev; such as fb_info and
-fb_switch_outputs().
+The description of this patch seems to have nothing to do with the diff
+itself :(
 
-For post_switch, remove the reprobe callback from the client ops.
-Nouveau, the only driver that implemented the interface, now uses
-post_switch.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |  1 -
- drivers/gpu/drm/i915/i915_switcheroo.c     |  1 -
- drivers/gpu/drm/radeon/radeon_device.c     |  1 -
- drivers/gpu/vga/vga_switcheroo.c           | 37 +++-------------------
- drivers/video/fbdev/core/fbcon.c           |  8 -----
- include/linux/vga_switcheroo.h             | 12 +++----
- 6 files changed, 9 insertions(+), 51 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 87a59a79a019..5bb1567d512d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1708,7 +1708,6 @@ static void amdgpu_switcheroo_pre_switch(struct pci_dev *pdev)
- 
- static const struct vga_switcheroo_client_ops amdgpu_switcheroo_ops = {
- 	.set_gpu_state = amdgpu_switcheroo_set_state,
--	.reprobe = NULL,
- 	.can_switch = amdgpu_switcheroo_can_switch,
- 	.pre_switch = amdgpu_switcheroo_pre_switch,
- };
-diff --git a/drivers/gpu/drm/i915/i915_switcheroo.c b/drivers/gpu/drm/i915/i915_switcheroo.c
-index 6b306ece0556..d97057722fde 100644
---- a/drivers/gpu/drm/i915/i915_switcheroo.c
-+++ b/drivers/gpu/drm/i915/i915_switcheroo.c
-@@ -69,7 +69,6 @@ static void i915_switcheroo_pre_switch(struct pci_dev *pdev)
- 
- static const struct vga_switcheroo_client_ops i915_switcheroo_ops = {
- 	.set_gpu_state = i915_switcheroo_set_state,
--	.reprobe = NULL,
- 	.can_switch = i915_switcheroo_can_switch,
- 	.pre_switch = i915_switcheroo_pre_switch,
- };
-diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
-index 8697a9eb5d13..9523240110a6 100644
---- a/drivers/gpu/drm/radeon/radeon_device.c
-+++ b/drivers/gpu/drm/radeon/radeon_device.c
-@@ -1267,7 +1267,6 @@ static void radeon_switcheroo_pre_switch(struct pci_dev *pdev)
- 
- static const struct vga_switcheroo_client_ops radeon_switcheroo_ops = {
- 	.set_gpu_state = radeon_switcheroo_set_state,
--	.reprobe = NULL,
- 	.can_switch = radeon_switcheroo_can_switch,
- 	.pre_switch = radeon_switcheroo_pre_switch,
- };
-diff --git a/drivers/gpu/vga/vga_switcheroo.c b/drivers/gpu/vga/vga_switcheroo.c
-index 7b0af4a8aa7d..9431d83b38a9 100644
---- a/drivers/gpu/vga/vga_switcheroo.c
-+++ b/drivers/gpu/vga/vga_switcheroo.c
-@@ -32,9 +32,9 @@
- 
- #include <linux/apple-gmux.h>
- #include <linux/debugfs.h>
--#include <linux/fb.h>
-+#include <linux/export.h>
- #include <linux/fs.h>
--#include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/pci.h>
- #include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
-@@ -90,7 +90,6 @@
- /**
-  * struct vga_switcheroo_client - registered client
-  * @pdev: client pci device
-- * @fb_info: framebuffer to which console is remapped on switching
-  * @pwr_state: current power state if manual power control is used.
-  *	For driver power control, call vga_switcheroo_pwr_state().
-  * @ops: client callbacks
-@@ -105,12 +104,11 @@
-  * @vga_dev: pci device, indicate which GPU is bound to current audio client
-  *
-  * Registered client. A client can be either a GPU or an audio device on a GPU.
-- * For audio clients, the @fb_info and @active members are bogus. For GPU
-- * clients, the @vga_dev is bogus.
-+ * For audio clients, the @active member is bogus. For GPU clients, the @vga_dev
-+ * is bogus.
-  */
- struct vga_switcheroo_client {
- 	struct pci_dev *pdev;
--	struct fb_info *fb_info;
- 	enum vga_switcheroo_state pwr_state;
- 	const struct vga_switcheroo_client_ops *ops;
- 	enum vga_switcheroo_client_id id;
-@@ -514,27 +512,6 @@ void vga_switcheroo_unregister_client(struct pci_dev *pdev)
- }
- EXPORT_SYMBOL(vga_switcheroo_unregister_client);
- 
--/**
-- * vga_switcheroo_client_fb_set() - set framebuffer of a given client
-- * @pdev: client pci device
-- * @info: framebuffer
-- *
-- * Set framebuffer of a given client. The console will be remapped to this
-- * on switching.
-- */
--void vga_switcheroo_client_fb_set(struct pci_dev *pdev,
--				 struct fb_info *info)
--{
--	struct vga_switcheroo_client *client;
--
--	mutex_lock(&vgasr_mutex);
--	client = find_client_from_pci(&vgasr_priv.clients, pdev);
--	if (client)
--		client->fb_info = info;
--	mutex_unlock(&vgasr_mutex);
--}
--EXPORT_SYMBOL(vga_switcheroo_client_fb_set);
--
- /**
-  * vga_switcheroo_lock_ddc() - temporarily switch DDC lines to a given client
-  * @pdev: client pci device
-@@ -735,10 +712,6 @@ static int vga_switchto_stage2(struct vga_switcheroo_client *new_client)
- 
- 	if (new_client->ops->pre_switch)
- 		new_client->ops->pre_switch(new_client->pdev);
--#if defined(CONFIG_FB)
--	else if (new_client->fb_info)
--		fb_switch_outputs(new_client->fb_info);
--#endif
- 
- 	mutex_lock(&vgasr_priv.mux_hw_lock);
- 	ret = vgasr_priv.handler->switchto(new_client->id);
-@@ -748,8 +721,6 @@ static int vga_switchto_stage2(struct vga_switcheroo_client *new_client)
- 
- 	if (new_client->ops->post_switch)
- 		new_client->ops->post_switch(new_client->pdev);
--	else if (new_client->ops->reprobe)
--		new_client->ops->reprobe(new_client->pdev);
- 
- 	if (vga_switcheroo_pwr_state(active) == VGA_SWITCHEROO_ON)
- 		vga_switchoff(active);
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 9f5c4c101581..974c7dcf5251 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -78,7 +78,6 @@
- #include <linux/interrupt.h>
- #include <linux/crc32.h> /* For counting font checksums */
- #include <linux/uaccess.h>
--#include <linux/vga_switcheroo.h>
- #include <asm/irq.h>
- 
- #include "fbcon.h"
-@@ -2851,9 +2850,6 @@ void fbcon_fb_unregistered(struct fb_info *info)
- 
- 	console_lock();
- 
--	if (info->device && dev_is_pci(info->device))
--		vga_switcheroo_client_fb_set(to_pci_dev(info->device), NULL);
--
- 	fbcon_registered_fb[info->node] = NULL;
- 	fbcon_num_registered_fb--;
- 
-@@ -2987,10 +2983,6 @@ static int do_fb_registered(struct fb_info *info)
- 		}
- 	}
- 
--	/* Set the fb info for vga_switcheroo clients. Does nothing otherwise. */
--	if (info->device && dev_is_pci(info->device))
--		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
--
- 	return ret;
- }
- 
-diff --git a/include/linux/vga_switcheroo.h b/include/linux/vga_switcheroo.h
-index 38047fe6ea60..e0198cffb4d6 100644
---- a/include/linux/vga_switcheroo.h
-+++ b/include/linux/vga_switcheroo.h
-@@ -31,8 +31,12 @@
- #ifndef _LINUX_VGA_SWITCHEROO_H_
- #define _LINUX_VGA_SWITCHEROO_H_
- 
--#include <linux/fb.h>
-+#include <linux/errno.h>
-+#include <linux/types.h>
- 
-+struct device;
-+struct dev_pm_domain;
-+struct fb_info;
- struct pci_dev;
- 
- /**
-@@ -128,7 +132,6 @@ struct vga_switcheroo_handler {
-  * 	Mandatory. This should not cut power to the discrete GPU,
-  * 	which is the job of the handler
-  * @gpu_bound: Optional. Called before switching the outputs to the device.
-- * @reprobe: deprecated
-  * @can_switch: check if the device is in a position to switch now.
-  * 	Mandatory. The client should return false if a user space process
-  * 	has one of its device files open
-@@ -148,7 +151,6 @@ struct vga_switcheroo_handler {
-  */
- struct vga_switcheroo_client_ops {
- 	void (*set_gpu_state)(struct pci_dev *dev, enum vga_switcheroo_state);
--	void (*reprobe)(struct pci_dev *dev);
- 	bool (*can_switch)(struct pci_dev *dev);
- 	void (*pre_switch)(struct pci_dev *dev);
- 	void (*post_switch)(struct pci_dev *dev);
-@@ -164,9 +166,6 @@ int vga_switcheroo_register_audio_client(struct pci_dev *pdev,
- 					 const struct vga_switcheroo_client_ops *ops,
- 					 struct pci_dev *vga_dev);
- 
--void vga_switcheroo_client_fb_set(struct pci_dev *dev,
--				  struct fb_info *info);
--
- int vga_switcheroo_register_handler(const struct vga_switcheroo_handler *handler,
- 				    enum vga_switcheroo_handler_flags_t handler_flags);
- void vga_switcheroo_unregister_handler(void);
-@@ -186,7 +185,6 @@ void vga_switcheroo_fini_domain_pm_ops(struct device *dev);
- static inline void vga_switcheroo_unregister_client(struct pci_dev *dev) {}
- static inline int vga_switcheroo_register_client(struct pci_dev *dev,
- 		const struct vga_switcheroo_client_ops *ops, bool driver_power_control) { return 0; }
--static inline void vga_switcheroo_client_fb_set(struct pci_dev *dev, struct fb_info *info) {}
- static inline int vga_switcheroo_register_handler(const struct vga_switcheroo_handler *handler,
- 		enum vga_switcheroo_handler_flags_t handler_flags) { return 0; }
- static inline int vga_switcheroo_register_audio_client(struct pci_dev *pdev,
--- 
-2.54.0
+Did something go wrong?
 
 
