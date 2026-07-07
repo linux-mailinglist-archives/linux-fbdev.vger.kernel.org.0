@@ -1,53 +1,53 @@
-Return-Path: <linux-fbdev+bounces-7853-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7854-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ztgrCd6bTGoBnAEAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7853-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 08:25:34 +0200
+	id a+dCEuybTGoGnAEAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7854-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 08:25:48 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487EE717ECF
-	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 08:25:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 166CA717EE0
+	for <lists+linux-fbdev@lfdr.de>; Tue, 07 Jul 2026 08:25:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AyVNZ7wX;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fUx959Fl;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7853-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7853-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7854-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7854-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12E7B303AA24
-	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jul 2026 06:25:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2A248301DC40
+	for <lists+linux-fbdev@lfdr.de>; Tue,  7 Jul 2026 06:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F193A1687;
-	Tue,  7 Jul 2026 06:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC0539F18A;
+	Tue,  7 Jul 2026 06:25:36 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6A43976B8;
-	Tue,  7 Jul 2026 06:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF9639DBE0;
+	Tue,  7 Jul 2026 06:25:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783405508; cv=none; b=j2Rzt1g5qvnmlbsEiuqsGabbouHlgdVMljb6FDRJdcIcEvngDUCaZatc8RqHbWtpuc9axr+HcVzs7rVL6BuDMLopK0Mh+n34Hgn4V4ywB7yWIs/YYs4cOzWG633jFKBiQ6FTR2DIlwN2cOIGY4IiMczc3jQdP8hytoquo7QsdvI=
+	t=1783405536; cv=none; b=iQDowWyP2eL+TCAO+taQUTe9Fn1Fu3ZJGZpKW/9fV5rFAyk31soLdnJwdiYoMC+uH/o46B1l8jXmAF/KO7Wk3S4Q45emgEo2F1TsBgehCHG7tjQYverSU4yEupy15jUedKvOzxZ/1VPychRk9TY4w6N4v5/PnIgAHlH5DxfmM+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783405508; c=relaxed/simple;
-	bh=r5tQr14dix76AyDbyxpCj9wc553JyabFN2jVt1pRMaw=;
+	s=arc-20240116; t=1783405536; c=relaxed/simple;
+	bh=2mrhu+mzr3r1ylLjmXQJu/+tDv3Hf4ktNPp8zbuxXRo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XvfpCcsQWFBnO7qR/H81O/m14ZCpWoTTHv3Q5mfm4xqMuXHOM3+DR0BwunxFbJUZH5FAqBlL/LY5gVlxC1TA6Fh/S7AknkWI2D+bbst5KG/fdT+GCKNjKPk0oRPRQO2fgalzzYMqAosHjFUfCBAfmgaMhCX8pvQm6g91tERE33Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyVNZ7wX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2481F00A3A;
-	Tue,  7 Jul 2026 06:25:04 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=PwIQsd/I1Lpj1GWuwNbkur2F6qG0LAslvrYJOje7y4uX4D/BoSv/rjB2wWaRoa90Yw2D974dTl7uc16/BtYBYuspdfvS6yiXX0ydWMiDmQMguQQpy+GKzwAHK82XO64VGAstDTOD1e6jIpB6l+5pPh+MKyFxU0rz72DR//qAdnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUx959Fl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D15C1F000E9;
+	Tue,  7 Jul 2026 06:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783405507;
-	bh=DBPUx+t4ql6ajTs7fvm4uBOQ2M7ydey3xONesMGfpWE=;
+	s=k20260515; t=1783405535;
+	bh=g9loFmhI5Ph6B0kODBgukh6UmdkZeqqIAOGSwnjsAQU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AyVNZ7wXtpOQPh4VRCCOwLtyJIyFuqo+gclP/BQNcfYjkcaAiUeYj4GTfAFw8BHmh
-	 bTZPpk8EKxZR5m7gSum97TLGGGG8QfvUPET2TMKTcKwGZouryQan+YcYEGDuFm1e2B
-	 cIbVa6JCLNY6N5HtHh3xiuay08iy9ou0WGv3f9tqIDWA9tl7Ixgjxbpnawvklow8ho
-	 NDplBY+LMh9pMkjdJZBZMia1BJUvlZPmbN9KcrNdVOFmASfxjKsi4ufXmGMYyOWrNZ
-	 Lar9TyIn94niEUkT9o/nI/aum6bvbmWtAzmkoid6yGOFhHz79vosHanZGtGI3YzreO
-	 g7LT4PgAIvDgw==
-Message-ID: <0bf41b38-372a-4f1a-8fe4-a762355af321@kernel.org>
-Date: Tue, 7 Jul 2026 08:25:02 +0200
+	b=fUx959FlG+tS9kVtYEAGzHk0Vmai4d/YAFMYwoQVnCV+ztdvLDNrpZ1C0V3P8wpxQ
+	 VXHrSUSataoLNI53I1O5LC7UEe0ViDX6S0xjd8DOfBmuRtB25Ao+o7YppWCp9zpSz0
+	 F8e14S7DpsGkjSLrH0mP2wkBHPdGaiM4vNVYvfN5cJNbxUy7/fpaOSylo5UYGrOZ+a
+	 zW/5PqJ6lLi0L+xGke21scnixXNsuRYBReu3uIG5BS9p6w4NnElk8EYOZWi/WIf3fP
+	 7nuPKyG5JMx5EUHZy2YRFPhoTef2tmmQPOwc5FyWC1Hlwarb+A38NJtDOox+fiK/Y+
+	 rsbZYT99jYhbg==
+Message-ID: <b0fc412e-719b-452d-ae24-2b600924ee0f@kernel.org>
+Date: Tue, 7 Jul 2026 08:25:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
@@ -62,8 +62,7 @@ To: Arnav Kapoor <kapoorarnav43@gmail.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
  linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
-References: <20260621045050.63460-1-kapoorarnav43@gmail.com>
- <20260624044610.69708-1-kapoorarnav43@gmail.com>
+References: <MESSAGE-ID> <20260624044412.67464-1-kapoorarnav43@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -109,7 +108,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20260624044610.69708-1-kapoorarnav43@gmail.com>
+In-Reply-To: <20260624044412.67464-1-kapoorarnav43@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
@@ -118,12 +117,12 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-7853-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7854-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:kapoorarnav43@gmail.com,m:sudipm.mukherjee@gmail.com,m:teddy.wang@siliconmotion.com,m:gregkh@linuxfoundation.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:lkp@intel.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com,siliconmotion.com,linuxfoundation.org];
@@ -144,13 +143,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-fbdev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 487EE717ECF
+X-Rspamd-Queue-Id: 166CA717EE0
 
-On 24/06/2026 06:46, Arnav Kapoor wrote:
+On 24/06/2026 06:44, Arnav Kapoor wrote:
 > Rename the remaining CamelCase structure members
 > to follow kernel coding style.
 > 
@@ -165,8 +164,9 @@ On 24/06/2026 06:46, Arnav Kapoor wrote:
 > Reported-by: kernel test robot <lkp@intel.com>
 > Closes: https://lore.kernel.org/oe-kbuild-all/202606240823.hWXfYyPf-lkp@intel.com/
 
-Nothing to be reported here. Did you read the email from lkp?
+Please stop sending multiple duplicates of the same patch.
 
+Same comments.
 
 Best regards,
 Krzysztof
