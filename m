@@ -1,125 +1,185 @@
-Return-Path: <linux-fbdev+bounces-7894-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7895-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id H0JKBLo8Tmr/JQIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7894-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 08 Jul 2026 14:04:10 +0200
+	id ubFiNydNTmq/KQIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7895-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 08 Jul 2026 15:14:15 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB2D7261E8
-	for <lists+linux-fbdev@lfdr.de>; Wed, 08 Jul 2026 14:04:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58973726AEE
+	for <lists+linux-fbdev@lfdr.de>; Wed, 08 Jul 2026 15:14:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ygwpvJPm;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7894-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7894-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=izoHbi9Y;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7895-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7895-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 235F83012EAE
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Jul 2026 12:01:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A19BD300F17F
+	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Jul 2026 13:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B26C3FFFA4;
-	Wed,  8 Jul 2026 12:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8700D25D527;
+	Wed,  8 Jul 2026 13:09:23 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427F624BBFD;
-	Wed,  8 Jul 2026 12:01:02 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783512064; cv=none; b=fN0yf0umFWmwwS+Jznq/CsxY3Mqq2U3vBvUFp6rZT5nNlx7nkZnk/FzRn14iefofgHEDG12MlCeboX8a6nDiGbPRee72DzK8LP/lXtb2HBImmUhFDUXfUaoMYodshopFXnv7LNw9gXNk8mbSFzQTHx6qi0y2FStBfzAJqCP1Fgc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783512064; c=relaxed/simple;
-	bh=Jtyz5mdtM3RdujAuDQH9BG+O8ipXDm6TjpRPi1dkua8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KnNY1o0L91njgRE29T4W8e9w2iowUJzONGeX9O9aNPkt6wiMV32KZ0WhNwoSTOBd1lO3zsKrYwCt+nxzCJFP0H0p5UKNVyjPmfNJMlYmI5/oAvknIa1qD1MgR/G/rUI3Ugj+OzZtaqT6/0P/Lns8XX92AnKoR6pvuQTXy1Itx4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygwpvJPm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8981F000E9;
-	Wed,  8 Jul 2026 12:01:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783512062;
-	bh=9p863L7he4lt5AW5SKjC2DMMvuDWQSHTHf5Po/24QRc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ygwpvJPmgyQYEPywd1eG2GuHjo3Z2x9SpG70XgkkgLYg8lDse9UQvsIi4JqcuPWOF
-	 /AhYaRxyPqB2tAOTl+T6Ev7fRfXo2SyoqRMNQiSSGeF95yIX9+TOih/VF88hvubKpp
-	 /5BtsqQ74kZtNhqhtDxIoEXb2zYtCCvK9QJjEqB8=
-Date: Wed, 8 Jul 2026 13:59:45 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?Q?Andr=E9?= Moreira <andrem.33333@gmail.com>
-Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-	Teddy Wang <teddy.wang@siliconmotion.com>,
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6] staging: sm750fb: Remove unused variable
- 'setAllEngOff'
-Message-ID: <2026070828-arrange-degrading-a2ed@gregkh>
-References: <2026070710-exact-unveiling-e321@gregkh>
- <20260708060307.12237-1-andrem.33333@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0B3242D7F
+	for <linux-fbdev@vger.kernel.org>; Wed,  8 Jul 2026 13:09:22 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783516163; cv=pass; b=arRjD5RZ7lTTIw2HmLW1CmmPeVFP4NNYO0ePzPGys2pbbzedymnvunmQMeaANaP1j+taWrQzy+546GbY/cywO1hHPf7nc48o1yrlAul9X8fMP2pUwzWpzfdHpfswhQrXnCeaaTD+Ym1t6MP4gd4PfIOL6ssdcJ0rZXbaOWtaL5o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783516163; c=relaxed/simple;
+	bh=Bep79+Nm0KT5E0hNBAXvimuSZeTsW1P8+5T9xVwMzYc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ly2zpBSSRt/ypnCJC9NaC/UQ1XgXeSz1NuNboLxXzrkLmPas3HO5ZFpIlSjhzyJYFp8Q/YOpWN3FiJqa9EgR4Ce9S6X1fQYSYjTsViy2Zs8IXGDaAFHrveXE0cj3a1DAbYDF6dM6OUWAAmjpYuFWhX27leQOpJM8fX38xH3tgrY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izoHbi9Y; arc=pass smtp.client-ip=209.85.221.174
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5bbd26a2729so549954e0c.0
+        for <linux-fbdev@vger.kernel.org>; Wed, 08 Jul 2026 06:09:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783516161; cv=none;
+        d=google.com; s=arc-20260327;
+        b=X4p0p7gYvIiWKmN80YYhgiPpfkFhZcq7kOXJip3ml5vlfCp1LDkFBtJyULDnNBR6hl
+         a2H31rjAD0jB9kL4NTvwPHwBdUdKnN38KZ53JhY/NxIR35zI8PKW5tqqKjqpz6AZdI1e
+         VpTyzRjmRCd++12JXs2pqAFaU5X4SeaahSMF16h6GLWaxZJEIkKuApOU1NWb7NxXpA5g
+         flH9HUlUY+3NId7S4NmY83wB24wiWTVj8j+Heb9BJXfWDfTix4O3R/2IzCGwmpEotyEx
+         FU21yCs1joZGpndzaTm7D4CUDQetP8oLza/mC6g6OsYk0Ej/L/WWKZO9//Kq9VP/IfQd
+         NDig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hsBQU5mcTVdYUucmcqEpkwbojCtOIWzKkEYP8GQ9mQ4=;
+        fh=KfH0u8LKhD6lyoINE6IKQ8abeR7v8RBSiWo8k9cPxL4=;
+        b=E7RflaiisA0JhquVkymTUy8j4X6XfnjPlC0UqC0JEWCvfitR56+4fAyvbqbruOXWTC
+         j0AGhikVudXIgOwD/JLnTeo1b4N2kr0VZCa+gL7OT0gMFenefEjP6Xd7XSGN4iphsELj
+         ySX5mNgmEpLJGlgRdzacgmWf0Xg7wXAQ/Xkr7QFkfdTUTMj8496EyZxsismfyR7pgEXk
+         FhPfeO+c5+3y7RCXr0arT+BRsMUpUwwjgYKxRXbhSzGq4VNlW7ZM46eHNnV86et5swxb
+         DRg5GFXwZKdOUzVvnShVcYN1+zntpUxpakntf+J8Wruffj8t/wJrk9gQaIw8+3cPTmlQ
+         XuEA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783516161; x=1784120961; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hsBQU5mcTVdYUucmcqEpkwbojCtOIWzKkEYP8GQ9mQ4=;
+        b=izoHbi9Yx+TxXhMXg6+MMqbRHb79s3O6x1h2GKrryBKeFI6BAOvBrgwgSDg+hSfmmK
+         hYkBmpsskxVUJscxw6ECGRJUU6L/5CfGgYE8qxxQpnxvJTLRnavIbLxyITxoGRDKFpFG
+         Ve9hGOo/PYsc2cP1PNd9U8wyOgZgJv2rFglt8zQU9UXs8lx9j71tSTcuTlkHA1ozxo95
+         hXSQjdtX/W8wH6JN2Ilq+jqRi7SifVOhfqNoAI7xx/KCKBiexDggAAPM/CvxkZgejV1M
+         V5ZhLsaY8Biglougf+bjetJrouBOl0BxfcWP1PAW4roHVdOJDl9CZuDD6yceAUmHAxgG
+         7HoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783516161; x=1784120961;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hsBQU5mcTVdYUucmcqEpkwbojCtOIWzKkEYP8GQ9mQ4=;
+        b=MCecAPjTRTxxl65d+dWn+5K+TASlBUzxse8dhirhSLLpXx/5wCCQ/nX6iP1ERyiOyC
+         ZPjtZ1WJY+2F6QmcVwTrp5Jg43vYlNsbQQ/xPt0Dt6SQq9q2BWrOfa7GRM2RYkmvbofQ
+         grLt2keKxazQuPU0KN+2/CNkQnmkBwOlojdtRH85i5K3FHP1OAnyuZxGNhyvSxjjTVcI
+         C0+sPNYRBO+ZigrEx/SEmVtjtLLrLbI570twX5e+ZbIrywMn/pNBqahiVP0qlmIcMrcI
+         5ZXk7ULUGqBxpsUkCugM4S+bbgZzClK5ki2zWISHNGwCPoxmeKg10KXgjmZUnjIxJcCW
+         6wWQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoAqzWj342R/gExPd7oHjJMI7w+dd6LHKQIGVxGQbYpIpj+wi3UDwWSqSMIMgOhpU5Qg4LAbsCPqlO26w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHRGMn/8lJeptCcz8UFLTcccbnLS7aMsGXSgjvBqSmT169XZNv
+	FaZSXFu6RBiTSDsXMSh3r5UW0QB1SOP+FcFd2Gu7o5nLkn89yi9CCKIfUGN7JFr0fCnUgT37IUE
+	PMHfjSBC23QrDr3+wnBJd7mBB5/8aZ6o=
+X-Gm-Gg: AfdE7ckzzKdVX+PR2cu7MKvM1ARJbFvkWzU0tbL4+GeDfppk90Fp7A5K/hCH6X3shOc
+	DUvWNXelJqFe6qeExqOsUBU0JLzZDoQJjyMUZoot6oFzcyJoFZOXwxw3inrIDh8F0JNFXE99Ztu
+	LXeCrSC4NlXoNuqEZgt4kxM6ketQQ3+MKaXP83DxXeHaRROAuvBdppjGxjOQmBDBFclssdAnaYx
+	kwdkFJPpgpqtkOw62GSDo08NwrIyq6mHJXuWkroApy3Fj7cQSzcROkovb2Ivk/bUTagK6kvuw==
+X-Received: by 2002:a05:6102:3e17:b0:729:cc7c:7de2 with SMTP id
+ ada2fe7eead31-744e000d349mr1220107137.10.1783516161146; Wed, 08 Jul 2026
+ 06:09:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260708060307.12237-1-andrem.33333@gmail.com>
+References: <2026070710-exact-unveiling-e321@gregkh> <20260708060307.12237-1-andrem.33333@gmail.com>
+ <2026070828-arrange-degrading-a2ed@gregkh>
+In-Reply-To: <2026070828-arrange-degrading-a2ed@gregkh>
+From: Andre Moreira <andrem.33333@gmail.com>
+Date: Wed, 8 Jul 2026 10:09:09 -0300
+X-Gm-Features: AUfX_my45Q2tevoGqF5EtS1St9Km9BvGWs-C4r7mC4HKR6GOpox7QrqhzNm-z54
+Message-ID: <CACO0qFJhE-p1NfEo-oVfVrrmxr=QUmOy0L3OihE6yTd=CeQQiw@mail.gmail.com>
+Subject: Re: [PATCH v6] staging: sm750fb: Remove unused variable 'setAllEngOff'
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Teddy Wang <teddy.wang@siliconmotion.com>, 
+	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:andrem.33333@gmail.com,m:sudipm.mukherjee@gmail.com,m:teddy.wang@siliconmotion.com,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:andrem33333@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7894-lists,linux-fbdev=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7895-lists,linux-fbdev=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sudipm.mukherjee@gmail.com,m:teddy.wang@siliconmotion.com,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[andrem33333@gmail.com,linux-fbdev@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,siliconmotion.com,vger.kernel.org,lists.linux.dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,siliconmotion.com,vger.kernel.org,lists.linux.dev];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrem33333@gmail.com,linux-fbdev@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-fbdev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,vger.kernel.org:from_smtp,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7AB2D7261E8
+X-Rspamd-Queue-Id: 58973726AEE
 
-On Wed, Jul 08, 2026 at 03:03:07AM -0300, André Moreira wrote:
-> The variable 'setAllEngOff' within the 'init_status' struct is only
-> set to zero during setup but its value is never read anywhere else
-> in the driver. Remove it entirely to clean up the code.
-> 
-> Signed-off-by: André Moreira <andrem.33333@gmail.com>
-> ---
-> v6:
->   - Change patch approach from renaming CamelCase to entirely removing
->     the unused 'setAllEngOff' variable, based on Greg KH's feedback.
+Hi Greg,
 
-This doesn't apply to my tree at all.  Can you rebase against the
-staging-testing branch and resend?
+Please disregard this patch. Upon rebasing against staging-testing, I
+noticed that 'setAllEngOff' was recently renamed to 'set_all_eng_off'
+and its value is now actually being read/used inside
+drivers/staging/sm750fb/ddk750_chip.c.
 
-thanks,
+Thank you for your time!
 
-greg k-h
+Regards,
+Andr=C3=A9
+
+Em qua., 8 de jul. de 2026 =C3=A0s 09:01, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> escreveu:
+>
+> On Wed, Jul 08, 2026 at 03:03:07AM -0300, Andr=C3=A9 Moreira wrote:
+> > The variable 'setAllEngOff' within the 'init_status' struct is only
+> > set to zero during setup but its value is never read anywhere else
+> > in the driver. Remove it entirely to clean up the code.
+> >
+> > Signed-off-by: Andr=C3=A9 Moreira <andrem.33333@gmail.com>
+> > ---
+> > v6:
+> >   - Change patch approach from renaming CamelCase to entirely removing
+> >     the unused 'setAllEngOff' variable, based on Greg KH's feedback.
+>
+> This doesn't apply to my tree at all.  Can you rebase against the
+> staging-testing branch and resend?
+>
+> thanks,
+>
+> greg k-h
 
