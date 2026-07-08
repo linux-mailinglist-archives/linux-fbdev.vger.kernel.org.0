@@ -1,185 +1,255 @@
-Return-Path: <linux-fbdev+bounces-7895-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7896-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ubFiNydNTmq/KQIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7895-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 08 Jul 2026 15:14:15 +0200
+	id 11m5Oal2TmoONQIAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7896-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 08 Jul 2026 18:11:21 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58973726AEE
-	for <lists+linux-fbdev@lfdr.de>; Wed, 08 Jul 2026 15:14:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 752BA7287CE
+	for <lists+linux-fbdev@lfdr.de>; Wed, 08 Jul 2026 18:11:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=izoHbi9Y;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7895-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7895-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=suse.com header.s=google header.b="V9o0/GIU";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7896-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7896-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A19BD300F17F
-	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Jul 2026 13:09:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 319B6322CD94
+	for <lists+linux-fbdev@lfdr.de>; Wed,  8 Jul 2026 15:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8700D25D527;
-	Wed,  8 Jul 2026 13:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218C2369D53;
+	Wed,  8 Jul 2026 15:46:07 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0B3242D7F
-	for <linux-fbdev@vger.kernel.org>; Wed,  8 Jul 2026 13:09:22 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783516163; cv=pass; b=arRjD5RZ7lTTIw2HmLW1CmmPeVFP4NNYO0ePzPGys2pbbzedymnvunmQMeaANaP1j+taWrQzy+546GbY/cywO1hHPf7nc48o1yrlAul9X8fMP2pUwzWpzfdHpfswhQrXnCeaaTD+Ym1t6MP4gd4PfIOL6ssdcJ0rZXbaOWtaL5o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783516163; c=relaxed/simple;
-	bh=Bep79+Nm0KT5E0hNBAXvimuSZeTsW1P8+5T9xVwMzYc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ly2zpBSSRt/ypnCJC9NaC/UQ1XgXeSz1NuNboLxXzrkLmPas3HO5ZFpIlSjhzyJYFp8Q/YOpWN3FiJqa9EgR4Ce9S6X1fQYSYjTsViy2Zs8IXGDaAFHrveXE0cj3a1DAbYDF6dM6OUWAAmjpYuFWhX27leQOpJM8fX38xH3tgrY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izoHbi9Y; arc=pass smtp.client-ip=209.85.221.174
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5bbd26a2729so549954e0c.0
-        for <linux-fbdev@vger.kernel.org>; Wed, 08 Jul 2026 06:09:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783516161; cv=none;
-        d=google.com; s=arc-20260327;
-        b=X4p0p7gYvIiWKmN80YYhgiPpfkFhZcq7kOXJip3ml5vlfCp1LDkFBtJyULDnNBR6hl
-         a2H31rjAD0jB9kL4NTvwPHwBdUdKnN38KZ53JhY/NxIR35zI8PKW5tqqKjqpz6AZdI1e
-         VpTyzRjmRCd++12JXs2pqAFaU5X4SeaahSMF16h6GLWaxZJEIkKuApOU1NWb7NxXpA5g
-         flH9HUlUY+3NId7S4NmY83wB24wiWTVj8j+Heb9BJXfWDfTix4O3R/2IzCGwmpEotyEx
-         FU21yCs1joZGpndzaTm7D4CUDQetP8oLza/mC6g6OsYk0Ej/L/WWKZO9//Kq9VP/IfQd
-         NDig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hsBQU5mcTVdYUucmcqEpkwbojCtOIWzKkEYP8GQ9mQ4=;
-        fh=KfH0u8LKhD6lyoINE6IKQ8abeR7v8RBSiWo8k9cPxL4=;
-        b=E7RflaiisA0JhquVkymTUy8j4X6XfnjPlC0UqC0JEWCvfitR56+4fAyvbqbruOXWTC
-         j0AGhikVudXIgOwD/JLnTeo1b4N2kr0VZCa+gL7OT0gMFenefEjP6Xd7XSGN4iphsELj
-         ySX5mNgmEpLJGlgRdzacgmWf0Xg7wXAQ/Xkr7QFkfdTUTMj8496EyZxsismfyR7pgEXk
-         FhPfeO+c5+3y7RCXr0arT+BRsMUpUwwjgYKxRXbhSzGq4VNlW7ZM46eHNnV86et5swxb
-         DRg5GFXwZKdOUzVvnShVcYN1+zntpUxpakntf+J8Wruffj8t/wJrk9gQaIw8+3cPTmlQ
-         XuEA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4349437207D
+	for <linux-fbdev@vger.kernel.org>; Wed,  8 Jul 2026 15:46:03 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783525566; cv=none; b=JutS9NkY4z6H75DH5pcNEXRW18AovBQqqDHfG8pbAvUBcroVmbwPatc0VFbwc8qtd/ENqnvmK/jq/T4eYpjYhCwHff2J6tLPObyfe1MQpGaqupS2tUDrvc5qkI1ajcfL5hCGFko3CJtGKQBI5F3s7hkJg+ooCOgT595gQgRUmBc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783525566; c=relaxed/simple;
+	bh=9vHkvbT9qGw6XnwnbsV8mVwKGJQJ6h+q3CIzqn5nO9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cmHn0dePec10n7Kqimh/zjTLUylU2vHPitM3V1cJ1CKIjl2RJRMkqAYLSUHZ3nw9seW30gd1dCME82rs4fMsPe7mZr7rdZOqvXBPhlQcM/iOHCwWM2QRgH6QhuNCr1BWJvyMr9Hd6QPTLpCbn99Kt9JXSNFo6V/Z64wxrxPY0Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=V9o0/GIU; arc=none smtp.client-ip=209.85.221.46
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4720d22c94aso808414f8f.1
+        for <linux-fbdev@vger.kernel.org>; Wed, 08 Jul 2026 08:46:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783516161; x=1784120961; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hsBQU5mcTVdYUucmcqEpkwbojCtOIWzKkEYP8GQ9mQ4=;
-        b=izoHbi9Yx+TxXhMXg6+MMqbRHb79s3O6x1h2GKrryBKeFI6BAOvBrgwgSDg+hSfmmK
-         hYkBmpsskxVUJscxw6ECGRJUU6L/5CfGgYE8qxxQpnxvJTLRnavIbLxyITxoGRDKFpFG
-         Ve9hGOo/PYsc2cP1PNd9U8wyOgZgJv2rFglt8zQU9UXs8lx9j71tSTcuTlkHA1ozxo95
-         hXSQjdtX/W8wH6JN2Ilq+jqRi7SifVOhfqNoAI7xx/KCKBiexDggAAPM/CvxkZgejV1M
-         V5ZhLsaY8Biglougf+bjetJrouBOl0BxfcWP1PAW4roHVdOJDl9CZuDD6yceAUmHAxgG
-         7HoA==
+        d=suse.com; s=google; t=1783525562; x=1784130362; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=f/mdlbu7kxNAYQt2PwbA0grJPU5KW1EejarCbBPlRO8=;
+        b=V9o0/GIUUfwXKE6Si0vT9XcZGfRtCEAITKFydTRSMtxOkifhRtmp/MtdeuBSvQjlah
+         GKs0jcAl1dbNwep3X2epdX94A1E2PRCE/RJiQzscSyYA+100AJlBrKKtfaJDQR7m4qkR
+         MweaN2SaoTQVXZzo+CbE6iStSMIrM4q/CBP5yJG7R81GdmoVDUVD+GVaUICIey6oYKd8
+         c0/nveapDqgLkjDAcqEvEelk984mV+G/mTYHz2PA9ukpzmVGFCRmoyUTJUuTmnoF/KXq
+         /H2ps2dV9sdcW0mO39x4tQ2SC1Bv8NBxCJ8uQ5aycxoeyR9m8B7y7ZQSTbchyM/Rw7cS
+         uAKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783516161; x=1784120961;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hsBQU5mcTVdYUucmcqEpkwbojCtOIWzKkEYP8GQ9mQ4=;
-        b=MCecAPjTRTxxl65d+dWn+5K+TASlBUzxse8dhirhSLLpXx/5wCCQ/nX6iP1ERyiOyC
-         ZPjtZ1WJY+2F6QmcVwTrp5Jg43vYlNsbQQ/xPt0Dt6SQq9q2BWrOfa7GRM2RYkmvbofQ
-         grLt2keKxazQuPU0KN+2/CNkQnmkBwOlojdtRH85i5K3FHP1OAnyuZxGNhyvSxjjTVcI
-         C0+sPNYRBO+ZigrEx/SEmVtjtLLrLbI570twX5e+ZbIrywMn/pNBqahiVP0qlmIcMrcI
-         5ZXk7ULUGqBxpsUkCugM4S+bbgZzClK5ki2zWISHNGwCPoxmeKg10KXgjmZUnjIxJcCW
-         6wWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoAqzWj342R/gExPd7oHjJMI7w+dd6LHKQIGVxGQbYpIpj+wi3UDwWSqSMIMgOhpU5Qg4LAbsCPqlO26w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHRGMn/8lJeptCcz8UFLTcccbnLS7aMsGXSgjvBqSmT169XZNv
-	FaZSXFu6RBiTSDsXMSh3r5UW0QB1SOP+FcFd2Gu7o5nLkn89yi9CCKIfUGN7JFr0fCnUgT37IUE
-	PMHfjSBC23QrDr3+wnBJd7mBB5/8aZ6o=
-X-Gm-Gg: AfdE7ckzzKdVX+PR2cu7MKvM1ARJbFvkWzU0tbL4+GeDfppk90Fp7A5K/hCH6X3shOc
-	DUvWNXelJqFe6qeExqOsUBU0JLzZDoQJjyMUZoot6oFzcyJoFZOXwxw3inrIDh8F0JNFXE99Ztu
-	LXeCrSC4NlXoNuqEZgt4kxM6ketQQ3+MKaXP83DxXeHaRROAuvBdppjGxjOQmBDBFclssdAnaYx
-	kwdkFJPpgpqtkOw62GSDo08NwrIyq6mHJXuWkroApy3Fj7cQSzcROkovb2Ivk/bUTagK6kvuw==
-X-Received: by 2002:a05:6102:3e17:b0:729:cc7c:7de2 with SMTP id
- ada2fe7eead31-744e000d349mr1220107137.10.1783516161146; Wed, 08 Jul 2026
- 06:09:21 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783525562; x=1784130362;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f/mdlbu7kxNAYQt2PwbA0grJPU5KW1EejarCbBPlRO8=;
+        b=JNpdRG8WG/Ol0o3Bf7PVwPCChPhsWhkRjY3cG0ksoO96KFpTpZQ346eT9WfHFG6MSD
+         i71zu0qzJXDcI2R6AcA/xC34txOJIUUTC6UGW6T1FhX2eIRDm7XSM/z76jvZ+Ph/e6vA
+         DnEiW8yRNEXv0TEbuZYWE8n4ubsE6fyR4OAdWAtA4kldiSUJc2JHlFrLFgPQFCyprcGM
+         Wu5EkIICbj8sFEe9xIB96lIYAMprON3g+gZF5i1kQdMsJ6y/ZZZCAhzgRxvFXAIZQdp1
+         veLNxVV/kjKq5YxgOcqIMiYzHK/NMLaTx5rs+XPswVVD8jUXn+pPCGRO6KxpCR4MGI9g
+         PUDA==
+X-Forwarded-Encrypted: i=1; AHgh+RoBrTiR+QYW5G0yjdtPqktbAd4WFUTWEkQCwaTSX+RE2oCu8IWs9F5ahL8F0ncRUKX157LFx3+RadbSaQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAlgmCvR5e10V//PCwK/G6GlTjaVidkQTGKfzPr/sOPhjpSoVi
+	ZBO0lq2W5XjE5ZkLPC+uWOcvmN/EN0A7Ehw788hG5v10hBQxOKG8t+DfhX55R2gEgzo=
+X-Gm-Gg: AfdE7clOT+4thqWDTwGkfHQ4VZOQxmomDPtnLXJmEZtX/J14B6r+2kXqbzt0T577WgT
+	+C9/otbN+iYXa2msZ6h97IwKbw42JFE4+dzTkxSEdTqKy+IqIMrcb2vS/dgbcYPP8/htsf7shSX
+	ccQ1r+smsZX85YmKPodjz8T4qKnAyfXhOLMivi00yntL95TUvKm6k7HY5Qm7y6xBy6IWq+hWxdO
+	HKIRmiYGdF6yHgxI6p8cZVd6hgK50zlg0ufwSuWDe58QhpQ7mNXEeXosULMsI8DoA1DWY0jqQuv
+	XIYz2VGxS/ZUFFTJt/AwYIYTV+SAsGH+CNOdXsqtKSSlH8qS+wfXTQHoFW+Ghh5cEjp/ExsS1Zq
+	JkwIDHFx4PvXrj4G8xlQJwqUZ/MCygcctGvWe7S3qR9eXnZiVbIipWUDFo8lh9HD+6HbmIbklez
+	bCqgvLV5URwMJJtgmozwl+U12FDqvUzsY5nKkjNebL
+X-Received: by 2002:a05:6000:4304:b0:46d:55a5:8ec5 with SMTP id ffacd0b85a97d-47df078bbffmr3378920f8f.33.1783525561596;
+        Wed, 08 Jul 2026 08:46:01 -0700 (PDT)
+Received: from zovi.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d780csm44806847f8f.11.2026.07.08.08.45.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 08:46:01 -0700 (PDT)
+From: Petr Pavlu <petr.pavlu@suse.com>
+To: Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Philipp Reisner <philipp.reisner@linbit.com>,
+	Lars Ellenberg <lars.ellenberg@linbit.com>,
+	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Michal Januszewski <spock@gentoo.org>,
+	Helge Deller <deller@gmx.de>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <cel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	drbd-dev@lists.linux.dev,
+	linux-block@vger.kernel.org,
+	greybus-dev@lists.linaro.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-acpi@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	cgroups@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH 0/2] Bring includes in linux/kmod.h up to date
+Date: Wed,  8 Jul 2026 17:44:28 +0200
+Message-ID: <20260708154510.6794-1-petr.pavlu@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2026070710-exact-unveiling-e321@gregkh> <20260708060307.12237-1-andrem.33333@gmail.com>
- <2026070828-arrange-degrading-a2ed@gregkh>
-In-Reply-To: <2026070828-arrange-degrading-a2ed@gregkh>
-From: Andre Moreira <andrem.33333@gmail.com>
-Date: Wed, 8 Jul 2026 10:09:09 -0300
-X-Gm-Features: AUfX_my45Q2tevoGqF5EtS1St9Km9BvGWs-C4r7mC4HKR6GOpox7QrqhzNm-z54
-Message-ID: <CACO0qFJhE-p1NfEo-oVfVrrmxr=QUmOy0L3OihE6yTd=CeQQiw@mail.gmail.com>
-Subject: Re: [PATCH v6] staging: sm750fb: Remove unused variable 'setAllEngOff'
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>, Teddy Wang <teddy.wang@siliconmotion.com>, 
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:tony.luck@intel.com,m:bp@alien8.de,m:tglx@kernel.org,m:mingo@redhat.com,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:philipp.reisner@linbit.com,m:lars.ellenberg@linbit.com,m:christoph.boehmwalder@linbit.com,m:axboe@kernel.dk,m:johan@kernel.org,m:elder@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:spock@gentoo.org,m:deller@gmx.de,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:trondmy@kernel.org,m:anna@kernel.org,m:cel@kernel.org,m:jlayton@kernel.org,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle.com,m:tom@talpey.com,m:mark@fasheh.com,m:jlbec@evilplan.org,m:joseph.qi@linux.alibaba.com,m:tj@kernel.org,m:hannes@cmpxchg.org,m:mkoutny@suse.com,m:mcgrof@kernel.org,m:petr.pavlu@suse.com,m:da.gomez@kernel.org,m:samitolvanen@google.com,m:atomlin@atomlin.com,m:pavel@kernel.org,m:lenb@kernel.org,m:akpm@linux-foundation.org,m:dakr@kernel.org,m:razor@blackwall.org,m:idosch@nvidia.com,m:davem@davemloft.net,m:e
+ dumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:dhowells@redhat.com,m:jarkko@kernel.org,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:takedakn@nttdata.co.jp,m:penguin-kernel@I-love.SAKURA.ne.jp,m:linux-edac@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:drbd-dev@lists.linux.dev,m:linux-block@vger.kernel.org,m:greybus-dev@lists.linaro.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-acpi@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-fsdevel@vger.kernel.org,m:linux-nfs@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:cgroups@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-pm@vger.kernel.org,m:driver-core@lists.linux.dev,m:bridge@lists.linux.dev,m:netdev@vger.kernel.org,m:keyrings@vger.kernel.org,m:linux-security-module@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7895-lists,linux-fbdev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sudipm.mukherjee@gmail.com,m:teddy.wang@siliconmotion.com,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[andrem33333@gmail.com,linux-fbdev@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,siliconmotion.com,vger.kernel.org,lists.linux.dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-7896-lists,linux-fbdev=lfdr.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER(0.00)[petr.pavlu@suse.com,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[intel.com,alien8.de,kernel.org,redhat.com,linux.intel.com,zytor.com,linbit.com,kernel.dk,linuxfoundation.org,gentoo.org,gmx.de,zeniv.linux.org.uk,suse.cz,brown.name,oracle.com,talpey.com,fasheh.com,evilplan.org,linux.alibaba.com,cmpxchg.org,suse.com,google.com,atomlin.com,linux-foundation.org,blackwall.org,nvidia.com,davemloft.net,paul-moore.com,namei.org,hallyn.com,nttdata.co.jp,I-love.SAKURA.ne.jp];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[petr.pavlu@suse.com,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andrem33333@gmail.com,linux-fbdev@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[linux-fbdev];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[77];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-fbdev];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.com:from_mime,suse.com:dkim,suse.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 58973726AEE
+X-Rspamd-Queue-Id: 752BA7287CE
 
-Hi Greg,
+The usermode helper declarations were previously provided by linux/kmod.h
+but commit c1f3fa2a4fde ("kmod: split off umh headers into its own file")
+moved them to linux/umh.h in 2017. Add explicit includes of linux/umh.h to
+files that use usermode helpers and remove linux/kmod.h where it is no
+longer needed.
 
-Please disregard this patch. Upon rebasing against staging-testing, I
-noticed that 'setAllEngOff' was recently renamed to 'set_all_eng_off'
-and its value is now actually being read/used inside
-drivers/staging/sm750fb/ddk750_chip.c.
+Then clean up linux/kmod.h so that it includes only the headers that it
+actually requires, importantly removing the compat linux/umh.h include.
 
-Thank you for your time!
+Apologies for the wide distribution.
 
-Regards,
-Andr=C3=A9
+This cleanup is motivated by trying to reduce the preprocessed size of
+linux/module.h, which includes linux/kmod.h. The linux/module.h header is
+included by every *.mod.c file to provide `struct module` and other related
+definitions, so it should avoid pulling in unnecessary dependencies. Note
+that this series doesn't immediately improve the situation, since most of
+the files included by linux/kmod.h are, for now, also included by
+linux/module.h through other paths.
 
-Em qua., 8 de jul. de 2026 =C3=A0s 09:01, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> escreveu:
->
-> On Wed, Jul 08, 2026 at 03:03:07AM -0300, Andr=C3=A9 Moreira wrote:
-> > The variable 'setAllEngOff' within the 'init_status' struct is only
-> > set to zero during setup but its value is never read anywhere else
-> > in the driver. Remove it entirely to clean up the code.
-> >
-> > Signed-off-by: Andr=C3=A9 Moreira <andrem.33333@gmail.com>
-> > ---
-> > v6:
-> >   - Change patch approach from renaming CamelCase to entirely removing
-> >     the unused 'setAllEngOff' variable, based on Greg KH's feedback.
->
-> This doesn't apply to my tree at all.  Can you rebase against the
-> staging-testing branch and resend?
->
-> thanks,
->
-> greg k-h
+Petr Pavlu (2):
+  umh, treewide: Explicitly include linux/umh.h where needed
+  module: Bring includes in linux/kmod.h up to date
+
+ arch/x86/kernel/cpu/mce/dev-mcelog.c |  2 +-
+ drivers/block/drbd/drbd_nl.c         |  1 +
+ drivers/greybus/svc_watchdog.c       |  1 +
+ drivers/macintosh/windfarm_core.c    |  1 +
+ drivers/pnp/pnpbios/core.c           |  2 +-
+ drivers/video/fbdev/uvesafb.c        |  1 +
+ fs/coredump.c                        |  2 +-
+ fs/nfs/cache_lib.c                   |  2 +-
+ fs/nfsd/nfs4layouts.c                |  2 +-
+ fs/nfsd/nfs4recover.c                |  1 +
+ fs/ocfs2/stackglue.c                 |  1 +
+ include/linux/kmod.h                 | 12 ++----------
+ kernel/cgroup/cgroup-v1.c            |  1 +
+ kernel/module/kmod.c                 |  1 +
+ kernel/power/process.c               |  2 +-
+ kernel/reboot.c                      |  2 +-
+ kernel/umh.c                         |  2 +-
+ lib/kobject_uevent.c                 |  2 +-
+ net/bridge/br_stp_if.c               |  2 +-
+ security/keys/request_key.c          |  2 +-
+ security/tomoyo/common.h             |  2 +-
+ 21 files changed, 22 insertions(+), 22 deletions(-)
+
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+-- 
+2.54.0
+
 
