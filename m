@@ -1,233 +1,196 @@
-Return-Path: <linux-fbdev+bounces-7922-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7933-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id e4+LCbncUWrVJgMAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7922-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:03:37 +0200
+	id yBa/BC/zUWoRKwMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7933-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 09:39:27 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4D17407C2
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:03:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8F4740C0E
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 09:39:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=rz1xcUgX;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=8fCXSY9c;
-	dmarc=pass (policy=quarantine) header.from=goldelico.com;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7922-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7922-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mfw1unyu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7933-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7933-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 41ECD3002B59
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 06:03:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D1EB3015A5D
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 07:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E3D33123F;
-	Sat, 11 Jul 2026 06:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1695D37A83F;
+	Sat, 11 Jul 2026 07:39:24 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mo4-p04-ob.smtp.rzone.de (mo4-p04-ob.smtp.rzone.de [81.169.146.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2873731D362;
-	Sat, 11 Jul 2026 06:02:46 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783749769; cv=pass; b=e2pAqdVH7UpVc7yTiU6rQzypCZwqTYpTxa3fQiNibTyd5CYHjQQHU5i7rC/9SC+zqYPUX0EWZEClUttTPMYmQxe4RMeeH1dM0YASe5hyqAmuEONjhMtr86G9Zgy7nEdEI8GdBOP7VYIaAoP9n/GC6f7cu+H5gCC9JTaJgDSmHV4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783749769; c=relaxed/simple;
-	bh=k8TcFAtq5OzJ3ShLEbgL/dHs7mnwdxGIlUgLItpZfJw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cK9qEmf92JiUxFSt2+ot1I4UKytZKbEvvcdjSirdwkoMLIQ3ETwPfUCpL9Qwc18BZ7m4SMuuhH4rMekKp+jEeh26ioDKTA7YQeaj2yOtPofxj2l9Yg2e2DvOvmArRUXLBiFyaJfPnWSuvOmJkIROYBuwhRFmgpZf36Q8ZPkZ2bM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=rz1xcUgX; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=8fCXSY9c; arc=pass smtp.client-ip=81.169.146.177
-ARC-Seal: i=1; a=rsa-sha256; t=1783749748; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=TwQnfT3mm1kEvuObLqPH26UYG9JlnWXuJEm4kkLExiYeF2ITQRRyvAmjz+RFzYzbz8
-    oH7pXl9wIj6nyfDIWt3eZ2QFING/+AaK0StdVkNmVaK8U+cmolfy12LLsyVFXmi2zWEy
-    Sm+NE5bmhhExGCcEuv3tSK9L2okCTrAVccjj9PiwWI9mKP5EPW0E3m2jFo8yBmSb4TVB
-    HsqoS9B27maxZmSIxSRIxOw/q0tMEEJnt48uD3HiItjJQ9Do6sNXw52+jQkMDVAMIlho
-    IXJbOvmTVvEupOus0KUL0UfQQGuKYN2651qlUKTibpnBArkwXNEN85V4IgeLOVDPJnKy
-    hcpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749748;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=cPc+/CQe6kjMaEdJWNjK4a7APvXUbTuseVN/eSOqRFw=;
-    b=sAKoWEC1jnAcNNC298HRqiXR+voHv8x7alycw5gAyhMegt7Xt2kJfxJL5Lg8nzhq1L
-    ElvUJu031bdmnfcPnetnKM9ceKPC6zziCrB7ZYa0aWK6d9ylI8zGW563Mmm6Lw6BKA33
-    WxG9/yXUnWWQWcx+xY6lu0PLEYgVy7H/FnvumgKtvjtqXxe4nOqq751gJkTyySOxCMKC
-    h5Yb6wupre4S8JXFis+eeX9DhUEKvysdBKQMMoCIvwnyOHOmWQ9It5qk6TnfTOUJdEVv
-    6J+Rt0W0MjDbchKj5kj3Q4+cKZYBsqOowKXs0XrOdojj3POZruK1MLcdRynitqZX/aSm
-    qM+Q==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo04
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749748;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=cPc+/CQe6kjMaEdJWNjK4a7APvXUbTuseVN/eSOqRFw=;
-    b=rz1xcUgXG3oRwXWGuBq9YszLtX8ZK6SlaG17IH5YGrw3A7mrDOpTZAdcMhUxTxwCvZ
-    WG24sV2w6GG8tUs96rLlTJfrmcyA0C2442CcDjyZktLAwPHJH1x+wKLxwSlx+KaUFfeb
-    x3g3P4XCuqDy1XuDP3zt/c0SWmxoEWs8KzDG+upus9n0ArC9U2XaRsvNtZY+bQx1StBd
-    sArlVmTF3cwaIvzb34IbieodXXRUo0W2iz0QW5I8RvLUw4uD/RUdY52Jntd187lkRE6i
-    NFiy+im6XC1ahh5DJAQDthZDJk7cHrI53Tn69al0UEzzoAhG688PZB1f/hQkzCGNSOQF
-    mmGw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783749748;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=cPc+/CQe6kjMaEdJWNjK4a7APvXUbTuseVN/eSOqRFw=;
-    b=8fCXSY9c1lXBeUHph8ovftMufel8JVUOdBANz0/iwCW3aXTxsZf4vEfOCYgOzusoqD
-    OHE3a0UTXw2vRS3huIAg==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9qVpwcQVkPW4I1HrT35oLmciNszeF4HOToVDOd6S1gdjuILE2MKVd"
-Received: from iMac.fritz.box
-    by smtp.strato.de (RZmta 55.5.6 AUTH)
-    with ESMTPSA id Q4b76426B62QGi2
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sat, 11 Jul 2026 08:02:26 +0200 (CEST)
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-To: Grond <grond66@riseup.net>,
-	Stefan Leichter <sle85276@gmx.de>,
-	"H . Nikolaus Schaller" <hns@goldelico.com>,
-	Grazvydas Ignotas <notasas@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Lee Jones <lee@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Sen Wang <sen@ti.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Niranjan H Y <niranjan.hy@ti.com>
-Cc: letux-kernel@openphoenux.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	kernel@pyra-handheld.com,
-	mfd@lists.linux.dev
-Subject: [PATCH 16/16] arm: omap2: remove remaining pdata-quirks for pandora legacy devices
-Date: Sat, 11 Jul 2026 08:02:03 +0200
-Message-ID: <d380941287c655a3d205ee8b08516d364c0ddec9.1783749722.git.hns@goldelico.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1783749722.git.hns@goldelico.com>
-References: <cover.1783749722.git.hns@goldelico.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12263603C9;
+	Sat, 11 Jul 2026 07:39:22 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783755564; cv=none; b=figbmxlYmNac40EIKmFKzzolAa0HU2nsyiQGJXhSpl3mcJHF6BBZXZRBdFF40od0F+gCheeNWzp/XxE/BU375UCtFxcYxPpZr65PYIMh16tyCdEvUeLohGfsNNkVVPGlVrmyznv1nCz2xgJbfx02M4sK0VoSDg7SgFVgTVeROtI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783755564; c=relaxed/simple;
+	bh=EwEusek1czoOpXHbaygqhpMtyKAbqtWqGBgOiD2R2ME=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=ufH57enqNjMmhf+uXbYftrSubVQbJvc2ZbMFSzJbsMLdQsiZ7uApTi9ZLOxhoZ3VrXoT3WNflPlHsuNyT6rH/x++Br7H9EXCWyph7NsPPv8iUnCFmNLs3trzkTJjgNJG3r8MU1x4g4sVbDnU0209f/IGjwolQfezXLltS7cFPLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfw1unyu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308CA1F000E9;
+	Sat, 11 Jul 2026 07:39:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783755562;
+	bh=TYtjAVPyiyVCs7rEX4PjUS/qYasF91VWIyzMuMsClWc=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=mfw1unyuyde0ALrJe/zfiLZV52Hf0qQbPaw+v/si5t6SCNDG+XDDrpRyzh4VfeRR3
+	 PFkxRkHui1szF8apGh0eXyqKpWrtX/+h1xHkgpNha6Kqe7VfPJSgswBIGohK1t/Qy1
+	 XS56RLqs4XmG1GENPccTJVaXXqajFIYGcKDpoWsztu37CxAw5raopZPOBSKu62msBm
+	 J008e0O1weHW8gBfv8rQZGmkqETkt3qs9p6Zo7zgVwMnknuTCOgFM/6YIgHR4iIxBB
+	 gJyJBaIhWl0aipIst8kQhZGIP7a+JrSt7nLr2rGd4O9EEcOXj+DhDcBWZto7L/DHKg
+	 l9GYOiIPrY96w==
+Date: Sat, 11 Jul 2026 02:39:21 -0500
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-omap@vger.kernel.org, 
+ Richard Fitzgerald <rf@opensource.cirrus.com>, 
+ Charles Keepax <ckeepax@opensource.cirrus.com>, kernel@pyra-handheld.com, 
+ Lee Jones <lee@kernel.org>, linux-fbdev@vger.kernel.org, 
+ Jaroslav Kysela <perex@perex.cz>, Roger Quadros <rogerq@kernel.org>, 
+ Tony Lindgren <tony@atomide.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Stefan Leichter <sle85276@gmx.de>, Arnd Bergmann <arnd@arndb.de>, 
+ linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ Takashi Iwai <tiwai@suse.com>, Niranjan H Y <niranjan.hy@ti.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Jarkko Nikula <jarkko.nikula@bitmer.com>, 
+ Grazvydas Ignotas <notasas@gmail.com>, 
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>, 
+ linux-arm-kernel@lists.infradead.org, letux-kernel@openphoenux.org, 
+ Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
+ dri-devel@lists.freedesktop.org, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Kevin Hilman <khilman@baylibre.com>, Sen Wang <sen@ti.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Helge Deller <deller@gmx.de>, 
+ Andreas Kemnade <andreas@kemnade.info>, 
+ Daniel Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, 
+ Grond <grond66@riseup.net>, Conor Dooley <conor+dt@kernel.org>, 
+ linux-sound@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>, 
+ devicetree@vger.kernel.org, mfd@lists.linux.dev
+To: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <7989e699de400c0fe3f0cb7af77a54077784df78.1783749722.git.hns@goldelico.com>
+References: <cover.1783749722.git.hns@goldelico.com>
+ <7989e699de400c0fe3f0cb7af77a54077784df78.1783749722.git.hns@goldelico.com>
+Message-Id: <178375556058.2516925.10169600172051423562.robh@kernel.org>
+Subject: Re: [PATCH 09/16] ASoC: dt-bindings: add OpenPandora Sound Card
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-2.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[goldelico.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[goldelico.com:s=strato-dkim-0002,goldelico.com:s=strato-dkim-0003];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:grond66@riseup.net,m:sle85276@gmx.de,m:hns@goldelico.com,m:notasas@gmail.com,m:tony@atomide.com,m:enelsonmoore@gmail.com,m:jarkko.nikula@bitmer.com,m:s.hauer@pengutronix.de,m:andreas@kemnade.info,m:lee@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:aaro.koskinen@iki.fi,m:khilman@baylibre.com,m:rogerq@kernel.org,m:linux@armlinux.org.uk,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:deller@gmx.de,m:perex@perex.cz,m:tiwai@suse.com,m:sen@ti.com,m:rf@opensource.cirrus.com,m:arnd@arndb.de,m:srinivas.kandagatla@oss.qualcomm.com,m:kuninori.morimoto.gx@renesas.com,m:ckeepax@opensource.cirrus.com,m:niranjan.hy@ti.com,m:letux-kernel@openphoenux.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-omap@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:kernel@pyra-handheld.com,m:mfd@l
- ists.linux.dev,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[riseup.net,gmx.de,goldelico.com,gmail.com,atomide.com,bitmer.com,pengutronix.de,kemnade.info,kernel.org,iki.fi,baylibre.com,armlinux.org.uk,perex.cz,suse.com,ti.com,opensource.cirrus.com,arndb.de,oss.qualcomm.com,renesas.com];
-	FORGED_SENDER(0.00)[hns@goldelico.com,linux-fbdev@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[41];
+	TAGGED_FROM(0.00)[bounces-7933-lists,linux-fbdev=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[40];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-7922-lists,linux-fbdev=lfdr.de];
-	DKIM_TRACE(0.00)[goldelico.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hns@goldelico.com,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:linux-omap@vger.kernel.org,m:rf@opensource.cirrus.com,m:ckeepax@opensource.cirrus.com,m:kernel@pyra-handheld.com,m:lee@kernel.org,m:linux-fbdev@vger.kernel.org,m:perex@perex.cz,m:rogerq@kernel.org,m:tony@atomide.com,m:krzk+dt@kernel.org,m:sle85276@gmx.de,m:arnd@arndb.de,m:linux-kernel@vger.kernel.org,m:broonie@kernel.org,m:tiwai@suse.com,m:niranjan.hy@ti.com,m:linux@armlinux.org.uk,m:jarkko.nikula@bitmer.com,m:notasas@gmail.com,m:srinivas.kandagatla@oss.qualcomm.com,m:linux-arm-kernel@lists.infradead.org,m:letux-kernel@openphoenux.org,m:aaro.koskinen@iki.fi,m:enelsonmoore@gmail.com,m:dri-devel@lists.freedesktop.org,m:kuninori.morimoto.gx@renesas.com,m:khilman@baylibre.com,m:sen@ti.com,m:s.hauer@pengutronix.de,m:deller@gmx.de,m:andreas@kemnade.info,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:grond66@riseup.net,m:conor+dt@kernel.org,m:linux-sound@vger.kernel.org,m:lgirdwood@gmail.com,m:devicetree@vger.kernel.org,m:mfd@lists.linux.dev,m:hns@goldelico.com,m:k
+ rzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[robh@kernel.org,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,linux-fbdev@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,opensource.cirrus.com,pyra-handheld.com,kernel.org,perex.cz,atomide.com,gmx.de,arndb.de,suse.com,ti.com,armlinux.org.uk,bitmer.com,gmail.com,oss.qualcomm.com,lists.infradead.org,openphoenux.org,iki.fi,lists.freedesktop.org,renesas.com,baylibre.com,pengutronix.de,kemnade.info,riseup.net,lists.linux.dev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,goldelico.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5C4D17407C2
+X-Rspamd-Queue-Id: 6C8F4740C0E
 
-After updating the pandora-backligt setup and removing the omap3pandora
-sound system and defining related gpios by device tree, we can remove
-omap3_pandora_legacy_init() and the related legacy devices completely.
 
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
----
- arch/arm/mach-omap2/pdata-quirks.c | 23 -----------------------
- 1 file changed, 23 deletions(-)
+On Sat, 11 Jul 2026 08:01:56 +0200, H. Nikolaus Schaller wrote:
+> The OpenPandora audio subsystem describes the routing links between the
+> OMAP3 McBSP interface, the external PCM1773 DAC, and the TWL4030 audio
+> codec, alongside amplifiers and power supplies.
+> 
+> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> ---
+>  .../sound/openpandora,omap3pandora-sound.yaml | 94 +++++++++++++++++++
+>  1 file changed, 94 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.yaml
+> 
 
-diff --git a/arch/arm/mach-omap2/pdata-quirks.c b/arch/arm/mach-omap2/pdata-quirks.c
-index b947bacf23a37..aca7097a692ed 100644
---- a/arch/arm/mach-omap2/pdata-quirks.c
-+++ b/arch/arm/mach-omap2/pdata-quirks.c
-@@ -268,27 +268,6 @@ static void __init omap3_logicpd_torpedo_init(void)
- 	omap3_gpio126_127_129();
- }
- 
--/* omap3pandora legacy devices */
--
--static struct platform_device pandora_backlight = {
--	.name	= "pandora-backlight",
--	.id	= -1,
--};
--
--static struct gpiod_lookup_table pandora_soc_audio_gpios = {
--	.dev_id = "soc-audio",
--	.table = {
--		GPIO_LOOKUP("gpio-112-127", 6, "dac", GPIO_ACTIVE_HIGH),
--		GPIO_LOOKUP("gpio-0-15", 14, "amp", GPIO_ACTIVE_HIGH),
--		{ }
--	},
--};
--
--static void __init omap3_pandora_legacy_init(void)
--{
--	platform_device_register(&pandora_backlight);
--	gpiod_add_lookup_table(&pandora_soc_audio_gpios);
--}
- #endif /* CONFIG_ARCH_OMAP3 */
- 
- #ifdef CONFIG_SOC_DRA7XX
-@@ -514,8 +493,6 @@ static struct pdata_init pdata_quirks[] __initdata = {
- 	{ "ti,omap3-evm-37xx", omap3_evm_legacy_init, },
- 	{ "ti,am3517-evm", am3517_evm_legacy_init, },
- 	{ "technexion,omap3-tao3530", omap3_tao3530_legacy_init, },
--	{ "openpandora,omap3-pandora-600mhz", omap3_pandora_legacy_init, },
--	{ "openpandora,omap3-pandora-1ghz", omap3_pandora_legacy_init, },
- #endif
- 	{ /* sentinel */ },
- };
--- 
-2.50.1 (Apple Git-155)
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.yaml:10:2: [warning] wrong indentation: expected 2 but found 1 (indentation)
+./Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.yaml:13:2: [warning] wrong indentation: expected 2 but found 1 (indentation)
+./Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.yaml:18:2: [warning] wrong indentation: expected 2 but found 1 (indentation)
+./Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.yaml:56:2: [warning] wrong indentation: expected 2 but found 1 (indentation)
+./Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.yaml:62:2: [warning] wrong indentation: expected 2 but found 1 (indentation)
+
+dtschema/dtc warnings/errors:
+Traceback (most recent call last):
+  File "/usr/local/bin/dt-doc-validate", line 8, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/doc_validate.py", line 66, in main
+    ret |= check_doc(f)
+           ~~~~~~~~~^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/doc_validate.py", line 29, in check_doc
+    for error in sorted(dtsch.iter_errors(), key=lambda e: e.linecol):
+                 ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 167, in iter_errors
+    self.validator = self.DtValidator(registry.contents(meta_schema_id), registry=registry)
+                                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 488, in contents
+    return self[uri].contents
+           ~~~~^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 338, in __getitem__
+    raise exceptions.NoSuchResource(ref=uri) from None
+referencing.exceptions.NoSuchResource: 'http://devicetree.org'
+Lexical error: Documentation/devicetree/bindings/sound/pcm1773.example.dts:20.37-52 Unexpected 'GPIO_ACTIVE_LOW'
+FATAL ERROR: Syntax error parsing input tree
+make[2]: *** [scripts/Makefile.dtbs:140: Documentation/devicetree/bindings/sound/pcm1773.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1705: dt_binding_check] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/7989e699de400c0fe3f0cb7af77a54077784df78.1783749722.git.hns@goldelico.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 
