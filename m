@@ -1,254 +1,288 @@
-Return-Path: <linux-fbdev+bounces-7915-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7931-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id REy4BRj9UGp79gIAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7915-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Jul 2026 16:09:28 +0200
+	id P7UVBtbdUWobJwMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7931-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:08:22 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE8E73B9F9
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Jul 2026 16:09:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645F7740893
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:08:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7915-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7915-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b="Jv/FjH7Q";
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=VQOxmGic;
+	dmarc=pass (policy=quarantine) header.from=goldelico.com;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7931-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7931-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5A10A30093AF
-	for <lists+linux-fbdev@lfdr.de>; Fri, 10 Jul 2026 13:58:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E6A03051D19
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 06:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B809282F38;
-	Fri, 10 Jul 2026 13:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC8C31DD96;
+	Sat, 11 Jul 2026 06:05:27 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022132.outbound.protection.outlook.com [52.101.101.132])
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8BC264617;
-	Fri, 10 Jul 2026 13:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D1C31D362;
+	Sat, 11 Jul 2026 06:05:24 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783691889; cv=fail; b=VyVOlZ5GtoNiN4KKPH3tiqvKbd+JwsYCPLfGWty3Xpak+mugJVE8Fo48Oq0oReMrU2f7GygS9f/YuzpPZ16x/duuAOgsgl51xWT69vUf96fvvaljJem7IvzZmGkyBsbHNtl3oMras18YViM6WIdb7270ghJ4RjhepE47+lsMeKc=
+	t=1783749927; cv=pass; b=f6KjP/WY4uj6RbeuaCOfh4N7mWKkUxavUFwXozeJUNUvZwvF0Js3Yn1IS3wpYvi/6cmOFY0odK43m09jL4xu+tvnolfQc+SpBQm+zkbz4RFZM53cMoX3Ak1/6SLSLGGp0sIXKPGQ9Gt6Py/pF1yqInT3E9fNMwsg30pff3shsaI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783691889; c=relaxed/simple;
-	bh=6eJeERqTvv+GRnv6l7TjuRzD7mM+GPY1jDfugYDmxoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gwSBWujab0UrgUo51G1wKDp6fP9vc1C72Oj6mrVtVEPZbdjdFQYW+lT37HRoraMY0QNMxtTFQtene1dPp4+G9MARwooRGVo8NllcQTwv/GIS1Y4BX+GSl0oa7IiCy7eikZaT+fv8TIsn0uQML4UcL9t12ojlQujaU2fh5Q/Wx/c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com; spf=pass smtp.mailfrom=atomlin.com; arc=fail smtp.client-ip=52.101.101.132
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d/UKidZW2yROLKPKhG9FiE0erou4BUfd55Lpt15BZFxg3TnBGnPR22WFAO/P5qeCVZTzla5KVq7FF2+sjL6f/eVU9L8aCA+A9v13lM7J79ByPmXSV1PYBna1DtAaik2hyvjy4laCdRgbioUBXLC4Bsu2FYtS2jE/miouPSlyxPK+PWGvq/gh5oAy2LFEA/OyCKON1T89HSNizgicj4ayd1GVsKNL29AbgMGn+1pZmeJZWElXC7d3/pe/6Caasr/n9gIAbTycOxszYbJr8ToI/OPQ+pXCdVJAgoMz6QcAAWjkwqgACnT6Jgx7VIaRM0WWyH5Es/f/W462mD6eVXlvmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=dNuOHlrDEIkjKR9dIyVx0dXJKses962YAhpOz5OyCDA=;
- b=lphhwxzK+2YMMezx9gCXFikFc8fh60GNYaqcn/uEgPvULionwet/ks1XZC7WgoRlikuNW5mSEDb4KmGWpSwzIhMuODYrOIi6Xi3xBIfHxr4SdkXkiG5rN2rTw+K6NcA4NrXKAs4GCMeLI7tFU5m5cHu9uTxcYHS8WL0PcIEUUk0FkC8GQb+iqBYIqDjRoozdWdRSwDKF4ZwfA+s4scYNhGqfrTHkg41Ilg7LyYc8436wws/Pbl5yXn/QJafbHF6quEKi4CKj7OfdOKQWPXIq1gtW4Wy9LHOU5pUKhMsGhMSTui32I02vQ9zI7XwIroAjHT4OCrtT7okIPgJZm1C8Tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
- dkim=pass header.d=atomlin.com; arc=none
-Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:183::5)
- by LO0P123MB6878.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:30b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.17; Fri, 10 Jul
- 2026 13:57:59 +0000
-Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- ([fe80::cec4:77ab:262e:d230]) by CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- ([fe80::cec4:77ab:262e:d230%4]) with mapi id 15.21.0181.014; Fri, 10 Jul 2026
- 13:57:59 +0000
-Date: Fri, 10 Jul 2026 09:57:55 -0400
-From: Aaron Tomlin <atomlin@atomlin.com>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Philipp Reisner <philipp.reisner@linbit.com>, Lars Ellenberg <lars.ellenberg@linbit.com>, 
-	Christoph =?utf-8?Q?B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>, Jens Axboe <axboe@kernel.dk>, Johan Hovold <johan@kernel.org>, 
-	Alex Elder <elder@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Michal Januszewski <spock@gentoo.org>, 
-	Helge Deller <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
-	NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Kentaro Takeda <takedakn@nttdata.co.jp>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	drbd-dev@lists.linux.dev, linux-block@vger.kernel.org, greybus-dev@lists.linaro.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, cgroups@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-pm@vger.kernel.org, driver-core@lists.linux.dev, bridge@lists.linux.dev, 
-	netdev@vger.kernel.org, keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH 2/2] module: Bring includes in linux/kmod.h up to date
-Message-ID: <xihlbspozbgwhez2byjatscslutapi3j4rjhpzxebtn2wjmk5a@qf62xs6lyd6q>
-References: <20260708154510.6794-1-petr.pavlu@suse.com>
- <20260708154510.6794-3-petr.pavlu@suse.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260708154510.6794-3-petr.pavlu@suse.com>
-X-ClientProxiedBy: MN2PR07CA0020.namprd07.prod.outlook.com
- (2603:10b6:208:1a0::30) To CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:400:183::5)
+	s=arc-20240116; t=1783749927; c=relaxed/simple;
+	bh=P+CaOCyDEINLPIaTX0fosPO4YvbyfYcjNCNziZbOa1U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mReLmpVSoofg4TMtZP+UeTjPbkJ3ugasSVhn1c8aLgsT082To+hqFpSF8pmBfTzESCd1gewPpiNrYgxNEGrgHAUH6eUwTycO4BUSXnJpVxVcjCm0Xz/ddqFiwIfEWyzG9BZQE5VUirrni+ShIu8f8q/00zZP0Ms+mF3qt/8u4TY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=Jv/FjH7Q; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=VQOxmGic; arc=pass smtp.client-ip=85.215.255.84
+ARC-Seal: i=1; a=rsa-sha256; t=1783749726; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=R1xy+vjV5qGJrZp3bx10t+TOSl93Iw/vG76b8g20LekJuqGlCtnQVAs6vaKz1vBe9G
+    vs7zukbaccMv3BIwll4TDG6SEbJBmv1Shaz/Q1Y9jEgXbLMGeVCHhdPXRrHtlk3At0xR
+    D6hvmhEjziT3ND82R4Fr8Fyhrw66VHWAUXb+jiDdFVjcq0Mfcu/OL/O1jVW2uR8q8F29
+    cOEMBGHY4f0WQkTjfjlqsr5iNfuNJfK7gfCBJFcC2Wb4WgeLDZ9Wf1c39bT0XxtChp8u
+    hCM2brIcZyCdO2iyfc5kAr63e2/fhYHy4qKFbg2LDOq/LFh0L0xy8VWCnD2hCkf1pOt/
+    Bgtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749726;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=55SlABL8sC4/v91Mc2l87z9dg40TyXcYAN1WaabwtgA=;
+    b=QoYeJb9+wBLMRfWj+jYkjq7jsoxyOht91kWkbtZKkPLRwYozYvc8mrS19LOxdMAGW6
+    6du5JmRGvMyrN6cPg+MvWC9o+c12+ie5ZyxfmUOdPosQimyGVV3+8AiI/+zI/l5pZ0JB
+    swZnhbntxVIqpF7wgKvIceCcuZzObRlPI8sNzb35mG7OhALO1bQAaqUK7hbrxohWeAZM
+    syWX/ry7fLJnE2tOoPPYHlHe58NwP0QkIrCmfhjiBtUqYuirx5kQJ9kn05mByJyA2/iE
+    42s8GFhSCGCg/dANzUnhz4kmVnDpfZ96aCTvrEqkbgFxndovBSXirQ3L63urQ9u0JBhi
+    +/FA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749726;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=55SlABL8sC4/v91Mc2l87z9dg40TyXcYAN1WaabwtgA=;
+    b=Jv/FjH7QzkuyigtT8XXK2dwQ2vGQcHzBu9aWuIeAgyAcdv6gxMxDSqiY6pwaSNJSzw
+    wD2mal/H8htwmWvXrBI45troLrwAstuv3kZz1eJxIVeItPL+Vvm97abhVZm5INH+QShk
+    S0fUmJbprZy/3RkBB3MkiZRQ34wLkfGTrf8xfj7rXfWb43fT4pOIHl52srVxlFM8t34Q
+    VV/NNaa61kBSf932uC+GrazstytyFbgtDINJPqWbK34DWd6P48uJ545YS5eMNhFk/pfP
+    bTcZ7nqqj5AfKnM421S/6MOaLGGPxfuOEtxHmEG65+SquAM8oT8yTEJk1VmDvnKKmCwY
+    qBFg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783749726;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=55SlABL8sC4/v91Mc2l87z9dg40TyXcYAN1WaabwtgA=;
+    b=VQOxmGicLvbfDiAUwz97zqTfaoLdmVuKV/V2cinZ5idzgW5WRVnp5mS1n7P6/55AvT
+    Yge9NQzSyXvQXRFfSHDA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9qVpwcQVkPW4I1HrT35oLmciNszeF4HOToVDOd6S1gdjuILE2MKVd"
+Received: from iMac.fritz.box
+    by smtp.strato.de (RZmta 55.5.6 AUTH)
+    with ESMTPSA id Q4b76426B624Ghk
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sat, 11 Jul 2026 08:02:04 +0200 (CEST)
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+To: Grond <grond66@riseup.net>,
+	Stefan Leichter <sle85276@gmx.de>,
+	"H . Nikolaus Schaller" <hns@goldelico.com>,
+	Grazvydas Ignotas <notasas@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Jarkko Nikula <jarkko.nikula@bitmer.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Lee Jones <lee@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Daniel Thompson <danielt@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Sen Wang <sen@ti.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Niranjan H Y <niranjan.hy@ti.com>
+Cc: letux-kernel@openphoenux.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	kernel@pyra-handheld.com,
+	mfd@lists.linux.dev
+Subject: [PATCH 00/16] ARM: omap3: pandora: Modernize audio and backlight to Device Tree to finally remove pdata-quirks
+Date: Sat, 11 Jul 2026 08:01:47 +0200
+Message-ID: <cover.1783749722.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP123MB6607:EE_|LO0P123MB6878:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8889c9a4-a311-464f-0f29-08dede8b401e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|56012099006|4143699003|6133799003|3023799007|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	mnyvn741YVrPSaa0hwDbGrVtBRz+LIw95ja24e6zj7PbDMuYmcaDImgwK2HHFUGJbbEcU/o/lI/aj1VwebZpFhYjn4UNBPq0Wo0aBJiBiHe3jP82n7XKJZaaOP7aQSDCZkIHBBQoRitq/qc/ChGsRVhQZlLuO2WYFbdcf8mxHWu7lyFgatYFUByozN4BGDpucV3Z22SM6P1zRo1UfSTaESZ0Ck2YBy/WwQwcv7s6DVvTKZAUA4umAJCvnwKcMsWOIgi08wNl8E1PsoN2/mL8YDyYDnpKFa6J8iHkbsvfPLYe2jW/d9HrRHB6z62o53M9QTUxNAUefCfoiuWv9y1twRBkQvwlbble7/lJ+bawqZzE8wkMXVxr8aNr3u9oKAx0C9bxaVT8M6uKiA2rFfEScIE1kEubJz/zDxRHlnnN1Z2P+YER/lissTD9b+xKmRg/Sf8q5f8gDV5IQbo1LzG2awcxOlVf/+PlVTFLkqNRWBCpyhv8+9ohJ1AO+/UjiNB3LydrS89QDbi2A/4WcsSDaUxIIBrD5FuHSS2xZ90O6OvPaDYDeRdk4jD2z7K0DIogiyfS9zQitJX/zxK9aOCKHnmB+56lZ73lkP6/8l4ePv2jmJZnAppaQ4FxeFV4zYMyj/IYVUm0ykOl7VLAcDafxE8hRLZtvkgf9+Z4/XhYakQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(56012099006)(4143699003)(6133799003)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZjM4c0FxdHRFbVA2ZVNRdS80bFp5SDQxY3RQYjlGbTB1dDBzUG5zdEhFU2xK?=
- =?utf-8?B?KzFiM2M3a0QvNHptNUlwYzdNVWZIcWs4dlFteHVzSWczWWduUWNUejBmdEZm?=
- =?utf-8?B?aVNBdG1BcWpnd215UjYrb2J4TEc0cFFndzJVdURzdHJWV252bjNPdkh6Nnkx?=
- =?utf-8?B?ODVCN2pHanhmMzVKeXhMM3YyYXhZdExWQzJzdWl0YnhxcERtbUMvaFdvZm5x?=
- =?utf-8?B?aG0xdmk1cGRwNlNTRzJTajFMU1NzcityMERFQWJDL0NZdDhla09yaERpVlNq?=
- =?utf-8?B?UjhKbE1DdVdJZS9zMmZXMGQyNjkwK2dhZ2luUU13Z0J3eWowTUhEeTRqcFRq?=
- =?utf-8?B?elBCS0pTWlhvQWI5K3g0ckRHZU1CQkp0TGx6bk8yNUpWZmRIczB1b2hqYVQr?=
- =?utf-8?B?WkR5VnB4M2R2MGNwaFo5NkdlQUhVQXd5ZWEvYjVxc1l1dU9hUkcvZ29SOWpK?=
- =?utf-8?B?c0JrS0E1ZW1BVkNWNjdZYkZHNHljWW9lR3VHWENzcHY1empXbXNPb3ZwOG5I?=
- =?utf-8?B?aHRiN3JXQTNTQWNnZk1LS0N2RGVNOWMxOHhXWGRsUkxhK3REUG54M21lR0Jr?=
- =?utf-8?B?WjRra2JCeEVZRzhJNFlteExCZ0lacys2MUNXc0lDUnZ2cVVVT0JiMUpqWXJ2?=
- =?utf-8?B?VExGdTFVNHM2azlSek5WczR0SDdOVlZseGhmYmlJQmZ1M2plMFExeHhVRG4v?=
- =?utf-8?B?bytaWFdiSjdWL1dIbGpTNEkxL3FwWjRVdDRXZTBGNFlZNTUyNzJjSXFBNWlk?=
- =?utf-8?B?a3RvQS9GYTV2T0tzZ3h5RGZDcFplb0NHeXExOVl4M2IybkNVSktIbXJCMmM2?=
- =?utf-8?B?eU4vWDZrR29CcFlnZVdCd0tRV2J2TzBoeHBqbmtvTWdwZ3RndUl1ZUJ6Tk1q?=
- =?utf-8?B?ajVVRDIyRHNGTEJ5c3hsQ0N6aEdlaTk0VDZUZDBLeExBVDk3UTlzcmpHdVQr?=
- =?utf-8?B?cUhmdlNiTlhHUGRSUW96S1pGazVTbjBseTVCY0tqY1ViRjVkNEd6USs1WGUv?=
- =?utf-8?B?emhDcW5PTitrNGFCK3N4SG1vNXpCR2dwY212SVJYK3VjaTZEZUM5UzVUcjYv?=
- =?utf-8?B?TXp6bVRoU3BSdWVzaC8rQU95Nndubnd5eFUxQnFyb0JraWZxbTRkVWtLNmpL?=
- =?utf-8?B?VWRqMnhRRkRsVlJ5VWREeUNZWmFRbnFBMEk2VW9rSmpNem1hWisyTVplREIv?=
- =?utf-8?B?akFQbEhzVmt5ZjN5VC9wQThQV29uV1pqYlE4dVh5bE85SnRhQmRHbS9wMzdL?=
- =?utf-8?B?c1NzM1E4UU9iQWlaWUNGSkZUWWVwZDhTMmw2VWcxWjZOZmx5UnBmM3BGb2NW?=
- =?utf-8?B?ejRXR2FGVlFMR0lzQ3NOUFJCZUVlMmhIOGJweE5oSkhBRGx3b2ZOSXdnVnU5?=
- =?utf-8?B?ZEFPckdDcTJqNitIYkVjQTZ6VG90WGNUOGlNS3d3MGsrRktMd2V0Vk1qN0Fz?=
- =?utf-8?B?enovZGxLWWhYdEZMcCswcEtEODZHeWIzZFVPeE9qcWEraUpqR1U4TVd5Q3JE?=
- =?utf-8?B?OGJJUWdDaldocGhIb21FMURjQ2w4dUZYZ21RNmQzMkNWQkVJR0x2anF3RFJt?=
- =?utf-8?B?YVVlV01DaFpUVnBIZXA4SGZhdVVBbnFnVEtieWNQRERwZExPNzZpT1ZNQUFO?=
- =?utf-8?B?dFlyMEh4MEJKTjIzb2NreFFOMTB5MjVQSkpkYUdLekpLc0owbHJPN3RmaW5P?=
- =?utf-8?B?Y2poRGNsbmlWVGJwN3IxUXlZM3o3UDFQQVVIWkdVNitsZDJIaWlTWGliU3RB?=
- =?utf-8?B?VTZnbzNRK3IxMnM0ejFJMEwyM0F2TlhHRTVrOWJpUit5VWF4R2VSQmNMd0t0?=
- =?utf-8?B?Vm9LNStCbTRiYU9xMkdNYVMwR3dCcWx4QnhKMmorcDRYb2xSbkhpUFkxZldC?=
- =?utf-8?B?WEZmMTUxV1pNdHE5cTFUcFkveklZOW1CM1JWSHdFWGpxVUp3OFpvZ0pYVG4v?=
- =?utf-8?B?eWpkK20rb1BOUEZHUFdIUjJucHZ0cjQwNHZIMHRJaEZPbUlzRXE4OHV4STN3?=
- =?utf-8?B?a24zTWlLYnR5QzMyL3FnaWdpVWVmZldHNStkWjNkaUVHaWNidVNNM2tVK1Nx?=
- =?utf-8?B?cHVJMkNYbE5zOElrY24rSy92V1VlWTh3S2lVTWE5S1ZQQU50SzJmbVdsaThK?=
- =?utf-8?B?Q096SWdvQlRSNHMvZWpBSncyM2ZnUk1UU3BJNFZDY01kS00wOS9hNncxWHZH?=
- =?utf-8?B?amtYNmRidWJwVkNNangwdWNXWUxxUitDSjVwM3RaWHBOVkt5S2VHWUQ4cDU3?=
- =?utf-8?B?OGZ6OHhHRVFzaWE0dmdPMkZWNlZsN2ZFQklMcFhCRmdWc0pqM3djSjNPSEh6?=
- =?utf-8?B?eGpaS05KTWFBZ2xBZ2xuU3VWWHVyaVpteWI2UXByMW5EYlVXZ01LUT09?=
-X-OriginatorOrg: atomlin.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8889c9a4-a311-464f-0f29-08dede8b401e
-X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 13:57:59.3246
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hDwfhxFpj9eN2nNEFrA5KAidckTs70TyYQaw5oNwhBSjWpXN0ngpfIvW4gAKhWaf72JIUvICyafxXZ+msFt7yQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P123MB6878
+Content-Type: text/plain; charset=UTF8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.04 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[goldelico.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[goldelico.com:s=strato-dkim-0002,goldelico.com:s=strato-dkim-0003];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:grond66@riseup.net,m:sle85276@gmx.de,m:hns@goldelico.com,m:notasas@gmail.com,m:tony@atomide.com,m:enelsonmoore@gmail.com,m:jarkko.nikula@bitmer.com,m:s.hauer@pengutronix.de,m:andreas@kemnade.info,m:lee@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:aaro.koskinen@iki.fi,m:khilman@baylibre.com,m:rogerq@kernel.org,m:linux@armlinux.org.uk,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:deller@gmx.de,m:perex@perex.cz,m:tiwai@suse.com,m:sen@ti.com,m:rf@opensource.cirrus.com,m:arnd@arndb.de,m:srinivas.kandagatla@oss.qualcomm.com,m:kuninori.morimoto.gx@renesas.com,m:ckeepax@opensource.cirrus.com,m:niranjan.hy@ti.com,m:letux-kernel@openphoenux.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-omap@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:kernel@pyra-handheld.com,m:mfd@l
+ ists.linux.dev,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7915-lists,linux-fbdev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[atomlin.com];
-	FORGED_RECIPIENTS(0.00)[m:petr.pavlu@suse.com,m:tony.luck@intel.com,m:bp@alien8.de,m:tglx@kernel.org,m:mingo@redhat.com,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:philipp.reisner@linbit.com,m:lars.ellenberg@linbit.com,m:christoph.boehmwalder@linbit.com,m:axboe@kernel.dk,m:johan@kernel.org,m:elder@kernel.org,m:gregkh@linuxfoundation.org,m:rafael@kernel.org,m:spock@gentoo.org,m:deller@gmx.de,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:trondmy@kernel.org,m:anna@kernel.org,m:cel@kernel.org,m:jlayton@kernel.org,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle.com,m:tom@talpey.com,m:mark@fasheh.com,m:jlbec@evilplan.org,m:joseph.qi@linux.alibaba.com,m:tj@kernel.org,m:hannes@cmpxchg.org,m:mkoutny@suse.com,m:mcgrof@kernel.org,m:da.gomez@kernel.org,m:samitolvanen@google.com,m:pavel@kernel.org,m:lenb@kernel.org,m:akpm@linux-foundation.org,m:dakr@kernel.org,m:razor@blackwall.org,m:idosch@nvidia.com,m:davem@davemloft.net,m:edumazet@google.com,m:k
- uba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:dhowells@redhat.com,m:jarkko@kernel.org,m:paul@paul-moore.com,m:jmorris@namei.org,m:serge@hallyn.com,m:takedakn@nttdata.co.jp,m:penguin-kernel@i-love.sakura.ne.jp,m:linux-edac@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:drbd-dev@lists.linux.dev,m:linux-block@vger.kernel.org,m:greybus-dev@lists.linaro.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-acpi@vger.kernel.org,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-fsdevel@vger.kernel.org,m:linux-nfs@vger.kernel.org,m:ocfs2-devel@lists.linux.dev,m:cgroups@vger.kernel.org,m:linux-modules@vger.kernel.org,m:linux-pm@vger.kernel.org,m:driver-core@lists.linux.dev,m:bridge@lists.linux.dev,m:netdev@vger.kernel.org,m:keyrings@vger.kernel.org,m:linux-security-module@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[riseup.net,gmx.de,goldelico.com,gmail.com,atomide.com,bitmer.com,pengutronix.de,kemnade.info,kernel.org,iki.fi,baylibre.com,armlinux.org.uk,perex.cz,suse.com,ti.com,opensource.cirrus.com,arndb.de,oss.qualcomm.com,renesas.com];
+	FORGED_SENDER(0.00)[hns@goldelico.com,linux-fbdev@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[41];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[intel.com,alien8.de,kernel.org,redhat.com,linux.intel.com,zytor.com,linbit.com,kernel.dk,linuxfoundation.org,gentoo.org,gmx.de,zeniv.linux.org.uk,suse.cz,brown.name,oracle.com,talpey.com,fasheh.com,evilplan.org,linux.alibaba.com,cmpxchg.org,suse.com,google.com,linux-foundation.org,blackwall.org,nvidia.com,davemloft.net,paul-moore.com,namei.org,hallyn.com,nttdata.co.jp,i-love.sakura.ne.jp,vger.kernel.org,lists.linux.dev,lists.linaro.org,lists.ozlabs.org,lists.freedesktop.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[atomlin@atomlin.com,linux-fbdev@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7931-lists,linux-fbdev=lfdr.de];
+	DKIM_TRACE(0.00)[goldelico.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[atomlin@atomlin.com,linux-fbdev@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[76];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hns@goldelico.com,linux-fbdev@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[linux-fbdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[atomlin.com:from_mime,atomlin.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,qf62xs6lyd6q:mid,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,marc.info:url,riseup.net:email,vger.kernel.org:from_smtp,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1AE8E73B9F9
+X-Rspamd-Queue-Id: 645F7740893
 
-On Wed, Jul 08, 2026 at 05:44:30PM +0200, Petr Pavlu wrote:
-> Including linux/kmod.h alone results in 1.5 MB of preprocessed output, even
-> though it provides only a few functions and macros.
-> 
-> The header currently depends on:
-> 
-> * __printf() -> linux/compiler_attributes.h,
-> * ENOSYS -> linux/errno.h,
-> * bool -> linux/types.h.
-> 
-> Include only these files, reducing the preprocessed output to 10 kB.
-> 
-> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-> ---
->  include/linux/kmod.h | 12 ++----------
->  1 file changed, 2 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/kmod.h b/include/linux/kmod.h
-> index 9a07c3215389..b9474a62a568 100644
-> --- a/include/linux/kmod.h
-> +++ b/include/linux/kmod.h
-> @@ -2,17 +2,9 @@
->  #ifndef __LINUX_KMOD_H__
->  #define __LINUX_KMOD_H__
->  
-> -/*
-> - *	include/linux/kmod.h
-> - */
-> -
-> -#include <linux/umh.h>
-> -#include <linux/gfp.h>
-> -#include <linux/stddef.h>
-> +#include <linux/compiler_attributes.h>
->  #include <linux/errno.h>
-> -#include <linux/compiler.h>
-> -#include <linux/workqueue.h>
-> -#include <linux/sysctl.h>
-> +#include <linux/types.h>
->  
->  #ifdef CONFIG_MODULES
->  /* modprobe exit status on success, -ve on error.  Return value
-> -- 
-> 2.54.0
-> 
+PATCH V1 2026-07-11 08:02:02:
+This series modernizes the OpenPandora handheld support by converting the 
+sound subsystem and backlight control to proper platform drivers and Device 
+Tree definitions.
 
-LGTM. Thank you.
+The primary goal is the complete removal of omap3_pandora_legacy_init() 
+and the elimination of the last remaining user of machine_is_omap3_pandora().
 
-Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
+History and Context
+===================
+The necessity of this cleanup was highlighted in several recent discussions:
+
+1. Tony Lindgren noted that machine_is_omap3_pandora() checks never succeed 
+   on Device Tree-booted machines, leaving the audio subsystem functionally 
+   broken since the DT conversion years ago:
+   https://marc.info/?l=alsa-devel&m=165632351319716&w=2
+
+2. Ethan Nelson-Moore submitted a patch to replace the macro with DT 
+   compatibility checks (accepted as commit 45efb8fbdae3 in v7.2-rc1):
+   https://marc.info/?l=linux-omap&m=177841578110704&w=2
+
+3. Sascha Hauer pointed out that the entire omap3pandora driver fundamentally 
+   depended on this broken machine ID check:
+   https://marc.info/?l=linux-omap&m=178048982272252&w=2
+
+Design Choices and Implementation
+=================================
+Based on these discussions and a long-standing and working out-of-tree solution,
+we initially attempted a migration to generic frameworks like simple-audio-card 
+or audio-graph-card. However, the hardware routing peculiarities of the 
+OpenPandora introduced too many functional gaps. Replacing omap3pandora.c 
+entirely with pure DT definitions proved unfeasible. 
+
+Therefore, we opted to base a new proposal on the out-of-tree rewrite of
+the old-style sound board file kernel driver (sound/soc/ti/omap3pandora.c)
+into a proper platform driver that cleanly fetches its resources from the
+Device Tree, while adding specific handling for the twl4030-regen output
+and adapting the pandora device tree files.
+
+Series Structure
+================
+* Patches 01–06 (Preparation): Move highly specific legacy code to its proper 
+  infrastructure (TWL4030 regulator regeneration and codec handling).
+* Patch 07-08 (New Driver): Introduce a dedicated platform driver for the 
+  PCM1773 audio DAC.
+* Patches 09-14 (Audio Core): Rewrite the omap3pandora ASoC fabric driver 
+  and update the respective Device Tree nodes.
+* Patches 14–15 (Backlight): Remove the custom, legacy Pandora backlight driver,
+  convert it to generic Device Tree nodes
+* Patch 16: (Cleanup) safely delete the obsolete omap3_pandora_legacy_init().
+
+Notes & Testing
+===============
+* Testing: This series has been tested on real OpenPandora hardware.
+
+Credits
+=======
+This work is a collaborative effort by multiple authors over several years:
+* Grond <grond66@riseup.net>
+* Stefan Leichter <sle85276@gmx.de>
+* H. Nikolaus Schaller <hns@goldelico.com>
+
+
+Grond (8):
+  dt-bindings: twl-regulator: Add bindings for exposing ti,twl4030-regen
+  regulator: twl: Expose the TWL4030's REGEN signal as a regulator
+  arm: dts: twl4030: add twl4030-regen child
+  arm: dts: omap3pandora: Populate DT data for the TWL4030's REGEN
+    regulator
+  arm: dts: omap3pandora: Don't use DMA channels for unused SPI masters
+  ASoC: twl4030-codec: Allow setting APLL rate through the .set_sysclk()
+    interface
+  ASoC: pcm1773-codec: write a driver for the PCM1773 chip from TI
+  arm: dts: omap3pandora: Add device node for PCM1773 codec
+
+H. Nikolaus Schaller (5):
+  ASoC: dt-bindings: add TI PCM1773
+  ASoC: dt-bindings: add OpenPandora Sound Card
+  arm: dts: omap3-pandora-common: backlight: switch to twl4030 pwm and
+    pwm_bl
+  backlight: remove pandora_bl
+  arm: omap2: remove remaining pdata-quirks for pandora legacy devices
+
+Stefan Leichter (3):
+  ASoC: omap3pandora: Rewrite sound card driver as a platform driver
+    with DT
+  ARM: dts: omap3-pandora-common: Enable audio in/out (mcbsp4/2)
+  arm: dts: omap3pandora: create new DT node for the sound card
+
+ .../devicetree/bindings/mfd/ti,twl.yaml       |   1 +
+ .../sound/openpandora,omap3pandora-sound.yaml |  94 ++++
+ .../devicetree/bindings/sound/pcm1773.yaml    |  32 ++
+ .../dts/ti/omap/omap3-pandora-common.dtsi     |  84 ++++
+ arch/arm/boot/dts/ti/omap/twl4030.dtsi        |  14 +
+ arch/arm/mach-omap2/pdata-quirks.c            |  23 -
+ drivers/regulator/twl-regulator.c             |  52 ++
+ drivers/video/backlight/Kconfig               |   7 -
+ drivers/video/backlight/Makefile              |   1 -
+ drivers/video/backlight/pandora_bl.c          | 159 ------
+ include/linux/mfd/twl.h                       |   3 +
+ include/linux/mfd/twl4030-audio.h             |   3 +
+ sound/soc/codecs/Kconfig                      |   5 +
+ sound/soc/codecs/pcm1773.c                    | 149 ++++++
+ sound/soc/codecs/twl4030.c                    | 140 ++++--
+ sound/soc/ti/omap3pandora.c                   | 454 ++++++++++++------
+ 16 files changed, 855 insertions(+), 366 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.yaml
+ create mode 100644 Documentation/devicetree/bindings/sound/pcm1773.yaml
+ delete mode 100644 drivers/video/backlight/pandora_bl.c
+ create mode 100644 sound/soc/codecs/pcm1773.c
+
 -- 
-Aaron Tomlin
+2.50.1 (Apple Git-155)
+
 
