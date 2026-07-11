@@ -1,88 +1,88 @@
-Return-Path: <linux-fbdev+bounces-7921-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7926-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U1tuFuncUWrjJgMAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7921-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:04:25 +0200
+	id EkINEybdUWr1JgMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7926-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:05:26 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7CD7407EE
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:04:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9598E740817
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:05:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=bSEIuX13;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=FcC6IWfP;
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=AC5mqVJg;
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=+jn36CyM;
 	dmarc=pass (policy=quarantine) header.from=goldelico.com;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7921-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7921-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7926-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7926-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2DDE63055D3D
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 06:03:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA5FE3027116
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 06:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE8432FA18;
-	Sat, 11 Jul 2026 06:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C7E31B80D;
+	Sat, 11 Jul 2026 06:05:13 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mo4-p04-ob.smtp.rzone.de (mo4-p04-ob.smtp.rzone.de [85.215.255.120])
+Received: from mo4-p04-ob.smtp.rzone.de (mo4-p04-ob.smtp.rzone.de [81.169.146.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E913431B83B;
-	Sat, 11 Jul 2026 06:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D192317163;
+	Sat, 11 Jul 2026 06:05:10 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783749769; cv=pass; b=fzPQFEXGKsihmS5Yql3T5ci0T1VEnY0YZDGSUT1Y+x5xOhWxpf4HZ4I6WvcsW2dn96ZHtocmjBtsaJmNJQjLain2ODnNST1VhOQvS529CVfExwtm8Kn72pJF4e78lZkxjwLj6cdTvwjzVzMEKlPNDMGwLe+BDzDM/Ak7NAm0+gY=
+	t=1783749913; cv=pass; b=JgZg4WdF4rkw4DT5T8J8uhIGnjO5t3VTV1WYKMJ+TvEK8YCavmwin1Mn6PpGCS4XTo3oD/qXX+CEEa14WQU9IGLnV/OFn1J73fVaTbBzkAIPfFWTZVw4cg/wIkg0lxLT3QUT5XJzwn2CV6PxVcw+QdeKgIXBkl/gqa/Kn3n60KI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783749769; c=relaxed/simple;
-	bh=Ez6a2tlwx9Srr4TDQPwKhoL/dkxkQlFUtUtecoyPFbU=;
+	s=arc-20240116; t=1783749913; c=relaxed/simple;
+	bh=Lg5WkyKz9Tjs0OLV+KLbC+uYV0wh6U7Ydokw4jXSD1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jucct7K9D9Pm8NRm44vn6yykZz4A587a8d1inNaL8ffpZwLdG6xy3CCtWh6grhonE7w9iIKb6t+1xLfOhVa0DoXK7wV7GOoZKSXmZW6kDOK9VX8b94/tsHp9zuR2VV/RyZSFy0rPej5alLenFC+6adTKXttUJtDC9qtZQgvqaQ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=bSEIuX13; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=FcC6IWfP; arc=pass smtp.client-ip=85.215.255.120
-ARC-Seal: i=1; a=rsa-sha256; t=1783749736; cv=none;
+	 MIME-Version:Content-Type; b=OH6+fhDuGtD8iRGapjtVNCAFjAIshZyK67+vd89yQn0aWw15tzXp1RPSNabiSh14BHLWrJ8td1BOaQeQN0GZmUUQJobBA5Em5E+1cVngUIEV3FlicxS5Enl0WHbmG/nLpRxok/6ZJ8yrfNJP6+XEwn7PdeOkCCbami8zujUojIo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=AC5mqVJg; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=+jn36CyM; arc=pass smtp.client-ip=81.169.146.178
+ARC-Seal: i=1; a=rsa-sha256; t=1783749737; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=OPe/j2k2jWH4cAU6GP66U8XFCtxb4Y/owuIlLEQ1WOVZ7/a1+EyHlmYTxEsX93Vckg
-    YksXJxSUFK4N56Ol3EeYYom7QYELdI8eRzzSmGOWYKA4AOBWmtFfTMxjUVdOWoZZV9Gy
-    zoZG2/b39GgeqTUxVhsTLRwgkDfLZdBeTBIm2Tko6ce2UHvIQZzYZuINJgSVfqiIq5jX
-    Qz1naDDUFTC76tFZV8l7oE21cAIQou9FlP4oioGp4n1/mNzmbUaYrgQtU7HX7nj8+dep
-    s+vUmKt4xh3Kaxdz3nwCVd8NLqKlJbuXevsP09XDh0V5CNgSfAYmWU5vjUyl44uS3V4C
-    glEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749736;
+    b=iC0toLXH6Gq6Gbb1wbRJptb/CqlDMcjfKVE70kAJslXM0CYebLJGl+dmsWtcrUGBE9
+    yGiLYIxAm+wnQ4N3zLDHtcssisr/W2dyZAVagtr2wAeh8mDKJga74qoXHDd6HKSfzwAM
+    vdwBF2BXqgnsPjpFrSdKrKJHMIphQavB8W4WUwrkZ3bc4nkae5wOkUQzA1PQbF9RZ/UQ
+    ImVNOmv2Y14SoVExyHf9JzPGTZX9R2QAaF40v55023I8eMfa5Pg/ozqUI716SIezvsQf
+    d9xt+npKPRxPZdz02ZL7+c9vg9GwGSEICCJqDdXVFrAwJWr62kQ6yRzV4yARiQs+engn
+    sbew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749737;
     s=strato-dkim-0002; d=strato.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=E8jCDGxFCZCvaxcS2Psadz3lVnIPsSjTP8SdZWEFY3o=;
-    b=GzNBhnIuSWQP5HA0tgU9LmvIa6xW0t69LjSFZJSMJDZXNXoaFp2IHcqATQvZnL5UJP
-    GpVDc0tlj2HjEFVz/VvLJoh7q4KvfKOXPzqF5fOl6THSKwAARnt+UEzaJ1q5Iz0r4KZ9
-    7D32+y4JztNrGHqODg0Et61yyrnnmJMGOWxCFnHArZzHjogGN8xQzU6PEqwsmYe4HR5B
-    VjxozmxsBwh9uZSNc7u2MjES/gioYgRi11F2v2sl4MhBkHR9ytLVInSANsnubQRvk8DT
-    JPg9wQqvbt4486QfPa+YKVetO0udj/FKBMsdMZeyiQfcgsHAyl64rRQFXMhBc9knSqbQ
-    6X/w==
+    bh=c2DakEhHWnDx3DdMaI7lEbd6D5ZL7hHtybFNpEKNGEY=;
+    b=p3xqTKNzxP2MJOusO2HDNwJQGi+JFybPWQ/Q8v+AEvtTQds6DtK0cWHu53f5LA2/8V
+    KEX/vmxJ1UQU0DeW+UMenWaDtKYkSEobm5J5SxIz+RgcsGdTxupDL/mxNKbDnB7DHpUa
+    5XOpvmonYsjgv+tD86sOkgzwZyuieAsufVkd+92MU7w1y8d4+jZP9g8MPuqcCMmkWzep
+    f0htsqJrbazcS6uK1F2aEjCQRyDr8Ay0oE8v91QDNJpY2qLpKo03NA9cFnR9dEFITTyd
+    3AL5IhlLtYUbVbZNd+GZWMrs/hoQrRbItQAZAaX86z06YZ/dSCsnWnxYAnkAd5boyCe4
+    Ijag==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo04
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749736;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749737;
     s=strato-dkim-0002; d=goldelico.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=E8jCDGxFCZCvaxcS2Psadz3lVnIPsSjTP8SdZWEFY3o=;
-    b=bSEIuX13cFGeoDxHmGlpREmKzlrkSDTC6RxM5qWfTKqXb5BY/34Nff9VqsmfqcvOFf
-    v4JtxswUCojY1iArIkmsmzupPksVDSWu6O/V85kvf/ffpDe+0bYA/fWte7ZEufoF0+rY
-    BBCDMbdu9isYxeHMwv2V+WeiHQIkN0/PJDFjijmOuqqHlC+DwQVl3ssDw+STMsQP1Ys/
-    fzvCjU3J2YQoAjnlzZNqw6HyrYjUNOb3kv4onWMXs/eU0n84mcHwb24RGEddx4r7uYQZ
-    lockG54Qt1xEfUmcAJYLsVmOjcS4yrb2+pwQRHbaCYYPJLjtoGUSKw4WoSwxu47+jHlC
-    SO2Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783749736;
+    bh=c2DakEhHWnDx3DdMaI7lEbd6D5ZL7hHtybFNpEKNGEY=;
+    b=AC5mqVJgoMmhA3Zb/MSpoOfeAR1ZVSKJIcEc3MCzA3Z142xI8pEe5Db6aR194cu0YG
+    dQg4sGBvsBLzcNVS30nO3nsg4A5aIkIWhaKY0cH5NPe426IyTy97+6PjNlMy2MAmThiE
+    oSkncAjB3E+cDANu0EbBiwfK4POGt/e3CrAED3dWbXLCb6n1wHd5xTXYiJeuS7seljip
+    a46TZb5pKbKx/saN9zIJABswzIAOD3hmh9QneQKXOUA+XHalTCN/Yqat2LLHnjaLhWLd
+    zQusI0eJNMQoSNAjwWLUYKcpPaIiv7GF2K0JSSgaVbamua77vJdorFfiZT0I1UAzFhSU
+    Psmw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783749737;
     s=strato-dkim-0003; d=goldelico.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=E8jCDGxFCZCvaxcS2Psadz3lVnIPsSjTP8SdZWEFY3o=;
-    b=FcC6IWfP0TTCCH9BvVqmVo68V1h+An5Q4quALN+HCARu2x7tn5kfeAKJK+S5BJbifF
-    3qsD1zmLZujyE/v6fUBQ==
+    bh=c2DakEhHWnDx3DdMaI7lEbd6D5ZL7hHtybFNpEKNGEY=;
+    b=+jn36CyMpIt/846xR0wkPkUKOdBAInJWGBq2O5KYF6pSDWRs3pT4NMJFVBeD+fyNBz
+    ekmrFK8i/KxIrSgszUAg==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9qVpwcQVkPW4I1HrT35oLmciNszeF4HOToVDOd6S1gdjuILE2MKVd"
 Received: from iMac.fritz.box
     by smtp.strato.de (RZmta 55.5.6 AUTH)
-    with ESMTPSA id Q4b76426B62EGhs
+    with ESMTPSA id Q4b76426B62GGht
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
-    Sat, 11 Jul 2026 08:02:14 +0200 (CEST)
+    Sat, 11 Jul 2026 08:02:16 +0200 (CEST)
 From: "H. Nikolaus Schaller" <hns@goldelico.com>
 To: Grond <grond66@riseup.net>,
 	Stefan Leichter <sle85276@gmx.de>,
@@ -125,9 +125,9 @@ Cc: letux-kernel@openphoenux.org,
 	linux-fbdev@vger.kernel.org,
 	kernel@pyra-handheld.com,
 	mfd@lists.linux.dev
-Subject: [PATCH 07/16] ASoC: dt-bindings: add TI PCM1773
-Date: Sat, 11 Jul 2026 08:01:54 +0200
-Message-ID: <a02383ea5907a677f4c61066d423efde2b9de48b.1783749722.git.hns@goldelico.com>
+Subject: [PATCH 08/16] ASoC: pcm1773-codec: write a driver for the PCM1773 chip from TI
+Date: Sat, 11 Jul 2026 08:01:55 +0200
+Message-ID: <7d8989813cbd750259dfdde2e1187082493279a0.1783749722.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1783749722.git.hns@goldelico.com>
 References: <cover.1783749722.git.hns@goldelico.com>
@@ -145,7 +145,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[goldelico.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[goldelico.com:s=strato-dkim-0002,goldelico.com:s=strato-dkim-0003];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -161,7 +161,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-7921-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7926-lists,linux-fbdev=lfdr.de];
 	DKIM_TRACE(0.00)[goldelico.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -171,59 +171,202 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev,dt];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,vger.kernel.org:from_smtp,openpandora.org:email,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,riseup.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BD7CD7407EE
+X-Rspamd-Queue-Id: 9598E740817
 
-PCM1771/3 is a simple audio codec that can be enabled through an
-enable-gpio.
+From: Grond <grond66@riseup.net>
 
+This chip is used in the OpenPandora.
+
+Signed-off-by: Grond <grond66@riseup.net>
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- .../devicetree/bindings/sound/pcm1773.yaml    | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/sound/pcm1773.yaml
+ sound/soc/codecs/Kconfig   |   5 ++
+ sound/soc/codecs/pcm1773.c | 149 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 154 insertions(+)
+ create mode 100644 sound/soc/codecs/pcm1773.c
 
-diff --git a/Documentation/devicetree/bindings/sound/pcm1773.yaml b/Documentation/devicetree/bindings/sound/pcm1773.yaml
+diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
+index 252f683be3c18..3e186652fa06d 100644
+--- a/sound/soc/codecs/Kconfig
++++ b/sound/soc/codecs/Kconfig
+@@ -182,6 +182,7 @@ config SND_SOC_ALL_CODECS
+ 	imply SND_SOC_HDMI_CODEC
+ 	imply SND_SOC_PCM1681
+ 	imply SND_SOC_PCM1754
++	imply SND_SOC_PCM1773
+ 	imply SND_SOC_PCM1789_I2C
+ 	imply SND_SOC_PCM179X_I2C
+ 	imply SND_SOC_PCM179X_SPI
+@@ -1541,6 +1542,10 @@ config SND_SOC_PCM1754
+ 	tristate "Texas Instruments PCM1754 CODEC"
+ 	depends on GPIOLIB
+ 
++config SND_SOC_PCM1773
++	tristate "Texas Instruments PCM1773 CODEC"
++	select GPIOLIB
++
+ config SND_SOC_PCM1789
+ 	tristate
+ 
+diff --git a/sound/soc/codecs/pcm1773.c b/sound/soc/codecs/pcm1773.c
 new file mode 100644
-index 0000000000000..f3e640705bf70
+index 0000000000000..75f9fe40a89d5
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/pcm1773.yaml
-@@ -0,0 +1,32 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/bindings/sound/pcm1773.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/sound/soc/codecs/pcm1773.c
+@@ -0,0 +1,149 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * pcm1773.c -- codec for the simple PCM1773 output codec from TI
++ *
++ * Shamelessly cobbled together from sound/soc/ti/omap3pandora.c and a few
++ * other codec drivers in sound/soc/codecs/
++ *
++ * Author: Grond <grond66@riseup.net>
++ */
 +
-+title: Texas Instruments pcm1773 audio codec
++#include <linux/gpio/consumer.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/regulator/consumer.h>
++#include <sound/soc.h>
 +
-+maintainers:
-+  - to-be-defined@openpandora.org
++struct pcm1773 {
++	struct regulator *regulator;
++	struct gpio_desc *enable_gpio;
++};
 +
-+description: |+
-+  PCM1771 is a simple audio codec that can be enabled
-+  through a gpio.
++static int pcm1773_dac_event(struct snd_soc_dapm_widget *w,
++			     struct snd_kcontrol *k, int event)
++{
++	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
++	struct pcm1773 *ctx = snd_soc_component_get_drvdata(component);
++	struct device *dev = component->dev;
++	int ret;
 +
-+properties:
-+  compatible:
-+    const: ti,pcm1773
++	/*
++	 * The PCM1773 DAC datasheet requires 1ms delay between switching
++	 * VCC power on/off and /PD pin high/low
++	 */
++	if (SND_SOC_DAPM_EVENT_ON(event)) {
++		if (ctx->regulator) {
++			ret = regulator_enable(ctx->regulator);
++			if (ret) {
++				dev_err(dev, "Failed to power DAC: %d\n", ret);
++				return ret;
++			}
++			mdelay(1);
++		}
 +
-+required:
-+  - compatible
++		if (ctx->enable_gpio)
++			gpiod_set_value_cansleep(ctx->enable_gpio, 1);
++	} else {
++		if (ctx->enable_gpio)
++			gpiod_set_value_cansleep(ctx->enable_gpio, 0);
 +
-+additionalProperties: false
++		if (ctx->regulator) {
++			mdelay(1);
++			regulator_disable(ctx->regulator);
++		}
++	}
 +
-+examples:
-+  - |
-+    audio-codec {
-+      compatible = "ti,pcm1773";
-+      enable-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
-+    };
++	return 0;
++}
 +
-+...
++static const struct snd_soc_dapm_widget pcm1773_dapm_widgets[] = {
++	SND_SOC_DAPM_DAC_E("PCM1773 DAC", "HiFi Playback", SND_SOC_NOPM,
++			   0, 0, pcm1773_dac_event,
++			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
++};
++
++static const struct snd_soc_dapm_route pcm1773_dapm_routes[] = {
++	/* tell DAPM that the main stream flows to the PCM1773 */
++	{"PCM1773 DAC", NULL, "PCM1773 IN"},
++};
++
++static struct snd_soc_dai_driver pcm1773_dai = {
++	.name = "pcm1773-hifi",
++	.playback = {
++		.stream_name = "PCM1773 IN",
++		.channels_min = 2,
++		.channels_max = 2,
++		.rates = SNDRV_PCM_RATE_8000_48000,
++		// [TODO] these really should be BE, per the data sheet but for
++		// some reason the omap-mcbsp driver claims only to support LE.
++		// investigate
++		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE,
++	},
++};
++
++static int pcm1773_probe(struct snd_soc_component *component)
++{
++	struct pcm1773 *ctx = NULL;
++	struct device *dev = component->dev;
++	int ret;
++
++	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++	snd_soc_component_set_drvdata(component, ctx);
++
++	ctx->enable_gpio = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_LOW);
++	if (IS_ERR(ctx->enable_gpio)) {
++		return dev_err_probe(dev, PTR_ERR(ctx->enable_gpio),
++				     "invalid GPIO specification for enable");
++	}
++	if (ctx->enable_gpio)
++		dev_dbg(dev, "got enable-gpio\n");
++	else
++		dev_warn(dev, "enable-gpio not specified\n");
++
++	ctx->regulator = devm_regulator_get(dev, "vcc");
++	if (IS_ERR(ctx->regulator)) {
++		dev_warn(dev, "cannot get regulator 'vcc'");
++		ctx->regulator = NULL;
++	}
++
++	return 0;
++}
++
++static const struct snd_soc_component_driver soc_component_dev_pcm1773 = {
++	.probe = pcm1773_probe,
++	.dapm_widgets = pcm1773_dapm_widgets,
++	.num_dapm_widgets = ARRAY_SIZE(pcm1773_dapm_widgets),
++	.dapm_routes = pcm1773_dapm_routes,
++	.num_dapm_routes = ARRAY_SIZE(pcm1773_dapm_routes),
++};
++
++static int pcm1773_codec_probe(struct platform_device *pdev)
++{
++	return devm_snd_soc_register_component(&pdev->dev,
++		&soc_component_dev_pcm1773,
++		&pcm1773_dai, 1);
++}
++
++static const struct of_device_id pcm1773_of_match[] = {
++	{
++		.compatible = "ti,pcm1773",
++	},
++	{ },
++};
++MODULE_DEVICE_TABLE(of, pcm1773_of_match);
++
++static struct platform_driver pcm1773_codec_driver = {
++	.probe = pcm1773_codec_probe,
++	.driver = {
++		.name = "pcm1773-codec",
++		.of_match_table = pcm1773_of_match,
++	},
++};
++
++module_platform_driver(pcm1773_codec_driver);
++
++MODULE_DESCRIPTION("ASoC codec driver PCM1773");
++MODULE_AUTHOR("Grond");
++MODULE_LICENSE("GPL");
 -- 
 2.50.1 (Apple Git-155)
 
