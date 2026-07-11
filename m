@@ -1,88 +1,88 @@
-Return-Path: <linux-fbdev+bounces-7929-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7921-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fqYOIoTdUWoKJwMAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7929-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:07:00 +0200
+	id U1tuFuncUWrjJgMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7921-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:04:25 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69B1740860
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:06:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7CD7407EE
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:04:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=tGm8GsIi;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=ESnVmjxn;
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=bSEIuX13;
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=FcC6IWfP;
 	dmarc=pass (policy=quarantine) header.from=goldelico.com;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7929-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7929-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7921-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7921-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5B013023529
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 06:05:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2DDE63055D3D
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 06:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD7331B80E;
-	Sat, 11 Jul 2026 06:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE8432FA18;
+	Sat, 11 Jul 2026 06:02:49 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mo4-p04-ob.smtp.rzone.de (mo4-p04-ob.smtp.rzone.de [81.169.146.223])
+Received: from mo4-p04-ob.smtp.rzone.de (mo4-p04-ob.smtp.rzone.de [85.215.255.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55AD31E823;
-	Sat, 11 Jul 2026 06:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E913431B83B;
+	Sat, 11 Jul 2026 06:02:46 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783749919; cv=pass; b=FC35RLmjWYIXPK9de2sKpxllkrPt4YCrz96EzZgG/+MKGMM+QUEBmYezIAMPLO6k/PWewkhgAtgKvaZhngRUiWT3w35u4K8P2ypBDvSc2u+GqaVOszSmm8EcY3xzurtvWBu5Bk4vUtmX9JR2UTatxenNgao/8ctZdReeZgdfvA4=
+	t=1783749769; cv=pass; b=fzPQFEXGKsihmS5Yql3T5ci0T1VEnY0YZDGSUT1Y+x5xOhWxpf4HZ4I6WvcsW2dn96ZHtocmjBtsaJmNJQjLain2ODnNST1VhOQvS529CVfExwtm8Kn72pJF4e78lZkxjwLj6cdTvwjzVzMEKlPNDMGwLe+BDzDM/Ak7NAm0+gY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783749919; c=relaxed/simple;
-	bh=IBSi1g75ivspH4eP9Pu0ikYEr/rygHyfZXeqS42xw7Q=;
+	s=arc-20240116; t=1783749769; c=relaxed/simple;
+	bh=Ez6a2tlwx9Srr4TDQPwKhoL/dkxkQlFUtUtecoyPFbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L3o0+uhiGFKlswhXmxgPKOZ8ZNxFaCYxIYzdGilqp7howYNlf8CS1HwzWjl/Sh8IGdd7MFCkYdS2fFfZiQNAWEghyO0K7gK8zGVW5x4lcNCHLt6q3lmre3uhKpETqVdsPAk4E5aWpdjjPB6zhcm/b9eKY0TsCnOi0W9/wx0mkYc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=tGm8GsIi; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=ESnVmjxn; arc=pass smtp.client-ip=81.169.146.223
-ARC-Seal: i=1; a=rsa-sha256; t=1783749734; cv=none;
+	 MIME-Version:Content-Type; b=Jucct7K9D9Pm8NRm44vn6yykZz4A587a8d1inNaL8ffpZwLdG6xy3CCtWh6grhonE7w9iIKb6t+1xLfOhVa0DoXK7wV7GOoZKSXmZW6kDOK9VX8b94/tsHp9zuR2VV/RyZSFy0rPej5alLenFC+6adTKXttUJtDC9qtZQgvqaQ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=bSEIuX13; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=FcC6IWfP; arc=pass smtp.client-ip=85.215.255.120
+ARC-Seal: i=1; a=rsa-sha256; t=1783749736; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=run2BEMDp+5YV1CDxFqVxZHbYrBhva5ty1Lt5W1KMBhyIhadJrk/IgIjRwc4ItpWRi
-    w6MqH1bVYccVsx9C1ImD57XA2y4Yrdsd+2APuMsxyR5XeBLQSPVxbd0445Fwz5j6Hdon
-    ztO3z6HIyTopjdAgk7IoSbeBZt5RKGA6JbdZ9W00uw4WiRRylTe1fId73ldnirAL6UUJ
-    is29XgkdqOulFS7M5e+1X4qHP6wJiREt9KED03+NjQs7OqRBOez7KL6xy4eB1GnLE1dt
-    7lv3PLSi8PRUsBiO7vCdnq6l2pJ5likz9XySt8guabB5L2shv0Y8Ev9BY2b3oyh5Rix3
-    a09A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749734;
+    b=OPe/j2k2jWH4cAU6GP66U8XFCtxb4Y/owuIlLEQ1WOVZ7/a1+EyHlmYTxEsX93Vckg
+    YksXJxSUFK4N56Ol3EeYYom7QYELdI8eRzzSmGOWYKA4AOBWmtFfTMxjUVdOWoZZV9Gy
+    zoZG2/b39GgeqTUxVhsTLRwgkDfLZdBeTBIm2Tko6ce2UHvIQZzYZuINJgSVfqiIq5jX
+    Qz1naDDUFTC76tFZV8l7oE21cAIQou9FlP4oioGp4n1/mNzmbUaYrgQtU7HX7nj8+dep
+    s+vUmKt4xh3Kaxdz3nwCVd8NLqKlJbuXevsP09XDh0V5CNgSfAYmWU5vjUyl44uS3V4C
+    glEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749736;
     s=strato-dkim-0002; d=strato.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=HPdy4LPPlxugHv+cSwsCrzTGTCfohShFJc3owzkw44A=;
-    b=U+W+qUiN1/+3Pe4OYHvPhCSB12YJINyO2qvSEfWcDMAP8ITZhJVwaEXZU7oy9QPD15
-    QkmlP7sZAIzIc8EI16ykCpQAJ0xQf27qFF6bXTL7/qoJRO98DjHJAxrRSHsQ9PWKIUrM
-    cSQi9487ViNEYBpDOvGTIsxqVfe8DzQz6alYDmLk53+a4v3o7Ha7TTz1dSvkY5FVF8Gw
-    7L8Iuo5jigCGJouPU0pf+psxXrYIfMmmW3qojpj0EFZijcLEHJSt6vm1xawns7QjDNBb
-    +3JhhijJyebeuqv8KIkAIvSyt6Q3MJ2V8T/wHEHJNDRJkxHZ0RqyJLSp9CXPXpsCo1HN
-    Syzw==
+    bh=E8jCDGxFCZCvaxcS2Psadz3lVnIPsSjTP8SdZWEFY3o=;
+    b=GzNBhnIuSWQP5HA0tgU9LmvIa6xW0t69LjSFZJSMJDZXNXoaFp2IHcqATQvZnL5UJP
+    GpVDc0tlj2HjEFVz/VvLJoh7q4KvfKOXPzqF5fOl6THSKwAARnt+UEzaJ1q5Iz0r4KZ9
+    7D32+y4JztNrGHqODg0Et61yyrnnmJMGOWxCFnHArZzHjogGN8xQzU6PEqwsmYe4HR5B
+    VjxozmxsBwh9uZSNc7u2MjES/gioYgRi11F2v2sl4MhBkHR9ytLVInSANsnubQRvk8DT
+    JPg9wQqvbt4486QfPa+YKVetO0udj/FKBMsdMZeyiQfcgsHAyl64rRQFXMhBc9knSqbQ
+    6X/w==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo04
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749734;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749736;
     s=strato-dkim-0002; d=goldelico.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=HPdy4LPPlxugHv+cSwsCrzTGTCfohShFJc3owzkw44A=;
-    b=tGm8GsIi8+gfLmYMR0PE1GN8GrJoMxACv6xGhuA/AyiEep3bM76z6IxxcNo2a4K4a1
-    SNv5tjRXP/78yaa6sf2jgmnlOBd0vlMm0VWjqbBTVJDKgOpywUyfrXAaSPRRZDKg5ysv
-    DbbPBuYwsm/TFowoAZkQzpjbN2yW+wo0sbMPtuRuI9lcEKM5eVT9Q80iNRcvO7x+5bNp
-    o8q+5Qvik8cEPmNJ8jRmwiYXQFCuXtPXZ1xCEHS/Zs+nctosKG0QzzepJEmfyQG42QkM
-    nqHbqleuMBfH95ohBaO6s80PPlrkAVevlMkbu7SfR5FgDsqyI2G0kjA7eKr7EQQFALjY
-    95cg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783749734;
+    bh=E8jCDGxFCZCvaxcS2Psadz3lVnIPsSjTP8SdZWEFY3o=;
+    b=bSEIuX13cFGeoDxHmGlpREmKzlrkSDTC6RxM5qWfTKqXb5BY/34Nff9VqsmfqcvOFf
+    v4JtxswUCojY1iArIkmsmzupPksVDSWu6O/V85kvf/ffpDe+0bYA/fWte7ZEufoF0+rY
+    BBCDMbdu9isYxeHMwv2V+WeiHQIkN0/PJDFjijmOuqqHlC+DwQVl3ssDw+STMsQP1Ys/
+    fzvCjU3J2YQoAjnlzZNqw6HyrYjUNOb3kv4onWMXs/eU0n84mcHwb24RGEddx4r7uYQZ
+    lockG54Qt1xEfUmcAJYLsVmOjcS4yrb2+pwQRHbaCYYPJLjtoGUSKw4WoSwxu47+jHlC
+    SO2Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783749736;
     s=strato-dkim-0003; d=goldelico.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=HPdy4LPPlxugHv+cSwsCrzTGTCfohShFJc3owzkw44A=;
-    b=ESnVmjxnmU6AyUjpn0uHweO4UfrbSQPCI6U3IeNAK0XEfgNHZa1ZjUb5q0aI90RWX3
-    RpF9J9kKa+swzVF8U1Cg==
+    bh=E8jCDGxFCZCvaxcS2Psadz3lVnIPsSjTP8SdZWEFY3o=;
+    b=FcC6IWfP0TTCCH9BvVqmVo68V1h+An5Q4quALN+HCARu2x7tn5kfeAKJK+S5BJbifF
+    3qsD1zmLZujyE/v6fUBQ==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9qVpwcQVkPW4I1HrT35oLmciNszeF4HOToVDOd6S1gdjuILE2MKVd"
 Received: from iMac.fritz.box
     by smtp.strato.de (RZmta 55.5.6 AUTH)
-    with ESMTPSA id Q4b76426B62DGhr
+    with ESMTPSA id Q4b76426B62EGhs
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
-    Sat, 11 Jul 2026 08:02:13 +0200 (CEST)
+    Sat, 11 Jul 2026 08:02:14 +0200 (CEST)
 From: "H. Nikolaus Schaller" <hns@goldelico.com>
 To: Grond <grond66@riseup.net>,
 	Stefan Leichter <sle85276@gmx.de>,
@@ -125,9 +125,9 @@ Cc: letux-kernel@openphoenux.org,
 	linux-fbdev@vger.kernel.org,
 	kernel@pyra-handheld.com,
 	mfd@lists.linux.dev
-Subject: [PATCH 06/16] ASoC: twl4030-codec: Allow setting APLL rate through the .set_sysclk() interface
-Date: Sat, 11 Jul 2026 08:01:53 +0200
-Message-ID: <7ea589f951baf1e217c7169ae21c0bf510672ecf.1783749722.git.hns@goldelico.com>
+Subject: [PATCH 07/16] ASoC: dt-bindings: add TI PCM1773
+Date: Sat, 11 Jul 2026 08:01:54 +0200
+Message-ID: <a02383ea5907a677f4c61066d423efde2b9de48b.1783749722.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1783749722.git.hns@goldelico.com>
 References: <cover.1783749722.git.hns@goldelico.com>
@@ -145,7 +145,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[goldelico.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[goldelico.com:s=strato-dkim-0002,goldelico.com:s=strato-dkim-0003];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -161,7 +161,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-7929-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7921-lists,linux-fbdev=lfdr.de];
 	DKIM_TRACE(0.00)[goldelico.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -171,229 +171,59 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev,dt];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,riseup.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,vger.kernel.org:from_smtp,openpandora.org:email,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D69B1740860
+X-Rspamd-Queue-Id: BD7CD7407EE
 
-From: Grond <grond66@riseup.net>
+PCM1771/3 is a simple audio codec that can be enabled through an
+enable-gpio.
 
-On the Pandora, the APLL is actually what drives all of the audio clocks on
-the board. Since the TWL4030 is only used for capture, we need some way of
-setting the correct rate for playback streams, since they will not go
-through the TWL4030's .hw_params() code path (which is normally how APLL
-rate is set).
-
-Signed-off-by: Grond <grond66@riseup.net>
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- include/linux/mfd/twl4030-audio.h |   3 +
- sound/soc/codecs/twl4030.c        | 140 +++++++++++++++++++++---------
- 2 files changed, 101 insertions(+), 42 deletions(-)
+ .../devicetree/bindings/sound/pcm1773.yaml    | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/pcm1773.yaml
 
-diff --git a/include/linux/mfd/twl4030-audio.h b/include/linux/mfd/twl4030-audio.h
-index 1c28605dfda80..4378eef97b0fc 100644
---- a/include/linux/mfd/twl4030-audio.h
-+++ b/include/linux/mfd/twl4030-audio.h
-@@ -244,6 +244,9 @@
- #define TWL4030_VIBRA_SEL		0x10
- #define TWL4030_VIBRA_DIR_SEL		0x20
- 
-+/* clock ID used for setting APLL rate */
-+#define TWL4030_CLOCK_APLL		0xffff
+diff --git a/Documentation/devicetree/bindings/sound/pcm1773.yaml b/Documentation/devicetree/bindings/sound/pcm1773.yaml
+new file mode 100644
+index 0000000000000..f3e640705bf70
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/pcm1773.yaml
+@@ -0,0 +1,32 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/bindings/sound/pcm1773.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- /* TWL4030 codec resource IDs */
- enum twl4030_audio_res {
- 	TWL4030_AUDIO_RES_POWER = 0,
-diff --git a/sound/soc/codecs/twl4030.c b/sound/soc/codecs/twl4030.c
-index 9476cdfd4dde9..ff36679166e20 100644
---- a/sound/soc/codecs/twl4030.c
-+++ b/sound/soc/codecs/twl4030.c
-@@ -198,6 +198,38 @@ static void twl4030_codec_enable(struct snd_soc_component *component, int enable
- 	udelay(10);
- }
- 
-+static int twl4030_perform_writes(struct snd_soc_component *component,
-+				  const unsigned int *regs,
-+				  const unsigned int *vals,
-+				  unsigned int n)
-+{
-+	struct twl4030_priv *twl4030 = snd_soc_component_get_drvdata(component);
-+	int reboot_codec = twl4030->codec_powered;
-+	unsigned int i;
-+	int ret;
++title: Texas Instruments pcm1773 audio codec
 +
-+	if (reboot_codec)
-+		twl4030_codec_enable(component, 0);
++maintainers:
++  - to-be-defined@openpandora.org
 +
-+	for (i = 0; i < n; ++i) {
-+		ret = twl4030_write(component, regs[i], vals[i]);
-+		if (ret)
-+			return ret;
-+	}
++description: |+
++  PCM1771 is a simple audio codec that can be enabled
++  through a gpio.
 +
-+	if (reboot_codec)
-+		twl4030_codec_enable(component, 1);
++properties:
++  compatible:
++    const: ti,pcm1773
 +
-+	return 0;
-+}
++required:
++  - compatible
 +
-+static inline int
-+twl4030_perform_single_write(struct snd_soc_component *component,
-+			     unsigned int reg, unsigned int val)
-+{
-+	return twl4030_perform_writes(component, &reg, &val, 1);
-+}
++additionalProperties: false
 +
- static void
- twl4030_get_board_param_values(struct twl4030_board_params *board_params,
- 			       struct device_node *node)
-@@ -1690,38 +1722,16 @@ static void twl4030_shutdown(struct snd_pcm_substream *substream,
- 		twl4030_tdm_enable(component, substream->stream, 0);
- }
- 
--static int twl4030_hw_params(struct snd_pcm_substream *substream,
--			     struct snd_pcm_hw_params *params,
--			     struct snd_soc_dai *dai)
-+static int twl4030_get_codec_mode_for_apll_rate(struct snd_soc_component *component,
-+						unsigned int rate, u8 *res)
- {
--	struct snd_soc_component *component = dai->component;
--	struct twl4030_priv *twl4030 = snd_soc_component_get_drvdata(component);
--	u8 mode, old_mode, format, old_format;
--
--	 /* If the substream has 4 channel, do the necessary setup */
--	if (params_channels(params) == 4) {
--		format = twl4030_read(component, TWL4030_REG_AUDIO_IF);
--		mode = twl4030_read(component, TWL4030_REG_CODEC_MODE);
--
--		/* Safety check: are we in the correct operating mode and
--		 * the interface is in TDM mode? */
--		if ((mode & TWL4030_OPTION_1) &&
--		    ((format & TWL4030_AIF_FORMAT) == TWL4030_AIF_FORMAT_TDM))
--			twl4030_tdm_enable(component, substream->stream, 1);
--		else
--			return -EINVAL;
--	}
--
--	if (twl4030->configured)
--		/* Ignoring hw_params for already configured DAI */
--		return 0;
-+	u8 old_mode, mode;
- 
--	/* bit rate */
- 	old_mode = twl4030_read(component,
- 				TWL4030_REG_CODEC_MODE) & ~TWL4030_CODECPDZ;
- 	mode = old_mode & ~TWL4030_APLL_RATE;
- 
--	switch (params_rate(params)) {
-+	switch (rate) {
- 	case 8000:
- 		mode |= TWL4030_APLL_RATE_8000;
- 		break;
-@@ -1753,11 +1763,50 @@ static int twl4030_hw_params(struct snd_pcm_substream *substream,
- 		mode |= TWL4030_APLL_RATE_96000;
- 		break;
- 	default:
--		dev_err(component->dev, "%s: unknown rate %d\n", __func__,
--			params_rate(params));
-+		dev_err(component->dev, "%s: unknown rate %u\n", __func__,
-+			rate);
- 		return -EINVAL;
- 	}
- 
-+	*res = mode;
++examples:
++  - |
++    audio-codec {
++      compatible = "ti,pcm1773";
++      enable-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
++    };
 +
-+	return mode != old_mode ? 1 : 0;
-+}
-+
-+static int twl4030_hw_params(struct snd_pcm_substream *substream,
-+			     struct snd_pcm_hw_params *params,
-+			     struct snd_soc_dai *dai)
-+{
-+	struct snd_soc_component *component = dai->component;
-+	struct twl4030_priv *twl4030 = snd_soc_component_get_drvdata(component);
-+	u8 mode, format, old_format;
-+	int s;
-+	unsigned int regs[2], vals[2];
-+
-+	 /* If the substream has 4 channel, do the necessary setup */
-+	if (params_channels(params) == 4) {
-+		format = twl4030_read(component, TWL4030_REG_AUDIO_IF);
-+		mode = twl4030_read(component, TWL4030_REG_CODEC_MODE);
-+
-+		/* Safety check: are we in the correct operating mode and
-+		 * the interface is in TDM mode?
-+		 */
-+		if ((mode & TWL4030_OPTION_1) &&
-+		    ((format & TWL4030_AIF_FORMAT) == TWL4030_AIF_FORMAT_TDM))
-+			twl4030_tdm_enable(component, substream->stream, 1);
-+		else
-+			return -EINVAL;
-+	}
-+
-+	if (twl4030->configured)
-+		/* Ignoring hw_params for already configured DAI */
-+		return 0;
-+
-+	s = twl4030_get_codec_mode_for_apll_rate(component,
-+						 params_rate(params), &mode);
-+	if (s < 0)
-+		return s;
-+
- 	/* sample size */
- 	old_format = twl4030_read(component, TWL4030_REG_AUDIO_IF);
- 	format = old_format;
-@@ -1775,20 +1824,12 @@ static int twl4030_hw_params(struct snd_pcm_substream *substream,
- 		return -EINVAL;
- 	}
- 
--	if (format != old_format || mode != old_mode) {
--		if (twl4030->codec_powered) {
--			/*
--			 * If the codec is powered, than we need to toggle the
--			 * codec power.
--			 */
--			twl4030_codec_enable(component, 0);
--			twl4030_write(component, TWL4030_REG_CODEC_MODE, mode);
--			twl4030_write(component, TWL4030_REG_AUDIO_IF, format);
--			twl4030_codec_enable(component, 1);
--		} else {
--			twl4030_write(component, TWL4030_REG_CODEC_MODE, mode);
--			twl4030_write(component, TWL4030_REG_AUDIO_IF, format);
--		}
-+	if (format != old_format || s) {
-+		regs[0] = TWL4030_REG_CODEC_MODE;
-+		vals[0] = mode;
-+		regs[1] = TWL4030_REG_AUDIO_IF;
-+		vals[1] = format;
-+		twl4030_perform_writes(component, regs, vals, ARRAY_SIZE(regs));
- 	}
- 
- 	/* Store the important parameters for the DAI configuration and set
-@@ -1813,6 +1854,21 @@ static int twl4030_set_dai_sysclk(struct snd_soc_dai *codec_dai, int clk_id,
- {
- 	struct snd_soc_component *component = codec_dai->component;
- 	struct twl4030_priv *twl4030 = snd_soc_component_get_drvdata(component);
-+	int s;
-+	u8 mode;
-+
-+	if (clk_id == TWL4030_CLOCK_APLL) {
-+		s = twl4030_get_codec_mode_for_apll_rate(component,
-+							 freq, &mode);
-+		if (s < 0)
-+			return s;
-+
-+		if (s)
-+			return twl4030_perform_single_write(component,
-+					TWL4030_REG_CODEC_MODE, mode);
-+
-+		return 0;
-+	}
- 
- 	switch (freq) {
- 	case 19200000:
++...
 -- 
 2.50.1 (Apple Git-155)
 
