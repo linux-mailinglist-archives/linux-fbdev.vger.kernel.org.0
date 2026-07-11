@@ -1,88 +1,88 @@
-Return-Path: <linux-fbdev+bounces-7917-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7929-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OBvMKJPcUWrHJgMAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7917-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:02:59 +0200
+	id fqYOIoTdUWoKJwMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7929-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:07:00 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26BB740788
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:02:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69B1740860
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 08:06:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=TmE6zxFj;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=LyjgpbMK;
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=tGm8GsIi;
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=ESnVmjxn;
 	dmarc=pass (policy=quarantine) header.from=goldelico.com;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7917-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7917-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7929-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7929-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C0D91300E697
-	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 06:02:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5B013023529
+	for <lists+linux-fbdev@lfdr.de>; Sat, 11 Jul 2026 06:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC86431F982;
-	Sat, 11 Jul 2026 06:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD7331B80E;
+	Sat, 11 Jul 2026 06:05:19 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mo4-p04-ob.smtp.rzone.de (mo4-p04-ob.smtp.rzone.de [85.215.255.120])
+Received: from mo4-p04-ob.smtp.rzone.de (mo4-p04-ob.smtp.rzone.de [81.169.146.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A90136358;
-	Sat, 11 Jul 2026 06:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55AD31E823;
+	Sat, 11 Jul 2026 06:05:13 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783749767; cv=pass; b=iXpGsK95MXDPZixnMNQdleIgrhMaH501rRAmyaHPTmcWge7+96w9aFrSD/ICkmKIFQMilU0ReIiqUMVE9JQSc86jtUq3nJloUY2M14MJgv+R5ykcBcrRNWBagPgz1LzWxlGI1NX3RmohRvi3xKWWACESNBJWqZaSaQ3uij3vVLo=
+	t=1783749919; cv=pass; b=FC35RLmjWYIXPK9de2sKpxllkrPt4YCrz96EzZgG/+MKGMM+QUEBmYezIAMPLO6k/PWewkhgAtgKvaZhngRUiWT3w35u4K8P2ypBDvSc2u+GqaVOszSmm8EcY3xzurtvWBu5Bk4vUtmX9JR2UTatxenNgao/8ctZdReeZgdfvA4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783749767; c=relaxed/simple;
-	bh=bJ6qStkDY8RJBuTonDh7AE1zqx4/5rSPePh0EOtjHjs=;
+	s=arc-20240116; t=1783749919; c=relaxed/simple;
+	bh=IBSi1g75ivspH4eP9Pu0ikYEr/rygHyfZXeqS42xw7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UsT4Xrp0W/DbJzQsDsTwSHtNsTAON6x8zpCHs3GYejrhkZ8BTNEvpmNSe8wSJ8ZTzbAij5+LaSvNvXxIXgnXjokDG2UVSogGkv4PYC6UON5guhG2L5cO+1ar9GPRQrSZiYhNLJaWYWAhirnaJ+oDTuTqwO+l7petX+tr5+Li+ss=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=TmE6zxFj; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=LyjgpbMK; arc=pass smtp.client-ip=85.215.255.120
-ARC-Seal: i=1; a=rsa-sha256; t=1783749733; cv=none;
+	 MIME-Version:Content-Type; b=L3o0+uhiGFKlswhXmxgPKOZ8ZNxFaCYxIYzdGilqp7howYNlf8CS1HwzWjl/Sh8IGdd7MFCkYdS2fFfZiQNAWEghyO0K7gK8zGVW5x4lcNCHLt6q3lmre3uhKpETqVdsPAk4E5aWpdjjPB6zhcm/b9eKY0TsCnOi0W9/wx0mkYc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=tGm8GsIi; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=ESnVmjxn; arc=pass smtp.client-ip=81.169.146.223
+ARC-Seal: i=1; a=rsa-sha256; t=1783749734; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=UNAol3P+3NSnVFANpP0PNenPYX/++5XBKrsgPStGoWHK/tv07cmPa4CJzz82unyIHc
-    M8eZ9x6nBCb5bdWStJBwD+utDt8qbnwDhnjVL3zpTkhg2sm+HIz6WG/SQUNAkUBFoid4
-    vVL0EHxWyMT0qkCfYkFfMwAzowyj1Fnm6BOpTCDIfGTIYvf+II4xprpVX15aGFypsvRm
-    ABT8MKCOpLoEns9Qa5xUOAuoB9lU0hKeT9TqHkLv14sY99APWS9uZXQuo2oP9BONzh9w
-    XGSJgByKluI4o61R5m931VxbCJE/fye3v22HyqwTWN+OLTtfNBA7HJ8602Ufw4F3+IbQ
-    d2ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749733;
+    b=run2BEMDp+5YV1CDxFqVxZHbYrBhva5ty1Lt5W1KMBhyIhadJrk/IgIjRwc4ItpWRi
+    w6MqH1bVYccVsx9C1ImD57XA2y4Yrdsd+2APuMsxyR5XeBLQSPVxbd0445Fwz5j6Hdon
+    ztO3z6HIyTopjdAgk7IoSbeBZt5RKGA6JbdZ9W00uw4WiRRylTe1fId73ldnirAL6UUJ
+    is29XgkdqOulFS7M5e+1X4qHP6wJiREt9KED03+NjQs7OqRBOez7KL6xy4eB1GnLE1dt
+    7lv3PLSi8PRUsBiO7vCdnq6l2pJ5likz9XySt8guabB5L2shv0Y8Ev9BY2b3oyh5Rix3
+    a09A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749734;
     s=strato-dkim-0002; d=strato.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=wV6iPQx9mr9GnWcgEuPgvu8N7t+FUMy7pZdOenitrKA=;
-    b=ii2uSQlgcBgDWO0l1OXPUTf/cKHjzlvnCuzFMpdI+q+YLehm+8FfA6yGgBxcSi4/DM
-    UKKA1YNeyp0wxx2RXyYb7jn8DOvp0y4cE+q15n5KyFtB0qZGRvoP9yNOq1Q3uPONBP6B
-    uTA0z7y5VHOZSb5JgTFkyO9VRPrNAWonHD3Z3tDXBWeYBDfrmwb84KrhhTKLHb5vZ61J
-    KfuwZntjwOkOlgdABXYJiC7ZLIvdodcJMtkU2p+vdx5SRrJfIFX875Ogo9PPWJtttk2L
-    2IakW966dWigtYojCV6X5VToJX2tvPMT4VUmAi+oreQnrFYXYGN9O9sYTFOymipRTvO+
-    bIyg==
+    bh=HPdy4LPPlxugHv+cSwsCrzTGTCfohShFJc3owzkw44A=;
+    b=U+W+qUiN1/+3Pe4OYHvPhCSB12YJINyO2qvSEfWcDMAP8ITZhJVwaEXZU7oy9QPD15
+    QkmlP7sZAIzIc8EI16ykCpQAJ0xQf27qFF6bXTL7/qoJRO98DjHJAxrRSHsQ9PWKIUrM
+    cSQi9487ViNEYBpDOvGTIsxqVfe8DzQz6alYDmLk53+a4v3o7Ha7TTz1dSvkY5FVF8Gw
+    7L8Iuo5jigCGJouPU0pf+psxXrYIfMmmW3qojpj0EFZijcLEHJSt6vm1xawns7QjDNBb
+    +3JhhijJyebeuqv8KIkAIvSyt6Q3MJ2V8T/wHEHJNDRJkxHZ0RqyJLSp9CXPXpsCo1HN
+    Syzw==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo04
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749733;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783749734;
     s=strato-dkim-0002; d=goldelico.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=wV6iPQx9mr9GnWcgEuPgvu8N7t+FUMy7pZdOenitrKA=;
-    b=TmE6zxFjGDgs6NxLtFBYoH6EGjXG5RKaK8LImJxYODhQQx0QMlKfBTwwX27Fmhf95z
-    yaG+wFdkI908C3whCwXFEt9ZwEUxw/uL2GyzjFYKzzFb9KhA1SIbio8FbDj0l6aL6hf7
-    QQzSxcfchX0AuadBytx3x8E508pv5SHIXs7bEE1UsxD/JNhdxivN6tra0r3te6YksbVp
-    Xdp4884snRffHQldKJ+9Z0jMvvQmmPcsTZ52S6fPjOwWj4vKsrNcdMbkewjNse74ab5N
-    t9x8iAUIeWmtOD3aUcPi8D9sp1bpGYHXA1kun4xtcOKAy2MH8r0+09+/KyzFr2dEkG5m
-    Albw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783749733;
+    bh=HPdy4LPPlxugHv+cSwsCrzTGTCfohShFJc3owzkw44A=;
+    b=tGm8GsIi8+gfLmYMR0PE1GN8GrJoMxACv6xGhuA/AyiEep3bM76z6IxxcNo2a4K4a1
+    SNv5tjRXP/78yaa6sf2jgmnlOBd0vlMm0VWjqbBTVJDKgOpywUyfrXAaSPRRZDKg5ysv
+    DbbPBuYwsm/TFowoAZkQzpjbN2yW+wo0sbMPtuRuI9lcEKM5eVT9Q80iNRcvO7x+5bNp
+    o8q+5Qvik8cEPmNJ8jRmwiYXQFCuXtPXZ1xCEHS/Zs+nctosKG0QzzepJEmfyQG42QkM
+    nqHbqleuMBfH95ohBaO6s80PPlrkAVevlMkbu7SfR5FgDsqyI2G0kjA7eKr7EQQFALjY
+    95cg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783749734;
     s=strato-dkim-0003; d=goldelico.com;
     h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=wV6iPQx9mr9GnWcgEuPgvu8N7t+FUMy7pZdOenitrKA=;
-    b=LyjgpbMKh6H6ERpUAmFX42ygfbFz0rHJ1cHwrsF2a/wmKtnMvBsPB4UT/GVX7CtaN5
-    Nbkrryo0KmZRFkCZ03Dg==
+    bh=HPdy4LPPlxugHv+cSwsCrzTGTCfohShFJc3owzkw44A=;
+    b=ESnVmjxnmU6AyUjpn0uHweO4UfrbSQPCI6U3IeNAK0XEfgNHZa1ZjUb5q0aI90RWX3
+    RpF9J9kKa+swzVF8U1Cg==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9qVpwcQVkPW4I1HrT35oLmciNszeF4HOToVDOd6S1gdjuILE2MKVd"
 Received: from iMac.fritz.box
     by smtp.strato.de (RZmta 55.5.6 AUTH)
-    with ESMTPSA id Q4b76426B62CGhq
+    with ESMTPSA id Q4b76426B62DGhr
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
-    Sat, 11 Jul 2026 08:02:12 +0200 (CEST)
+    Sat, 11 Jul 2026 08:02:13 +0200 (CEST)
 From: "H. Nikolaus Schaller" <hns@goldelico.com>
 To: Grond <grond66@riseup.net>,
 	Stefan Leichter <sle85276@gmx.de>,
@@ -125,9 +125,9 @@ Cc: letux-kernel@openphoenux.org,
 	linux-fbdev@vger.kernel.org,
 	kernel@pyra-handheld.com,
 	mfd@lists.linux.dev
-Subject: [PATCH 05/16] arm: dts: omap3pandora: Don't use DMA channels for unused SPI masters
-Date: Sat, 11 Jul 2026 08:01:52 +0200
-Message-ID: <129b1ff8e73235c74ac66dab9041672190065785.1783749722.git.hns@goldelico.com>
+Subject: [PATCH 06/16] ASoC: twl4030-codec: Allow setting APLL rate through the .set_sysclk() interface
+Date: Sat, 11 Jul 2026 08:01:53 +0200
+Message-ID: <7ea589f951baf1e217c7169ae21c0bf510672ecf.1783749722.git.hns@goldelico.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1783749722.git.hns@goldelico.com>
 References: <cover.1783749722.git.hns@goldelico.com>
@@ -145,7 +145,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[goldelico.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[goldelico.com:s=strato-dkim-0002,goldelico.com:s=strato-dkim-0003];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -161,7 +161,7 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-7917-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7929-lists,linux-fbdev=lfdr.de];
 	DKIM_TRACE(0.00)[goldelico.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -171,60 +171,229 @@ X-Spamd-Result: default: False [0.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev,dt];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,riseup.net:email,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,riseup.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A26BB740788
+X-Rspamd-Queue-Id: D69B1740860
 
 From: Grond <grond66@riseup.net>
 
-On the pandora, only McSPI1 (spi0) is actually used. Because the device
-tree defaults in arch/arm/boot/dts/omap3.dtsi leave all of the mcspi
-interfaces enabled, the DMA channels which the device tree assigns to them
-cannot be used for anything else. This is a problem because OMAP3's sDMA
-controller can only have 32 DMA channels configured at any one time.
-
-So when we try to use (for example) the McBSP subsystem (which is required
-for sound) it doesn't work because we've already exhausted our available
-DMA channels.
-
-Fix this by disabling mcspi[2-4] on the pandora device tree.
+On the Pandora, the APLL is actually what drives all of the audio clocks on
+the board. Since the TWL4030 is only used for capture, we need some way of
+setting the correct rate for playback streams, since they will not go
+through the TWL4030's .hw_params() code path (which is normally how APLL
+rate is set).
 
 Signed-off-by: Grond <grond66@riseup.net>
 Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 ---
- .../boot/dts/ti/omap/omap3-pandora-common.dtsi  | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ include/linux/mfd/twl4030-audio.h |   3 +
+ sound/soc/codecs/twl4030.c        | 140 +++++++++++++++++++++---------
+ 2 files changed, 101 insertions(+), 42 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-pandora-common.dtsi b/arch/arm/boot/dts/ti/omap/omap3-pandora-common.dtsi
-index a0116823ffdef..b4acab1625212 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-pandora-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap3-pandora-common.dtsi
-@@ -693,6 +693,23 @@ lcd_in: endpoint {
+diff --git a/include/linux/mfd/twl4030-audio.h b/include/linux/mfd/twl4030-audio.h
+index 1c28605dfda80..4378eef97b0fc 100644
+--- a/include/linux/mfd/twl4030-audio.h
++++ b/include/linux/mfd/twl4030-audio.h
+@@ -244,6 +244,9 @@
+ #define TWL4030_VIBRA_SEL		0x10
+ #define TWL4030_VIBRA_DIR_SEL		0x20
  
- };
++/* clock ID used for setting APLL rate */
++#define TWL4030_CLOCK_APLL		0xffff
++
+ /* TWL4030 codec resource IDs */
+ enum twl4030_audio_res {
+ 	TWL4030_AUDIO_RES_POWER = 0,
+diff --git a/sound/soc/codecs/twl4030.c b/sound/soc/codecs/twl4030.c
+index 9476cdfd4dde9..ff36679166e20 100644
+--- a/sound/soc/codecs/twl4030.c
++++ b/sound/soc/codecs/twl4030.c
+@@ -198,6 +198,38 @@ static void twl4030_codec_enable(struct snd_soc_component *component, int enable
+ 	udelay(10);
+ }
  
-+/*
-+ * Only mcspi1 is used on the pandora, the others do not surface on the board
-+ * due to pinmux configuration. disable the unused ones so that they do not
-+ * consume DMA channels
-+ */
-+&mcspi2 {
-+	status = "disabled";
-+};
++static int twl4030_perform_writes(struct snd_soc_component *component,
++				  const unsigned int *regs,
++				  const unsigned int *vals,
++				  unsigned int n)
++{
++	struct twl4030_priv *twl4030 = snd_soc_component_get_drvdata(component);
++	int reboot_codec = twl4030->codec_powered;
++	unsigned int i;
++	int ret;
 +
-+&mcspi3 {
-+	status = "disabled";
-+};
++	if (reboot_codec)
++		twl4030_codec_enable(component, 0);
 +
-+&mcspi4 {
-+	status = "disabled";
-+};
++	for (i = 0; i < n; ++i) {
++		ret = twl4030_write(component, regs[i], vals[i]);
++		if (ret)
++			return ret;
++	}
 +
- /* n/a - used as GPIOs */
- &mcbsp1 {
- };
++	if (reboot_codec)
++		twl4030_codec_enable(component, 1);
++
++	return 0;
++}
++
++static inline int
++twl4030_perform_single_write(struct snd_soc_component *component,
++			     unsigned int reg, unsigned int val)
++{
++	return twl4030_perform_writes(component, &reg, &val, 1);
++}
++
+ static void
+ twl4030_get_board_param_values(struct twl4030_board_params *board_params,
+ 			       struct device_node *node)
+@@ -1690,38 +1722,16 @@ static void twl4030_shutdown(struct snd_pcm_substream *substream,
+ 		twl4030_tdm_enable(component, substream->stream, 0);
+ }
+ 
+-static int twl4030_hw_params(struct snd_pcm_substream *substream,
+-			     struct snd_pcm_hw_params *params,
+-			     struct snd_soc_dai *dai)
++static int twl4030_get_codec_mode_for_apll_rate(struct snd_soc_component *component,
++						unsigned int rate, u8 *res)
+ {
+-	struct snd_soc_component *component = dai->component;
+-	struct twl4030_priv *twl4030 = snd_soc_component_get_drvdata(component);
+-	u8 mode, old_mode, format, old_format;
+-
+-	 /* If the substream has 4 channel, do the necessary setup */
+-	if (params_channels(params) == 4) {
+-		format = twl4030_read(component, TWL4030_REG_AUDIO_IF);
+-		mode = twl4030_read(component, TWL4030_REG_CODEC_MODE);
+-
+-		/* Safety check: are we in the correct operating mode and
+-		 * the interface is in TDM mode? */
+-		if ((mode & TWL4030_OPTION_1) &&
+-		    ((format & TWL4030_AIF_FORMAT) == TWL4030_AIF_FORMAT_TDM))
+-			twl4030_tdm_enable(component, substream->stream, 1);
+-		else
+-			return -EINVAL;
+-	}
+-
+-	if (twl4030->configured)
+-		/* Ignoring hw_params for already configured DAI */
+-		return 0;
++	u8 old_mode, mode;
+ 
+-	/* bit rate */
+ 	old_mode = twl4030_read(component,
+ 				TWL4030_REG_CODEC_MODE) & ~TWL4030_CODECPDZ;
+ 	mode = old_mode & ~TWL4030_APLL_RATE;
+ 
+-	switch (params_rate(params)) {
++	switch (rate) {
+ 	case 8000:
+ 		mode |= TWL4030_APLL_RATE_8000;
+ 		break;
+@@ -1753,11 +1763,50 @@ static int twl4030_hw_params(struct snd_pcm_substream *substream,
+ 		mode |= TWL4030_APLL_RATE_96000;
+ 		break;
+ 	default:
+-		dev_err(component->dev, "%s: unknown rate %d\n", __func__,
+-			params_rate(params));
++		dev_err(component->dev, "%s: unknown rate %u\n", __func__,
++			rate);
+ 		return -EINVAL;
+ 	}
+ 
++	*res = mode;
++
++	return mode != old_mode ? 1 : 0;
++}
++
++static int twl4030_hw_params(struct snd_pcm_substream *substream,
++			     struct snd_pcm_hw_params *params,
++			     struct snd_soc_dai *dai)
++{
++	struct snd_soc_component *component = dai->component;
++	struct twl4030_priv *twl4030 = snd_soc_component_get_drvdata(component);
++	u8 mode, format, old_format;
++	int s;
++	unsigned int regs[2], vals[2];
++
++	 /* If the substream has 4 channel, do the necessary setup */
++	if (params_channels(params) == 4) {
++		format = twl4030_read(component, TWL4030_REG_AUDIO_IF);
++		mode = twl4030_read(component, TWL4030_REG_CODEC_MODE);
++
++		/* Safety check: are we in the correct operating mode and
++		 * the interface is in TDM mode?
++		 */
++		if ((mode & TWL4030_OPTION_1) &&
++		    ((format & TWL4030_AIF_FORMAT) == TWL4030_AIF_FORMAT_TDM))
++			twl4030_tdm_enable(component, substream->stream, 1);
++		else
++			return -EINVAL;
++	}
++
++	if (twl4030->configured)
++		/* Ignoring hw_params for already configured DAI */
++		return 0;
++
++	s = twl4030_get_codec_mode_for_apll_rate(component,
++						 params_rate(params), &mode);
++	if (s < 0)
++		return s;
++
+ 	/* sample size */
+ 	old_format = twl4030_read(component, TWL4030_REG_AUDIO_IF);
+ 	format = old_format;
+@@ -1775,20 +1824,12 @@ static int twl4030_hw_params(struct snd_pcm_substream *substream,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (format != old_format || mode != old_mode) {
+-		if (twl4030->codec_powered) {
+-			/*
+-			 * If the codec is powered, than we need to toggle the
+-			 * codec power.
+-			 */
+-			twl4030_codec_enable(component, 0);
+-			twl4030_write(component, TWL4030_REG_CODEC_MODE, mode);
+-			twl4030_write(component, TWL4030_REG_AUDIO_IF, format);
+-			twl4030_codec_enable(component, 1);
+-		} else {
+-			twl4030_write(component, TWL4030_REG_CODEC_MODE, mode);
+-			twl4030_write(component, TWL4030_REG_AUDIO_IF, format);
+-		}
++	if (format != old_format || s) {
++		regs[0] = TWL4030_REG_CODEC_MODE;
++		vals[0] = mode;
++		regs[1] = TWL4030_REG_AUDIO_IF;
++		vals[1] = format;
++		twl4030_perform_writes(component, regs, vals, ARRAY_SIZE(regs));
+ 	}
+ 
+ 	/* Store the important parameters for the DAI configuration and set
+@@ -1813,6 +1854,21 @@ static int twl4030_set_dai_sysclk(struct snd_soc_dai *codec_dai, int clk_id,
+ {
+ 	struct snd_soc_component *component = codec_dai->component;
+ 	struct twl4030_priv *twl4030 = snd_soc_component_get_drvdata(component);
++	int s;
++	u8 mode;
++
++	if (clk_id == TWL4030_CLOCK_APLL) {
++		s = twl4030_get_codec_mode_for_apll_rate(component,
++							 freq, &mode);
++		if (s < 0)
++			return s;
++
++		if (s)
++			return twl4030_perform_single_write(component,
++					TWL4030_REG_CODEC_MODE, mode);
++
++		return 0;
++	}
+ 
+ 	switch (freq) {
+ 	case 19200000:
 -- 
 2.50.1 (Apple Git-155)
 
