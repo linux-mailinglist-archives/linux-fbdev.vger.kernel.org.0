@@ -1,216 +1,177 @@
-Return-Path: <linux-fbdev+bounces-7966-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7968-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id h99RH0GzVGrLpgMAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7966-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 11:43:29 +0200
+	id iHggOde7VGonqQMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7968-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 12:20:07 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D353D7496B3
-	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 11:43:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D781B749B7D
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 12:20:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZUvkTzB6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7966-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7966-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=URLUURKQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7968-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7968-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60E93302B3B7
-	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 09:43:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF9BF3008FCA
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 10:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC2C3E2767;
-	Mon, 13 Jul 2026 09:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487F33D9545;
+	Mon, 13 Jul 2026 10:20:01 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3F4385519;
-	Mon, 13 Jul 2026 09:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8426E36404D
+	for <linux-fbdev@vger.kernel.org>; Mon, 13 Jul 2026 10:19:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783935780; cv=none; b=N+kDx765Fxtt4t8md5sQQ1+IJiHevrpHPsI2djdRvjg5zSaE9A15TZd4w8oilVdr4h38idEcdX/5vTDC3PuPcBAi+Vcc1y/V5rOQQXhMSw5uK2QahoM2qMUzE6PRInioU4Re6aAzcNSKLv6Fpl03Qw6cFDtZ1paoRnhP7WKq90A=
+	t=1783938000; cv=none; b=GNDJUwpd5XmcTFTIepSlPBN3RdhmCULYLqKfmZBVsJ/XS/zIKmXKeiPDYpgmxRmqfayAXJxnrzNVRo/qItLUXOrg/f3rRkaoQcls16eq7p8Zlu7AbZ+Qb9waoeJqJT68MbMVm7MhVgmN6rHrIXFFa7aPFpvwU17C7QPqYd/9Ob4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783935780; c=relaxed/simple;
-	bh=KpGTbwVrV07M/ON5Blc+NfYMvyXGUiwxd5jRPdUSpLQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JWwOZktkLs5C7LqEVoTzDgypF4Br5gJtPQefZhL02Im/o4Y0zltDZSatll/wilp1eWJs98uX3Ek/Z4u+279Mf76RKIEZQDSuYroWrXgLqFqe1QK1DbwhaxcANLtaw5+Gee2ksf9tWASUKGtjWYwzRJnQXq4Tvnz/5KjoYKRnJGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUvkTzB6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9321F000E9;
-	Mon, 13 Jul 2026 09:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783935779;
-	bh=N/NEsg97ESxWviKB3N8M2VOUIX1MYSodWT+/FDsMwVc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZUvkTzB6DzrS7C/pL/ThRvqAycIXRupKAOhccO88GKDdKKpefs2N+SHt9uFFdNZCo
-	 w2l4BouVRhLJoDRvLmD3l0wCDiBdSWnMkUhVxEC8+HHshlfv4uyhkgvduvMnyxvrp9
-	 P3p6v1rgWnRMSkXxroCGB/RprqCuSSrBm/fM7caWLZqjCVyMECH38/nwhPc24OApHx
-	 qxmHKVot8h+6wfJ1tTIKn5modem0JzLchLUiwX91Jr5iA6FXlWEvLbEE196lcJNBUV
-	 TS/nUDmqL7TaYNVx+nshUZ4r4LYtLwSmwDr+6JwMihRJNbU+HnziPHD36+v7hGnoYB
-	 rnYDoMxeagx1w==
-Message-ID: <741706c6-e6ff-4bc2-8ea1-28ebada6032c@kernel.org>
-Date: Mon, 13 Jul 2026 11:42:44 +0200
+	s=arc-20240116; t=1783938000; c=relaxed/simple;
+	bh=DbIl8eyUDTcDG004poG9cmmxee7SHYKNKOEke/947Xk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hNzqCA20SJVQzrc1QuKEowMpAJrbmNsj4Igo3xVVon1ZJF330sYbswAI1YaGn55fUGg4SANc4o4O+I6pgv8dsPymRTkQl+H+Hsnx/4IzGLdnta97tBxhVz3YxqPvAbMdzR4x/Hb6y+FiTYJsSYERjhTEeHs1f5jsiI9vE/e1vwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=URLUURKQ; arc=none smtp.client-ip=209.85.221.53
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47362928f65so2905670f8f.2
+        for <linux-fbdev@vger.kernel.org>; Mon, 13 Jul 2026 03:19:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783937998; x=1784542798; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=N9jAAyHAI2D1PucdtnorXSHGwmyQhG7HWP4Mt9DkiF0=;
+        b=URLUURKQxH6/IDBw/Edk+PoecvMkAIGZJ/wj+3mtyMzZoDs09AgZiIkiTyxv3tyOJN
+         QitwnPn5klRiXbmjekmiCuuaE7XQIB41pg9yP690iLO5GasgxFp7XCytwAMSLTo6fuFX
+         ImxG0AmhmrDfcGmNi68XIhcH8M+lwXEEwVGVWkbeODZ3ZANIU0QkM0ewCTMvWayrY0E9
+         hcBzQg1VjeuPIZoHpRu9OgNQ+OuOo6XV1E7HR9DsIHItOrkC3zN063SxlqrOlpft+Yw4
+         jUFvEASPhbsTrlVFmn/OXUA7tPY0tFKMhf8BPYhhSMMyRaxemTsXXldwotl8JZ7QvLs3
+         Duyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783937998; x=1784542798;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N9jAAyHAI2D1PucdtnorXSHGwmyQhG7HWP4Mt9DkiF0=;
+        b=h2rP9Hx2ng5PWnTMi4NnJ/7VH9IBLnsDYCgp0meE6A1tJz2vaRJnFwjRJQ57w/KlXT
+         G5VTFiLeqL7xPaljQc1uFScMysh35gKaGNoBTBq3lQcjeJQHDjtbbhS+m5E/Z6o7W9Xg
+         Yfwt+oAgFxSfeYI8U+2elG7UiGaLFNh7afAZ/WPGGCkUxdqPc/eYXC2zWZjtqr05Z3H1
+         z8z9WgWB+tSupEcWnu46/zuPxUevNxKT4X64eTCoGD9vMoU18hxwgL1VnPlmyh7m/Njj
+         S0w3xtIxxAYpkHKYDuRzQX/hYcNubYyX2jyoWGIvS1zqjWqykk9uR7KjxZV3mOFe7YKM
+         ZMFA==
+X-Forwarded-Encrypted: i=1; AHgh+RpBHYuAUYrmvSg3ML+JX+fO692m5++87qsBrQgU2IfIqWPEyvxrFMwfW5W8e7yCgvxmPSB7SBRLoupR4w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxw32xUhXkpdHy+RlbGAajXugUT2FD+QMySZbJdLN2BL9MtpZfJ
+	KIEcdXs+Vb3P05h7BsSP1Yhxyqu4a7RCxEo0urVSzuvsCFyYsJhvxLY=
+X-Gm-Gg: AfdE7cm0mpBPuEY9MRVHbD9GtQqdXTTzoTql+R4PM2NbSDdvkUZh0ur3MWG0lfqUF8d
+	kztOe/O+kgGtx9ImXhW82Y7vkTj6LmZBdwwqANDDR01BfUcjlyyPYQk8AF3lcqlyHgxvXAB4k9a
+	P5lNai8rGWroxuHwTIcz5M6HZ9Llnc4bjCPOLxpXsDORO16dvOcJ8lzrFQoMblsQe6vOFO4B2/h
+	k7RaJ3q1y9sdwXEX+kiEaO/bEnOgJhRRmKMNOPczAfLX3LDsG86pxbGSyehi0mp7isItlsZqwzq
+	sJivJrExZ001rEYKKRmlFKwRGGpMnyOwFVKTWNMCTzQFpOwASjujm1d5hb8DTvuUdbltDFvEOPi
+	39lR6GaZNFrjMaVMf2PWF7RPZaS49c3ZqmlzflNG7KP22LFOJMc0XddVRns3U5qZAkiTdI2iSPf
+	Ft8h/uYOTjdJ/DQ4QCYHAOwQKvLW8+2yYXnLJc6AVAM1wLMRhJfkQIa7tKWWuj06pf9vRQwQ==
+X-Received: by 2002:a05:6000:22c7:b0:472:8343:7f5e with SMTP id ffacd0b85a97d-47f2dc8ce54mr9184872f8f.5.1783937997743;
+        Mon, 13 Jul 2026 03:19:57 -0700 (PDT)
+Received: from localhost ([2a02:810d:4a94:b300:ceac:ba6c:1653:e93a])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47aa0f213e8sm83332478f8f.34.2026.07.13.03.19.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Jul 2026 03:19:57 -0700 (PDT)
+From: Florian Fuchs <fuchsfl@gmail.com>
+To: Helge Deller <deller@gmx.de>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Florian Fuchs <fuchsfl@gmail.com>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] fbdev: pvr2fb: correct user pointer annotation and sentinel initializer
+Date: Mon, 13 Jul 2026 12:16:38 +0200
+Message-ID: <20260713101638.600333-1-fuchsfl@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/16] ASoC: dt-bindings: add OpenPandora Sound Card
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc: Grond <grond66@riseup.net>, Stefan Leichter <sle85276@gmx.de>,
- Grazvydas Ignotas <notasas@gmail.com>, Tony Lindgren <tony@atomide.com>,
- Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Jarkko Nikula <jarkko.nikula@bitmer.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Andreas Kemnade
- <andreas@kemnade.info>, Lee Jones <lee@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>,
- Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Daniel Thompson <danielt@kernel.org>,
- Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Sen Wang <sen@ti.com>, Richard Fitzgerald <rf@opensource.cirrus.com>,
- Arnd Bergmann <arnd@arndb.de>,
- Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- Charles Keepax <ckeepax@opensource.cirrus.com>,
- Niranjan H Y <niranjan.hy@ti.com>, letux-kernel@openphoenux.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-omap@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, kernel@pyra-handheld.com, mfd@lists.linux.dev
-References: <cover.1783749722.git.hns@goldelico.com>
- <7989e699de400c0fe3f0cb7af77a54077784df78.1783749722.git.hns@goldelico.com>
- <20260713-infallible-capable-dormouse-aaaebe@quoll>
- <BF2B6C4A-A4CC-48D7-9854-DC014950184B@goldelico.com>
- <5667350d-cc3f-421d-899f-f353b05c5ea1@kernel.org>
- <8A0C119B-7885-4538-8D4F-AC60E5C91B7E@goldelico.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <8A0C119B-7885-4538-8D4F-AC60E5C91B7E@goldelico.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-7966-lists,linux-fbdev=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:hns@goldelico.com,m:grond66@riseup.net,m:sle85276@gmx.de,m:notasas@gmail.com,m:tony@atomide.com,m:enelsonmoore@gmail.com,m:jarkko.nikula@bitmer.com,m:s.hauer@pengutronix.de,m:andreas@kemnade.info,m:lee@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:aaro.koskinen@iki.fi,m:khilman@baylibre.com,m:rogerq@kernel.org,m:linux@armlinux.org.uk,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:deller@gmx.de,m:perex@perex.cz,m:tiwai@suse.com,m:sen@ti.com,m:rf@opensource.cirrus.com,m:arnd@arndb.de,m:srinivas.kandagatla@oss.qualcomm.com,m:kuninori.morimoto.gx@renesas.com,m:ckeepax@opensource.cirrus.com,m:niranjan.hy@ti.com,m:letux-kernel@openphoenux.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-omap@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:kernel@pyra-handheld.com,m:mfd@l
- ists.linux.dev,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[krzk@kernel.org,linux-fbdev@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[41];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,linux-fbdev@vger.kernel.org];
-	FREEMAIL_CC(0.00)[riseup.net,gmx.de,gmail.com,atomide.com,bitmer.com,pengutronix.de,kemnade.info,kernel.org,iki.fi,baylibre.com,armlinux.org.uk,perex.cz,suse.com,ti.com,opensource.cirrus.com,arndb.de,oss.qualcomm.com,renesas.com,openphoenux.org,vger.kernel.org,lists.infradead.org,lists.freedesktop.org,pyra-handheld.com,lists.linux.dev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[linux-fbdev,dt];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[baylibre.com,vger.kernel.org,lists.freedesktop.org,gmail.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-7968-lists,linux-fbdev=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:deller@gmx.de,m:glaubitz@physik.fu-berlin.de,m:u.kleine-koenig@baylibre.com,m:linux-fbdev@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:fuchsfl@gmail.com,m:lkp@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[fuchsfl@gmail.com,linux-fbdev@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmx.de,physik.fu-berlin.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fuchsfl@gmail.com,linux-fbdev@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[linux-fbdev];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D353D7496B3
+X-Rspamd-Queue-Id: D781B749B7D
 
-On 13/07/2026 11:38, H. Nikolaus Schaller wrote:
-> 
-> 
->> Am 13.07.2026 um 11:21 schrieb Krzysztof Kozlowski <krzk@kernel.org>:
->>
->> On 13/07/2026 10:27, H. Nikolaus Schaller wrote:
->>> Hi Krzysztof,
->>>
->>> Thank you for the feedback.
->>>
->>>
->>> It does not emit any C compiler issues or runtime problems so it remained unnoticed.
->>
->> I do not believe.
->>
->> There is a clear warning from Rob's bot.
->>
->> You just did not follow the process of building the code (compiler has
->> nothing to do here). Read submitting patches in DT dir and then writing
->> schema for further instructions. This is ABSOLUTE MINIMUM. We are not
->> your build test service.
->>
->>>
->>> It was notified by the sahiko-bot and will be fixed in v2.
->>
->> Sashiko has nothing to do with that.
->>
->> You DID NOT BUILD the code.
-> 
-> Hm. You are confusing me. I did "make" and did not get any errors...
-> And the resulting code works as intended.
+Add __user annotation to buf, as it is passed as a user pointer in
+pin_user_pages_fast(). Use an empty initializer for the sentinel
+board-table entry to avoid initializing a function pointer with an
+integer literal.
 
-'make' alone does not build that, just like other pieces of code they
-have own - well documented and always expected - build processes.
+Fixes: 5f566c0ac51c ("fbdev: pvr2fb: Fix leftover reference to ONCHIP_NR_DMA_CHANNELS")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202607131247.fpQ6eTc7-lkp@intel.com/
+Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
+---
+Not sure, if we do such changes, but as I received a test robot email, I
+leave it up to you all :) (I also compiled and tested the change)
 
-I don't know what is confusing in my message, since I pointed you to
-SPECIFIC guide telling you EXACTLY what to do (and which you did not do).
+ drivers/video/fbdev/pvr2fb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/video/fbdev/pvr2fb.c b/drivers/video/fbdev/pvr2fb.c
+index 9428716e2dc4..a6e7abca7a06 100644
+--- a/drivers/video/fbdev/pvr2fb.c
++++ b/drivers/video/fbdev/pvr2fb.c
+@@ -639,7 +639,7 @@ static irqreturn_t __maybe_unused pvr2fb_interrupt(int irq, void *dev_id)
+ }
+ 
+ #ifdef CONFIG_PVR2_DMA
+-static ssize_t pvr2fb_write(struct fb_info *info, const char *buf,
++static ssize_t pvr2fb_write(struct fb_info *info, const char __user *buf,
+ 			    size_t count, loff_t *ppos)
+ {
+ 	unsigned long dst, start, end, len;
+@@ -1077,7 +1077,7 @@ static struct pvr2_board {
+ #ifdef CONFIG_PCI
+ 	{ pvr2fb_pci_init, pvr2fb_pci_exit, "PCI PVR2" },
+ #endif
+-	{ 0, },
++	{ },
+ };
+ 
+ static int __init pvr2fb_init(void)
+-- 
+2.43.0
+
 
