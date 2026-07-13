@@ -1,88 +1,88 @@
-Return-Path: <linux-fbdev+bounces-7961-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7960-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vWEmO7ijVGqPogMAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7961-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 10:37:12 +0200
+	id 9QEABQ+kVGqkogMAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7960-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 10:38:39 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571CA748C90
-	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 10:37:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0972E748CD9
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 10:38:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=Vwx2oTP7;
-	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=qtblV6pg;
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0002 header.b=cNlzCSfH;
+	dkim=pass header.d=goldelico.com header.s=strato-dkim-0003 header.b=aEHftVVv;
 	dmarc=pass (policy=quarantine) header.from=goldelico.com;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7961-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7961-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7960-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7960-lists+linux-fbdev=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8301B30871E3
-	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 08:28:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B0FF301C5DD
+	for <lists+linux-fbdev@lfdr.de>; Mon, 13 Jul 2026 08:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1B43AFCE5;
-	Mon, 13 Jul 2026 08:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DADF3AEB2C;
+	Mon, 13 Jul 2026 08:28:05 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [85.215.255.100])
+Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [85.215.255.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05FC3AE1BD;
-	Mon, 13 Jul 2026 08:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD6C3AD52B;
+	Mon, 13 Jul 2026 08:28:02 +0000 (UTC)
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783931308; cv=pass; b=nE+0jFLqzD3NDW6lveGc1GuwoM/XoMLengRuZGvnm1qS++HVsJeztMgNeXCwRCXlRNRHoUa7CyZZFSeuOXmt7JigOzrp7zIq/4HKsR84jT2E0xQHzJvbwzOmb2AEycnFbnholSeEo8qm5mR0w07Vy5svVeV6R/1IU4/YNOa/s5Q=
+	t=1783931285; cv=pass; b=CjMjIR6VLct7jM1qnEEYiCrxhogBfKZqiAjc7s5IPFZOVa05YATsK+ACkJA+3mriTLqDKQbOCnNZrBrIA6jadHEAMY/xOH586EYIn3/dMNkGc4ft0QKqV74ty5jsRhTSf+2uGmlKqnx4fMXu/cTG8B+THjOqm9tcLdhCDzJQKvw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783931308; c=relaxed/simple;
-	bh=hU0sagAME1G1zZIH0RQbZV4EmEHwkgt1Op5N1vS/zfo=;
+	s=arc-20240116; t=1783931285; c=relaxed/simple;
+	bh=TmBCGJ40zcqiObxb5WI0YMQUk3XkQJfcOkD4AdtSdTw=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=EXLFEQzYUtvXH5d4CEAF1x6vD010Xuzej7vUDkIuLnKdtYFyH/FPtbstNJhUnohjJyEf59Dj/TcRFuCtG3Onq1rcdjFY6KbxoQsivMs/XYoYlKg8y5GAi+1lix1JD6GuqSSDhYI8ajZ6NS2WGI8xdF6SoPRpc7mZYubjYxzuvN0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=Vwx2oTP7; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=qtblV6pg; arc=pass smtp.client-ip=85.215.255.100
-ARC-Seal: i=1; a=rsa-sha256; t=1783931231; cv=none;
+	 Message-Id:References:To; b=eME8g0jXQX5Le1wNsHjKAd2QchRvl/T+MKK2EjDqJV3nhgeMR3knbqa7A6JxUuHbE4vhrVxAmoTLhcz1UmWlRoDykub1D8iOuKoEMIXMwDei788+CBRkQtEkicvcq3r8cBWtgYZAE2vhA7yXhS1ApdSzATOw/+AUYxffqCGRYIY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=cNlzCSfH; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=aEHftVVv; arc=pass smtp.client-ip=85.215.255.102
+ARC-Seal: i=1; a=rsa-sha256; t=1783931244; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=Oka9nCCkM+WZsnC/UNUFXjjaf3XwBpi/Oav9a/hVi0pB8MRxssrukHul6GEWznHmPM
-    ESuqm0fBKdqPFempxtFxM3J6oqurPdAN0xkNajC7tnfKB87JmOP28ytTzrT4rCcb5E0Y
-    lDLmYq4epC7eTkSONqsvQ5ts/WdO8PD/lU1dGrx0TIBFfd2qN11ISGgOTmta0ies3oyf
-    GIrudUva1NnndTVf+19+KN4zAEDD1b6IeoB0FgLhmqcoZlXh/+2YLgDnZGtFEhb3yq5c
-    tYKdnPJRPylyoLu2ajTe3eXlYbR8QLF7Jqt5uPEu56g4QQyvBK+vTKJ7NbDoPFU7+nI0
-    cuUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783931231;
+    b=Wv45c5Xu0HYQjDS/lmDFwfn2fEfWOvgX4BPfwjcUKhsruzOtt0odkWxXhGCgnxZxlc
+    uXfafRFGCj3vcFTjiZ6T1z/dGvU5B6+gC6RFXfS17KIN4mzxwvFXyns0F9+8RLwTj8xI
+    BMNrR2LJebjh7lD8lvZGQQ0oPEGhE/RsPZmLamVpuxmBpyC5qpqAlSO/qlVGGjLVYt/H
+    3K9JaNNbaLZLg10nr/BxZy8XEyPeS56/NEGUTp6mxtIYY9qyb8nhCZ9fwubYBZWGLkuh
+    5Ds5CwR4VD3JCEEyBNlIw/9QEG2RUnneaxHwZgnwTSgW8gnC5hX/iK/ZMf1SPVcDV5oU
+    2saw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1783931244;
     s=strato-dkim-0002; d=strato.com;
     h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
     From:Subject:Sender;
-    bh=Ib9mcRTAy1oPoZKxfhyC8Zte5eIn/Pz6JIUrDWg1aW4=;
-    b=D6jlrtCzML6mCSrVPwQjtXWqErpA5Jd47PDLQF00O/HrZwutL85UKj2K29XaNYs0SP
-    2YlkrJYN3XuQAw2iHRbBog4RFUlgpRAvlG65hkDFQ0JQdyQO2bUASmVz7ElyHlkbo8I8
-    dyXLYMVWohedYQGdxl9dgW4KDO6XIL8B62v5vlpu5uoxOgXiwPdkrMTG/VMRwAPB/tnj
-    NW4kK83Nl4UPPYHxhuG8NS+PFAaqhOrc4qbLNIRwLVLuEwygsEWF5d15vJDjtHPDAyax
-    0YiD376xYpuCZ/Xv1MOpoa8t7UTiEBRUtCMNkfSOZMktFizmgZZC4NdBvxzKi/854QqO
-    HjXw==
+    bh=TmBCGJ40zcqiObxb5WI0YMQUk3XkQJfcOkD4AdtSdTw=;
+    b=jH+QUmeOlR+Mx9H+3gfmgwtrQYJhI1wYw+IVVAmWm2VTLL5dEnyflCQ8/T9BiyShIQ
+    +ccKvt7xofP0znuilBHpfAhg1pwwJvt4xuap6ZrJ4nrftMyLFmrHMqMpPViyj4KJ/zGj
+    Jx21fwlqxJlRbMNAT3r1F7RJHUfJfaQtb0EJb+tnG/3JT7Vs8IOOHUaGKEsYsk5Dq7Cb
+    57gGiWNnOUjE81seZKIGiUugMvrJtyFqNLKRPAvAK9XYWgoXqvciio9izoy6KQHZKWkr
+    ISPnmmTlBoTJz60v4vsTRG0y2uH+f2xf/vxYW9AhvAhRF8Hg2F5Mb3Ga8cv4chHhLbYF
+    LeKQ==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo03
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783931231;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1783931244;
     s=strato-dkim-0002; d=goldelico.com;
     h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
     From:Subject:Sender;
-    bh=Ib9mcRTAy1oPoZKxfhyC8Zte5eIn/Pz6JIUrDWg1aW4=;
-    b=Vwx2oTP7GlXOMiikEv8RAjkcfTCZdI39w67GqKlHM4pRVbZNnftH6RbItr/nTaWaOy
-    p8RMzS7WI6acw58Z9T4pO+HtcqBvmtikn6DKE2F1nEip8hRo3bg8mAlJ9TfhbCQfAAUb
-    Og9gqA/oIzReRDaji0ii19RwxjkcRK315ISN3lwarVZcICTb2GwMCh8LJdh0wGFHR+oJ
-    6Ea0cs4mdlIAd0kTfdeRvSk/ZaoFjq+ldOba9I6iqqlHJH/qJLRsGXiAy7TqE2drO2YO
-    MmQyQyW/iYaIvHj7NRmgqO1dpB0rNEbwFT9Kut812dd+pRcGbgy3Mhe3APaC613UpzBK
-    fP/w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783931231;
+    bh=TmBCGJ40zcqiObxb5WI0YMQUk3XkQJfcOkD4AdtSdTw=;
+    b=cNlzCSfH/qGgSOVYmvr4SlrYtitUckKYoycdOVJ45Z2cdoggvfTW75ItQpML3uBmj+
+    FgGLYHB+d6WmwPQpbHktKOWatlcEDECp9Vu5G6dZ+xfw5uyffES0Z7hYy9ptz/JS5t5e
+    1M6O7kReFaS5PZgRJwmun7lStZl2pGkVubgUYxKw1yC1hT/KNO/riSkRQ8kF2s4pXrXj
+    tWU4t/Vf38RKciodN1NfbdKfK9CRxfy1Neo2AR2TkK/x+s5TKd9NRDhC8GcfHiU3ffAH
+    rb9qjC3i5BLndXd1rL5HuwCWprS8ewL/cw9mWrP4yfurCvogLcm7nWF1bs+0QXt1/dH/
+    IhAw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1783931244;
     s=strato-dkim-0003; d=goldelico.com;
     h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
     From:Subject:Sender;
-    bh=Ib9mcRTAy1oPoZKxfhyC8Zte5eIn/Pz6JIUrDWg1aW4=;
-    b=qtblV6pgFh3CET9boKnJ88eVlzy7oA3DhyC0d8mqPA3sunBkBdF/us2HHoQf+7FQSw
-    SdfBRHhUlBUtefoh7pBQ==
+    bh=TmBCGJ40zcqiObxb5WI0YMQUk3XkQJfcOkD4AdtSdTw=;
+    b=aEHftVVvhVUeYGE73TJxXZmN8r3wQfDudi6nEy0VUJj9TMQ5kjkML/3V51KhioACDx
+    mUrJEl7Ek3h+k7oqjrCg==
 X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9qVpwcQVkPW4I1HrQi5pZlciNgDl2kEp5oHJ2/c57N2Mc49IfXTKd"
 Received: from smtpclient.apple
     by smtp.strato.de (RZmta 55.5.6 AUTH)
-    with ESMTPSA id Q4b76426D8RAMvQ
+    with ESMTPSA id Q4b76426D8RNMvV
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
 	(Client did not present a certificate);
-    Mon, 13 Jul 2026 10:27:10 +0200 (CEST)
+    Mon, 13 Jul 2026 10:27:23 +0200 (CEST)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -91,52 +91,56 @@ List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
-Subject: Re: [PATCH 07/16] ASoC: dt-bindings: add TI PCM1773
-From: H. Nikolaus Schaller <hns@goldelico.com>
-In-Reply-To: <20260713-abiding-jumping-ape-7ce8ff@quoll>
-Date: Mon, 13 Jul 2026 10:27:00 +0200
-Cc: linux-fbdev@vger.kernel.org,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+Subject: Re: [PATCH 09/16] ASoC: dt-bindings: add OpenPandora Sound Card
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20260713-infallible-capable-dormouse-aaaebe@quoll>
+Date: Mon, 13 Jul 2026 10:27:12 +0200
+Cc: Grond <grond66@riseup.net>,
+ Stefan Leichter <sle85276@gmx.de>,
+ Grazvydas Ignotas <notasas@gmail.com>,
  Tony Lindgren <tony@atomide.com>,
- dri-devel@lists.freedesktop.org,
- Liam Girdwood <lgirdwood@gmail.com>,
- Niranjan H Y <niranjan.hy@ti.com>,
- Sen Wang <sen@ti.com>,
+ Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ Jarkko Nikula <jarkko.nikula@bitmer.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Andreas Kemnade <andreas@kemnade.info>,
+ Lee Jones <lee@kernel.org>,
  Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>,
  Aaro Koskinen <aaro.koskinen@iki.fi>,
  Kevin Hilman <khilman@baylibre.com>,
- Helge Deller <deller@gmx.de>,
- Lee Jones <lee@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- linux-omap@vger.kernel.org,
- Daniel Thompson <danielt@kernel.org>,
- Grazvydas Ignotas <notasas@gmail.com>,
- devicetree@vger.kernel.org,
- Conor Dooley <conor+dt@kernel.org>,
- Charles Keepax <ckeepax@opensource.cirrus.com>,
- Arnd Bergmann <arnd@arndb.de>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- mfd@lists.linux.dev,
- linux-sound@vger.kernel.org,
- Richard Fitzgerald <rf@opensource.cirrus.com>,
- Mark Brown <broonie@kernel.org>,
- Takashi Iwai <tiwai@suse.com>,
- Jaroslav Kysela <perex@perex.cz>,
- Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
- linux-arm-kernel@lists.infradead.org,
  Roger Quadros <rogerq@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Daniel Thompson <danielt@kernel.org>,
  Jingoo Han <jingoohan1@gmail.com>,
+ Helge Deller <deller@gmx.de>,
+ Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>,
+ Sen Wang <sen@ti.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Niranjan H Y <niranjan.hy@ti.com>,
+ letux-kernel@openphoenux.org,
+ devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org,
+ linux-sound@vger.kernel.org,
+ linux-omap@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org,
  kernel@pyra-handheld.com,
- Jarkko Nikula <jarkko.nikula@bitmer.com>,
- Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Discussions about the Letux Kernel <letux-kernel@openphoenux.org>
+ mfd@lists.linux.dev
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <E7BB0C31-9C19-4A9F-BBD9-746B94177B07@goldelico.com>
+Message-Id: <BF2B6C4A-A4CC-48D7-9854-DC014950184B@goldelico.com>
 References: <cover.1783749722.git.hns@goldelico.com>
- <a02383ea5907a677f4c61066d423efde2b9de48b.1783749722.git.hns@goldelico.com>
- <20260713-abiding-jumping-ape-7ce8ff@quoll>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+ <7989e699de400c0fe3f0cb7af77a54077784df78.1783749722.git.hns@goldelico.com>
+ <20260713-infallible-capable-dormouse-aaaebe@quoll>
+To: Krzysztof Kozlowski <krzk@kernel.org>
 X-Mailer: Apple Mail (2.3826.700.81.1.8)
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.16 / 15.00];
@@ -144,22 +148,23 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[goldelico.com,quarantine];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[goldelico.com:s=strato-dkim-0002,goldelico.com:s=strato-dkim-0003];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7961-lists,linux-fbdev=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-7960-lists,linux-fbdev=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[hns@goldelico.com,linux-fbdev@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[37];
-	FORGED_RECIPIENTS(0.00)[m:linux-fbdev@vger.kernel.org,m:kuninori.morimoto.gx@renesas.com,m:tony@atomide.com,m:dri-devel@lists.freedesktop.org,m:lgirdwood@gmail.com,m:niranjan.hy@ti.com,m:sen@ti.com,m:robh@kernel.org,m:aaro.koskinen@iki.fi,m:khilman@baylibre.com,m:deller@gmx.de,m:lee@kernel.org,m:linux@armlinux.org.uk,m:linux-omap@vger.kernel.org,m:danielt@kernel.org,m:notasas@gmail.com,m:devicetree@vger.kernel.org,m:conor+dt@kernel.org,m:ckeepax@opensource.cirrus.com,m:arnd@arndb.de,m:s.hauer@pengutronix.de,m:mfd@lists.linux.dev,m:linux-sound@vger.kernel.org,m:rf@opensource.cirrus.com,m:broonie@kernel.org,m:tiwai@suse.com,m:perex@perex.cz,m:srinivas.kandagatla@oss.qualcomm.com,m:linux-arm-kernel@lists.infradead.org,m:rogerq@kernel.org,m:jingoohan1@gmail.com,m:linux-kernel@vger.kernel.org,m:kernel@pyra-handheld.com,m:jarkko.nikula@bitmer.com,m:enelsonmoore@gmail.com,m:letux-kernel@openphoenux.org,m:krzk+dt@kernel.org,m:conor@kernel.org,m:krzk@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[41];
+	FORGED_RECIPIENTS(0.00)[m:grond66@riseup.net,m:sle85276@gmx.de,m:notasas@gmail.com,m:tony@atomide.com,m:enelsonmoore@gmail.com,m:jarkko.nikula@bitmer.com,m:s.hauer@pengutronix.de,m:andreas@kemnade.info,m:lee@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:lgirdwood@gmail.com,m:broonie@kernel.org,m:aaro.koskinen@iki.fi,m:khilman@baylibre.com,m:rogerq@kernel.org,m:linux@armlinux.org.uk,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:deller@gmx.de,m:perex@perex.cz,m:tiwai@suse.com,m:sen@ti.com,m:rf@opensource.cirrus.com,m:arnd@arndb.de,m:srinivas.kandagatla@oss.qualcomm.com,m:kuninori.morimoto.gx@renesas.com,m:ckeepax@opensource.cirrus.com,m:niranjan.hy@ti.com,m:letux-kernel@openphoenux.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-sound@vger.kernel.org,m:linux-omap@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:kernel@pyra-handheld.com,m:mfd@lists.linux.dev,m:krz
+ k@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,renesas.com,atomide.com,lists.freedesktop.org,gmail.com,ti.com,kernel.org,iki.fi,baylibre.com,gmx.de,armlinux.org.uk,opensource.cirrus.com,arndb.de,pengutronix.de,lists.linux.dev,suse.com,perex.cz,oss.qualcomm.com,lists.infradead.org,pyra-handheld.com,bitmer.com,openphoenux.org];
+	FREEMAIL_CC(0.00)[riseup.net,gmx.de,gmail.com,atomide.com,bitmer.com,pengutronix.de,kemnade.info,kernel.org,iki.fi,baylibre.com,armlinux.org.uk,perex.cz,suse.com,ti.com,opensource.cirrus.com,arndb.de,oss.qualcomm.com,renesas.com,openphoenux.org,vger.kernel.org,lists.infradead.org,lists.freedesktop.org,pyra-handheld.com,lists.linux.dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -170,58 +175,58 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-fbdev,dt];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim,devicetree.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,goldelico.com:from_mime,goldelico.com:email,goldelico.com:mid,goldelico.com:dkim,devicetree.org:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 571CA748C90
+X-Rspamd-Queue-Id: 0972E748CD9
 
 Hi Krzysztof,
 
 Thank you for the feedback.
 
-> Am 13.07.2026 um 09:38 schrieb Krzysztof Kozlowski <krzk@kernel.org>:
+> Am 13.07.2026 um 09:37 schrieb Krzysztof Kozlowski <krzk@kernel.org>:
 >=20
-> On Sat, Jul 11, 2026 at 08:01:54AM +0200, H. Nikolaus Schaller wrote:
->> PCM1771/3 is a simple audio codec that can be enabled through an
->> enable-gpio.
+> On Sat, Jul 11, 2026 at 08:01:56AM +0200, H. Nikolaus Schaller wrote:
+>> The OpenPandora audio subsystem describes the routing links between =
+the
+>> OMAP3 McBSP interface, the external PCM1773 DAC, and the TWL4030 =
+audio
+>> codec, alongside amplifiers and power supplies.
 >>=20
 >> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
 >> ---
->> .../devicetree/bindings/sound/pcm1773.yaml    | 32 =
+>> .../sound/openpandora,omap3pandora-sound.yaml | 94 =
 +++++++++++++++++++
->> 1 file changed, 32 insertions(+)
+>> 1 file changed, 94 insertions(+)
 >> create mode 100644 =
-Documentation/devicetree/bindings/sound/pcm1773.yaml
+Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.yam=
+l
 >>=20
->> diff --git a/Documentation/devicetree/bindings/sound/pcm1773.yaml =
-b/Documentation/devicetree/bindings/sound/pcm1773.yaml
+>> diff --git =
+a/Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.y=
+aml =
+b/Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.y=
+aml
 >> new file mode 100644
->> index 0000000000000..f3e640705bf70
+>> index 0000000000000..d3c747e5c58d6
 >> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/sound/pcm1773.yaml
->> @@ -0,0 +1,32 @@
+>> +++ =
+b/Documentation/devicetree/bindings/sound/openpandora,omap3pandora-sound.y=
+aml
+>> @@ -0,0 +1,94 @@
 >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 >> +%YAML 1.2
 >> +---
->> +$id: http://devicetree.org/schemas/bindings/sound/pcm1773.yaml#
+>> +$id: http://devicetree.org
+>> +$schema: http://devicetree.org
 >=20
-> You need to use latest existing bindings as starting point and test =
-your
-> code.
+> This wasn't ever tested. Why?
 
-Resulting code from compiler was runtime tested.
+It does not emit any C compiler issues or runtime problems so it =
+remained unnoticed.
 
-Actually, we used the latest bindings of some other audio dac as a =
-starting point.
-However, we introduced errors into the finally submitted file.
-We will verify and test the schema next time.
-
-Regarding the checks: both the rob herring bot and the sashiko bot also =
-reported several issues directly to us,
-so we are already aware of some other remaining errors.
-
-We are currently working on a v2 to clean everything up.
+It was notified by the sahiko-bot and will be fixed in v2.
 
 Thanks and BR,
 Nikolaus=
