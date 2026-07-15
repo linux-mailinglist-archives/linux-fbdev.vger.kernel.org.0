@@ -1,152 +1,487 @@
-Return-Path: <linux-fbdev+bounces-7996-lists+linux-fbdev=lfdr.de@vger.kernel.org>
+Return-Path: <linux-fbdev+bounces-7999-lists+linux-fbdev=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-fbdev@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y9CUC7w2V2rKHQEAu9opvQ
-	(envelope-from <linux-fbdev+bounces-7996-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jul 2026 09:29:00 +0200
+	id oNBZBkF9V2q4SQAAu9opvQ
+	(envelope-from <linux-fbdev+bounces-7999-lists+linux-fbdev=lfdr.de@vger.kernel.org>)
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jul 2026 14:29:53 +0200
 X-Original-To: lists+linux-fbdev@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB3075B6C5
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jul 2026 09:28:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D80575E22D
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jul 2026 14:29:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RfqnnlAL;
-	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7996-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7996-lists+linux-fbdev=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAgfM15h;
+	spf=pass (mail.lfdr.de: domain of "linux-fbdev+bounces-7999-lists+linux-fbdev=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="linux-fbdev+bounces-7999-lists+linux-fbdev=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B59A300951C
-	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jul 2026 07:28:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D72630151D4
+	for <lists+linux-fbdev@lfdr.de>; Wed, 15 Jul 2026 12:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2669C3C1F2B;
-	Wed, 15 Jul 2026 07:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBF245BD5F;
+	Wed, 15 Jul 2026 12:24:33 +0000 (UTC)
 X-Original-To: linux-fbdev@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894DB3C343E
-	for <linux-fbdev@vger.kernel.org>; Wed, 15 Jul 2026 07:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAB144C67C
+	for <linux-fbdev@vger.kernel.org>; Wed, 15 Jul 2026 12:24:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784100534; cv=none; b=HZtrjNxLCvz9MqAJbhXQiH/bB0R4ekkeKvMAb74zyOsVr+t5g+UwR/7ZI9eppOVOZx4uhVW5VXjFVnfDisAs8hb+4KYx7+m390q981eFMHF9WH/nyePJj60rskU3Xtes0fxfljdkNPPPFDwN1G0QNp1CRY6ciHweislr88HLiGk=
+	t=1784118273; cv=none; b=nR97vAXxfoa+nMSs+EAfj8dXVXYpau6nMy3QWBnCFd5BPFs6w+8QiBZSxR27qdtK5248rI1xH/xe8oWgiSbBz6xZc9hKwTrFwOEXKVpW+je7v3nJETpT6x/RrDM/4UJChaolvJGCQbhyaGWFO4eDE9ycuAj50I0aaxvG0Her65Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784100534; c=relaxed/simple;
-	bh=kyLCZZV9kbfs2YsCqC/zFnPHyjufd3uJsLGVylKb0mQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=opCliC+OenSiynmExpRl0zkhe2GmS3Qi6PcRX542KUEaI5iuGNoLkx8qGnYN2qXAOqJbN3eCOZZ1OlZyjI3pdNyAKajnEorIN0j/LjV4+3KuBxIjSOGjgU85s+WRd9EJOF3kxv+2We54fBTJsCCaFLffUzQRzf3QNlPH6t6AM/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RfqnnlAL; arc=none smtp.client-ip=209.85.161.45
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6a3d9aded38so200507eaf.1
-        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jul 2026 00:28:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784100527; x=1784705327; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UxQ0BxbdBsXkQRkJTN/tYd3cFPb7z2YjlCsAC7VkUCY=;
-        b=RfqnnlALI/z9GiNooOhqDwqyoMUKcbUBag3Xu+nwbDbYggTYg7kukHDPvyDM3NWofi
-         6Ny5AY51is/RVcCw6KkRFolWkQ3Ip1PVdnrpuBxw+ds7+ohq2J6st+YNQ6mOMyD6xoS5
-         aqKQwNo3yiea/T7yxCKXvGJE4iHcj6fqOww63URwQmS9XjNRPF5wzChgpPvcdNqYjHMb
-         NEgFWvN+ri8sgALOQRx+wzTodkiG1y9vE5q6FrzUVG9mZevbNU8F6msBS/p/RVp1YkJr
-         K2OMpR7nvGH3vYmd6BDsUmIpOjLFb+tobSpAKv4GaQ4yDBxlvJmuly//SLwwC1NzB+PX
-         +8tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784100527; x=1784705327;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UxQ0BxbdBsXkQRkJTN/tYd3cFPb7z2YjlCsAC7VkUCY=;
-        b=OppgBTeYoun8tUZ/WZQCCdkLBwtQsS9a9YpKo04n497z8ebZc11sEnFbBMNRhmDFpO
-         DaPNMaPRGbYdUIITMCNEXqn3HksBVuvgqtILrkD/n3QGooaC+zdpuif3WiaowkcS8M1k
-         +ZHZmp3VqbQJbpwyP4LvUPdSB27cWOnxVvs4GQH2GjAM015XOXlPBgX2sTQiaOExUDBK
-         sUy1cx254LKdUVj+pdMStv0UGXCRUDElrz2mFkwOZqTQadxVgzevu67o7ZI0l5DFpC6A
-         3lY2vmsrMq55E8wZx4ASfifcScHinNONyOWoRdMJCdWFbLJ+51lql7eqCHjsE26KIntS
-         Xj1Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqkaqxCEHH2ZOrpG8DJ64pV9xRnMBoJKpiCr8Ayo3WYnz9YizDpkNhRzBijqeIxUF+jBxotcfpXWgKOHQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxErEwbHOeS4eHh32hKiKvnSRm/3RLed8dpJ033RRLRMHKdZMLV
-	81j581KXgahUjWMBH35ssxpLG2q4mj9ALhsz8P++LJ2WArE9g++V4T8G
-X-Gm-Gg: AfdE7cntSVy+lDuvrVJf4G/lnicV8t0PrZyuj9K9OLuUq7SP5jx8GbNAw1OtxRphsE6
-	Y6TPldT7PMO6LUrQuhgSqC1H+yIKlK062qX2cpxdogsEntizbwbDGJl5G3/jmU19xhQJ6CihIKz
-	YnTV/Kumwl5KZH8cjeaMGzPgWjwab32s4QAV/HKTsq7WddKxdRd5D/fXawQU8TH6Rze7VMJHV1b
-	UoXqtKPtZkYjDfEj/ElAW4CxLDJpYUdkJJdF8HEuZb+cTfzAt2/Ru3HqVbQRMG2Yxms4ljUBqMV
-	eBtUCIddWRloJ/LTacx6gyaGtJWrsJJwUrA2Zi05c4R6HPqebGH4jc4liRRn2ZXJnV1wnuX7SYX
-	VegZk1QxJWNghtN3yLHOwk7EhApmcTPjXfhru0Vn4Scu38jekVj6+m0xf5g05ij/7P55fzrVpl0
-	9bpZD8
-X-Received: by 2002:a05:6820:f021:b0:6a3:1b9a:48e8 with SMTP id 006d021491bc7-6a39bee8e8bmr7442734eaf.33.1784100527217;
-        Wed, 15 Jul 2026 00:28:47 -0700 (PDT)
-Received: from localhost ([74.80.182.78])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a36a3b0d60sm15711707eaf.0.2026.07.15.00.28.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 00:28:45 -0700 (PDT)
-Date: Wed, 15 Jul 2026 10:28:39 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Panagiotis Gravias <graviaspanagiotis1@gmail.com>
-Cc: andy@kernel.org, gregkh@linuxfoundation.org, namcao@linutronix.de,
-	tomasz.unger@yahoo.pl, dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] staging/fbtft: Minor cleanups.
-Message-ID: <alc2pxlSIEv5FMWa@stanley.mountain>
-References: <20260714190958.219437-2-graviaspanagiotis1@gmail.com>
+	s=arc-20240116; t=1784118273; c=relaxed/simple;
+	bh=WjkkhX8AE55jsgJgX1FzkMHLBoKDh6l6Q8k1teC3sDk=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LhM+ng4zXkqTP6g3BWDTyX2XTLg+QZO774vJfhQO1hJr+iLalGJEmg37N3haUfabSNybAgrYrSS3I9GbHrZsQWQutlD1GNd/Bm7yIOvb2Rxkx0enrRc0TEzOwGEudfBHQS21PQLpS3mkpDtTdvHk53OO1sOm23IVCbQHAa9CY6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAgfM15h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9512A1F01558
+	for <linux-fbdev@vger.kernel.org>; Wed, 15 Jul 2026 12:24:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784118271;
+	bh=PclXy2Uq7OPMyI+t/qU2+B3wDB55fTcxu4iOX0BaM3I=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=LAgfM15hhVaC15vSj8XQxsRNvGquqsgUOdks7kt343R7a1N5g9nUkhGh/uXHD9xfk
+	 nHuL0dFcxgvuhWFebeKG/ml37YscroM+LGpmg6vTy/NYhLFGJkXcxF49V5NileYc42
+	 yFcBl+s67bzQ7PDTJyhysHWIH3tWgPuHTNtr9YG4smlEOxhmeOTfhh5daJaeq0q4VC
+	 dVM8Wgqjwvx9UaMSkun0m/2IJKP0e4vLDNXe4PMhRzEKFuvISWLu21N/04zi2Ia3kf
+	 EMfQpJbcuN8aNGEmfLMx1xjXLy5cpYICzJI1CA7lIsIjNYsegE++dezSLCFahJvia/
+	 vzzxugae/c9Fg==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b159850b16so1817370e87.3
+        for <linux-fbdev@vger.kernel.org>; Wed, 15 Jul 2026 05:24:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqvlQhxDmOuXpidqkPHMiMgC3I6WAMapquIMBXWJOL0TT2SIFjULrfZRVRHCZkhVD6KAGaO0xMC57673A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtzZ/0BNtMCEwripFzmd1u0IelgckCSlVriuCJ5eUOxYlf9ttf
+	KiSaj3jouI5LhIiFdPbPhubfFNKiXkevqx1EjZgZ7LoAsJFfpPqx+iZBLFvmoKmvPcXfLljaCoC
+	J5riFODA5khztp22mDr/KHFxpBrdoFTDhs5/dx4Tqkg==
+X-Received: by 2002:a05:6512:3a87:b0:5b0:12e1:4879 with SMTP id
+ 2adb3069b0e04-5b1582c715emr2068822e87.60.1784118270190; Wed, 15 Jul 2026
+ 05:24:30 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 15 Jul 2026 05:24:27 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 15 Jul 2026 05:24:27 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260714-upstream-v2-v2-2-76e5e41026db@advantech.com>
 Precedence: bulk
 X-Mailing-List: linux-fbdev@vger.kernel.org
 List-Id: <linux-fbdev.vger.kernel.org>
 List-Subscribe: <mailto:linux-fbdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-fbdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260714190958.219437-2-graviaspanagiotis1@gmail.com>
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+References: <20260714-upstream-v2-v2-0-76e5e41026db@advantech.com> <20260714-upstream-v2-v2-2-76e5e41026db@advantech.com>
+Date: Wed, 15 Jul 2026 05:24:27 -0700
+X-Gmail-Original-Message-ID: <CAMRc=Mcnbv++YhPvocyiv9m_vuy2hWeuJ2sk9BNH=j7U3-dBFQ@mail.gmail.com>
+X-Gm-Features: AUfX_mzXdlShUuByf9jSWwdYpIzB9dN3xsnMMdNBfJC8EmPDXbPafGgehOl5DxQ
+Message-ID: <CAMRc=Mcnbv++YhPvocyiv9m_vuy2hWeuJ2sk9BNH=j7U3-dBFQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/8] Add Advantech EIO GPIO driver
+To: Ramiro Oliveira <ramiro.oliveira@advantech.com>
+Cc: linux-kernel@vger.kernel.org, mfd@lists.linux.dev, 
+	linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+	linux-pm@vger.kernel.org, Wenkai Chung <wenkai.chung@advantech.com.tw>, 
+	Francisco Aragon-Trivino <francisco.aragon-trivino@advantech.com>, 
+	Hongzhi Wang <hongzhi.wang@advantech.com>, 
+	Mikhail Tsukerman <mikhail.tsukerman@advantech.com>, 
+	Thomas Kastner <thomas.kastner@advantech.com>, Lee Jones <lee@kernel.org>, 
+	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Guenter Roeck <linux@roeck-us.net>, 
+	Andi Shyti <andi.shyti@kernel.org>, Daniel Thompson <danielt@kernel.org>, 
+	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
+	Lukasz Luba <lukasz.luba@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-7999-lists,linux-fbdev=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-7996-lists,linux-fbdev=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:graviaspanagiotis1@gmail.com,m:andy@kernel.org,m:gregkh@linuxfoundation.org,m:namcao@linutronix.de,m:tomasz.unger@yahoo.pl,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[error27@gmail.com,linux-fbdev@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,linutronix.de,yahoo.pl,lists.freedesktop.org,vger.kernel.org,lists.linux.dev];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,lists.freedesktop.org,advantech.com.tw,advantech.com,kernel.org,roeck-us.net,gmail.com,gmx.de,linux-watchdog.org,intel.com,arm.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,advantech.com:email,advantech.com.tw:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2600:3c0a:e001:db::12fc:5321:from];
+	FORGED_SENDER(0.00)[brgl@kernel.org,linux-fbdev@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	FORGED_RECIPIENTS(0.00)[m:ramiro.oliveira@advantech.com,m:linux-kernel@vger.kernel.org,m:mfd@lists.linux.dev,m:linux-gpio@vger.kernel.org,m:linux-hwmon@vger.kernel.org,m:linux-i2c@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linux-fbdev@vger.kernel.org,m:linux-watchdog@vger.kernel.org,m:linux-pm@vger.kernel.org,m:wenkai.chung@advantech.com.tw,m:francisco.aragon-trivino@advantech.com,m:hongzhi.wang@advantech.com,m:mikhail.tsukerman@advantech.com,m:thomas.kastner@advantech.com,m:lee@kernel.org,m:linusw@kernel.org,m:brgl@kernel.org,m:linux@roeck-us.net,m:andi.shyti@kernel.org,m:danielt@kernel.org,m:jingoohan1@gmail.com,m:deller@gmx.de,m:wim@linux-watchdog.org,m:rafael@kernel.org,m:daniel.lezcano@kernel.org,m:rui.zhang@intel.com,m:lukasz.luba@arm.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,linux-fbdev@vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[linux-fbdev];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,linux-fbdev@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DWL_DNSWL_BLOCKED(0.00)[kernel.org:dkim];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[100.90.174.1:received];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[linux-fbdev];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7CB3075B6C5
+X-Rspamd-Queue-Id: 6D80575E22D
+X-Rspamd-Action: no action
 
-On Tue, Jul 14, 2026 at 10:09:38PM +0300, Panagiotis Gravias wrote:
-> Solved some style errors,
-> parenthesis spacing, aligning arguments, replacing udelay() with
-> usleep_range().
-> 
-> I hope this makes future checks with the style script cleaner and more
-> helpfull.
-> 
+On Tue, 14 Jul 2026 17:54:16 +0200, Ramiro Oliveira
+<ramiro.oliveira@advantech.com> said:
+> This driver controls the GPIO component of the Advantech EIO chip.
+>
 
-With old code you should search lore for why it still exists.
+The subject should be: "gpio: add a driver for the Advantech EIO GPIO
+controller"
+or similar.
 
-regards,
-dan carpenter
+> Signed-off-by: Ramiro Oliveira <ramiro.oliveira@advantech.com>
+> ---
+>  MAINTAINERS             |   7 ++
+>  drivers/gpio/Kconfig    |   6 ++
+>  drivers/gpio/Makefile   |   1 +
+>  drivers/gpio/gpio-eio.c | 252 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 266 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 53b5f7412966..a7da47393815 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -609,6 +609,13 @@ S:	Maintained
+>  F:	Documentation/scsi/advansys.rst
+>  F:	drivers/scsi/advansys.c
+>
+> +ADVANTECH EIO DRIVER
+> +M:	Ramiro Oliveira <ramiro.oliveira@advantech.com>
+> +S:	Maintained
+> +F:	drivers/gpio/gpio-eio.c
+> +F:	drivers/mfd/eio_core.c
+> +F:	include/linux/mfd/eio.h
 
+Shouldn't this be part of the MFD entry?
+
+> +
+>  ADVANTECH SWBTN DRIVER
+>  M:	Andrea Ho <Andrea.Ho@advantech.com.tw>
+>  L:	platform-driver-x86@vger.kernel.org
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index f03c05288376..696065d77235 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -295,6 +295,12 @@ config GPIO_DWAPB
+>  	  Say Y or M here to build support for the Synopsys DesignWare APB
+>  	  GPIO block.
+>
+> +config GPIO_EIO
+> +	tristate "Advantech EIO GPIO"
+> +	depends on MFD_EIO
+> +	help
+> +	  Say Y or M to build support for Advantech EIO GPIO block.
+> +
+>  config GPIO_EIC_SPRD
+>  	tristate "Spreadtrum EIC support"
+>  	depends on ARCH_SPRD || COMPILE_TEST
+> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+> index fa14581e3995..628596705c21 100644
+> --- a/drivers/gpio/Makefile
+> +++ b/drivers/gpio/Makefile
+> @@ -64,6 +64,7 @@ obj-$(CONFIG_GPIO_DLN2)			+= gpio-dln2.o
+>  obj-$(CONFIG_GPIO_DS4520)		+= gpio-ds4520.o
+>  obj-$(CONFIG_GPIO_DWAPB)		+= gpio-dwapb.o
+>  obj-$(CONFIG_GPIO_EIC_SPRD)		+= gpio-eic-sprd.o
+> +obj-$(CONFIG_GPIO_EIO)			+= gpio-eio.o
+>  obj-$(CONFIG_GPIO_ELKHARTLAKE)		+= gpio-elkhartlake.o
+>  obj-$(CONFIG_GPIO_EM)			+= gpio-em.o
+>  obj-$(CONFIG_GPIO_EN7523)		+= gpio-en7523.o
+> diff --git a/drivers/gpio/gpio-eio.c b/drivers/gpio/gpio-eio.c
+> new file mode 100644
+> index 000000000000..34e1aefd0716
+> --- /dev/null
+> +++ b/drivers/gpio/gpio-eio.c
+> @@ -0,0 +1,252 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * GPIO driver for Advantech EIO Embedded controller.
+> + *
+> + * Copyright (C) 2025 Advantech Corporation. All rights reserved.
+> + */
+> +
+> +#include <linux/errno.h>
+> +#include <linux/gpio/driver.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mfd/eio.h>
+> +#include <linux/module.h>
+> +
+> +#define EIO_GPIO_MAX_PINS	48
+> +#define EIO_GPIO_WRITE		0x18
+> +#define EIO_GPIO_READ		0x19
+> +
+> +struct eio_gpio_dev {
+> +	u64 avail;
+> +	int max;
+> +	struct gpio_chip chip;
+> +	struct device *dev;
+> +};
+> +
+> +static struct {
+> +	int size;
+> +	bool write;
+> +} ctrl_para[] = {
+
+Please use a common prefix for all symbols. "eio_gpio" like above is fine.
+
+> +	{ 0x01, false }, { 0x00, false }, { 0x00, false }, { 0x02, false },
+> +	{ 0x01, false }, { 0x00, false }, { 0x00, false }, { 0x00, false },
+> +	{ 0x00, false }, { 0x00, false }, { 0x00, false }, { 0x00, false },
+> +	{ 0x00, false }, { 0x00, false }, { 0x00, false }, { 0x00, false },
+> +	{ 0x01, true  }, { 0x01, true  }, { 0x02, true  }, { 0x02, true  },
+> +	{ 0x02, false }, { 0x10, false }
+> +};
+> +
+> +enum gpio_ctrl {
+> +	EIO_GPIO_STATUS = 0x0,
+> +	EIO_GPIO_GROUP_AVAIL = 0x3,
+> +	EIO_GPIO_ERROR = 0x04,
+> +	EIO_GPIO_PIN_DIR = 0x10,
+> +	EIO_GPIO_PIN_LEVEL = 0x11,
+> +	EIO_GPIO_GROUP_DIR = 0x12,
+> +	EIO_GPIO_GROUP_LEVEL = 0x13,
+> +	EIO_GPIO_MAPPING = 0x14,
+> +	EIO_GPIO_NAME = 0x15
+> +};
+> +
+> +static struct {
+> +	int group;
+> +	int port;
+> +} group_map[] = {
+> +	{ 0, 0 }, { 0, 1 },
+> +	{ 1, 0 }, { 1, 1 },
+> +	{ 2, 0 }, { 2, 1 },
+> +	{ 3, 0 }, { 3, 1 },
+> +	{ 3, 2 }, { 3, 3 },
+> +	{ 3, 4 }, { 3, 5 },
+> +	{ 3, 6 }, { 3, 7 }
+> +};
+> +
+> +static int pmc_write(struct device *mfd_dev, u8 ctrl, u8 dev_id, void *data)
+> +{
+> +	struct pmc_op op = {
+> +		 .cmd       = EIO_GPIO_WRITE,
+> +		 .control   = ctrl,
+> +		 .device_id = dev_id,
+> +		 .payload   = (u8 *)data,
+> +	};
+> +
+> +	if (ctrl >= ARRAY_SIZE(ctrl_para))
+> +		return -ENOMEM;
+> +
+> +	if (!ctrl_para[ctrl].write)
+> +		return -EINVAL;
+> +
+> +	op.size = ctrl_para[ctrl].size;
+> +
+> +	return eio_core_pmc_operation(mfd_dev, &op);
+> +}
+> +
+> +static int pmc_read(struct device *mfd_dev, u8 ctrl, u8 dev_id, void *data)
+> +{
+> +	struct pmc_op op = {
+> +		 .cmd       = EIO_GPIO_READ,
+> +		 .control   = ctrl,
+> +		 .device_id = dev_id,
+> +		 .payload   = (u8 *)data,
+> +	};
+> +
+> +	if (ctrl > ARRAY_SIZE(ctrl_para))
+> +		return -ENOMEM;
+> +
+> +	op.size = ctrl_para[ctrl].size;
+> +
+> +	return eio_core_pmc_operation(mfd_dev, &op);
+> +}
+> +
+> +static int get_dir(struct gpio_chip *chip, unsigned int offset)
+> +{
+> +	u8 dir;
+> +	int ret;
+> +
+> +	ret = pmc_read(chip->parent, EIO_GPIO_PIN_DIR, offset, &dir);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return dir ? 0 : 1;
+> +}
+> +
+> +static int dir_input(struct gpio_chip *chip, unsigned int offset)
+> +{
+> +	u8 dir = 0;
+> +
+> +	return pmc_write(chip->parent, EIO_GPIO_PIN_DIR, offset, &dir);
+> +}
+> +
+> +static int dir_output(struct gpio_chip *chip, unsigned int offset, int value)
+> +{
+> +	u8 dir = 1;
+> +	u8 val = value;
+> +
+> +	pmc_write(chip->parent, EIO_GPIO_PIN_DIR, offset, &dir);
+> +
+> +	return pmc_write(chip->parent, EIO_GPIO_PIN_LEVEL, offset, &val);
+> +}
+> +
+> +static int gpio_get(struct gpio_chip *chip, unsigned int offset)
+> +{
+> +	u8 level;
+> +	int ret;
+> +
+> +	ret = pmc_read(chip->parent, EIO_GPIO_PIN_LEVEL, offset, &level);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return level;
+> +}
+> +
+> +static int gpio_set(struct gpio_chip *chip, unsigned int offset, int value)
+> +{
+> +	u8 val = value;
+> +
+> +	return pmc_write(chip->parent, EIO_GPIO_PIN_LEVEL, offset, &val);
+> +}
+> +
+> +static int check_support(struct device *dev)
+> +{
+> +	u8  data;
+> +	int ret;
+> +
+> +	ret = pmc_read(dev, EIO_GPIO_STATUS, 0, &data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if ((data & 0x01) == 0)
+> +		return -EOPNOTSUPP;
+> +
+> +	return 0;
+> +}
+> +
+> +static int check_pin(struct device *dev, int pin)
+> +{
+> +	int ret;
+> +	int group, bit;
+
+Why not put all ints on the same line? Same elsewhere.
+
+> +	u16 data;
+> +
+> +	/* Get pin mapping */
+> +	ret = pmc_read(dev, EIO_GPIO_MAPPING, pin, &data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if ((data & 0xFF) > ARRAY_SIZE(group_map))
+> +		return -EINVAL;
+> +
+> +	group = group_map[data & 0xFF].group;
+> +	bit   = data >> 8;
+> +
+> +	/* Check mapped pin */
+> +	ret = pmc_read(dev, EIO_GPIO_GROUP_AVAIL, group, &data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return data & BIT(bit) ? 0 : -EOPNOTSUPP;
+> +}
+> +
+> +static int gpio_init(struct device *mfd, struct eio_gpio_dev *eio_gpio)
+> +{
+> +	int ret, i;
+> +
+> +	ret = check_support(mfd);
+> +	if (ret)
+
+This warrants an -ENODEV. We don't want to retry probe here, do we?
+
+> +		return dev_err_probe(eio_gpio->dev, ret, "GPIO not supported\n");
+> +
+> +	eio_gpio->avail = 0;
+> +
+> +	for (i = 0 ; i < EIO_GPIO_MAX_PINS ; i++) {
+> +		ret = check_pin(mfd, i);
+> +		if (ret)
+> +			continue;
+> +
+> +		eio_gpio->avail |= BIT(i);
+> +		eio_gpio->max = i + 1;
+> +	}
+> +
+> +	return eio_gpio->max ? 0 : -EOPNOTSUPP;
+> +}
+> +
+> +static int gpio_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct eio_gpio_dev *eio_gpio;
+> +	struct eio_dev *eio_dev = dev_get_drvdata(dev->parent);
+> +
+> +	if (!eio_dev)
+> +		return dev_err_probe(dev, -ENODEV, "Error contact eio_core\n");
+
+-ENODEV is used for silently bailing out of probe and telling the driver core
+to not defer. Basically it means: this device cannot be enabled on this system
+or is not present at all. This means: don't use dev_err_probe() and don't emit
+any logs. Just return -ENODEV.
+
+Though it makes me think - can this even happen at all? MFD cells won't get
+created if parent's probe() failed.
+
+> +
+> +	eio_gpio = devm_kzalloc(dev, sizeof(*eio_gpio), GFP_KERNEL);
+> +	if (!eio_gpio)
+> +		return -ENOMEM;
+> +
+> +	eio_gpio->dev = dev;
+> +
+> +	if (gpio_init(dev->parent, eio_gpio))
+
+Can you use the ret = gpio_init() pattern for consistency with the rest of the
+code?
+
+> +		return -EIO;
+> +
+> +	eio_gpio->chip.parent = dev->parent;
+> +	eio_gpio->chip.ngpio = eio_gpio->max;
+> +	eio_gpio->chip.label = KBUILD_MODNAME;
+> +	eio_gpio->chip.owner = THIS_MODULE;
+> +	eio_gpio->chip.direction_input = dir_input;
+> +	eio_gpio->chip.get = gpio_get;
+> +	eio_gpio->chip.direction_output = dir_output;
+> +	eio_gpio->chip.set = gpio_set;
+> +	eio_gpio->chip.get_direction = get_dir;
+> +	eio_gpio->chip.base = -1;
+> +	eio_gpio->chip.can_sleep = true;
+> +
+> +	return devm_gpiochip_add_data(dev, &eio_gpio->chip, eio_gpio);
+> +}
+> +
+> +static struct platform_driver gpio_driver = {
+> +	.probe  = gpio_probe,
+> +	.driver = { .name = KBUILD_MODNAME, },
+> +};
+> +
+> +module_platform_driver(gpio_driver);
+> +
+> +MODULE_AUTHOR("Wenkai Chung <wenkai.chung@advantech.com.tw>");
+> +MODULE_AUTHOR("Ramiro Oliveira <ramiro.oliveira@advantech.com>");
+> +MODULE_DESCRIPTION("GPIO driver for Advantech EIO embedded controller");
+> +MODULE_LICENSE("GPL");
+>
+> --
+> 2.43.0
+>
+>
+
+Bart
 
